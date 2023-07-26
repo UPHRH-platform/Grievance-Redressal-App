@@ -11,6 +11,7 @@ export class GrievanceManagementComponent {
 
   grievances: GrievancesTableData[] = [];
   grievancesTableColumns: TableColumn[] = [];
+  isDataLoading : boolean = false;
   constructor(){}
 
   ngOnInit(): void {
@@ -70,6 +71,10 @@ export class GrievanceManagementComponent {
   }
 
   getgrievances() {
+    this.isDataLoading = true;
+    setTimeout(() => {
+      this.isDataLoading = false;
+    }, 2000);
     this.grievances = [
       {
         Id: "340",
@@ -161,6 +166,7 @@ export class GrievanceManagementComponent {
       }
      
     ];
+    
   }
 
   removeItem(e: Event) {
