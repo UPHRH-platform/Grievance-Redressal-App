@@ -1,11 +1,12 @@
-<div style="margin: 105px;">
+<div>
 
     <mat-form-field>
         <input matInput appearance="standard" (keyup)="applyFilter($event.target.value)" placeholder="Search">
     </mat-form-field>
-    <span>
+    <span class="ml2">
         <mat-icon class="" fontIcon="filter_list_alt"></mat-icon>
-        <mat-label class="p1">Filter</mat-label>
+        <mat-label class="">Filter</mat-label>
+        
     </span>
 
     <table class="m4" mat-table [dataSource]="dataSource" class="mat-elevation-z1" matSort
