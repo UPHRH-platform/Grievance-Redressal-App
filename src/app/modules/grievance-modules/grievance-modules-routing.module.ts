@@ -4,7 +4,10 @@ import { GrievanceRaiserFormComponent } from './components/grievance-raiser-form
 
 const routes: Routes = [
   {
-    path: '', component:GrievanceRaiserFormComponent, pathMatch: 'full'
+    path: '', component:GrievanceRaiserFormComponent, pathMatch: 'full',
+  },
+  {
+    path: 'login', loadChildren :()=> import('../auth-modules/auth-modules.module').then(m=>m.AuthModulesModule)
   }
 ];
 
