@@ -49,6 +49,7 @@ import {OverlayModule} from '@angular/cdk/overlay';
 import {CdkMenuModule} from '@angular/cdk/menu';
 import {DialogModule} from '@angular/cdk/dialog';
 import { GrievanceRaiserFormComponent } from './components/grievance-raiser-form/grievance-raiser-form.component';
+import { GrievanceManagementComponent } from './components/grievance-management/grievance-management.component';
  
 
 const material = [
@@ -104,7 +105,8 @@ const material = [
 
 @NgModule({
   declarations: [
-    GrievanceRaiserFormComponent
+    GrievanceRaiserFormComponent,
+    GrievanceManagementComponent
   ],
   imports: [
     CommonModule,
