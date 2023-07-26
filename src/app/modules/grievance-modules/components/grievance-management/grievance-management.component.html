@@ -1,1 +1,10 @@
-<p>grievance-management works!</p>
+<!-- <p>grievance-management works Arun!</p> -->
+
+<app-shared-table
+    [tableColumns]="grievancesTableColumns"
+    [tableData]="grievances"
+    [isPageable]="true"
+    (rowAction)="removeItem($event)"
+    > 
+
+</app-shared-table>

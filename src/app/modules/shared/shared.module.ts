@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HeaderComponent } from './components/header/header.component';
 import { SharedTableComponent } from './components/shared-table/shared-table.component';
-
+import {MaterialModule} from '../../../material/material.module';
 
 
 @NgModule({
@@ -11,7 +11,13 @@ import { SharedTableComponent } from './components/shared-table/shared-table.com
     SharedTableComponent
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    MaterialModule
+  ],
+  exports :
+  [
+    SharedTableComponent,
+    HeaderComponent
   ]
 })
 export class SharedModule { }
