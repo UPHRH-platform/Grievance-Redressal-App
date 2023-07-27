@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import {Router } from '@angular/router';
 
 import { TableColumn, GrievancesTableData } from '../../../../interfaces/interfaces';
 
@@ -7,7 +8,8 @@ import { TableColumn, GrievancesTableData } from '../../../../interfaces/interfa
   templateUrl: './grievance-management.component.html',
   styleUrls: ['./grievance-management.component.scss']
 })
-export class GrievanceManagementComponent {
+export class GrievanceManagementComponent  {
+
 
   grievances: GrievancesTableData[] = [];
   grievancesTableColumns: TableColumn[] = [];

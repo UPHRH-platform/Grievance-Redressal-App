@@ -5,20 +5,19 @@ import { GrievanceModulesRoutingModule } from './grievance-modules-routing.modul
 import { GrievanceRaiserFormComponent } from './components/grievance-raiser-form/grievance-raiser-form.component';
 import { GrievanceManagementComponent } from './components/grievance-management/grievance-management.component';
 import { SharedModule } from '../shared/shared.module';
+import {ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from 'src/material/material.module';
-import { ReactiveFormsModule } from '@angular/forms';
-
 @NgModule({
   declarations: [
     GrievanceRaiserFormComponent,
-    GrievanceManagementComponent
+    GrievanceManagementComponent,
   ],
   imports: [
     CommonModule,
     GrievanceModulesRoutingModule,
+    ReactiveFormsModule,
     SharedModule,
     MaterialModule,
-    ReactiveFormsModule
   ],
 
 })

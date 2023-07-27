@@ -1,0 +1,14 @@
+.header-container{
+    margin-left: 12rem;
+    margin-right: 12rem;
+}
+
+button{
+    background-color: forestgreen;
+    border-radius: 8px;
+    border: none;
+    color: white;
+    height: 26px;
+    margin-top: 1rem;
+
+}
