@@ -13,7 +13,10 @@ const routes: Routes = [
   {
     path: 'manage-tickets', component:GrievanceManagementComponent, pathMatch: 'full',
   },
- 
+  {
+    path: 'new-ticket', component:GrievanceRaiserFormComponent, pathMatch: 'full',
+  },
+
 ];
 
 @NgModule({
