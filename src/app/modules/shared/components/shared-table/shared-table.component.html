@@ -1,1 +1,60 @@
-<p>shared-table works!</p>
+<div>
+
+    <mat-form-field>
+        <input matInput appearance="standard" (keyup)="applyFilter($event.target.value)" placeholder="Search">
+    </mat-form-field>
+    <span class="ml2">
+        <mat-icon class="" fontIcon="filter_list_alt"></mat-icon>
+        <mat-label class="">Filter</mat-label>
+        
+    </span>
+
+    <table class="m4" mat-table [dataSource]="dataSource" class="mat-elevation-z1" matSort
+        sortActionDescription="Sort by number">
+        <ng-container matColumnDef="position" *ngFor="let disCol of tableColumns let colIndex = index;"
+            matColumnDef="{{disCol.columnDef}}">
+            <!-- if sortable column header -->
+            <ng-container *ngIf="disCol.isSortable; else notSortable">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                    {{disCol.header}}
+                </th>
+            </ng-container>
+            <!-- else not sortable -->
+            <ng-template #notSortable>
+                <th mat-header-cell *matHeaderCellDef>
+                    {{disCol.header}}
+                </th>
+
+            </ng-template>
+
+            <td mat-cell *matCellDef="let element" [id]="rowAction" (click)="onRowClick(element)">
+
+
+
+                <span *ngIf="(!disCol.isAction); else action">
+
+                    <a mat-button href="" target="_blank">{{ disCol.cell(element) }}</a>
+                </span>
+
+                <ng-template #action>
+
+                    <button mat-button [id]="rowActionIcon" (click)="emitRowAction(element)">
+                        <mat-icon>delete</mat-icon>
+                    </button>
+
+
+
+                </ng-template>
+
+
+            </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+
+    <mat-paginator *ngIf="isPageable" [pageSizeOptions]="[10, 20, 50]" showFirstLastButtons aria-label="Select page..">
+    </mat-paginator>
+</div>

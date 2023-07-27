@@ -8,7 +8,11 @@ const routes: Routes = [
   },
   {
     path:'user-manage', loadChildren:()=> import('../app/modules/user-modules/user-modules.module').then(m=>m.UserModulesModule)
-  }
+  },
+  // { path: '', redirectTo: '/grievance/manage-tickets', pathMatch: 'full' },
+  {
+    path: 'grievance', loadChildren :()=> import('./modules/grievance-modules/grievance-modules.module').then(m=>m.GrievanceModulesModule)
+  },
 ];
 
 @NgModule({

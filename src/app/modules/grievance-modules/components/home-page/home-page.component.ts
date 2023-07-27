@@ -33,7 +33,7 @@ export class HomePageComponent implements OnInit {
 
   navigateto(item:any){
     console.log(item)
-    this.router.navigate(['/manageuser'])
+    this.router.navigate(['/user-manage'])
     
   }
 

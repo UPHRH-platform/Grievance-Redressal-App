@@ -18,7 +18,7 @@ export class ManageUserComponent implements OnInit {
   }
 
   addUserFn(){
-    this.router.navigate(['/userform'])
+    this.router.navigate(['/user-manage/userform'])
   }
 
 }
