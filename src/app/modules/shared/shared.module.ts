@@ -4,17 +4,20 @@ import { HeaderComponent } from './components/header/header.component';
 import { SharedTableComponent } from './components/shared-table/shared-table.component';
 import {MaterialModule} from '../../../material/material.module';
 import { SharedSkeletonLoadingComponent } from './components/shared-skeleton-loading/shared-skeleton-loading.component';
-
+import { SharedDialogOverlayComponent } from './components/shared-dialog-overlay/shared-dialog-overlay.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
     HeaderComponent,
     SharedTableComponent,
-    SharedSkeletonLoadingComponent
+    SharedSkeletonLoadingComponent,
+    SharedDialogOverlayComponent
   ],
   imports: [
     CommonModule,
-    MaterialModule
+    MaterialModule,
+    ReactiveFormsModule
   ],
   exports :
   [

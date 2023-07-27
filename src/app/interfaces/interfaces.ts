@@ -18,3 +18,8 @@ export interface GrievancesTableData {
     url?: string;
     isSortable?: boolean;
   }
+
+  export interface DialogData {
+    examsTableColumns: [];
+    exams: [];
+  }
