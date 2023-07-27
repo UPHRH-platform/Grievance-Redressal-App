@@ -1,0 +1,83 @@
+.container-full {
+    background-color: #F0F3F4;
+    height: 100vh;
+    width: 100%;
+}
+.breadcrumb {
+    height: 48px;
+    background-color: white;
+    box-shadow: 0px 0px 1px;
+    padding-left: 11%;
+}
+.breadcrumb-titles {
+    display: flex;
+    flex-direction: row;
+    gap: 1%;
+}
+.icon-cls {
+    padding: 0.3%;
+    color: gray;
+    background-color: lightgray;
+    margin-top: 6px;
+    border-radius: 4px;
+}
+
+.navigationcls {
+    margin-top: 13px;
+    font-size: 17px;
+    letter-spacing: 0.25px;
+    font-weight: 500;
+    cursor: pointer;
+}
+.second-main-wrapper {
+position: relative;
+ width: 70vw;
+ margin-left: 8%;
+ margin-top: 26px;
+ 
+}
+.user-container {
+    padding: 2%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-left: 3%;
+    margin-top: 4%;
+}
+.user-text-heading {
+    font-size: 22px;
+    font-weight: 500;
+    line-height: 0.12;
+    font-family:system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+.form-container {
+    width: 65vw;
+    background-color: white;
+    height: 68vh;
+    margin-left: 66px;
+    box-shadow: 0px 0px 3px 0px gray
+}
+
+.form-internal-wrapper {
+    padding: 3%;
+}
+.wrapper-form {
+    display: flex;
+    flex-direction: column;
+}
+.first-row-container {
+    display: flex;
+    flex-direction: row;
+}
+.first-container {
+    width: 31%;
+    position: relative;
+}
+.text-class{
+    width: 84%;
+}
+.radio-btn {
+    padding: 7%;
+    margin-right: 4%;
+    border: 1px solid lightgray;
+}

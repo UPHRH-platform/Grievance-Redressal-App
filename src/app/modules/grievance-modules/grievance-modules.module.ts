@@ -50,6 +50,11 @@ import {CdkMenuModule} from '@angular/cdk/menu';
 import {DialogModule} from '@angular/cdk/dialog';
 import { GrievanceRaiserFormComponent } from './components/grievance-raiser-form/grievance-raiser-form.component';
 import { GrievanceManagementComponent } from './components/grievance-management/grievance-management.component';
+import { SharedModule } from '../shared/shared.module';
+import { ManageUserComponent } from '../user-modules/components/manage-user/manage-user.component';
+import {ReactiveFormsModule } from '@angular/forms';
+import { UserFormComponent } from '../user-modules/components/user-form/user-form.component';
+import { HomePageComponent } from './components/home-page/home-page.component';
  
 
 const material = [
@@ -106,12 +111,14 @@ const material = [
 @NgModule({
   declarations: [
     GrievanceRaiserFormComponent,
-    GrievanceManagementComponent
+    GrievanceManagementComponent,
   ],
   imports: [
     CommonModule,
     GrievanceModulesRoutingModule,
-    material
+    material,
+    SharedModule,
+    ReactiveFormsModule,
     
   ],
   exports: [
