@@ -5,7 +5,7 @@ import { TableColumn, GrievancesTableData } from '../../../../interfaces/interfa
 @Component({
   selector: 'app-grievance-management',
   templateUrl: './grievance-management.component.html',
-  styleUrls: ['./grievance-management.component.css']
+  styleUrls: ['./grievance-management.component.scss']
 })
 export class GrievanceManagementComponent {
 
@@ -171,5 +171,9 @@ export class GrievanceManagementComponent {
 
   removeItem(e: Event) {
     console.log(e)
+  }
+
+  raiseNewGrievance(){
+    
   }
 }

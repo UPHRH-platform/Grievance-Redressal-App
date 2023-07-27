@@ -1,1 +1,126 @@
-<p>grievance-raiser-form works!</p>
+<app-header></app-header>
+<div style="margin: 115px;">
+    <form [formGroup]="grievanceRaiserformGroup"
+        (ngSubmit)="ongrievanceRaiserformSubmit(grievanceRaiserformGroup.value)">
+        <div class="ml4 body-header flex justify-between items-center mb-4 ">
+            <h2 style="font-weight: 500 ml4">Grievance Raiser</h2>
+            <div class="button-group ">
+                <button mat-stroked-button color="primary" class="btn-1">Cancel</button>
+                <button mat-stroked-button color="primary" class="ml2">Submit</button>
+            </div>
+        </div>
+
+        <div class="flex flex-column">
+            <div class="flex flex-row  ml4">
+                <div class="flex flex-column ">
+                    <h4 style="font-weight:400;margin-bottom:1rem;margin-top:2rem">Name</h4>
+                    <mat-form-field appearance="outline" style="width:16.5rem">
+                        <mat-label>Name</mat-label>
+                        <input matInput placeholder="Name" formControlName="name">
+                        <mat-error *ngIf="grievanceRaiserformGroup.controls['name'].invalid">
+                            {{getError('name')}}
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+
+                <div class="ml4 flex flex-column">
+                    <h4 style="font-weight:400;margin-bottom:1rem;margin-top:2rem">Email ID</h4>
+                    <mat-form-field appearance="outline" style="width:16.5rem">
+                        <mat-label>Email ID</mat-label>
+                        <input matInput placeholder="Email ID" formControlName="email">
+                        <mat-error *ngIf="grievanceRaiserformGroup.controls['email'].invalid">
+                            {{getError('email')}}
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="ml4  flex flex-row  ">
+                <div class="flex flex-column">
+                    <h4 style="font-weight:400;margin-bottom:1rem;margin-top:2rem">Mobile Number</h4>
+                    <mat-form-field appearance="outline" style="width:16.5rem">
+                        <mat-label>Mobile Number</mat-label>
+                        <input matInput placeholder="Mobile Number" 
+                        formControlName="mobNumber">
+                        <mat-error *ngIf="grievanceRaiserformGroup.controls['mobNumber'].invalid">
+                            {{getError('mobNumber')}}
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="ml4 flex flex-column">
+                    <h4 style="font-weight:400;margin-bottom:1rem;margin-top:2rem">Type of Grievance</h4>
+                    <mat-form-field appearance="outline" style="width:16.5rem">
+                        <mat-label>Type of Grievance</mat-label>
+                        <mat-select (selectionChange)="grievanceSelected($event)" formControlName="grievanceType">
+                            <span *ngFor='let grievance of grievancesTypesArray;let i = index'>
+                                <mat-option [value]="grievance">{{grievance}}</mat-option>
+                            </span>
+                        </mat-select>
+                        
+                        <mat-error *ngIf="grievanceRaiserformGroup.controls['grievanceType'].invalid">
+                            {{getError('grievanceType')}}
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="flex flex-row  mt2 ">
+                <div class="ml4 flex flex-column">
+                    <h4 class="mb1 mt2" style="font-weight:400">User Type</h4>
+                    <mat-radio-group color="primary" aria-label="User Type">
+                        <span *ngFor='let userType of userTypesArray;let i = index'>
+                            <mat-radio-button [value]="userType" class="ml3"
+
+                                (change)="radioChecked(userType,i)">{{userType}}</mat-radio-button>
+                        </span>
+                    </mat-radio-group>
+                </div>
+
+            </div>
+
+            <div class="flex flex-row  ml4 mt2">
+                <div class="flex flex-column ">
+                    <h4 class="mb1 mt2" style="font-weight:400">Description</h4>
+                    <form class="example-form">
+                        <mat-form-field class="example-full-width">
+                            <textarea matInput placeholder="Leave a comment"></textarea>
+                        </mat-form-field>
+                    </form>
+                </div>
+            </div>
+
+            <div class="flex flex-row  ml4 mt1">
+                <div class="flex flex-column mt1">
+                    <h4 class="mb1 mt2" style="font-weight:400">Attach files</h4>
+                </div>
+                <div class="ml4 flex flex-column right">
+                    <label for="file-upload" class="custom-file-upload">
+                        <a mat-button color="primary">+ Add
+                            attachment(s) </a>
+                    </label>
+                    <input id="file-upload" type="file" style="display: none" #attachments
+                        (change)="onFileChanged($event)" #fileInput multiple="true"  accept=".jpg,.pdf,.docx"/>
+                </div>
+            </div>
+            <div class="flex flex-row  ml4 mt1">
+                <div class="flex flex-column mt1">
+                   
+                        <div  class="flex flex-row mt2" *ngFor="let selected of listOfFiles; let index = index">
+                            
+                          <!--   <span class="ml2">{{ selected }}</span>
+                            <span class="ml4">
+                               
+                               
+                                </span> -->
+                                 <mat-list>
+                                    <mat-list-item>{{ selected }}  <mat-icon class="mt2 ml4" (click)="removeSelectedFile(index)">delete</mat-icon></mat-list-item>
+                                    <mat-divider></mat-divider>
+                                  
+                                  </mat-list> 
+                           
+                        </div>
+                </div>
+
+            </div>
+            <br /> <br /> <br /> <br /> <br /> <br /> <br />
+        </div>
+    </form>
+</div>

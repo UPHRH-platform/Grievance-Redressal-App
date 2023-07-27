@@ -1,0 +1,42 @@
+<div mat-dialog-content>
+  
+    <div>
+        <form [formGroup]="grievanceRaiserOtpformGroup"
+            (ngSubmit)="ongrievanceRaiserotpformSubmit(grievanceRaiserOtpformGroup.value)">
+            <div class="flex flex-column flex justify-between items-center">
+                <h2>Enter O T P</h2>
+            </div>
+    
+            <div class="flex flex-column flex justify-between items-center">
+                <div class="flex flex-row  justify-between items-center">
+                    <div class="flex flex-column ">
+                        <h4>Mobile OTP</h4>
+                        <mat-form-field appearance="outline" style="width:16.5rem">
+                            <mat-label></mat-label>
+                            <input matInput placeholder="0-0-0-0-0-0" formControlName="mobileOTP">
+                            <mat-error *ngIf="grievanceRaiserOtpformGroup.controls['mobileOTP'].invalid">
+                            </mat-error>
+                        </mat-form-field>
+               
+    
+                        <h4 >Email OTP</h4>
+                        <mat-form-field appearance="outline" style="width:16.5rem">
+                            <mat-label></mat-label>
+                            <input matInput placeholder="0-0-0-0-0-0"  formControlName="emailOTP">
+                            <mat-error *ngIf="grievanceRaiserOtpformGroup.controls['emailOTP'].invalid">
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <br />
+            </div>
+        </form>
+    </div>
+</div>
+<div mat-dialog-actions class="flex flex-row flex items-center">
+
+<span class="flex flex-row items-center">
+    <button mat-stroked-button color="primary" (click)="onNoClick()">Cancel</button>
+    <button mat-stroked-button color="primary" class="ml2">Submit</button>
+</span>
+</div>
