@@ -3,17 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { GrievanceRaiserFormComponent } from './components/grievance-raiser-form/grievance-raiser-form.component';
 import { GrievanceManagementComponent } from './components/grievance-management/grievance-management.component';
 
-const routes: Routes = [
-  // {
-  //   path: '', component:GrievanceRaiserFormComponent, pathMatch: 'full',
-  // },
-  {
-    path:'management', component: GrievanceManagementComponent,
-  },
-  
-   
-    
-  
+const routes: Routes = [ 
   {
     path: 'login', loadChildren :()=> import('../auth-modules/auth-modules.module').then(m=>m.AuthModulesModule)
   },

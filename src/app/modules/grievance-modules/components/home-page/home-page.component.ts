@@ -10,16 +10,19 @@ export class HomePageComponent implements OnInit {
   cardList:any[]=[
     {
       title:'Ticket Management',
-      description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. ' 
+      description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. ' ,
+      type:'grievances'
     },
     {
       title:'Dashboard',
-      description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. ' 
+      description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. ' ,
+      type:'dashboard'
     },
 
     {
       title:'User Management',
-      description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. ' 
+      description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. ',
+      type:'users'
     },
 
   ]
@@ -33,7 +36,25 @@ export class HomePageComponent implements OnInit {
 
   navigateto(item:any){
     console.log(item)
-    this.router.navigate(['/user-manage'])
+    switch (item.type) {
+
+      case 'grievances':
+      this.router.navigate(['grievance/manage-tickets'])
+        break;
+
+      case 'dashboard':
+        break;
+        case 'users':
+          this.router.navigate(['user-manage'])
+        break;
+
+      default:
+
+        return '';
+    }
+    return;
+    
+    // this.router.navigate(['/user-manage'])
     
   }
 
