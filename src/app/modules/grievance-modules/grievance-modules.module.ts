@@ -7,8 +7,6 @@ import { GrievanceManagementComponent } from './components/grievance-management/
 import { SharedModule } from '../shared/shared.module';
 import {ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from 'src/material/material.module';
-import { ReactiveFormsModule } from '@angular/forms';
-
 @NgModule({
   declarations: [
     GrievanceRaiserFormComponent,
@@ -20,7 +18,6 @@ import { ReactiveFormsModule } from '@angular/forms';
     ReactiveFormsModule,
     SharedModule,
     MaterialModule,
-    ReactiveFormsModule
   ],
 
 })
