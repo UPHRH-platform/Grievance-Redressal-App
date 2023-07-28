@@ -100,6 +100,7 @@ export class GrievanceRaiserFormComponent {
   onReset() {
     this.submitted = false;
     this.grievanceRaiserformGroup.reset();
+    this.listOfFiles = [];
 }
 
   onFileChanged(event?: any){

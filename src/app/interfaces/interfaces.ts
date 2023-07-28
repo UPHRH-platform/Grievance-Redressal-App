@@ -5,9 +5,10 @@ export interface GrievancesTableData {
     raiserType:string;
     creationTime: string;
     escalationTime: string;
-    isLink? : boolean
-    description?: string
-    attachedDocs?: Array<string>
+    status: string;
+    isLink? : boolean;
+    description?: string;
+    attachedDocs?: Array<string>;
   }
 
 
