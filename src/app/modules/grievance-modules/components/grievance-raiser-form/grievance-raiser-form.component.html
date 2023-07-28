@@ -110,16 +110,17 @@
             <div class="flex flex-row  ml4 mt1">
                 <div class="flex flex-column mt1">
 
-                    <div class="flex flex-row mt2" *ngFor="let selected of listOfFiles; let index = index">
+                   
+                        <div  class="flex flex-row mt2" *ngFor="let selected of listOfFiles; let index = index">
+                            
+                                 <mat-list>
+                                    <mat-list-item>{{ selected }}  <mat-icon class="mt2 ml4" (click)="removeSelectedFile(index)">delete</mat-icon></mat-list-item>
+                                    <mat-divider></mat-divider>
+                                  
+                                  </mat-list> 
+                           
+                        </div>
 
-                        <mat-list>
-                            <mat-list-item>{{ selected }} <mat-icon class="mt2 ml4"
-                                    (click)="removeSelectedFile(index)">delete</mat-icon></mat-list-item>
-                            <mat-divider></mat-divider>
-
-                        </mat-list>
-
-                    </div>
                 </div>
 
             </div>
