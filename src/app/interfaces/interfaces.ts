@@ -1,11 +1,13 @@
 export interface GrievancesTableData {
-    Id: string;
+    id: string;
     grievanceRaiser: string;
     userType:string;
     raiserType:string;
     creationTime: string;
     escalationTime: string;
     isLink? : boolean
+    description?: string
+    attachedDocs?: Array<string>
   }
 
 
