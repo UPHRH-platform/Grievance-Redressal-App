@@ -18,6 +18,7 @@ export class GrievanceRaiserFormComponent {
   fileList: File[] = [];
   listOfFiles: any[] = [];
   isLoading = false;
+  submitted = false;
 
   grievancesTypesArray = [
     'Registration', 'Affiliation', 'Hall-ticket', 'Others'
@@ -46,7 +47,9 @@ export class GrievanceRaiserFormComponent {
         Validators.required,
         Validators.pattern("^(0|91)?[6-9][0-9]{9}$")]),
       grievanceType: new FormControl('', [
-        Validators.required])
+        Validators.required]),
+        userType: new FormControl('', [
+          Validators.required])
     });
   }
 
@@ -67,6 +70,11 @@ export class GrievanceRaiserFormComponent {
           return 'Mobile number is required !!';
         }
         break;
+        case 'userType':
+          if (this.grievanceRaiserformGroup.get('userType')?.hasError('required')) {
+            return 'User type is required !!';
+          }
+          break;
       default:
         return '';
     }
@@ -75,7 +83,7 @@ export class GrievanceRaiserFormComponent {
   
   ongrievanceRaiserformSubmit(value : any){
     console.log(value)
-   
+    this.submitted = true;
     if( this.grievanceRaiserformGroup.valid){
       this.openBulkUploadDialog();
     }
@@ -89,9 +97,14 @@ export class GrievanceRaiserFormComponent {
     console.log(grievance)
   }
 
+  onReset() {
+    this.submitted = false;
+    this.grievanceRaiserformGroup.reset();
+}
+
   onFileChanged(event?: any){
-    for (var i = 0; i <= event.target.files.length - 1; i++) {
-      var selectedFile = event.target.files[i];
+    for (let i = 0; i <= event.target.files.length - 1; i++) {
+      let selectedFile = event.target.files[i];
    
       if (this.listOfFiles.indexOf(selectedFile.name) === -1) {
         this.fileList.push(selectedFile);
