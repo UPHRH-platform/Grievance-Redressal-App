@@ -1,6 +1,6 @@
 <div mat-dialog-content>
   
-    <div>
+    <div *ngIf="!otpSubitted">
         <form [formGroup]="grievanceRaiserOtpformGroup"
             (ngSubmit)="ongrievanceRaiserotpformSubmit(grievanceRaiserOtpformGroup.value)">
             <div class="flex flex-column flex justify-between items-center">
@@ -13,7 +13,7 @@
                         <h4>Mobile OTP</h4>
                         <mat-form-field appearance="outline" style="width:16.5rem">
                             <mat-label></mat-label>
-                            <input matInput placeholder="0-0-0-0-0-0" formControlName="mobileOTP">
+                            <input matInput placeholder="0 - 0 - 0 - 0 - 0 - 0" formControlName="mobileOTP">
                             <mat-error *ngIf="grievanceRaiserOtpformGroup.controls['mobileOTP'].invalid">
                             </mat-error>
                         </mat-form-field>
@@ -22,7 +22,7 @@
                         <h4 >Email OTP</h4>
                         <mat-form-field appearance="outline" style="width:16.5rem">
                             <mat-label></mat-label>
-                            <input matInput placeholder="0-0-0-0-0-0"  formControlName="emailOTP">
+                            <input matInput placeholder="0 - 0 - 0 - 0 - 0 - 0"  formControlName="emailOTP">
                             <mat-error *ngIf="grievanceRaiserOtpformGroup.controls['emailOTP'].invalid">
                             </mat-error>
                         </mat-form-field>
@@ -30,13 +30,25 @@
                 </div>
                 <br />
             </div>
+            <div  mat-dialog-actions class="flex flex-row flex items-center">
+
+                <span class="flex flex-row items-center">
+                    <button class="bottom-0 align-bottom "  mat-stroked-button color="primary" (click)="onNoClick()">Cancel</button>
+                    <button  *ngIf="!otpSubitted" mat-stroked-button color="primary" (click)="onSubmit()">Submit</button>
+                </span>
+                </div>
         </form>
     </div>
-</div>
-<div mat-dialog-actions class="flex flex-row flex items-center">
 
-<span class="flex flex-row items-center">
-    <button mat-stroked-button color="primary" (click)="onNoClick()">Cancel</button>
-    <button mat-stroked-button color="primary" class="ml2">Submit</button>
-</span>
+    <div *ngIf="otpSubitted">
+        <div class="mt4 flex flex-column flex justify-between items-center   text-align: center;">
+            <h2 class="mt4">Ticket Generated Successfully !!!</h2>
+            <mat-icon class="mt4">check_circle_outline</mat-icon>
+            <br/>
+            <div  class="mt3">
+                <p>Your ticket Id is {{ticketId}}. Please check your registered email ID for more details</p>
+       
+            </div>
+         </div>
+        </div>
 </div>
