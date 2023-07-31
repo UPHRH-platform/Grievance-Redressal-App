@@ -55,7 +55,9 @@ export class SharedTableComponent implements AfterViewInit {
     this.setTableDataSource(data);
   }
 
+
   @Output() rowAction: EventEmitter<any> = new EventEmitter<any>();
+  @Output() EditData: EventEmitter<any>= new EventEmitter<any>();
 
 
   constructor() {}
@@ -90,5 +92,9 @@ export class SharedTableComponent implements AfterViewInit {
 
     emitRowAction(row: any) {
       this.rowAction.emit(row);
+    }
+
+    onClickEdit(row:any){
+     this.EditData.emit(row);
     }
 }

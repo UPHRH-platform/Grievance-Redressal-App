@@ -1,3 +1,4 @@
+<app-header></app-header>
 <div class="container-full">
     <div class="breadcrumb">
         <div class="breadcrumb-titles">
@@ -11,7 +12,7 @@
 <div class="user-form-container">
     <form [formGroup]="userForm"  (ngSubmit)="onSubmit()">
     <div class="user-container">
-        <h2 class="user-text-heading">{{'Create user'}}</h2>
+        <h2 class="user-text-heading">{{isEditUser ? 'Edit User Details' : 'Create user'}}</h2>
         <div class="action-btns">
         <button  mat-raised-button color="primary" style="margin-right: 15px;" >Cancel</button>
         <button type="submit" mat-raised-button color="primary" [disabled]="!userForm.valid">Save</button>
@@ -66,10 +67,7 @@
                         <mat-form-field appearance="outline" class="text-class">
                             <mat-label>Role</mat-label>
                             <mat-select formControlName="role">
-                              <mat-option>None</mat-option>
-                              <mat-option value="option1">Option 1</mat-option>
-                              <mat-option value="option2">Option 2</mat-option>
-                              <mat-option value="option3">Option 3</mat-option>
+                              <mat-option *ngFor="let item of roleList" [value]="item">{{item}}</mat-option>
                             </mat-select>
                             <mat-error *ngIf="role && role.invalid && role.touched">please select role</mat-error>
 

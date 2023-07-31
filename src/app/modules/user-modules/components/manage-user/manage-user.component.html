@@ -1,3 +1,4 @@
+<app-header></app-header>
 <div class="container-full">
     <div class="breadcrumb">
         <div class="breadcrumb-titles">
@@ -12,6 +13,14 @@
     <div class="user-container">
      <h2 class="user-text-heading">{{'Manage User'}}</h2>
      <button  mat-raised-button color="primary"(click)="addUserFn()">Add user</button>
+     </div>
+     <div class="user-table-wrapper">
+        <app-shared-skeleton-loading [isLoading]="isDataLoading">
+        </app-shared-skeleton-loading>
+        <app-shared-table *ngIf="!isDataLoading" [tableColumns]="grievancesTableColumns" [tableData]="grievances" [isPageable]="true"
+        (rowAction)="removeItem($event)" (EditData)="addUserFn($event)">
+
+    </app-shared-table>
      </div>
 </div>
 </div>

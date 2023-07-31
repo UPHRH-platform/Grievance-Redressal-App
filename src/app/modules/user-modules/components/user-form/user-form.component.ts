@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-user-form',
@@ -11,8 +11,12 @@ export class UserFormComponent implements OnInit {
   userForm: FormGroup
   isUsertable:boolean = true;
   optionList:any[]=['Active', 'Inactive']
+  roleList:any[]=['Nodal Officer','Secreatory', 'Admin']
+  editDataObject:any;
+  isEditUser:boolean = false;
 
-  constructor(private router: Router){
+  constructor(private router: Router,
+    private route: ActivatedRoute){
     this.userForm = new FormGroup({
     firstName: new FormControl('', Validators.required),
     lastName: new FormControl('', Validators.required),
@@ -21,11 +25,29 @@ export class UserFormComponent implements OnInit {
     role: new FormControl('', Validators.required),
     activeStatus: new FormControl('', Validators.required)
     })
-
   }
 
   ngOnInit(): void {
-    
+    this.route.queryParams.subscribe((data)=>{
+      console.log('dddd',data)
+      this.editDataObject = data;
+      if(Object.keys(this.editDataObject).length){
+        this.isEditUser = true;
+        this.setUserFormData();
+      }
+    })
+
+  }
+
+  setUserFormData(){
+    this.userForm.setValue({
+      firstName:this.editDataObject?.fullName,
+      lastName:this.editDataObject?.fullName,
+      emailId: this.editDataObject?.email,
+      phoneNumber:this.editDataObject?.phoneNumber,
+      role:this.editDataObject?.role,
+      activeStatus:this.editDataObject?.accountStatus
+    })
   }
 
   get firstName(){
@@ -48,10 +70,10 @@ export class UserFormComponent implements OnInit {
   }
 
   addUserFn(){
-    this.isUsertable = false
+    this.isUsertable = false;
   }
   navigateToHome(){
-    this.router.navigate(['manageuser'])
+    this.router.navigate(['user-manage'])
   }
 
   onSubmit(){
