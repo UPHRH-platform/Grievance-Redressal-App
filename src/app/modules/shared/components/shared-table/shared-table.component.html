@@ -27,13 +27,13 @@
 
             </ng-template>
 
-            <td mat-cell *matCellDef="let element" [id]="rowAction" (click)="onRowClick(element)">
+            <td mat-cell *matCellDef="let element" [id]="rowAction" (click)="emitRowAction(element)">
 
 
 
                 <span *ngIf="(!disCol.isAction); else action">
 
-                    <a mat-button href="" target="_blank">{{ disCol.cell(element) }}</a>
+                    <a mat-button >{{ disCol.cell(element) }}</a>
                 </span>
 
                 <ng-template #action>

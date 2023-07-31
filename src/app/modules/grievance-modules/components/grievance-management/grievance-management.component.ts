@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {Router } from '@angular/router';
-
+import { Router  } from '@angular/router';
 import { TableColumn, GrievancesTableData } from '../../../../interfaces/interfaces';
 
 @Component({
@@ -14,7 +13,8 @@ export class GrievanceManagementComponent  {
   grievances: GrievancesTableData[] = [];
   grievancesTableColumns: TableColumn[] = [];
   isDataLoading : boolean = false;
-  constructor(){}
+  constructor( 
+    private router: Router ){}
 
   ngOnInit(): void {
     this.initializeColumns();
@@ -26,10 +26,10 @@ export class GrievanceManagementComponent  {
   initializeColumns(): void {
     this.grievancesTableColumns = [
       {
-        columnDef: 'Id',
+        columnDef: 'id',
         header: 'ID',
         isSortable: true,
-        cell: (element: Record<string, any>) => `${element['Id']}`
+        cell: (element: Record<string, any>) => `${element['id']}`
       },
       {
         columnDef: 'grievanceRaiser',
@@ -79,100 +79,136 @@ export class GrievanceManagementComponent  {
     }, 2000);
     this.grievances = [
       {
-        Id: "340",
+        id: "340",
         grievanceRaiser: 'Kalpana Shrivastav',
-        userType:'',
-        raiserType:'',
+        userType:'Institue',
+        status:"Not-Assigned",
+        raiserType:'Affiliation',
         creationTime: "23-06-2023",
         escalationTime: "23-12-2023",
+        description: "This is a lorem ipsum description which is pretty much large enough to test a description.This is a lorem ipsum description which is pretty much large enough to test a description",
+        attachedDocs:["Doc 1","Doc2"]
       },
       {
-        Id: "327",
+        id: "327",
         grievanceRaiser: 'Devpratap Nagendra',
         userType:'Candiadate',
         raiserType:'Others',
+        status:"Not-Assigned",
         creationTime: "23-06-2023",
         escalationTime: "23-12-2023",
+        description: "This is a lorem ipsum description which is pretty much large enough to test a description",
+        attachedDocs:["Doc 1","Doc2"]
       },
       {
-        Id: "336",
+        id: "336",
         grievanceRaiser: 'Mani Charri',
         userType:'Candiadate',
+        status:"Not-Assigned",
         raiserType:'Others',
         creationTime: "23-06-2023",
         escalationTime: "23-12-2023",
+        description: "This is a lorem ipsum description which is pretty much large enough to test a description"
+     
       },
       {
-        Id: "335",
+        id: "335",
         grievanceRaiser: 'Geethesh Misra',
         userType:'Candiadate',
+        status:"Not-Assigned",
         raiserType:'Others',
         creationTime: "23-06-2023",
         escalationTime: "23-12-2023",
+        description: "This is a lorem ipsum description which is pretty much large enough to test a description"
+     
       },
       {
-        Id: "334",
+        id: "334",
         grievanceRaiser: 'Vinodini Vaishnav',
         userType:'Candiadate',
+        status:"Not-Assigned",
         raiserType:'Others',
         creationTime: "23-06-2023",
         escalationTime: "23-12-2023",
+        description: "This is a lorem ipsum description which is pretty much large enough to test a description"
+     
       },
       {
-        Id: "333",
+        id: "333",
         grievanceRaiser: 'Apporva Nautiyal',
         userType:'Candiadate',
+        status:"Not-Assigned",
         raiserType:'Others',
         creationTime: "23-06-2023",
         escalationTime: "23-12-2023",
+        description: "This is a lorem ipsum description which is pretty much large enough to test a description"
+     
       },
       {
-        Id: "332",
+        id: "332",
         grievanceRaiser: 'Nancy Jain',
         userType:'Candiadate',
+        status:"Not-Assigned",
         raiserType:'Others',
         creationTime: "23-06-2023",
         escalationTime: "23-12-2023",
+        description: "This is a lorem ipsum description which is pretty much large enough to test a description"
+     
       },
       {
-        Id: "331",
+        id: "331",
         grievanceRaiser: 'Deepak Sharma',
         userType:'Candiadate',
+        status:"Not-Assigned",
         raiserType:'Others',
         creationTime: "23-06-2023",
         escalationTime: "23-12-2023",
+        description: "This is a lorem ipsum description which is pretty much large enough to test a description"
+     
       },
       {
-        Id: "330",
+        id: "330",
         grievanceRaiser: 'Usha Singh',
         userType:'Candiadate',
+        status:"Not-Assigned",
         raiserType:'Others',
         creationTime: "23-06-2023",
         escalationTime: "23-12-2023",
+        description: "This is a lorem ipsum description which is pretty much large enough to test a description"
+     
       },
       {
-        Id: "27",
+        id: "27",
         grievanceRaiser: 'Kamlesh Pandey',
         userType:'Candiadate',
+        status:"Not-Assigned",
         raiserType:'Others',
         creationTime: "23-06-2023",
         escalationTime: "23-12-2023",
+        description: "This is a lorem ipsum description which is pretty much large enough to test a description"
+     
       },
       {
-        Id: "317",
+        id: "317",
         grievanceRaiser: 'Pappiya Mukherjee',
         userType:'Candiadate',
+        status:"Not-Assigned",
         raiserType:'Others',
         creationTime: "23-06-2023",
         escalationTime: "23-12-2023",
+        description: "This is a lorem ipsum description which is pretty much large enough to test a description"
       }
      
     ];
     
   }
 
-  removeItem(e: Event) {
-    console.log(e)
+  onClickItem(e: any) {
+    console.log(e?.id)
+    let id = parseInt(e?.id)
+    //this.router.navigate(['/:'+id], {state: {data: e}});
+    this.router.navigate(['/grievance',  e.id ], {state : {data: e}} );
+   // this.router.navigate(['/grievance', e.id]);
   }
 
   raiseNewGrievance(){
