@@ -1,7 +1,10 @@
+import { Dialog } from '@angular/cdk/dialog';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators,FormBuilder } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { GrievancesTableData, TableColumn, userTableData } from 'src/app/interfaces/interfaces';
+import { ConfirmationPopupComponent } from 'src/app/modules/shared/components/confirmation-popup/confirmation-popup.component';
 
 @Component({
   selector: 'app-manage-user',
@@ -13,7 +16,8 @@ export class ManageUserComponent implements OnInit {
   grievances: userTableData[] = [];
   grievancesTableColumns: TableColumn[] = [];
   dataItem:any;
-  constructor(private router: Router){
+  constructor(private router: Router,
+    private dialog: MatDialog ){
 
   }
 
@@ -34,6 +38,23 @@ export class ManageUserComponent implements OnInit {
     }
    
   }
+
+
+  
+  deleteRowData(event:any) {
+   const dialogRef = this.dialog.open(ConfirmationPopupComponent, {
+    data: {},
+    maxWidth:'400vw',
+    maxHeight:'100vh',
+    height:'30%',
+    width:'30%',
+    disableClose: true
+   });
+   dialogRef.afterClosed().subscribe(result=>{
+    console.log('dialog closed')
+   })
+  }
+
   initializeColumns(): void {
     this.grievancesTableColumns = [
       // {
