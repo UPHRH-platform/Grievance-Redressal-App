@@ -4,7 +4,10 @@ import { HomePageComponent } from './modules/grievance-modules/components/home-p
 
 const routes: Routes = [
   {
-    path: '', component:HomePageComponent, pathMatch: 'full',
+    path: '', loadChildren :()=> import('../app/modules/auth-modules/auth-modules.module').then(m=>m.AuthModulesModule)
+  },
+  {
+    path: 'home', component:HomePageComponent, pathMatch: 'full',
   },
   {
     path:'user-manage', loadChildren:()=> import('../app/modules/user-modules/user-modules.module').then(m=>m.UserModulesModule)
