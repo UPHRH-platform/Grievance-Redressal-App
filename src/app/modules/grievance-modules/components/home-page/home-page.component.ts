@@ -4,58 +4,53 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-home-page',
   templateUrl: './home-page.component.html',
-  styleUrls: ['./home-page.component.css']
+  styleUrls: ['./home-page.component.css'],
 })
 export class HomePageComponent implements OnInit {
-  cardList:any[]=[
+  cardList: any[] = [
     {
-      title:'Ticket Management',
-      description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. ' ,
-      type:'grievances'
+      title: 'Ticket Management',
+      description:
+        'Lorem Ipsum is simply dummy text of the printing and typesetting industry. ',
+      type: 'grievances',
     },
     {
-      title:'Dashboard',
-      description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. ' ,
-      type:'dashboard'
+      title: 'Dashboard',
+      description:
+        'Lorem Ipsum is simply dummy text of the printing and typesetting industry. ',
+      type: 'dashboard',
     },
 
     {
-      title:'User Management',
-      description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. ',
-      type:'users'
+      title: 'User Management',
+      description:
+        'Lorem Ipsum is simply dummy text of the printing and typesetting industry. ',
+      type: 'users',
     },
+  ];
 
-  ]
+  constructor(private router: Router) {}
+  ngOnInit(): void {}
 
-  constructor(private router:Router){
-
-  }
-  ngOnInit(): void {
-    
-  }
-
-  navigateto(item:any){
-    console.log(item)
+  navigateto(item: any) {
+    console.log(item);
     switch (item.type) {
-
       case 'grievances':
-      this.router.navigate(['grievance/manage-tickets'])
+        this.router.navigate(['grievance/manage-tickets']);
         break;
 
       case 'dashboard':
+        this.router.navigate(['dashboard']);
         break;
-        case 'users':
-          this.router.navigate(['user-manage'])
+      case 'users':
+        this.router.navigate(['user-manage']);
         break;
 
       default:
-
         return '';
     }
     return;
-    
-    // this.router.navigate(['/user-manage'])
-    
-  }
 
+    // this.router.navigate(['/user-manage'])
+  }
 }

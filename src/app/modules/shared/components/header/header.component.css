@@ -1,6 +1,11 @@
+.header-class {
+    justify-content: space-between;
+    margin-left: 8rem;
+    margin-right: 8rem;
+}
+
 .header-container{
-    margin-left: 12rem;
-    margin-right: 12rem;
+    box-shadow: 0px 0px 0px 2px #dedede;
 }
 
 button{
@@ -10,5 +15,4 @@ button{
     color: white;
     height: 26px;
     margin-top: 1rem;
-
 }
