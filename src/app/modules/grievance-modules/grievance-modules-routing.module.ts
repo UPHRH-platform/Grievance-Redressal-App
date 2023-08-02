@@ -6,9 +6,7 @@ import { GrievanceDetailsComponent } from './components/grievance-details/grieva
 
 
 const routes: Routes = [ 
-  {
-    path: 'login', loadChildren :()=> import('../auth-modules/auth-modules.module').then(m=>m.AuthModulesModule)
-  },
+  
   {
     path: 'manage-tickets', component:GrievanceManagementComponent, pathMatch: 'full',
   },
