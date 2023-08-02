@@ -6,13 +6,15 @@ import {MaterialModule} from '../../../material/material.module';
 import { SharedSkeletonLoadingComponent } from './components/shared-skeleton-loading/shared-skeleton-loading.component';
 import { SharedDialogOverlayComponent } from './components/shared-dialog-overlay/shared-dialog-overlay.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { ConfirmationPopupComponent } from './components/confirmation-popup/confirmation-popup.component';
 
 @NgModule({
   declarations: [
     HeaderComponent,
     SharedTableComponent,
     SharedSkeletonLoadingComponent,
-    SharedDialogOverlayComponent
+    SharedDialogOverlayComponent,
+    ConfirmationPopupComponent
   ],
   imports: [
     CommonModule,

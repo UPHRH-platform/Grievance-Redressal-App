@@ -6,6 +6,7 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HomePageComponent } from './modules/grievance-modules/components/home-page/home-page.component';
 import { MaterialModule } from 'src/material/material.module';
+import { AuthModulesModule } from './modules/auth-modules/auth-modules.module';
 
 
 
@@ -19,7 +20,8 @@ import { MaterialModule } from 'src/material/material.module';
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    MaterialModule
+    MaterialModule,
+    AuthModulesModule
   ],
   providers: [],
   bootstrap: [AppComponent]
