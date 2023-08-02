@@ -1,5 +1,5 @@
 <div>
-
+    <div *ngIf="hasFilterOptions">
     <mat-form-field>
         <input matInput appearance="standard" (keyup)="applyFilter($event.target.value)" placeholder="Search">
     </mat-form-field>
@@ -8,6 +8,7 @@
         <mat-label class="">Filter</mat-label>
         
     </span>
+    </div>
 
     <table class="m4" mat-table [dataSource]="dataSource" class="mat-elevation-z1" matSort
         sortActionDescription="Sort by number">

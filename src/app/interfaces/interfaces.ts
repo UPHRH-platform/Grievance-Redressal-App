@@ -37,3 +37,15 @@ export interface GrievancesTableData {
     accountStatus:string,
     isMenuOption?:boolean
   }
+
+  export interface DashboardTableData {
+    id: string,
+    bucket: string,
+    responsibleOfficer: string,
+    number: string,
+    pending: string,
+    inProcess: string,
+    resolved: string,
+    responseNotNeeded: string,
+    duplicate: string
+  }
