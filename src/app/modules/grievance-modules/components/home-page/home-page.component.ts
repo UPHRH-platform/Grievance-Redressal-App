@@ -5,29 +5,31 @@ import { RoleContentService } from 'src/app/core/services/role-content-service/r
 @Component({
   selector: 'app-home-page',
   templateUrl: './home-page.component.html',
-  styleUrls: ['./home-page.component.css']
+  styleUrls: ['./home-page.component.css'],
 })
 export class HomePageComponent implements OnInit {
   allowedContent: string[];
-  cardList:any[]=[
+  cardList: any[] = [
     {
-      title:'Ticket Management',
-      description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. ' ,
-      type:'grievances'
+      title: 'Ticket Management',
+      description:
+        'Lorem Ipsum is simply dummy text of the printing and typesetting industry. ',
+      type: 'grievances',
     },
     {
-      title:'Dashboard',
-      description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. ' ,
-      type:'dashboard'
-    },
-
-    {
-      title:'User Management',
-      description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. ',
-      type:'users'
+      title: 'Dashboard',
+      description:
+        'Lorem Ipsum is simply dummy text of the printing and typesetting industry. ',
+      type: 'dashboard',
     },
 
-  ]
+    {
+      title: 'User Management',
+      description:
+        'Lorem Ipsum is simply dummy text of the printing and typesetting industry. ',
+      type: 'users',
+    },
+  ];
 
   constructor(private router:Router, private roleContentService: RoleContentService,){
 
@@ -43,28 +45,25 @@ export class HomePageComponent implements OnInit {
     this.cardList = this.cardList.filter((card) => this.allowedContent.includes(card.type));
   }
 
-  navigateto(item:any){
-    console.log(item)
+  navigateto(item: any) {
+    console.log(item);
     switch (item.type) {
-
       case 'grievances':
-      this.router.navigate(['grievance/manage-tickets'])
+        this.router.navigate(['grievance/manage-tickets']);
         break;
 
       case 'dashboard':
+        this.router.navigate(['dashboard']);
         break;
-        case 'users':
-          this.router.navigate(['user-manage'])
+      case 'users':
+        this.router.navigate(['user-manage']);
         break;
 
       default:
-
         return '';
     }
     return;
-    
-    // this.router.navigate(['/user-manage'])
-    
-  }
 
+    // this.router.navigate(['/user-manage'])
+  }
 }

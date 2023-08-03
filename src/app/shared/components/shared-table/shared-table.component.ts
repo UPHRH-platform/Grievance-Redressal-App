@@ -58,6 +58,7 @@ export class SharedTableComponent implements AfterViewInit {
 
   @Output() rowAction: EventEmitter<any> = new EventEmitter<any>();
   @Output() EditData: EventEmitter<any>= new EventEmitter<any>();
+  @Input() hasFilterOptions = true;
   @Output() rowDataDelete: EventEmitter<any>= new EventEmitter<any>();
 
 

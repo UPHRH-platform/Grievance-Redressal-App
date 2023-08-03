@@ -35,7 +35,14 @@ const routes: Routes = [
       allowedRoles: [Roles.ADMIN, Roles.GRIEVANCE_NODAL, Roles.NODAL_OFFICER, Roles.SECRETARY],
     },
   },
-
+  {
+    path: 'dashboard', 
+    loadChildren: () => import('./modules/dashboard/dashboard.module').then(m => m.DashboardModule),
+    canActivate: [AuthGuard, RoleContentGuard],
+    data: {
+      allowedRoles: [Roles.ADMIN],
+    },
+  }
 ];
 
 @NgModule({
