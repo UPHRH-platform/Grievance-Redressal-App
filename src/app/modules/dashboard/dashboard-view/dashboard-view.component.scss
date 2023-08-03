@@ -1,0 +1,12 @@
+.inner-content {
+    padding-top: 4rem;
+    padding-bottom: 4rem;
+    .table1, .table2 {
+        width: -moz-available; 
+        width: -webkit-fill-available;
+        width: stretch;
+    }
+    .custom-margin {
+        margin-top: 50px;
+    }
+}

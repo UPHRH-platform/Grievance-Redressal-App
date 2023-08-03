@@ -47,5 +47,14 @@ export interface GrievancesTableData {
     inProcess: string,
     resolved: string,
     responseNotNeeded: string,
+    duplicate: string,
+  }
+
+  export interface DashboardAnalytics {
+    status: ''
+    pending: string,
+    inProcess: string,
+    resolved: string,
+    responseNotNeeded: string,
     duplicate: string
   }

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { TableColumn, DashboardTableData } from '../../../interfaces/interfaces';
+import { TableColumn, DashboardTableData, DashboardAnalytics } from '../../../interfaces/interfaces';
 
 @Component({
   selector: 'app-dashboard-view',
@@ -10,6 +10,15 @@ export class DashboardViewComponent {
   isDataLoading : boolean = false;
   dashboardData: DashboardTableData[] = [];
   dashboardDataColumns: TableColumn[] = [];
+  dashboardAnalyticsData: DashboardAnalytics[] = [];
+  dashboardAnalyticsColumns: TableColumn[] = [];
+  dashboardAnaytics1Columns: TableColumn[] = [];
+  dashboardAnalytics1Data: any[] = [];
+  dashboardAnaytics2Columns: TableColumn[] = [];
+  dashboardAnalytics2Data: any[] = [];
+  dashboardAnalytics3Columns: TableColumn[] = [];
+  dashboardAnalytics3Data: any[] = [];
+
   constructor() {}
 
   ngOnInit(): void {
@@ -23,57 +32,129 @@ export class DashboardViewComponent {
         columnDef: 'id',
         header: '#',
         isSortable: true,
+        isLink: false,
         cell: (element: Record<string, any>) => `${element['id']}`
       },
       {
         columnDef: 'bucket',
         header: 'Bucket',
         isSortable: true,
+        isLink: false,
         cell: (element: Record<string, any>) => `${element['bucket']}`
       },
       {
         columnDef: 'responsibleOfficer',
         header: 'Responsible Officer',
         isSortable: true,
+        isLink: false,
         cell: (element: Record<string, any>) => `${element['responsibleOfficer']}`
       },
       {
         columnDef: 'number',
         header: 'Number',
         isSortable: true,
+        isLink: false,
         cell: (element: Record<string, any>) => `${element['number']}`
       },
       {
         columnDef: 'pending',
         header: 'Pending',
         isSortable: true,
+        isLink: false,
         cell: (element: Record<string, any>) => `${element['pending']}`
       },
       {
         columnDef: 'In-Process',
         header: 'inProcess',
         isSortable: true,
+        isLink: false,
         cell: (element: Record<string, any>) => `${element['inProcess']}`
       },
       {
         columnDef: 'resolved',
         header: 'Resolved',
         isSortable: true,
+        isLink: false,
         cell: (element: Record<string, any>) => `${element['resolved']}`
       },
       {
         columnDef: 'responseNotNeeded',
         header: 'Response not needed',
         isSortable: true,
+        isLink: false,
         cell: (element: Record<string, any>) => `${element['responseNotNeeded']}`
       },
       {
         columnDef: 'duplicate',
         header: 'Duplicate',
         isSortable: true,
+        isLink: false,
         cell: (element: Record<string, any>) => `${element['duplicate']}`
       }
     ];
+    this.dashboardAnalyticsColumns = [
+      {
+        columnDef: 'status',
+        header: 'Status',
+        cell: (element: Record<string, any>) => `Status`
+      },
+      {
+        columnDef: 'pending',
+        header: 'Pending',
+        cell: (element: Record<string, any>) => `${element['pending']}`
+      },
+      {
+        columnDef: 'inProcess',
+        header: 'In-Process',
+        cell: (element: Record<string, any>) => `${element['inProcess']}`
+      },
+      {
+        columnDef: 'Resolved',
+        header: 'Resolved',
+        cell: (element: Record<string, any>) => `${element['resolved']}`
+      },
+      {
+        columnDef: 'responseNotNeeded',
+        header: 'Response not needed',
+        cell: (element: Record<string, any>) => `${element['responseNotNeeded']}`
+      },
+      {
+        columnDef: 'duplicate',
+        header: 'Duplicate',
+        cell: (element: Record<string,any>) => `${element['duplicate']}`
+      }
+    ]
+    this.dashboardAnaytics1Columns = [
+      {
+        columnDef: 'noOfIssuesResolved',
+        header: '# of issues resolved',
+        cell: (element: Record<string, any>) => `${element['noOfIssuesResolved']}`
+      },
+      {
+        columnDef: 'statusNotUpdated',
+        header: 'Status not updated',
+        cell: (element: Record<string, any>) => `${element['statusNotUpdated']}`
+      }
+    ];
+    this.dashboardAnaytics2Columns = [
+      {
+        columnDef: 'turnAroundTime',
+        header: 'Turn around time',
+        cell: (element: Record<string, any>) => `${element['turnAroundTime']}`
+      }, 
+      {
+        columnDef: 'noOfGrievances',
+        header: '# of Grievances',
+        cell: (element: Record<string, any>) => `${element['noOfGrievances']}`
+      }, 
+    ]
+    this.dashboardAnalytics3Columns = [
+      {
+        columnDef: 'avgDaysToResolve',
+        header: 'Avg Days to resolve',
+        cell: (element: Record<string, any>) => `${element['avgDaysToResolve']}`
+      }
+    ]
   }
 
   getDashboardData() {
@@ -117,6 +198,37 @@ export class DashboardViewComponent {
           duplicate: '0 (0%)'
         },        
       ];
+      this.dashboardAnalyticsData = [
+        {
+          status: '',
+          pending: '0 (0%)',
+          inProcess: '0 (0%)',
+          resolved: '3 (100%)',
+          responseNotNeeded: '0 (0%)',
+          duplicate: '0 (0%)'
+        },
+      ];
+      this.dashboardAnalytics1Data = [
+        {
+          noOfIssuesResolved: 184,
+          statusNotUpdated: 29
+        }
+      ];
+      this.dashboardAnalytics3Data = [
+        {
+          avgDaysToResolve: 49
+        }
+      ],
+      this.dashboardAnalytics2Data = [
+        {
+          turnAroundTime: '<=7days',
+          noOfGrievances: '56'
+        },
+        {
+          turnAroundTime: '>7days',
+          noOfGrievances: '39'
+        }
+      ]
       
     }
 }
