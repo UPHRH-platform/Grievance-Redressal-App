@@ -8,6 +8,9 @@ import { HomePageComponent } from './modules/grievance-modules/components/home-p
 import { MaterialModule } from 'src/material/material.module';
 import { HttpClientModule } from '@angular/common/http';
 import { AuthModulesModule } from './modules/auth-modules/auth-modules.module';
+import { UserProfileComponent } from './user-profile/user-profile.component';
+import { SharedModule } from './shared';
+import { ReactiveFormsModule } from '@angular/forms';
 
 
 
@@ -15,7 +18,8 @@ import { AuthModulesModule } from './modules/auth-modules/auth-modules.module';
 @NgModule({
   declarations: [
     AppComponent,
-    HomePageComponent
+    HomePageComponent,
+    UserProfileComponent
   ],
   imports: [
     BrowserModule,
@@ -23,7 +27,9 @@ import { AuthModulesModule } from './modules/auth-modules/auth-modules.module';
     BrowserAnimationsModule,
     MaterialModule,
     HttpClientModule,
-    AuthModulesModule
+    AuthModulesModule,
+    SharedModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

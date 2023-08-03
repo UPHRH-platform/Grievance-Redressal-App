@@ -4,6 +4,7 @@ import { HomePageComponent } from './modules/grievance-modules/components/home-p
 import { AuthGuard } from './core/guards/auth-guard/auth.guard';
 import { RoleContentGuard } from './core/guards/role-content-guard/role-content.guard';
 import { Roles } from './shared/config/roles.config';
+import { UserProfileComponent } from './user-profile/user-profile.component';
 import { CommonLayoutComponent } from './shared/components/common-layout/common-layout.component';
 
 const routes: Routes = [
@@ -47,9 +48,18 @@ const routes: Routes = [
         data: {
           allowedRoles: [Roles.ADMIN],
         },
-      }
+      },
+      {
+        path: 'user-profile', 
+        component: UserProfileComponent, 
+        canActivate: [AuthGuard],
+        // data: {
+        //   allowedRoles: [Roles.ADMIN, Roles.GRIEVANCE_NODAL, Roles.NODAL_OFFICER, Roles.SECRETARY],
+        // },
+        pathMatch: 'full',
+      },
     ]
-  },
+  },  
 ];
 
 @NgModule({
