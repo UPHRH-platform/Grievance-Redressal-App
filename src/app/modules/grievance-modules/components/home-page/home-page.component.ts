@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
+import { RoleContentService } from 'src/app/core/services/role-content-service/role-content.service';
 
 @Component({
   selector: 'app-home-page',
@@ -7,6 +8,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./home-page.component.css']
 })
 export class HomePageComponent implements OnInit {
+  allowedContent: string[];
   cardList:any[]=[
     {
       title:'Ticket Management',
@@ -27,11 +29,18 @@ export class HomePageComponent implements OnInit {
 
   ]
 
-  constructor(private router:Router){
+  constructor(private router:Router, private roleContentService: RoleContentService,){
 
   }
+
   ngOnInit(): void {
-    
+      // Get the content from the route data
+    this.allowedContent = this.roleContentService.getContentForRoles();
+    this.updateCardList();
+  }
+
+  updateCardList(): void {
+    this.cardList = this.cardList.filter((card) => this.allowedContent.includes(card.type));
   }
 
   navigateto(item:any){
