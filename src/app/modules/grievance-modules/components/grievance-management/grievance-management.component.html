@@ -1,12 +1,5 @@
-<app-header></app-header>
-<div style="margin: 105px;">
-    <h3 style="margin: 50px;">Ticket Management</h3>
-
-
-    <div class="fixed right-0 ">
-        <button mat-stroked-button color="primary" routerLink="/grievance/new-ticket">Raise a grievance </button>
-        <button mat-stroked-button color="primary">Back </button>
-    </div>
+<div>
+    <h3>Ticket Management</h3>
     <mat-tab-group>
         <mat-tab label="Not Assigned">
             <app-shared-skeleton-loading [isLoading]="isDataLoading">

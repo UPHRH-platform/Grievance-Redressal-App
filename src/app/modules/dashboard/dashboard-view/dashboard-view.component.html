@@ -1,5 +1,4 @@
-<app-header></app-header>
-<div class="container-full">
+<div id="dashboard">
     <div class="breadcrumb">
         <div class="breadcrumb-titles">
             <mat-icon class="icon-cls">home</mat-icon>
@@ -7,7 +6,7 @@
             <span class="navigationcls active">Dashboard</span>
         </div>
     </div>
-    <div class="dashboard-wrapper" id="dashboard">
+    <div class="inner-content">
         <app-shared-skeleton-loading [isLoading]="isDataLoading">
         </app-shared-skeleton-loading>
         <div *ngIf="!isDataLoading">
@@ -33,7 +32,6 @@
                 <app-shared-table class="table2" [hasFilterOptions]="false" [tableColumns]="dashboardAnalytics3Columns" [tableData]="dashboardAnalytics3Data" [isPageable]="false"></app-shared-table>
             </mat-grid-tile>
         </mat-grid-list>
-        <br/>
           <mat-grid-list cols="6" rowHeight="10rem" [gutterSize]="'100px'">
             <mat-grid-tile colspan="4" rowspan="1">
                 <app-shared-table class="table1" [hasFilterOptions]="false" [tableColumns]="dashboardAnalyticsColumns" [tableData]="dashboardAnalyticsData" [isPageable]="false"></app-shared-table>
@@ -42,13 +40,8 @@
                 <app-shared-table class="table2" [hasFilterOptions]="false" [tableColumns]="dashboardAnaytics2Columns" [tableData]="dashboardAnalytics2Data" [isPageable]="false"></app-shared-table>
             </mat-grid-tile>
         </mat-grid-list>
-        
-        <!-- </div> -->
         <br/>
-        <!-- <div class="tableClass">
-            <app-shared-table class="table1" [hasFilterOptions]="false" [tableColumns]="dashboardAnalyticsColumns" [tableData]="dashboardAnalyticsData" [isPageable]="false"></app-shared-table>
-                <app-shared-table class="table2" [hasFilterOptions]="false" [tableColumns]="dashboardAnaytics2Columns" [tableData]="dashboardAnalytics2Data" [isPageable]="false"></app-shared-table>
-            </div> -->
+        <br/>
         <br/>
         <app-shared-table  [hasFilterOptions]="false" [tableColumns]="dashboardDataColumns" [tableData]="dashboardData" [isPageable]="true"></app-shared-table>
         </div>
