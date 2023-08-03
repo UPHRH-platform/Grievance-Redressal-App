@@ -4,7 +4,7 @@ import { FormControl, FormGroup, Validators,FormBuilder } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { GrievancesTableData, TableColumn, userTableData } from 'src/app/interfaces/interfaces';
-import { ConfirmationPopupComponent } from 'src/app/modules/shared/components/confirmation-popup/confirmation-popup.component';
+import { ConfirmationPopupComponent } from 'src/app/shared/components/confirmation-popup/confirmation-popup.component';
 
 @Component({
   selector: 'app-manage-user',

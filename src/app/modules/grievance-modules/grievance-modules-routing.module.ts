@@ -6,7 +6,6 @@ import { GrievanceDetailsComponent } from './components/grievance-details/grieva
 
 
 const routes: Routes = [ 
-  
   {
     path: 'manage-tickets', component:GrievanceManagementComponent, pathMatch: 'full',
   },

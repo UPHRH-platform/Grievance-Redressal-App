@@ -6,6 +6,7 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HomePageComponent } from './modules/grievance-modules/components/home-page/home-page.component';
 import { MaterialModule } from 'src/material/material.module';
+import { HttpClientModule } from '@angular/common/http';
 import { AuthModulesModule } from './modules/auth-modules/auth-modules.module';
 
 
@@ -21,6 +22,7 @@ import { AuthModulesModule } from './modules/auth-modules/auth-modules.module';
     AppRoutingModule,
     BrowserAnimationsModule,
     MaterialModule,
+    HttpClientModule,
     AuthModulesModule
   ],
   providers: [],

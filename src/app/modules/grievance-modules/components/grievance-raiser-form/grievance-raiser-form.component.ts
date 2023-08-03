@@ -1,7 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 
-import { SharedDialogOverlayComponent } from '../../../shared/components/shared-dialog-overlay/shared-dialog-overlay.component';
+import { SharedDialogOverlayComponent } from '../../../../shared/components/shared-dialog-overlay/shared-dialog-overlay.component';
 import {MatDialog} from '@angular/material/dialog';
 
 @Component({
