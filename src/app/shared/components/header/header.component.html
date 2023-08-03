@@ -4,7 +4,17 @@
             <img style="width: 17rem;" src="../../assets/images/sunbird_logo.png" alt="UPSMF logo">
         </div>
         <div class="flex flex-column">
-            <button>GJ</button>
+            <button class="action-btn" [matMenuTriggerFor]="menu">GJ</button>
+             <mat-menu #menu="matMenu">
+            <button mat-menu-item claas="profile-cls" (click)="navigateToProfilePage()">
+                <mat-icon>person</mat-icon>
+                <span>Profile</span>
+            </button>
+            <button mat-menu-item>
+                <mat-icon>logout</mat-icon>
+                <span>Logout</span>
+            </button>
+</mat-menu>
         </div>
     </div>
 </div>
