@@ -7,7 +7,7 @@ import { Roles } from './shared/config/roles.config';
 
 const routes: Routes = [
   {
-    path: '', loadChildren :()=> import('./modules/auth-modules/auth-modules.module').then(m=>m.AuthModulesModule)
+    path: '', loadChildren :()=> import('../app/modules/auth-modules/auth-modules.module').then(m=>m.AuthModulesModule)
   },
   {
     path: 'home', 
