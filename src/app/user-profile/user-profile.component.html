@@ -1,0 +1,153 @@
+<app-header></app-header>
+<div class="container-full">
+    <div class="breadcrumb">
+        <div class="breadcrumb-titles">
+            <mat-icon class="icon-cls">home</mat-icon>
+            <span class="navigationcls" style="color: gray;" (click)="navigateToHome()">Workspace</span>
+            <mat-icon class="icon-cls-arrow">chevron_right</mat-icon>
+            <span class="navigationcls" style="color: dodgerblue;">Profile</span>
+        </div>
+    </div>
+    <div class="second-main-wrapper">
+        <!-- Edit User profile form UI -->
+        <div class="user-form-container" *ngIf="isEditData">
+            <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
+                <div class="user-container">
+                    <h2 class="user-text-heading">{{'Profile'}}</h2>
+                    <div class="action-btns">
+                        <button mat-raised-button color="primary" style="margin-right: 15px;" (click)="onClickCancel()">Cancel</button>
+                        <button type="submit" mat-raised-button color="primary"
+                            [disabled]="!userForm.valid">Save</button>
+                    </div>
+                </div>
+                <div class="form-container">
+                    <div class="form-internal-wrapper">
+                        <h1>{{'Amit Kumar'}}</h1>
+                        <div class="wrapper-form">
+                            <div class="first-row-container" style="margin-top: 4%;">
+                                <div class="first-container">
+                                    <mat-form-field appearance="outline" class="text-class">
+                                        <mat-label>First name</mat-label>
+                                        <input matInput placeholder="Enter first name" formControlName="firstName"
+                                            required>
+                                        <mat-error *ngIf="firstName && firstName.invalid && firstName.touched">please
+                                            enter first name</mat-error>
+
+                                    </mat-form-field>
+                                </div>
+                                <div class="first-container">
+                                    <mat-form-field appearance="outline" class="text-class">
+                                        <mat-label>Last name</mat-label>
+                                        <input matInput placeholder="Enter last name" formControlName="lastName"
+                                            required>
+                                        <mat-error *ngIf="lastName && lastName.invalid && lastName.touched">please enter
+                                            last name</mat-error>
+
+                                    </mat-form-field>
+                                </div>
+                            </div>
+
+                            <div class="first-row-container" style="margin-top: 3%;">
+                                <div class="first-container">
+                                    <mat-form-field appearance="outline" class="text-class">
+                                        <mat-label>Email id</mat-label>
+                                        <input matInput placeholder="pat@example.com" required formControlName="emailId"
+                                            required>
+                                        <mat-error *ngIf="emailId && emailId.invalid && emailId.touched">please Enter
+                                            email Id</mat-error>
+
+                                    </mat-form-field>
+                                </div>
+                                <div class="first-container">
+                                    <mat-form-field appearance="outline" class="text-class">
+                                        <mat-label>Phone number</mat-label>
+                                        <input type="number" matInput placeholder="Enter Phone number"
+                                            formControlName="phoneNumber" required>
+                                        <mat-error
+                                            *ngIf="phoneNumber && phoneNumber.invalid && phoneNumber.touched">please
+                                            Enter phone number</mat-error>
+
+                                    </mat-form-field>
+                                </div>
+
+                            </div>
+
+                            <div class="first-row-container" style="margin-top: 3%;">
+                                <div class="first-container">
+                                    <mat-label class="label-text">Role</mat-label>
+                                    <h3>{{'Candidate'}}</h3>
+                                </div>
+                                <div class="first-container">
+                                    <mat-label class="label-text">Active Status</mat-label>
+                                    <div class="first-container" style="margin-top: 3%;">
+                                        <h3>{{'Active'}}</h3>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+
+        <!-- View User profile form -->
+
+        <div class="user-form-container" *ngIf="!isEditData">
+                <div class="user-container">
+                    <h2 class="user-text-heading">{{'Profile'}}</h2>
+                    <div class="action-btns">
+                        <button mat-raised-button  style="margin-right: 15px;">Back</button>
+                        <button type="submit" mat-raised-button color="primary" (click)="onClickEdit()">Edit</button>
+                    </div>
+                </div>
+                <div class="form-container">
+                    <div class="form-internal-wrapper">
+                        <h1>{{'Amit Kumar'}}</h1>
+                        <div class="wrapper-form">
+                            <div class="first-row-container" style="margin-top: 4%;">
+                                <div class="first-container">
+                                        <mat-label>Name</mat-label>
+                                        <h3>{{'Amit Kumar'}}</h3>
+                                </div>
+                            </div>
+
+                            <div class="first-row-container" style="margin-top: 3%;">
+                                <div class="first-container">
+                                    <mat-label>Email Id</mat-label>
+                                    <h3>{{'amit@gmail.com'}}</h3>
+                            </div>
+                            <div class="first-container">
+                                <mat-label>Phone Number</mat-label>
+                                <h3>{{'9876543210'}}</h3>
+                        </div>
+
+                            </div>
+
+                            <div class="first-row-container" style="margin-top: 3%;">
+                                <div class="first-container">
+                                    <mat-label class="label-text">Role</mat-label>
+                                    <h3>{{'Candidate'}}</h3>
+                                </div>
+                                <div class="first-container">
+                                    <mat-label class="label-text">Active Status</mat-label>
+                                    <div class="first-container" style="margin-top: 3%;">
+                                        <h3>{{'Active'}}</h3>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            
+
+        </div>
+
+
+    </div>
+
+</div>
