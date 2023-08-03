@@ -21,9 +21,7 @@
                 <mat-date-range-picker #picker></mat-date-range-picker>
               </mat-form-field>
         </div>
-        <br/>
-        <br/>
-        <div *ngIf="!isDataLoading">
+        <div *ngIf="!isDataLoading" class="custom-margin">
         <mat-grid-list cols="6" rowHeight="10rem" [gutterSize]="'100px'">
             <mat-grid-tile colspan="4" rowspan="1">
                 <app-shared-table class="table1" [hasFilterOptions]="false" [tableColumns]="dashboardAnaytics1Columns" [tableData]="dashboardAnalytics1Data" [isPageable]="false"></app-shared-table>
@@ -40,10 +38,9 @@
                 <app-shared-table class="table2" [hasFilterOptions]="false" [tableColumns]="dashboardAnaytics2Columns" [tableData]="dashboardAnalytics2Data" [isPageable]="false"></app-shared-table>
             </mat-grid-tile>
         </mat-grid-list>
-        <br/>
-        <br/>
-        <br/>
-        <app-shared-table  [hasFilterOptions]="false" [tableColumns]="dashboardDataColumns" [tableData]="dashboardData" [isPageable]="true"></app-shared-table>
+        <div class="custom-margin">
+        <app-shared-table [hasFilterOptions]="false" [tableColumns]="dashboardDataColumns" [tableData]="dashboardData" [isPageable]="true"></app-shared-table>
+        </div>
         </div>
     </div>
 </div>
