@@ -9,7 +9,7 @@ import { CommonLayoutComponent } from './shared/components/common-layout/common-
 
 const routes: Routes = [
   {
-    path: 'login', loadChildren :()=> import('../app/modules/auth-modules/auth-modules.module').then(m=>m.AuthModulesModule)
+    path: '', loadChildren :()=> import('../app/modules/auth-modules/auth-modules.module').then(m=>m.AuthModulesModule)
   },
   {
     path: '',
@@ -38,7 +38,7 @@ const routes: Routes = [
         loadChildren :()=> import('./modules/grievance-modules/grievance-modules.module').then(m=>m.GrievanceModulesModule),
         canActivate: [AuthGuard, RoleContentGuard],
         data: {
-          allowedRoles: [Roles.ADMIN, Roles.GRIEVANCE_NODAL, Roles.NODAL_OFFICER, Roles.SECRETARY],
+          allowedRoles: [Roles.GRIEVANCE_NODAL, Roles.NODAL_OFFICER, Roles.SECRETARY],
         },
       },
       {

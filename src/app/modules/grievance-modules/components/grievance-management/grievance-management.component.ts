@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Router  } from '@angular/router';
 import { TableColumn, GrievancesTableData } from '../../../../interfaces/interfaces';
+import { Tabs, Roles } from 'src/app/shared/config';
+import { UserService } from 'src/app/modules/user-modules/services/user.service';
+import { MatTabChangeEvent } from '@angular/material/tabs';
+
 
 @Component({
   selector: 'app-grievance-management',
@@ -11,14 +15,34 @@ export class GrievanceManagementComponent  {
   grievances: GrievancesTableData[] = [];
   grievancesTableColumns: TableColumn[] = [];
   isDataLoading : boolean = false;
+  userRole: string;
+  tabs: any[] = [];
   constructor( 
-    private router: Router ){}
+    private router: Router,
+    private userService: UserService ){
+    }
 
   ngOnInit(): void {
+    this.userRole = this.userService.getUserRoles()[0];
+    this.initializeTabs();
+  }
+
+  initializeTabs(): void {
+    switch(this.userRole ){
+      case Roles.NODAL_OFFICER:
+        this.tabs = Tabs['Nodal Officer'];
+        break;
+      case Roles.SECRETARY:
+        this.tabs = Tabs['Secretary'];
+        break;
+      case Roles.GRIEVANCE_NODAL:
+        this.tabs = Tabs['Grievance Nodal'];
+        break;
+    }
+    //Initialize column as per user Role
     this.initializeColumns();
-    console.log(this.grievancesTableColumns)
+    //Fetch grievances as per user  role
     this.getgrievances();
-    console.log(this.grievances)
   }
 
   initializeColumns(): void {
@@ -197,8 +221,13 @@ export class GrievanceManagementComponent  {
         description: "This is a lorem ipsum description which is pretty much large enough to test a description"
       }
      
-    ];
-    
+    ]; 
+  }
+
+  onTabChange(event: MatTabChangeEvent): void {
+    // Here  we  have userrole and tab index with these 2 we know we need to fetch data for which tab of which user role so we pass relevant payload in get grievance service
+    const selectedIndex = event.index;
+    this.getgrievances();
   }
 
   onClickItem(e: any) {
@@ -209,7 +238,4 @@ export class GrievanceManagementComponent  {
    // this.router.navigate(['/grievance', e.id]);
   }
 
-  raiseNewGrievance(){
-    
-  }
 }

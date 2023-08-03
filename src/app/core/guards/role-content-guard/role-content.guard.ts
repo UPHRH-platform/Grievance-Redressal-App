@@ -3,11 +3,10 @@ import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTr
 import { Observable } from 'rxjs';
 import { UserService } from 'src/app/modules/user-modules/services/user.service';
 import { RoleContentService } from '../../services/role-content-service/role-content.service';
-import { Roles } from 'src/app/shared/config/roles.config';
 
 // content-mapping.ts
 export const roleContentMapping: { [role: string]: string[] } = {
-  'Admin': ['grievances', 'dashboard', 'users'],
+  'Admin': ['dashboard', 'users',],
   'Grievance Nodal': ['grievances'],
   'Nodal Officer': ['grievances'],
   'Secretary': ['grievances'],
