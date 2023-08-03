@@ -1,7 +1,5 @@
 .container-full {
     background-color: #F0F3F4;
-    height: 57rem;
-    width: 100%;
 }
 
 .breadcrumb {
@@ -40,18 +38,13 @@
 
 .second-main-wrapper {
     position: relative;
-    width: 70vw;
-    margin-left: 8%;
-    margin-top: 26px;
 }
 
 .user-container {
-    padding: 2%;
+    padding: 2% 0;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    margin-left: 3%;
-    margin-top: 4%;
 }
 
 .user-text-heading {
@@ -62,11 +55,8 @@
 }
 
 .form-container {
-    width: 65vw;
     background-color: white;
     height: 40rem;
-    margin-left: 66px;
-    /* box-shadow: 0px 0px 3px 0px gray */
 }
 
 .form-internal-wrapper {
