@@ -1,10 +1,12 @@
-.tableClass {
-    display: flex;
-    justify-content: space-between;
-    .table1 {
-        width: 44rem;
+.table1, .table2 {
+        width: -moz-available; 
+        width: -webkit-fill-available;
+        width: stretch;
     }
-    .table2 {
-        width: 20rem;
-    }
+
+.dashboard-wrapper {
+    padding-left: 5rem;
+    padding-right: 5rem;
+    padding-top: 3rem;
+    padding-bottom: 3rem;
 }
