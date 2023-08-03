@@ -1,5 +1,4 @@
-<app-header></app-header>
-<div class="container-full">
+<div>
     <div class="breadcrumb">
         <div class="breadcrumb-titles">
             <mat-icon class="icon-cls">home</mat-icon>
@@ -7,7 +6,7 @@
             <span class="navigationcls active">Dashboard</span>
         </div>
     </div>
-    <div class="second-main-wrapper" style="padding: 5rem">
+    <div>
         <app-shared-skeleton-loading [isLoading]="isDataLoading">
         </app-shared-skeleton-loading>
         <app-shared-table  [hasFilterOptions]="false" [tableColumns]="dashboardDataColumns" [tableData]="dashboardData" [isPageable]="true"></app-shared-table>
