@@ -16,6 +16,9 @@ const routes: Routes = [
   {
     path: 'grievance', loadChildren :()=> import('./modules/grievance-modules/grievance-modules.module').then(m=>m.GrievanceModulesModule)
   },
+  {
+    path: 'dashboard', loadChildren: () => import('./modules/dashboard/dashboard.module').then(m => m.DashboardModule)
+  }
 ];
 
 @NgModule({

@@ -8,8 +8,6 @@ import { TableColumn, GrievancesTableData } from '../../../../interfaces/interfa
   styleUrls: ['./grievance-management.component.scss']
 })
 export class GrievanceManagementComponent  {
-
-
   grievances: GrievancesTableData[] = [];
   grievancesTableColumns: TableColumn[] = [];
   isDataLoading : boolean = false;
