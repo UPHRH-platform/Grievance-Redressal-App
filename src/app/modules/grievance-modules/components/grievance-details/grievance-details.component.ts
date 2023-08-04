@@ -40,6 +40,7 @@ export class GrievanceDetailsComponent {
     { label: 'Grievance List', url: '/grievance/manage-tickets' },
     { label: 'Grievance Details', url: '' },
   ];
+  currentTabName:string = ''
 
   constructor(
     private router: Router,
@@ -61,13 +62,14 @@ export class GrievanceDetailsComponent {
   initiateData() {
     console.log(this.formData.data);
     this.listOfFiles = this.formData.data.attachedDocs;
-    this.ticketId = this.formData.data.id;
-    this.creationTime = this.formData.data.creationTime;
-    this.escalationTime = this.formData.data.escalationTime;
-    this.grievanceRaiser = this.formData.data.grievanceRaiser;
-    this.grievanceType = this.formData.data.raiserType;
-    this.userType = this.formData.data.userType;
-    this.desc = this.formData.data.description;
+    this.ticketId= this.formData.data.id;
+    this.creationTime= this.formData.data.creationTime;
+    this.escalationTime= this.formData.data.escalationTime;
+    this.grievanceRaiser= this.formData.data.grievanceRaiser;
+    this.grievanceType= this.formData.data.raiserType;
+    this.userType= this.formData.data.userType;
+    this.desc= this.formData.data.description;
+    this.currentTabName=this.formData?.data?.tabName
   }
   grievanceOfficerSelected(e: any) {
     this.grievanceAssignerformGroup.controls['grievanceOfficer'].disable();
@@ -85,7 +87,7 @@ export class GrievanceDetailsComponent {
       let selectedFile = event.target.files[i];
       const extension = selectedFile.name.split('.').pop();
       const fileSize = selectedFile.size;
-      const allowedExtensions = ['pdf', 'jpeg', 'png', 'docx'];
+      const allowedExtensions = ['pdf', 'jpeg', 'jpg', 'png', 'docx'];
       if (allowedExtensions.includes(extension)) {
         // validate file size to be less than 2mb if the file has a valid extension
         if (fileSize < 2000000) {
