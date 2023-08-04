@@ -1,11 +1,5 @@
-<div>
-    <div class="breadcrumb">
-        <div class="breadcrumb-titles">
-            <mat-icon class="icon-cls">home</mat-icon>
-            <span class="navigationcls" >Dashboard</span>
-            <span class="navigationcls active" (click)="navigateToHome()">Manage User</span>
-        </div>
-    </div>
+<app-breadcrumb [breadcrumbItems]="breadcrumbItems"></app-breadcrumb>
+<div class="content">
     <div>
 <!-- create User form UI -->
 <div class="user-form-container">

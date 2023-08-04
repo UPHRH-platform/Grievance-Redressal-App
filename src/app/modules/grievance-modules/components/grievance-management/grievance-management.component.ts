@@ -4,6 +4,7 @@ import { TableColumn, GrievancesTableData } from '../../../../interfaces/interfa
 import { Tabs, Roles } from 'src/app/shared/config';
 import { UserService } from 'src/app/modules/user-modules/services/user.service';
 import { MatTabChangeEvent } from '@angular/material/tabs';
+import { BreadcrumbItem } from 'src/app/shared';
 
 
 @Component({
@@ -17,6 +18,10 @@ export class GrievanceManagementComponent  {
   isDataLoading : boolean = false;
   userRole: string;
   tabs: any[] = [];
+  breadcrumbItems: BreadcrumbItem[] = [
+    { label: 'Grievance Management', url: '/home' },
+    { label: 'Grievance List', url: 'grievance/manage-tickets' },
+  ];
   constructor( 
     private router: Router,
     private userService: UserService ){
@@ -227,6 +232,7 @@ export class GrievanceManagementComponent  {
   onTabChange(event: MatTabChangeEvent): void {
     // Here  we  have userrole and tab index with these 2 we know we need to fetch data for which tab of which user role so we pass relevant payload in get grievance service
     const selectedIndex = event.index;
+    const selectedTab = this.tabs[selectedIndex].name;
     this.getgrievances();
   }
 

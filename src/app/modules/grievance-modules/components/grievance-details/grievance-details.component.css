@@ -168,3 +168,16 @@
     font-weight: bold;
     font-family: 'Lato' sans-serif;
 }
+
+.MR15 {
+    margin-right: 15px;
+}
+
+.preview .layout {
+    display: flex; 
+    justify-content: space-between;
+}
+
+.MT2 {
+    margin-top: 2rem;
+}

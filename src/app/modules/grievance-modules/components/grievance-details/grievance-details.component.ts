@@ -2,13 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { UserService } from 'src/app/modules/user-modules/services/user.service';
+import { BreadcrumbItem } from 'src/app/shared';
+
 @Component({
   selector: 'app-grievance-details',
   templateUrl: './grievance-details.component.html',
   styleUrls: ['./grievance-details.component.css']
 })
 export class GrievanceDetailsComponent {
-
   formData: any;
   ticketId: string;
   grievanceRaiser: string;
@@ -25,14 +26,20 @@ export class GrievanceDetailsComponent {
     'Registration NOdal Officer', 'Affiliation NOdal Officer', 'Hall-ticket NOdal Officer', 'Others NOdal Officer'
   ]
   public grievanceAssignerformGroup: FormGroup;
-  files: any[] = [];
-  constructor(private router: Router, private formBuilder: FormBuilder,private userService: UserService 
+  files:any[] = [];
+  breadcrumbItems: BreadcrumbItem[] = [
+    { label: 'Grievance Management', url: '/home' },
+    { label: 'Grievance List', url: '/grievance/manage-tickets' },
+    { label: 'Grievance Details', url: '' },
+  ];
+
+  constructor(private router: Router, private formBuilder: FormBuilder,private userService: UserService
   ) {
     this.formData = this.router?.getCurrentNavigation()?.extras.state;
 
   }
+
   ngOnInit() {
-   
     this.initiateData();
     this.grievanceAssignerformGroup = this.formBuilder.group({
       grievanceOfficer: new FormControl('arun@awe.com', [
@@ -41,6 +48,7 @@ export class GrievanceDetailsComponent {
     //assign user role
     this.userRole = this.userService.getUserRoles()[0];
   }
+
   initiateData(){
     console.log(this.formData.data)
     this.listOfFiles = this.formData.data.attachedDocs;
@@ -51,7 +59,6 @@ export class GrievanceDetailsComponent {
     this.grievanceType= this.formData.data.raiserType;
     this.userType= this.formData.data.userType;
     this.desc= this.formData.data.description;
-
   }
   grievanceOfficerSelected(e: any) {
     this.grievanceAssignerformGroup.controls['grievanceOfficer'].disable()
@@ -70,5 +77,4 @@ export class GrievanceDetailsComponent {
     this.files.push(event.target.files);
     console.log(event.target.files[0]);
 }
-
 }

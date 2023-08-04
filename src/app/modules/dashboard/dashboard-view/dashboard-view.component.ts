@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { TableColumn, DashboardTableData, DashboardAnalytics } from '../../../interfaces/interfaces';
+import { BreadcrumbItem } from 'src/app/shared';
 
 @Component({
   selector: 'app-dashboard-view',
@@ -18,6 +19,10 @@ export class DashboardViewComponent {
   dashboardAnalytics2Data: any[] = [];
   dashboardAnalytics3Columns: TableColumn[] = [];
   dashboardAnalytics3Data: any[] = [];
+  breadcrumbItems: BreadcrumbItem[] = [
+    { label: 'Grievance Management', url: '/home' },
+    { label: 'Dashboard', url: '/dashboard' },
+  ];
 
   constructor() {}
 

@@ -9,6 +9,7 @@ import { SharedDialogOverlayComponent } from './components/shared-dialog-overlay
 import { ReactiveFormsModule } from '@angular/forms';
 import { ConfirmationPopupComponent } from './components/confirmation-popup/confirmation-popup.component';
 import { CommonLayoutComponent } from './components/common-layout/common-layout.component';
+import { BreadcrumbComponent } from './components/breadcrumb/breadcrumb.component';
 
 @NgModule({
   declarations: [
@@ -18,6 +19,7 @@ import { CommonLayoutComponent } from './components/common-layout/common-layout.
     SharedDialogOverlayComponent,
     ConfirmationPopupComponent,
     CommonLayoutComponent,
+    BreadcrumbComponent,
   ],
   imports: [
     CommonModule,
@@ -30,6 +32,7 @@ import { CommonLayoutComponent } from './components/common-layout/common-layout.
     SharedTableComponent,
     HeaderComponent,
     SharedSkeletonLoadingComponent,
+    BreadcrumbComponent
   ]
 })
 export class SharedModule { }
