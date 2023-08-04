@@ -33,7 +33,7 @@ export class GrievanceDetailsComponent {
   }
   ngOnInit() {
    
-    // this.initiateData();
+    this.initiateData();
     this.grievanceAssignerformGroup = this.formBuilder.group({
       grievanceOfficer: new FormControl('arun@awe.com', [
         Validators.required]),
@@ -66,8 +66,9 @@ export class GrievanceDetailsComponent {
   }
 
   handleFileUpload(event: any) {
+    this.files = [];
     this.files.push(event.target.files);
-    console.log(this.files[0]);
+    console.log(event.target.files[0]);
 }
 
 }
