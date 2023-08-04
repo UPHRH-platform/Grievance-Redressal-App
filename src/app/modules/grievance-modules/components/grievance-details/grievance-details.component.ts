@@ -32,6 +32,7 @@ export class GrievanceDetailsComponent {
     { label: 'Grievance List', url: '/grievance/manage-tickets' },
     { label: 'Grievance Details', url: '' },
   ];
+  currentTabName:string = ''
 
   constructor(private router: Router, private formBuilder: FormBuilder,private userService: UserService
   ) {
@@ -59,6 +60,7 @@ export class GrievanceDetailsComponent {
     this.grievanceType= this.formData.data.raiserType;
     this.userType= this.formData.data.userType;
     this.desc= this.formData.data.description;
+    this.currentTabName=this.formData?.data?.tabName
   }
   grievanceOfficerSelected(e: any) {
     this.grievanceAssignerformGroup.controls['grievanceOfficer'].disable()
