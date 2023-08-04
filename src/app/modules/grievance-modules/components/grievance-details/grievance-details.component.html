@@ -255,7 +255,7 @@
                               <mat-label
                                 class="attachment-label right"
                                 (click)="fileupload.click()"
-                                >Add attachments</mat-label
+                                >+ Add attachments</mat-label
                               >
                               <input
                                 hidden
@@ -264,6 +264,7 @@
                                 type="file"
                                 (change)="handleFileUpload($event)"
                                 multiple
+                                accept=".pdf, .jpeg, .png, .docx"
                               />
                             </mat-grid-tile>
                           </mat-grid-list>
@@ -278,12 +279,11 @@
                                   2MB.</mat-card-content
                                 >
                                 <mat-card-content *ngIf="files.length > 0">
-                                  <div *ngFor="let file of files[0]; let i = index" class="preview">
+                                  <div *ngFor="let file of files; let i = index" class="preview">
                                   <div class="layout">
                                     <span>{{file.name}}</span>
                                     <div>
-                                    <span class="action-buttons MR15">View</span>
-                                    <span class="action-buttons">Delete</span>
+                                    <span class="action-buttons" (click)="removeSelectedFile(index)">Delete</span>
                                     </div>
                                     </div>
                                   </div>
@@ -291,16 +291,11 @@
                               </mat-card>
                             </mat-grid-tile>
                           </mat-grid-list>
+                          <span class="error">{{fileUploadError}}</span>
                         </div>
-              
-              
-
-
                     </div>
                 </div>
             </div>
-
-
         </div>
     </div>
 </div>
