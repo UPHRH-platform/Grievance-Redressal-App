@@ -100,3 +100,16 @@
 .textData {
     margin-top: 2%;
 }
+.attach-docs {
+    display: flex;
+    justify-content: space-between;
+    padding: 2%;
+    background-color: #d3d3d361;
+    margin-top: 1%;
+    border-radius: 4%;
+}
+
+.text-primary {
+  color: #3f51b5;
+  cursor: pointer;
+}
