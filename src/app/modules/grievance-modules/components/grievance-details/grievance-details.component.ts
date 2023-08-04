@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { UserService } from 'src/app/modules/user-modules/services/user.service';
 @Component({
   selector: 'app-grievance-details',
   templateUrl: './grievance-details.component.html',
@@ -16,6 +17,7 @@ export class GrievanceDetailsComponent {
   grievanceType: string;
   userType: string;
   desc: string;
+  userRole: string;
 
   listOfFiles: [] = [];
   selectedOfficer: string = "";
@@ -23,18 +25,21 @@ export class GrievanceDetailsComponent {
     'Registration NOdal Officer', 'Affiliation NOdal Officer', 'Hall-ticket NOdal Officer', 'Others NOdal Officer'
   ]
   public grievanceAssignerformGroup: FormGroup;
-  constructor(private router: Router, private formBuilder: FormBuilder,
+  files: any[] = [];
+  constructor(private router: Router, private formBuilder: FormBuilder,private userService: UserService 
   ) {
     this.formData = this.router?.getCurrentNavigation()?.extras.state;
 
   }
   ngOnInit() {
    
-    this.initiateData();
+    // this.initiateData();
     this.grievanceAssignerformGroup = this.formBuilder.group({
       grievanceOfficer: new FormControl('arun@awe.com', [
         Validators.required]),
     });
+    //assign user role
+    this.userRole = this.userService.getUserRoles()[0];
   }
   initiateData(){
     console.log(this.formData.data)
@@ -59,4 +64,10 @@ export class GrievanceDetailsComponent {
   previewSelectedFile() {
 
   }
+
+  handleFileUpload(event: any) {
+    this.files.push(event.target.files);
+    console.log(this.files[0]);
+}
+
 }
