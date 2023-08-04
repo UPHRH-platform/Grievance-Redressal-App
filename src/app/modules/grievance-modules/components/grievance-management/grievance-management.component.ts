@@ -232,6 +232,7 @@ export class GrievanceManagementComponent  {
   onTabChange(event: MatTabChangeEvent): void {
     // Here  we  have userrole and tab index with these 2 we know we need to fetch data for which tab of which user role so we pass relevant payload in get grievance service
     const selectedIndex = event.index;
+    const selectedTab = this.tabs[selectedIndex].name;
     this.getgrievances();
   }
 
