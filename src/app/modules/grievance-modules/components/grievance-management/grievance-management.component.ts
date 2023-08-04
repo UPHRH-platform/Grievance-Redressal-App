@@ -4,6 +4,7 @@ import { TableColumn, GrievancesTableData } from '../../../../interfaces/interfa
 import { Tabs, Roles } from 'src/app/shared/config';
 import { UserService } from 'src/app/modules/user-modules/services/user.service';
 import { MatTabChangeEvent } from '@angular/material/tabs';
+import { BreadcrumbItem } from 'src/app/shared';
 
 
 @Component({
@@ -17,6 +18,10 @@ export class GrievanceManagementComponent  {
   isDataLoading : boolean = false;
   userRole: string;
   tabs: any[] = [];
+  breadcrumbItems: BreadcrumbItem[] = [
+    { label: 'Grievance Management', url: '/home' },
+    { label: 'Grievance List', url: 'grievance/manage-tickets' },
+  ];
   constructor( 
     private router: Router,
     private userService: UserService ){
