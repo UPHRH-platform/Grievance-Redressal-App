@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { AuthService } from "src/app/core/services/auth-service/auth.service";
+import { AuthService } from "src/app/core";
 import { Roles } from "src/app/shared/config/roles.config";
 
 // userService.ts
