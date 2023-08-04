@@ -41,5 +41,24 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     font-family: 'Lato', sans-serif;
 }
 
+#nodal {
+    .mat-mdc-form-field {
+        width: -moz-available; 
+        width: -webkit-fill-available;
+        width: stretch;
+    }
+}
+.resolution-class {
+    .mat-grid-tile-content {
+        align-items: flex-start;
+        justify-content: left;
+    }
+    .resolution-form .mat-mdc-text-field-wrapper {
+        border: 1px solid rgba(0,0,0,0.16);
+    }
+    .resolution-form .mdc-text-field, .mat-mdc-form-field-focus-overlay{
+        background-color: white !important;
+    }
+}
 
 

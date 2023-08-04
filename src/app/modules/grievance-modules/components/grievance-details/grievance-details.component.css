@@ -1,3 +1,35 @@
+.attachment-label {
+    font-size: 14px;
+    font-family: 'Lato', sans-serif;
+    position: absolute;
+}
+
+.attachment-label.left {
+    left: 0;
+    font-weight: 700;
+}
+
+.attachment-label.right {
+    right: 0;
+    font-weight: 700;
+    color: rgb(4, 93, 173);
+    cursor: pointer;
+}
+
+.attachment-view {
+    width: 100%;
+    height: 8rem;
+    border: 1px solid rgba(0, 0, 0, 0.16);
+}
+
+.empty-content-class {
+    height: 100%;
+    color: rgba(0, 0, 0, 0.4);
+    font-family: 'Lato', sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 .container-full {
     background-color: #F0F3F4;
 }
@@ -92,6 +124,14 @@
     border: 1px solid lightgray;
 }
 
+.empty-content-class {
+    height: 100%;
+    color: rgba(0, 0, 0, 0.4);
+    font-family: 'Lato', sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 .label-text {
     color: gray;
     font-size: 17px;
@@ -100,6 +140,10 @@
 .textData {
     margin-top: 2%;
 }
+.resolution-class {
+    margin-top: 20px;
+}
+
 .attach-docs {
     display: flex;
     justify-content: space-between;
@@ -110,6 +154,30 @@
 }
 
 .text-primary {
-  color: #3f51b5;
-  cursor: pointer;
+    color: #3f51b5;
+    cursor: pointer;
+  }
+
+.preview {
+    background-color: rgba(0,0,0,0.04);
+    padding: 8px;
+    margin-bottom: 5px;
+}
+.action-buttons {
+    color: rgb(4, 93, 173);
+    font-weight: bold;
+    font-family: 'Lato' sans-serif;
+}
+
+.MR15 {
+    margin-right: 15px;
+}
+
+.preview .layout {
+    display: flex; 
+    justify-content: space-between;
+}
+
+.MT2 {
+    margin-top: 2rem;
 }
