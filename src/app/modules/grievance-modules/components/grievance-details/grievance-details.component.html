@@ -1,4 +1,4 @@
-<div>
+<!-- <div>
    
         <div class="ml4 body-header flex justify-between items-center mb-4 ">
             <h2 class="ml4">Ticket Details </h2>
@@ -115,8 +115,7 @@
                     </mat-select>
                     
                 </mat-form-field>
-              <!--   <span>  <button mat-stroked-button color="primary" class="ml2">Add</button></span>
-       -->      </div>
+                 </div>
         </form>
         <div *ngIf="selectedOfficer" class="flex flex-row  ml4 mt1">
             <div class="flex flex-column mt1">
@@ -136,4 +135,80 @@
         </div>
      
    
+</div> -->
+<div class="container-full">
+    <div class="second-main-wrapper">
+        <div class="user-form-container">
+            <div class="user-container">
+                <h2 class="user-text-heading">{{'Profile'}}</h2>
+                <div class="action-btns">
+                    <button mat-raised-button style="margin-right: 15px;">Mark As Junk</button>
+                    <button type="submit" mat-raised-button color="primary">Send Reminder</button>
+                </div>
+            </div>
+            <div class="form-container">
+                <div class="form-internal-wrapper">
+                    <h1>{{'Ticket Details'}}</h1>
+                    <div class="wrapper-form">
+                        <div class="first-row-container mt3">
+                            <div class="first-container">
+                                <mat-label class="label-text">Ticket ID</mat-label>
+                                <h3 class="textData">{{ticketId}}</h3>
+                            </div>
+                            <div class="first-container">
+                                <mat-label class="label-text">Grievance Raiser</mat-label>
+                                <h3 class="textData">{{grievanceRaiser}}</h3>
+                            </div>
+                        </div>
+
+                        <div class="first-row-container mt2">
+                            <div class="first-container">
+                                <mat-label class="label-text">Creation Time</mat-label>
+                                <h3 class="textData">{{creationTime}}</h3>
+                            </div>
+                            <div class="first-container">
+                                <mat-label class="label-text">Escalation Time</mat-label>
+                                <h3 class="textData">{{escalationTime}}</h3>
+                            </div>
+
+                        </div>
+
+                        <div class="first-row-container mt2">
+                            <div class="first-container">
+                                <mat-label class="label-text">Grievance Type</mat-label>
+                                <h3 class="textData">{{grievanceType}}</h3>
+                            </div>
+                            <div class="first-container">
+                                <mat-label class="label-text">User Type</mat-label>
+                                <div class="first-container">
+                                    <h3 class="textData ">{{userType}}</h3>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="first-row-container mt2">
+                            <div class="desc-content">
+                                <mat-label class="label-text">Description</mat-label>
+                                <h3 class="textData">{{desc}}</h3>
+                            </div>
+
+                        </div>
+
+                        <div class="first-row-container mt2">
+                            <div class="desc-content">
+                                <mat-label class="label-text">Attached Document</mat-label>
+                                <!-- <h3 class="textData">{{desc}}</h3> -->
+                            </div>
+
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
 </div>
