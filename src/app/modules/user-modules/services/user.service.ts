@@ -13,7 +13,7 @@ export class UserService {
       const decodedToken = jwt_decode<any>(token);
       // return decodedToken.roles || [];
     }
-    return [Roles.SECRETARY];
+    return [Roles.ADMIN];
   }
 
   isAdmin(): boolean {

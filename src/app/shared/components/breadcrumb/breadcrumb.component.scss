@@ -1,0 +1,23 @@
+/* Add styles for the breadcrumb container */
+.breadcrumb-container {
+    .home-icon {
+        margin-right: 0.5rem;
+    }
+    padding: 0 8rem;
+    display: inline-flex;
+  }
+  
+  /* Style the breadcrumb items */
+  .breadcrumb-item {
+    cursor: pointer;
+    display: inline-flex;
+    margin-right: 0.5rem;
+    align-items: center;
+  }
+  
+  /* Style the active breadcrumb item */
+  .breadcrumb-item.active {
+    font-weight: bold;
+    color: #0074B6;
+    cursor: default;
+  }

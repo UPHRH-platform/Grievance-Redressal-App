@@ -5,6 +5,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { GrievancesTableData, TableColumn, userTableData } from 'src/app/interfaces/interfaces';
 import { ConfirmationPopupComponent } from 'src/app/shared/components/confirmation-popup/confirmation-popup.component';
+import { BreadcrumbItem } from 'src/app/shared';
 
 @Component({
   selector: 'app-manage-user',
@@ -16,6 +17,11 @@ export class ManageUserComponent implements OnInit {
   grievances: userTableData[] = [];
   grievancesTableColumns: TableColumn[] = [];
   dataItem:any;
+  breadcrumbItems: BreadcrumbItem[] = [
+    { label: 'Grievance Management', url: '/home' },
+    { label: 'User List', url: '/user-manage' },
+  ];
+
   constructor(private router: Router,
     private dialog: MatDialog ){
 

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { BreadcrumbItem } from 'src/app/shared';
 
 @Component({
   selector: 'app-user-form',
@@ -14,6 +15,12 @@ export class UserFormComponent implements OnInit {
   roleList:any[]=['Nodal Officer','Secreatory', 'Admin']
   editDataObject:any;
   isEditUser:boolean = false;
+  breadcrumbItems: BreadcrumbItem[] = [
+    { label: 'Grievance Management', url: '/home' },
+    { label: 'User List', url: '/user-manage' },
+    { label: 'User Details', url: '/user-manage/userform' },
+  ];
+
 
   constructor(private router: Router,
     private route: ActivatedRoute){
