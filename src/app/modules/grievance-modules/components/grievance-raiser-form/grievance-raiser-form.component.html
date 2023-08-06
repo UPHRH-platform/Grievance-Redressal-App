@@ -304,8 +304,8 @@ attachment(s) </a>
                                         <mat-label>Type of Grievance</mat-label>
                                         <mat-select (selectionChange)="grievanceSelected($event)"
                                             formControlName="grievanceType">
-                                            <span *ngFor='let grievance of grievancesTypesArray;let i = index'>
-                                                <mat-option [value]="grievance">{{grievance}}</mat-option>
+                                            <span *ngFor='let grievance of grievancesTypes;let i = index'>
+                                                <mat-option [value]="grievance.id">{{grievance.name}}</mat-option>
                                             </span>
                                         </mat-select>
                                         <mat-error *ngIf="grievanceRaiserformGroup.controls['grievanceType'].invalid">

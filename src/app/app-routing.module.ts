@@ -6,6 +6,7 @@ import { RoleContentGuard } from './core/guards/role-content-guard/role-content.
 import { Roles } from './shared/config/roles.config';
 import { UserProfileComponent } from './user-profile/user-profile.component';
 import { CommonLayoutComponent } from './shared/components/common-layout/common-layout.component';
+import { GrievanceRaiserFormComponent } from './modules/grievance-modules/components/grievance-raiser-form/grievance-raiser-form.component';
 
 const routes: Routes = [
   {
@@ -58,8 +59,15 @@ const routes: Routes = [
         // },
         pathMatch: 'full',
       },
+      {
+        path: 'new-ticket',
+        component: GrievanceRaiserFormComponent,
+        pathMatch: 'full',
+      }
     ]
-  },  
+  }
+  
+
 ];
 
 @NgModule({

@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms'
 import { SharedDialogOverlayComponent } from '../../../../shared/components/shared-dialog-overlay/shared-dialog-overlay.component';
 import { MatDialog } from '@angular/material/dialog';
 import { GrievanceServiceService } from '../../services/grievance-service.service';
+import { ConfigService } from 'src/app/shared';
 
 @Component({
   selector: 'app-grievance-raiser-form',
@@ -23,17 +24,19 @@ export class GrievanceRaiserFormComponent {
   files: any[] = [];
   fileUploadError: string;
 
-  grievancesTypesArray = [
-    'Registration', 'Affiliation', 'Hall-ticket', 'Others'
-  ]
+  grievancesTypes: any[] = [];
   userTypesArray = [
     'Candidate', 'Institute', 'Faculty', 'Others'
-  ]
-
+  ];
   public grievanceRaiserformGroup: FormGroup;
-  constructor(private formBuilder: FormBuilder,
+  constructor(
+    private formBuilder: FormBuilder,
     public dialog: MatDialog,
-    private grievanceService: GrievanceServiceService) { }
+    private grievanceService: GrievanceServiceService,
+    private configService: ConfigService
+    ) { 
+      this.grievancesTypes = this.configService.dropDownConfig.GRIEVANCE_TYPES;
+    }
 
   ngOnInit() {
     this.createForm();
@@ -54,8 +57,8 @@ export class GrievanceRaiserFormComponent {
         Validators.required]),
       userType: new FormControl('', [
         Validators.required]),
-      attachments: new FormControl('', [Validators.required]),
-      description: new FormControl(''),
+      attachments: new FormControl('', ),
+      description: new FormControl('', [Validators.required]),
 
     });
   }
@@ -211,7 +214,7 @@ export class GrievanceRaiserFormComponent {
 
       this.grievanceService.createTicket(ticketDetails).subscribe((data)=>{
         console.log('dataaa',data)
-      })
+      });
       // this.openBulkUploadDialog();
     }
   }
