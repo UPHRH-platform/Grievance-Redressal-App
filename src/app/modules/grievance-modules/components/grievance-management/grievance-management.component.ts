@@ -245,7 +245,7 @@ export class GrievanceManagementComponent  {
     e.tabName= this.selectedTab
     let id = parseInt(e?.id)
     //this.router.navigate(['/:'+id], {state: {data: e}});
-    this.router.navigate(['/grievance',  e.id ], {state : {data: e}} );
+    this.router.navigate(['/grievance',  2 ]);
    // this.router.navigate(['/grievance', e.id]);
   }
 
