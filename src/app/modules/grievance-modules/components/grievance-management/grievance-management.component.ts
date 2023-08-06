@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Router  } from '@angular/router';
 import { TableColumn, GrievancesTableData } from '../../../../interfaces/interfaces';
-import { Tabs, Roles } from 'src/app/shared/config';
-import { UserService } from 'src/app/modules/user-modules/services/user.service';
+import { Tabs } from 'src/app/shared/config';
+import { AuthService } from 'src/app/core';
 import { MatTabChangeEvent } from '@angular/material/tabs';
-import { BreadcrumbItem } from 'src/app/shared';
+import { BreadcrumbItem, ConfigService } from 'src/app/shared';
 
 
 @Component({
@@ -24,15 +24,17 @@ export class GrievanceManagementComponent  {
   ];
   constructor( 
     private router: Router,
-    private userService: UserService ){
+    private authService: AuthService,
+    private configService: ConfigService ){
     }
 
   ngOnInit(): void {
-    this.userRole = this.userService.getUserRoles()[0];
+    this.userRole = this.authService.getUserRoles()[0];
     this.initializeTabs();
   }
 
   initializeTabs(): void {
+    const Roles = this.configService.rolesConfig.ROLES
     switch(this.userRole ){
       case Roles.NODAL_OFFICER:
         this.tabs = Tabs['Nodal Officer'];
