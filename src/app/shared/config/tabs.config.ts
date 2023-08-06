@@ -23,8 +23,8 @@ export const Tabs = {
     ],
     'Nodal Officer': [
         {
-            name: "Assigned to me",
-            id: "assigned_to_me"
+            name: "Pending",
+            id: "pending"
         },
         {
             name: "Resolved",
