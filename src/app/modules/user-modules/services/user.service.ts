@@ -1,19 +1,26 @@
-import { Injectable } from "@angular/core";
-import { AuthService } from "src/app/core/services/auth-service/auth.service";
-import { Roles } from "src/app/shared/config/roles.config";
+import { Injectable, } from "@angular/core";
+import { HttpClient } from '@angular/common/http';
+import { AuthService, HttpService } from "src/app/core";
+import { ConfigService } from "src/app/shared";
 
 // userService.ts
 @Injectable({ providedIn: 'root' })
-export class UserService {
-  constructor(private authService: AuthService) {}
+export class UserService extends HttpService{
+  override baseUrl: string;
+  constructor(private authService: AuthService, private configService: ConfigService, http: HttpClient) {
+    super(http);
+    this.baseUrl = "";
+  }
 
   getUserRoles(): string[] {
     const token = this.authService.getToken();
     if (token) {
-      const decodedToken = jwt_decode<any>(token);
-      // return decodedToken.roles || [];
     }
-    return [Roles.ADMIN];
+    return [this.configService.rolesConfig.ROLES.GRIEVANCE_NODAL];
+  }
+
+  login() {
+
   }
 
   isAdmin(): boolean {

@@ -170,17 +170,9 @@
     cursor: pointer;
 }
 
-.MR15 {
-    margin-right: 15px;
-}
-
 .preview .layout {
     display: flex; 
     justify-content: space-between;
-}
-
-.MT2 {
-    margin-top: 2rem;
 }
 
 .error {

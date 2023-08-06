@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { AuthService } from 'src/app/core';
 
 
 @Component({
@@ -13,7 +14,7 @@ loginForm: FormGroup;
 otpForm:FormGroup;
 isEnableOtpLogin:boolean = false;
 isOtpForm:boolean = false;
-  constructor(private router:Router){
+  constructor(private router:Router, private authService: AuthService){
     this.loginForm = new FormGroup({
       emailId: new FormControl('', [Validators.email, Validators.required]),
       password: new FormControl('',Validators.required)
@@ -25,9 +26,28 @@ isOtpForm:boolean = false;
     })
   }
 
-  signInForm(){
-    console.log(this.loginForm)
+  ngOnInit() {
+    // Check if the user is already logged in
+    if (this.authService.isLoggedIn()) {
+      // Redirect to the home page if logged in
+      this.router.navigate(['home']);
+    }
   }
+
+  signInForm(){
+    console.log(this.loginForm);
+    const {emailId, password} = this.loginForm.value;
+    this.authService.login(emailId, password).subscribe({
+      next: (res) => {
+       this.authService.saveUserData(res.responseData);
+       this.router.navigate(['home']);
+      },
+      error: (err) => {
+        // Handle the error here in case of login failure
+      }
+    });
+  }
+  
   getOTP(){
     if(this.loginForm.value.emailId){
      this.isOtpForm = true

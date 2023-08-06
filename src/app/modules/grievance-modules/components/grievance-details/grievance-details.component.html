@@ -153,18 +153,17 @@
       <div class="user-container">
         <h2 class="user-text-heading">{{ "Profile" }}</h2>
         <div class="action-btns">
-          <button mat-raised-button class="MR15">Mark As Junk</button>
-          <button type="submit" mat-raised-button color="primary" class="MR15">
-            Send Reminder
-          </button>
-          <button
-            mat-raised-button
-            class="MR15"
-            *ngIf="userRole === 'Nodal Officer'"
-          >
-            Mark as others
-          </button>
-          <button
+            <button mat-raised-button class="MR15" *ngIf="userRole === 'Nodal Officer' && currentTabName !== 'Resolved'">Mark As Others</button>
+            <button mat-raised-button class="MR15" *ngIf="!(currentTabName == 'Resolved' || currentTabName == 'Junk')">Mark As Junk</button>
+
+            <!-- <button mat-raised-button color="primary" style="margin-right: 15px;">Resolved</button> -->
+            <span  *ngIf="userRole == 'Secretary'">
+                <button type="submit" mat-raised-button color="primary" *ngIf="currentTabName == 'Junk'">Unmark as junk</button>
+                <button type="submit" mat-raised-button color="primary" *ngIf="currentTabName == 'Resolved'">Reopened</button>
+                <button type="submit" mat-raised-button color="primary"  *ngIf="(currentTabName == 'Escalated to me' || currentTabName == 'Not Assigned' || currentTabName == 'Pending')">Send Reminder</button>
+
+            </span>
+            <button
             type="submit"
             *ngIf="userRole === 'Nodal Officer'"
             [disabled]="!grievanceResolutionForm.valid"
@@ -235,7 +234,7 @@
             <!-- nodal officer -->
             <mat-divider
               *ngIf="userRole === 'Nodal Officer'"
-              class="MT2"
+              class="mt2"
             ></mat-divider>
             <form [formGroup]="grievanceResolutionForm">
               <div

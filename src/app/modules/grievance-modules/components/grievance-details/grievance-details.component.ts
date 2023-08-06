@@ -6,7 +6,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { Router } from '@angular/router';
-import { UserService } from 'src/app/modules/user-modules/services/user.service';
+import { AuthService } from 'src/app/core';
 import { BreadcrumbItem } from 'src/app/shared';
 
 @Component({
@@ -41,11 +41,9 @@ export class GrievanceDetailsComponent {
     { label: 'Grievance List', url: '/grievance/manage-tickets' },
     { label: 'Grievance Details', url: '' },
   ];
+  currentTabName:string = ''
 
-  constructor(
-    private router: Router,
-    private formBuilder: FormBuilder,
-    private userService: UserService
+  constructor(private router: Router, private formBuilder: FormBuilder,private authService: AuthService,
   ) {
     this.formData = this.router?.getCurrentNavigation()?.extras.state;
   }
@@ -56,7 +54,7 @@ export class GrievanceDetailsComponent {
       grievanceOfficer: new FormControl('arun@awe.com', [Validators.required]),
     });
     //assign user role
-    this.userRole = this.userService.getUserRoles()[0];
+    this.userRole = this.authService.getUserRoles()[0];
     this.createForm();
   }
 
@@ -64,19 +62,20 @@ export class GrievanceDetailsComponent {
     this.grievanceResolutionForm = this.formBuilder.group({
       description: new FormControl('', [Validators.required]),
       attachments: new FormControl('', [Validators.required])
-    })
+    }) 
   }
 
   initiateData() {
     console.log(this.formData.data);
     this.listOfFiles = this.formData.data.attachedDocs;
-    this.ticketId = this.formData.data.id;
-    this.creationTime = this.formData.data.creationTime;
-    this.escalationTime = this.formData.data.escalationTime;
-    this.grievanceRaiser = this.formData.data.grievanceRaiser;
-    this.grievanceType = this.formData.data.raiserType;
-    this.userType = this.formData.data.userType;
-    this.desc = this.formData.data.description;
+    this.ticketId= this.formData.data.id;
+    this.creationTime= this.formData.data.creationTime;
+    this.escalationTime= this.formData.data.escalationTime;
+    this.grievanceRaiser= this.formData.data.grievanceRaiser;
+    this.grievanceType= this.formData.data.raiserType;
+    this.userType= this.formData.data.userType;
+    this.desc= this.formData.data.description;
+    this.currentTabName=this.formData?.data?.tabName
   }
   grievanceOfficerSelected(e: any) {
     this.grievanceAssignerformGroup.controls['grievanceOfficer'].disable();
@@ -94,7 +93,7 @@ export class GrievanceDetailsComponent {
       let selectedFile = event.target.files[i];
       const extension = selectedFile.name.split('.').pop();
       const fileSize = selectedFile.size;
-      const allowedExtensions = ['pdf', 'jpeg', 'png', 'docx', 'jpg'];
+      const allowedExtensions = ['pdf', 'jpeg', 'jpg', 'png', 'docx'];
       if (allowedExtensions.includes(extension)) {
         // validate file size to be less than 2mb if the file has a valid extension
         if (fileSize < 2000000) {

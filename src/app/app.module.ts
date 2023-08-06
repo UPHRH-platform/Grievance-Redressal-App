@@ -10,6 +10,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { AuthModulesModule } from './modules/auth-modules/auth-modules.module';
 import { UserProfileComponent } from './user-profile/user-profile.component';
 import { SharedModule } from './shared';
+import { CoreModule } from './core/core.module';
 import { ReactiveFormsModule } from '@angular/forms';
 
 
@@ -29,7 +30,8 @@ import { ReactiveFormsModule } from '@angular/forms';
     HttpClientModule,
     AuthModulesModule,
     SharedModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    CoreModule
   ],
   providers: [],
   bootstrap: [AppComponent]

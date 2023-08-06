@@ -10,6 +10,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { ConfirmationPopupComponent } from './components/confirmation-popup/confirmation-popup.component';
 import { CommonLayoutComponent } from './components/common-layout/common-layout.component';
 import { BreadcrumbComponent } from './components/breadcrumb/breadcrumb.component';
+import { ConfigService } from './services/config/config.service';
 
 @NgModule({
   declarations: [
@@ -33,6 +34,7 @@ import { BreadcrumbComponent } from './components/breadcrumb/breadcrumb.componen
     HeaderComponent,
     SharedSkeletonLoadingComponent,
     BreadcrumbComponent
-  ]
+  ],
+  providers: [ConfigService]
 })
 export class SharedModule { }

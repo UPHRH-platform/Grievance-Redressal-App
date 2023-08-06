@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Router  } from '@angular/router';
 import { TableColumn, GrievancesTableData } from '../../../../interfaces/interfaces';
-import { Tabs, Roles } from 'src/app/shared/config';
-import { UserService } from 'src/app/modules/user-modules/services/user.service';
+import { Tabs } from 'src/app/shared/config';
+import { AuthService } from 'src/app/core';
 import { MatTabChangeEvent } from '@angular/material/tabs';
-import { BreadcrumbItem } from 'src/app/shared';
+import { BreadcrumbItem, ConfigService } from 'src/app/shared';
 
 
 @Component({
@@ -18,27 +18,31 @@ export class GrievanceManagementComponent  {
   isDataLoading : boolean = false;
   userRole: string;
   tabs: any[] = [];
+  selectedTab:any=null;
   breadcrumbItems: BreadcrumbItem[] = [
     { label: 'Grievance Management', url: '/home' },
     { label: 'Grievance List', url: 'grievance/manage-tickets' },
   ];
   constructor( 
     private router: Router,
-    private userService: UserService ){
+    private authService: AuthService,
+    private configService: ConfigService ){
     }
 
   ngOnInit(): void {
-    this.userRole = this.userService.getUserRoles()[0];
+    this.userRole = this.authService.getUserRoles()[0];
     this.initializeTabs();
   }
 
   initializeTabs(): void {
+    const Roles = this.configService.rolesConfig.ROLES
     switch(this.userRole ){
       case Roles.NODAL_OFFICER:
         this.tabs = Tabs['Nodal Officer'];
         break;
       case Roles.SECRETARY:
         this.tabs = Tabs['Secretary'];
+        this.selectedTab =this.tabs[0].name;
         break;
       case Roles.GRIEVANCE_NODAL:
         this.tabs = Tabs['Grievance Nodal'];
@@ -232,12 +236,13 @@ export class GrievanceManagementComponent  {
   onTabChange(event: MatTabChangeEvent): void {
     // Here  we  have userrole and tab index with these 2 we know we need to fetch data for which tab of which user role so we pass relevant payload in get grievance service
     const selectedIndex = event.index;
-    const selectedTab = this.tabs[selectedIndex].name;
+    this.selectedTab = this.tabs[selectedIndex].name;
     this.getgrievances();
   }
 
   onClickItem(e: any) {
     console.log(e?.id)
+    e.tabName= this.selectedTab
     let id = parseInt(e?.id)
     //this.router.navigate(['/:'+id], {state: {data: e}});
     this.router.navigate(['/grievance',  e.id ], {state : {data: e}} );
