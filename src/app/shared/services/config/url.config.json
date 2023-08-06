@@ -1,5 +1,9 @@
 {
     "URLS": {
-        "LOGIN": "/user/login"
+        "LOGIN": "/user/login",
+        "GRIEVANCE_TICKETS": {
+            "GET_ALL_TICKETS": "/tickets/getAllTickets",
+            "GET_TICKET_BY_ID": "/tickets/getAllTickets"
+        }
     }
 }
