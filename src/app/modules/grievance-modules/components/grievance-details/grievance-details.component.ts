@@ -34,6 +34,7 @@ export class GrievanceDetailsComponent {
     'Others NOdal Officer',
   ];
   public grievanceAssignerformGroup: FormGroup;
+  public grievanceResolutionForm: FormGroup;
   files: any[] = [];
   breadcrumbItems: BreadcrumbItem[] = [
     { label: 'Grievance Management', url: '/home' },
@@ -54,6 +55,14 @@ export class GrievanceDetailsComponent {
     });
     //assign user role
     this.userRole = this.authService.getUserRoles()[0];
+    this.createForm();
+  }
+
+  createForm() {
+    this.grievanceResolutionForm = this.formBuilder.group({
+      description: new FormControl('', [Validators.required]),
+      attachments: new FormControl('', [Validators.required])
+    }) 
   }
 
   initiateData() {
@@ -117,5 +126,14 @@ export class GrievanceDetailsComponent {
   removeSelectedFile(index: any) {
     this.listOfFiles.splice(index, 1);
     this.files.splice(index, 1);
+    if(this.files.length === 0) {
+      this.grievanceResolutionForm.patchValue({
+        attachments: ''
+      })
+    }
+  }
+
+  submitResolution(value: any) {
+    console.log(value);
   }
 }

@@ -1,4 +1,3 @@
-
 <!-- <div>
    
         <div class="ml4 body-header flex justify-between items-center mb-4 ">
@@ -149,155 +148,183 @@
 </div> -->
 <app-breadcrumb [breadcrumbItems]="breadcrumbItems"></app-breadcrumb>
 <div class="content">
-    <div class="second-main-wrapper">
-        <div class="user-form-container">
-            <div class="user-container">
-                <h2 class="user-text-heading">{{'Profile'}}</h2>
-                <div class="action-btns">
-                    <button mat-raised-button class="MR15" *ngIf="userRole === 'Nodal Officer' && currentTabName !== 'Resolved'">Mark As Others</button>
-                    <button mat-raised-button class="MR15" *ngIf="!(currentTabName == 'Resolved' || currentTabName == 'Junk')">Mark As Junk</button>
+  <div class="second-main-wrapper">
+    <div class="user-form-container">
+      <div class="user-container">
+        <h2 class="user-text-heading">{{ "Profile" }}</h2>
+        <div class="action-btns">
+            <button mat-raised-button class="MR15" *ngIf="userRole === 'Nodal Officer' && currentTabName !== 'Resolved'">Mark As Others</button>
+            <button mat-raised-button class="MR15" *ngIf="!(currentTabName == 'Resolved' || currentTabName == 'Junk')">Mark As Junk</button>
 
-                    <!-- <button mat-raised-button color="primary" style="margin-right: 15px;">Resolved</button> -->
-                    <span  *ngIf="userRole == 'Secretary'">
-                        <button type="submit" mat-raised-button color="primary" *ngIf="currentTabName == 'Junk'">Unmark as junk</button>
-                        <button type="submit" mat-raised-button color="primary" *ngIf="currentTabName == 'Resolved'">Reopened</button>
-                        <button type="submit" mat-raised-button color="primary"  *ngIf="(currentTabName == 'Escalated to me' || currentTabName == 'Not Assigned' || currentTabName == 'Pending')">Send Reminder</button>
-     
-                    </span>
-                </div>
-            </div>
-            <div class="form-container">
-                <div class="form-internal-wrapper">
-                    <h1>{{'Ticket Details'}}</h1>
-                    <div class="wrapper-form">
-                        <div class="first-row-container mt3">
-                            <div class="first-container">
-                                <mat-label class="label-text">Ticket ID</mat-label>
-                                <h3 class="textData">{{ticketId}}</h3>
-                            </div>
-                            <div class="first-container">
-                                <mat-label class="label-text">Grievance Raiser</mat-label>
-                                <h3 class="textData">{{grievanceRaiser}}</h3>
-                            </div>
-                        </div>
+            <!-- <button mat-raised-button color="primary" style="margin-right: 15px;">Resolved</button> -->
+            <span  *ngIf="userRole == 'Secretary'">
+                <button type="submit" mat-raised-button color="primary" *ngIf="currentTabName == 'Junk'">Unmark as junk</button>
+                <button type="submit" mat-raised-button color="primary" *ngIf="currentTabName == 'Resolved'">Reopened</button>
+                <button type="submit" mat-raised-button color="primary"  *ngIf="(currentTabName == 'Escalated to me' || currentTabName == 'Not Assigned' || currentTabName == 'Pending')">Send Reminder</button>
 
-                        <div class="first-row-container mt2">
-                            <div class="first-container">
-                                <mat-label class="label-text">Creation Time</mat-label>
-                                <h3 class="textData">{{creationTime}}</h3>
-                            </div>
-                            <div class="first-container">
-                                <mat-label class="label-text">Escalation Time</mat-label>
-                                <h3 class="textData">{{escalationTime}}</h3>
-                            </div>
-
-                        </div>
-
-                        <div class="first-row-container mt2">
-                            <div class="first-container">
-                                <mat-label class="label-text">Grievance Type</mat-label>
-                                <h3 class="textData">{{grievanceType}}</h3>
-                            </div>
-                            <div class="first-container">
-                                <mat-label class="label-text">User Type</mat-label>
-                                <div class="first-container">
-                                    <h3 class="textData ">{{userType}}</h3>
-                                </div>
-                            </div>
-
-                        </div>
-
-                        <div class="first-row-container mt2">
-                            <div class="desc-content">
-                                <mat-label class="label-text">Description</mat-label>
-                                <h3 class="textData">{{desc}}</h3>
-                            </div>
-
-                        </div>
-
-                        <div class="first-row-container mt2">
-                            <div class="desc-content">
-                                <mat-label class="label-text">Attached Document</mat-label>
-                                <!-- <h3 class="textData">{{desc}}</h3> -->
-                                <div class="attach-docs">
-                                <span>{{'File name.doc'}}</span>
-                                <span class="text-primary">{{'view'}}</span>
-                                </div>
-                            </div>
-
-                        </div>
-                        <!-- nodal officer -->
-                          <mat-divider *ngIf="userRole === 'Nodal Officer'" class="mt2"></mat-divider>
-                        <div
-                          *ngIf="userRole === 'Nodal Officer'"
-                          id="nodal"
-                          class="resolution-class"
-                        >
-                          <mat-grid-list cols="6" rowHeight="10rem" [gutterSize]="'100px'">
-                            <mat-grid-tile colspan="3" rowspan="1">
-                              <mat-form-field class="resolution-form">
-                                <mat-label>Enter resolution description</mat-label>
-                                <textarea
-                                  matInput
-                                  cdkTextareaAutosize
-                                  #autosize="cdkTextareaAutosize"
-                                  cdkAutosizeMinRows="4"
-                                  cdkAutosizeMaxRows="4"
-                                ></textarea>
-                              </mat-form-field>
-                            </mat-grid-tile>
-                          </mat-grid-list>
-                          <mat-grid-list cols="6" rowHeight="26px" [gutterSize]="'100px'">
-                            <mat-grid-tile colspan="3" rowspan="1">
-                              <mat-label
-                                class="attachment-label left"
-                                (click)="fileupload.click()"
-                                >Attach file (s)</mat-label
-                              >
-                              <mat-label
-                                class="attachment-label right"
-                                (click)="fileupload.click()"
-                                >+ Add attachments</mat-label
-                              >
-                              <input
-                                hidden
-                                id="fileUpload"
-                                #fileupload
-                                type="file"
-                                (change)="handleFileUpload($event)"
-                                multiple
-                                accept=".pdf, .jpeg, .png, .docx"
-                              />
-                            </mat-grid-tile>
-                          </mat-grid-list>
-                          <mat-grid-list cols="6" rowHeight="8rem" [gutterSize]="'100px'">
-                            <mat-grid-tile colspan="3" rowspan="1">
-                              <mat-card class="attachment-view">
-                                <!-- if no files are available -->
-                                <mat-card-content
-                                  class="empty-content-class"
-                                  *ngIf="files.length == 0"
-                                  >Supports only PDF, JPEG, PNG, DOC with maximum size of
-                                  2MB.</mat-card-content
-                                >
-                                <mat-card-content *ngIf="files.length > 0">
-                                  <div *ngFor="let file of files; let i = index" class="preview">
-                                  <div class="layout">
-                                    <span>{{file.name}}</span>
-                                    <div>
-                                    <span class="action-buttons" (click)="removeSelectedFile(index)">Delete</span>
-                                    </div>
-                                    </div>
-                                  </div>
-                                </mat-card-content>
-                              </mat-card>
-                            </mat-grid-tile>
-                          </mat-grid-list>
-                          <span class="error">{{fileUploadError}}</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            </span>
+            <button
+            type="submit"
+            *ngIf="userRole === 'Nodal Officer'"
+            [disabled]="!grievanceResolutionForm.valid"
+            (click)="submitResolution(grievanceResolutionForm.value)"
+            mat-raised-button
+            color="primary"
+          >
+            Mark as resolved
+          </button>
         </div>
+      </div>
+      <div class="form-container">
+        <div class="form-internal-wrapper">
+          <h1>{{ "Ticket Details" }}</h1>
+          <div class="wrapper-form">
+            <div class="first-row-container mt3">
+              <div class="first-container">
+                <mat-label class="label-text">Ticket ID</mat-label>
+                <h3 class="textData">{{ ticketId }}</h3>
+              </div>
+              <div class="first-container">
+                <mat-label class="label-text">Grievance Raiser</mat-label>
+                <h3 class="textData">{{ grievanceRaiser }}</h3>
+              </div>
+            </div>
+
+            <div class="first-row-container mt2">
+              <div class="first-container">
+                <mat-label class="label-text">Creation Time</mat-label>
+                <h3 class="textData">{{ creationTime }}</h3>
+              </div>
+              <div class="first-container">
+                <mat-label class="label-text">Escalation Time</mat-label>
+                <h3 class="textData">{{ escalationTime }}</h3>
+              </div>
+            </div>
+
+            <div class="first-row-container mt2">
+              <div class="first-container">
+                <mat-label class="label-text">Grievance Type</mat-label>
+                <h3 class="textData">{{ grievanceType }}</h3>
+              </div>
+              <div class="first-container">
+                <mat-label class="label-text">User Type</mat-label>
+                <div class="first-container">
+                  <h3 class="textData">{{ userType }}</h3>
+                </div>
+              </div>
+            </div>
+
+            <div class="first-row-container mt2">
+              <div class="desc-content">
+                <mat-label class="label-text">Description</mat-label>
+                <h3 class="textData">{{ desc }}</h3>
+              </div>
+            </div>
+
+            <div class="first-row-container mt2">
+              <div class="desc-content">
+                <mat-label class="label-text">Attached Document</mat-label>
+                <!-- <h3 class="textData">{{desc}}</h3> -->
+                <div class="attach-docs">
+                  <span>{{ "File name.doc" }}</span>
+                  <span class="text-primary">{{ "view" }}</span>
+                </div>
+              </div>
+            </div>
+            <!-- nodal officer -->
+            <mat-divider
+              *ngIf="userRole === 'Nodal Officer'"
+              class="mt2"
+            ></mat-divider>
+            <form [formGroup]="grievanceResolutionForm">
+              <div
+                *ngIf="userRole === 'Nodal Officer'"
+                id="nodal"
+                class="resolution-class"
+              >
+                <!-- <mat-form-field> -->
+                <mat-grid-list
+                  cols="6"
+                  rowHeight="10rem"
+                  [gutterSize]="'100px'"
+                >
+                  <mat-grid-tile colspan="3" rowspan="1">
+                    <mat-form-field class="resolution-form">
+                      <mat-label>Enter resolution description</mat-label>
+                      <textarea
+                        formControlName="description"
+                        matInput
+                        cdkTextareaAutosize
+                        #autosize="cdkTextareaAutosize"
+                        cdkAutosizeMinRows="4"
+                        cdkAutosizeMaxRows="4"
+                      ></textarea>
+                    </mat-form-field>
+                  </mat-grid-tile>
+                </mat-grid-list>
+                <mat-grid-list cols="6" rowHeight="26px" [gutterSize]="'100px'">
+                  <mat-grid-tile colspan="3" rowspan="1">
+                    <mat-label
+                      class="attachment-label left"
+                      (click)="fileupload.click()"
+                      >Attach file (s)</mat-label
+                    >
+                    <mat-label
+                      class="attachment-label right"
+                      (click)="fileupload.click()"
+                      >+ Add attachments</mat-label
+                    >
+                    <input
+                      hidden
+                      id="fileUpload"
+                      #fileupload
+                      formControlName="attachments"
+                      type="file"
+                      (change)="handleFileUpload($event)"
+                      multiple
+                      accept=".pdf, .jpeg, .png, .docx, .jpg"
+                    />
+                  </mat-grid-tile>
+                </mat-grid-list>
+                <mat-grid-list cols="6" rowHeight="8rem" [gutterSize]="'100px'">
+                  <mat-grid-tile colspan="3" rowspan="1">
+                    <mat-card class="attachment-view">
+                      <!-- if no files are available -->
+                      <mat-card-content
+                        class="empty-content-class"
+                        *ngIf="files.length == 0"
+                        >Supports only PDF, JPEG, JPG, PNG, DOC with maximum
+                        size of 2MB.</mat-card-content
+                      >
+                      <mat-card-content
+                        class="view-files"
+                        *ngIf="files.length > 0"
+                      >
+                        <div
+                          *ngFor="let file of files; let i = index"
+                          class="preview"
+                        >
+                          <div class="layout">
+                            <span>{{ file.name }}</span>
+                            <div>
+                              <span
+                                class="action-buttons"
+                                (click)="removeSelectedFile(index)"
+                                >Delete</span
+                              >
+                            </div>
+                          </div>
+                        </div>
+                      </mat-card-content>
+                    </mat-card>
+                  </mat-grid-tile>
+                </mat-grid-list>
+                <span class="error">{{ fileUploadError }}</span>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
     </div>
+  </div>
 </div>
