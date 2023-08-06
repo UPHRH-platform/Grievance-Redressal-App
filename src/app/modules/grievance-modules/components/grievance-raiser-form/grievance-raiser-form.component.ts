@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms'
 
 import { SharedDialogOverlayComponent } from '../../../../shared/components/shared-dialog-overlay/shared-dialog-overlay.component';
 import { MatDialog } from '@angular/material/dialog';
+import { GrievanceServiceService } from '../../services/grievance-service.service';
 
 @Component({
   selector: 'app-grievance-raiser-form',
@@ -20,7 +21,7 @@ export class GrievanceRaiserFormComponent {
   isLoading = false;
   submitted = false;
   files: any[] = [];
-  fileUploadError:string;
+  fileUploadError: string;
 
   grievancesTypesArray = [
     'Registration', 'Affiliation', 'Hall-ticket', 'Others'
@@ -31,7 +32,8 @@ export class GrievanceRaiserFormComponent {
 
   public grievanceRaiserformGroup: FormGroup;
   constructor(private formBuilder: FormBuilder,
-    public dialog: MatDialog) { }
+    public dialog: MatDialog,
+    private grievanceService: GrievanceServiceService) { }
 
   ngOnInit() {
     this.createForm();
@@ -40,18 +42,21 @@ export class GrievanceRaiserFormComponent {
   createForm() {
 
     this.grievanceRaiserformGroup = this.formBuilder.group({
-      name: new FormControl('arun@awe.com', [
+      name: new FormControl('', [
         Validators.required]),
-      email: new FormControl('arun@awe.com', [
+      email: new FormControl('', [
         Validators.required,
         Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")]),
-      mobNumber: new FormControl('8989786756', [
+      mobNumber: new FormControl('', [
         Validators.required,
         Validators.pattern("^(0|91)?[6-9][0-9]{9}$")]),
       grievanceType: new FormControl('', [
         Validators.required]),
       userType: new FormControl('', [
-        Validators.required])
+        Validators.required]),
+      attachments: new FormControl('', [Validators.required]),
+      description: new FormControl(''),
+
     });
   }
 
@@ -83,13 +88,7 @@ export class GrievanceRaiserFormComponent {
     return
   }
 
-  ongrievanceRaiserformSubmit(value: any) {
-    console.log(value)
-    this.submitted = true;
-    if (this.grievanceRaiserformGroup.valid) {
-      this.openBulkUploadDialog();
-    }
-  }
+
 
   radioChecked(e: any, e1: any) {
     console.log(e)
@@ -189,5 +188,31 @@ export class GrievanceRaiserFormComponent {
       console.log('The dialog was closed');
       //this.animal = result;
     });
+  }
+
+  ongrievanceRaiserformSubmit(value: any) {
+    console.log(value)
+    this.submitted = true;
+    if (this.grievanceRaiserformGroup.valid) {
+      const ticketDetails = {
+        "requestedBy": 1,
+        "name": value.name,
+        "email": value.email,
+        "userType": value.userType,
+        "phone": value.mobNumber,
+        "sourceId": 3,
+        "cc": [],
+        "description": value.description,
+        "helpdeskId": 1,
+        "appId": 1,
+        "appName": "grievance app",
+        "appKey": "6488a559-8e46-4a61-9410-bbe130710737"
+      }
+
+      this.grievanceService.createTicket(ticketDetails).subscribe((data)=>{
+        console.log('dataaa',data)
+      })
+      // this.openBulkUploadDialog();
+    }
   }
 }
