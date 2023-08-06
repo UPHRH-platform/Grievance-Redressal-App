@@ -7,7 +7,7 @@
     <div class="user-container">
         <h2 class="user-text-heading">{{isEditUser ? 'Edit User Details' : 'Create user'}}</h2>
         <div class="action-btns">
-        <button  mat-raised-button color="primary" style="margin-right: 15px;" >Cancel</button>
+        <button  type="button" mat-raised-button  (click)="navigateToHome()" class="mr1">Cancel</button>
         <button type="submit" mat-raised-button color="primary" [disabled]="!userForm.valid">Save</button>
        </div> 
      </div>
@@ -42,8 +42,8 @@
                         <h4>Email Id</h4>
                         <mat-form-field appearance="outline" class="text-class">
                             <mat-label>Email id</mat-label>
-                            <input matInput placeholder="pat@example.com" required formControlName="emailId" required>
-                            <mat-error *ngIf="emailId && emailId.invalid && emailId.touched">please Enter email Id</mat-error>
+                            <input matInput placeholder="pat@example.com" required formControlName="username" required>
+                            <mat-error *ngIf="username && username.invalid && username.touched">please Enter email Id</mat-error>
 
                           </mat-form-field>
                     </div>
@@ -51,8 +51,8 @@
                         <h4>Phone Number</h4>
                         <mat-form-field appearance="outline" class="text-class">
                             <mat-label>Phone number</mat-label>
-                            <input type="number" matInput placeholder="Enter Phone number" formControlName="phoneNumber" required>
-                            <mat-error *ngIf="phoneNumber && phoneNumber.invalid && phoneNumber.touched">please Enter phone number</mat-error>
+                            <input type="number" matInput placeholder="Enter Phone number" formControlName="phone" required>
+                            <mat-error *ngIf="phone && phone.invalid && phone.touched">please Enter phone number</mat-error>
 
                           </mat-form-field>
                     </div>
@@ -65,7 +65,7 @@
                         <mat-form-field appearance="outline" class="text-class">
                             <mat-label>Role</mat-label>
                             <mat-select formControlName="role">
-                              <mat-option *ngFor="let item of roleList" [value]="item">{{item}}</mat-option>
+                              <mat-option *ngFor="let item of roleList" [value]="item">{{getUserRole(item)}}</mat-option>
                             </mat-select>
                             <mat-error *ngIf="role && role.invalid && role.touched">please select role</mat-error>
 
@@ -77,8 +77,8 @@
                 <div>
                     <mat-label class="label-text">Active Status</mat-label>
                     <div class="first-container" style="margin-top: 2%;">
-                        <mat-radio-group aria-label="Select an option" formControlName="activeStatus">
-                            <mat-radio-button value="1" class="radio-btn" *ngFor="let item of optionList" [value]="item">{{item}}</mat-radio-button>
+                        <mat-radio-group aria-label="Select an option" formControlName="status">
+                            <mat-radio-button value="1" class="radio-btn" *ngFor="let status of statusList" [value]="status">{{status}}</mat-radio-button>
                            
                           </mat-radio-group>
                     </div>
