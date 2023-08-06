@@ -167,10 +167,7 @@
     color: rgb(4, 93, 173);
     font-weight: bold;
     font-family: 'Lato' sans-serif;
-}
-
-.MR15 {
-    margin-right: 15px;
+    cursor: pointer;
 }
 
 .preview .layout {
@@ -178,6 +175,8 @@
     justify-content: space-between;
 }
 
-.MT2 {
-    margin-top: 2rem;
+.error {
+    color:red;
+    font-size: 14px;
+    font-weight: 400;
 }
