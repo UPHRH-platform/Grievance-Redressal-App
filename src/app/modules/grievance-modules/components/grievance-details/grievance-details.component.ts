@@ -34,6 +34,7 @@ export class GrievanceDetailsComponent {
     'Others NOdal Officer',
   ];
   public grievanceAssignerformGroup: FormGroup;
+  public grievanceResolutionForm: FormGroup;
   files: any[] = [];
   breadcrumbItems: BreadcrumbItem[] = [
     { label: 'Grievance Management', url: '/home' },
@@ -56,6 +57,14 @@ export class GrievanceDetailsComponent {
     });
     //assign user role
     this.userRole = this.userService.getUserRoles()[0];
+    this.createForm();
+  }
+
+  createForm() {
+    this.grievanceResolutionForm = this.formBuilder.group({
+      description: new FormControl('', [Validators.required]),
+      attachments: new FormControl('', [Validators.required])
+    })
   }
 
   initiateData() {
@@ -85,7 +94,7 @@ export class GrievanceDetailsComponent {
       let selectedFile = event.target.files[i];
       const extension = selectedFile.name.split('.').pop();
       const fileSize = selectedFile.size;
-      const allowedExtensions = ['pdf', 'jpeg', 'png', 'docx'];
+      const allowedExtensions = ['pdf', 'jpeg', 'png', 'docx', 'jpg'];
       if (allowedExtensions.includes(extension)) {
         // validate file size to be less than 2mb if the file has a valid extension
         if (fileSize < 2000000) {
@@ -118,5 +127,14 @@ export class GrievanceDetailsComponent {
   removeSelectedFile(index: any) {
     this.listOfFiles.splice(index, 1);
     this.files.splice(index, 1);
+    if(this.files.length === 0) {
+      this.grievanceResolutionForm.patchValue({
+        attachments: ''
+      })
+    }
+  }
+
+  submitResolution(value: any) {
+    console.log(value);
   }
 }

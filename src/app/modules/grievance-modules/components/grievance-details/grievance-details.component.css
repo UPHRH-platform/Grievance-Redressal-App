@@ -188,3 +188,7 @@
     font-size: 14px;
     font-weight: 400;
 }
+
+.view-files {
+    overflow-y: auto;
+}
