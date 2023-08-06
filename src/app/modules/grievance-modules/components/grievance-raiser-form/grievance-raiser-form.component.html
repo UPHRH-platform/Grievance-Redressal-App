@@ -255,7 +255,7 @@ attachment(s) </a>
                     <div class="action-btns">
                         <button mat-raised-button color="primary" style="margin-right: 15px;"
                             (click)="onReset()">Cancel</button>
-                        <button type="submit" mat-raised-button color="primary">Submit</button>
+                        <button type="submit" mat-raised-button color="primary" [disabled]="!grievanceRaiserformGroup.valid">Submit</button>
                     </div>
                 </div>
                 <div class="form-container">
@@ -339,7 +339,7 @@ attachment(s) </a>
                                 <div class="first-container" style="width: 40%;">
                                     <h4>Description</h4>
                                     <mat-form-field style="width: 100%;">
-                                        <textarea matInput placeholder="Leave a comment"></textarea>
+                                        <textarea matInput placeholder="Leave a comment" formControlName="description"></textarea>
                                     </mat-form-field>
                                 </div>
 
@@ -352,6 +352,7 @@ attachment(s) </a>
                                         <mat-label class="attachment-label right" (click)="fileupload.click()">+ Add
                                             attachments</mat-label>
                                         <input hidden id="fileUpload" #fileupload type="file"
+                                        formControlName="attachments"
                                             (change)="handleFileUpload($event)" multiple
                                             accept=".pdf, .jpeg, .png, .docx" />
                                     </mat-grid-tile>

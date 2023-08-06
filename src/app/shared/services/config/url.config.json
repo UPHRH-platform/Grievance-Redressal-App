@@ -1,5 +1,7 @@
 {
     "URLS": {
-        "LOGIN": "/user/login"
+        "LOGIN": "/user/login",
+        "CREATE_TICKET":"/tickets/addTicket",
+        "GET_TICKET_BY_ID":"/tickets/getAllTickets?id="
     }
 }
