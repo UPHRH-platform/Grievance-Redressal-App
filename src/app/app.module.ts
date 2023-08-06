@@ -4,13 +4,13 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { HomePageComponent } from './modules/grievance-modules/components/home-page/home-page.component';
 import { MaterialModule } from 'src/material/material.module';
 import { HttpClientModule } from '@angular/common/http';
 import { AuthModulesModule } from './modules/auth-modules/auth-modules.module';
 import { UserProfileComponent } from './user-profile/user-profile.component';
 import { SharedModule } from './shared';
 import { CoreModule } from './core/core.module';
+import { GrievanceModulesModule } from './modules/grievance-modules/grievance-modules.module';
 import { ReactiveFormsModule } from '@angular/forms';
 
 
@@ -19,7 +19,6 @@ import { ReactiveFormsModule } from '@angular/forms';
 @NgModule({
   declarations: [
     AppComponent,
-    HomePageComponent,
     UserProfileComponent
   ],
   imports: [
@@ -31,7 +30,8 @@ import { ReactiveFormsModule } from '@angular/forms';
     AuthModulesModule,
     SharedModule,
     ReactiveFormsModule,
-    CoreModule
+    CoreModule,
+    GrievanceModulesModule
   ],
   providers: [],
   bootstrap: [AppComponent]

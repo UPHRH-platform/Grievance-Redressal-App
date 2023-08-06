@@ -1,14 +1,14 @@
-import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { ServerResponse, ConfigService, RequestParam } from 'src/app/shared';
-import { HttpService } from "src/app/core";
-import { environment } from '../../../../../environments/environment';
+import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { ConfigService, RequestParam, ServerResponse } from 'src/app/shared';
+import { environment } from 'src/environments/environment';
+import { HttpService } from "src/app/core";
 
 @Injectable({
   providedIn: 'root'
 })
-export class GrievanceService extends HttpService {
+export class GrievanceServiceService extends HttpService {
   override baseUrl: string;
   private token: string | null;
   private readonly TOKEN_KEY = 'access_token';
@@ -23,10 +23,29 @@ export class GrievanceService extends HttpService {
     this.token = this.getToken();
   }
 
-  getToken(): string | null {
-    return sessionStorage.getItem(this.TOKEN_KEY);
+  createTicket(data?:any): Observable<ServerResponse> {
+    // Implement your login API call and get the JWT token
+    const reqParam: RequestParam = {
+      url: this.configService.urlConFig.URLS.CREATE_TICKET,
+      data: data,
+      header: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      }
+    }
+    return this.post(reqParam);
   }
 
+  getTicketById(id:any){
+    const reqParam : RequestParam = {
+      url: `${this.configService.urlConFig.URLS.GET_TICKET_BY_ID}${id}`,
+
+    }
+    return this.get(reqParam)
+  }
+
+  /** ticket details and list services */
+  
   getAllTickets(request:object): Observable<ServerResponse> {
     console.log(request);
       const reqParam: RequestParam = {
@@ -42,9 +61,9 @@ export class GrievanceService extends HttpService {
       return this.post(reqParam);
   }
 
-  getTicketsById(request: string): Observable<ServerResponse> {
+  getTicketsById(id: string): Observable<ServerResponse> {
     const reqParam: RequestParam = {
-      url: this.configService.urlConFig.URLS.GRIEVANCE_TICKETS.GET_TICKET_BY_ID+ `? ${request}`,
+      url: this.configService.urlConFig.URLS.GRIEVANCE_TICKETS.GET_ALL_TICKETS+ `? ${id}`,
       header: {
         ...this.header,
         'Authorization': `Bearer ${this.token}`
@@ -53,4 +72,10 @@ export class GrievanceService extends HttpService {
     }
     return this.get(reqParam);
   }
+
+  getToken(): string | null {
+    return sessionStorage.getItem(this.TOKEN_KEY);
+  }
 }
+
+

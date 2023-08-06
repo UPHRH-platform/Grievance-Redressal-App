@@ -5,7 +5,7 @@ import { Tabs } from 'src/app/shared/config';
 import { AuthService } from 'src/app/core';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { BreadcrumbItem, ConfigService } from 'src/app/shared';
-import { GrievanceService } from 'src/app/modules/grievance-modules/services/grievance-services/grievance.service';
+import { GrievanceServiceService } from '../../services/grievance-service.service';
 
 
 @Component({
@@ -29,7 +29,7 @@ export class GrievanceManagementComponent  {
     private router: Router,
     private authService: AuthService,
     private configService: ConfigService,
-    private grievanceService: GrievanceService ){
+    private grievanceService: GrievanceServiceService ){
     }
 
   ngOnInit(): void {
@@ -252,7 +252,7 @@ export class GrievanceManagementComponent  {
     e.tabName= this.selectedTab
     let id = parseInt(e?.id)
     //this.router.navigate(['/:'+id], {state: {data: e}});
-    this.router.navigate(['/grievance',  e.id ], {state : {data: e}} );
+    this.router.navigate(['/grievance',  2 ]);
    // this.router.navigate(['/grievance', e.id]);
   }
 

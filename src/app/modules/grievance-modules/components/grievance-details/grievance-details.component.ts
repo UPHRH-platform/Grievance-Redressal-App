@@ -8,7 +8,7 @@ import {
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from 'src/app/core';
 import { BreadcrumbItem } from 'src/app/shared';
-import { GrievanceService } from '../../services/grievance-services/grievance.service';
+import { GrievanceServiceService } from '../../services/grievance-service.service';
 
 @Component({
   selector: 'app-grievance-details',
@@ -44,9 +44,11 @@ export class GrievanceDetailsComponent {
     { label: 'Grievance Details', url: '' },
   ];
   currentTabName:string = ''
+  ticketDetails:any;
+  ticketIdNo:any;
 
   constructor(private router: Router, private formBuilder: FormBuilder,private authService: AuthService,
-  private route: ActivatedRoute, private grievanceService: GrievanceService) {
+     private grievanceServiceService: GrievanceServiceService, private route: ActivatedRoute ) {
     this.formData = this.router?.getCurrentNavigation()?.extras.state;
     this.route.params.subscribe((param) => {
       this.id = param['id'];
@@ -54,14 +56,30 @@ export class GrievanceDetailsComponent {
   }
 
   ngOnInit() {
-    this.initiateData();
+    // this.initiateData();
     this.grievanceAssignerformGroup = this.formBuilder.group({
       grievanceOfficer: new FormControl('arun@awe.com', [Validators.required]),
     });
     //assign user role
     this.userRole = this.authService.getUserRoles()[0];
     this.createForm();
+    // this.route.paramMap.subscribe(params=>{
+    //   this.ticketIdNo = params.get('id');
+    //   console.log(this.ticketIdNo)
+    // })
+
+    // this.getTicketDetails(this.ticketIdNo)
   }
+
+  // getTicketDetails(id:any){
+  //   this.grievanceServiceService.getTicketById(id).subscribe((data)=>{
+  //     console.log('ddd',data)
+  //     this.ticketDetails = data
+  //   })
+   
+  // }
+
+
 
   createForm() {
     this.grievanceResolutionForm = this.formBuilder.group({
@@ -143,7 +161,7 @@ export class GrievanceDetailsComponent {
   }
 
   getTicketById() {
-    this.grievanceService.getTicketsById(this.id).subscribe({
+    this.grievanceServiceService.getTicketsById(this.id).subscribe({
       next:(res) => {
         console.log(res);
       },
