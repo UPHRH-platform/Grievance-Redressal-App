@@ -5,6 +5,7 @@ import { Tabs } from 'src/app/shared/config';
 import { AuthService } from 'src/app/core';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { BreadcrumbItem, ConfigService } from 'src/app/shared';
+import { GrievanceService } from 'src/app/modules/grievance-modules/services/grievance-services/grievance.service';
 
 
 @Component({
@@ -23,15 +24,18 @@ export class GrievanceManagementComponent  {
     { label: 'Grievance Management', url: '/home' },
     { label: 'Grievance List', url: 'grievance/manage-tickets' },
   ];
+  getGrievancesRequest = {};
   constructor( 
     private router: Router,
     private authService: AuthService,
-    private configService: ConfigService ){
+    private configService: ConfigService,
+    private grievanceService: GrievanceService ){
     }
 
   ngOnInit(): void {
     this.userRole = this.authService.getUserRoles()[0];
     this.initializeTabs();
+    this.getTicketsRequestObject();
   }
 
   initializeTabs(): void {
@@ -39,6 +43,7 @@ export class GrievanceManagementComponent  {
     switch(this.userRole ){
       case Roles.NODAL_OFFICER:
         this.tabs = Tabs['Nodal Officer'];
+        this.selectedTab =this.tabs[0].name;
         break;
       case Roles.SECRETARY:
         this.tabs = Tabs['Secretary'];
@@ -52,6 +57,7 @@ export class GrievanceManagementComponent  {
     this.initializeColumns();
     //Fetch grievances as per user  role
     this.getgrievances();
+    this.getTicketsRequestObject();
   }
 
   initializeColumns(): void {
@@ -238,6 +244,7 @@ export class GrievanceManagementComponent  {
     const selectedIndex = event.index;
     this.selectedTab = this.tabs[selectedIndex].name;
     this.getgrievances();
+    this.getTicketsRequestObject();
   }
 
   onClickItem(e: any) {
@@ -247,6 +254,60 @@ export class GrievanceManagementComponent  {
     //this.router.navigate(['/:'+id], {state: {data: e}});
     this.router.navigate(['/grievance',  e.id ], {state : {data: e}} );
    // this.router.navigate(['/grievance', e.id]);
+  }
+
+  getTicketsRequestObject() {
+    this.getGrievancesRequest = {
+      "helpdeskId":1,
+      "searchKeyword":"",
+      "filterCTUT":"",
+      "from": 0,
+      // "priorityStatus": '', // if priority tab is selected
+      "size": -1,
+      "selectedTags": ["tag1"]
+    }
+    switch(this.selectedTab) {
+      case 'Pending': 
+        this.getGrievancesRequest = {
+          ...this.getGrievancesRequest,
+          "filterStatus": ['Open']
+        }
+        break;
+      case 'Resolved': 
+      this.getGrievancesRequest = {
+        ...this.getGrievancesRequest,
+        "filterStatus": ['Closed']
+      }
+      break;
+      // this is failing
+      case 'Priority': 
+      this.getGrievancesRequest = {
+        ...this.getGrievancesRequest,
+        "filterStatus": ["Pending"],
+        "priority": ["p1"]
+      }
+      break;
+      default: 
+      this.getGrievancesRequest = {
+        ...this.getGrievancesRequest,
+        "filterStatus": ["Pending"]
+      }
+      break;
+    }
+    this.getAllTickets();
+  }
+
+  /** integration */
+  getAllTickets() {
+    this.grievanceService.getAllTickets(this.getGrievancesRequest).subscribe({
+      next: (res) => {
+        console.log(res.responseData);
+      },
+      error: (err) => {
+        // Handle the error here in case of login failure
+      }
+    })
+    
   }
 
 }

@@ -5,9 +5,10 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from 'src/app/core';
 import { BreadcrumbItem } from 'src/app/shared';
+import { GrievanceService } from '../../services/grievance-services/grievance.service';
 
 @Component({
   selector: 'app-grievance-details',
@@ -36,6 +37,7 @@ export class GrievanceDetailsComponent {
   public grievanceAssignerformGroup: FormGroup;
   public grievanceResolutionForm: FormGroup;
   files: any[] = [];
+  id: string;
   breadcrumbItems: BreadcrumbItem[] = [
     { label: 'Grievance Management', url: '/home' },
     { label: 'Grievance List', url: '/grievance/manage-tickets' },
@@ -44,8 +46,11 @@ export class GrievanceDetailsComponent {
   currentTabName:string = ''
 
   constructor(private router: Router, private formBuilder: FormBuilder,private authService: AuthService,
-  ) {
+  private route: ActivatedRoute, private grievanceService: GrievanceService) {
     this.formData = this.router?.getCurrentNavigation()?.extras.state;
+    this.route.params.subscribe((param) => {
+      this.id = param['id'];
+    })
   }
 
   ngOnInit() {
@@ -61,7 +66,7 @@ export class GrievanceDetailsComponent {
   createForm() {
     this.grievanceResolutionForm = this.formBuilder.group({
       description: new FormControl('', [Validators.required]),
-      attachments: new FormControl('', [Validators.required])
+      attachments: new FormControl([], [Validators.required])
     }) 
   }
 
@@ -128,12 +133,23 @@ export class GrievanceDetailsComponent {
     this.files.splice(index, 1);
     if(this.files.length === 0) {
       this.grievanceResolutionForm.patchValue({
-        attachments: ''
+        attachments: []
       })
     }
   }
 
   submitResolution(value: any) {
     console.log(value);
+  }
+
+  getTicketById() {
+    this.grievanceService.getTicketsById(this.id).subscribe({
+      next:(res) => {
+        console.log(res);
+      },
+      error: (err) => {
+        // Handle the error here in case of login failure
+      }
+    })
   }
 }
