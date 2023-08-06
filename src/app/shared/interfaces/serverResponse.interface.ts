@@ -5,35 +5,15 @@ export interface ServerResponse {
     /**
      * api id
     */
-    id?: string;
+    statusInfo: StatusInfo;
     /**
      * response param
     */
-    params?: Params;
-    /**
-     * response code
-    */
-    responseCode: string;
-    /**
-     * server result
-    */
-    result: any;
-    /**
-     * time stamp
-    */
-    ts?: string;
-    /**
-     * api version
-    */
-    ver?: string;
-
-    headers?: any;
+    responseData?: any;
 }
 
-export interface Params {
-    resmsgid?: string;
-    msgid?: any;
-    err?: any;
-    status: string;
-    errmsg?: any;
+export interface StatusInfo {
+    statusCode: number;
+    statusMessage: string;
+    errorMessage?: any;
 }

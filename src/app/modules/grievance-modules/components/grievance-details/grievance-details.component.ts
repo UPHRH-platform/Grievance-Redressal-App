@@ -6,7 +6,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { Router } from '@angular/router';
-import { UserService } from 'src/app/modules/user-modules/services/user.service';
+import { AuthService } from 'src/app/core';
 import { BreadcrumbItem } from 'src/app/shared';
 
 @Component({
@@ -42,10 +42,7 @@ export class GrievanceDetailsComponent {
   ];
   currentTabName:string = ''
 
-  constructor(
-    private router: Router,
-    private formBuilder: FormBuilder,
-    private userService: UserService
+  constructor(private router: Router, private formBuilder: FormBuilder,private authService: AuthService,
   ) {
     this.formData = this.router?.getCurrentNavigation()?.extras.state;
   }
@@ -56,7 +53,7 @@ export class GrievanceDetailsComponent {
       grievanceOfficer: new FormControl('arun@awe.com', [Validators.required]),
     });
     //assign user role
-    this.userRole = this.userService.getUserRoles()[0];
+    this.userRole = this.authService.getUserRoles()[0];
   }
 
   initiateData() {

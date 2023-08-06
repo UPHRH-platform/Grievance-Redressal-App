@@ -1,7 +1,7 @@
 // http.service.ts
 
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { of as observableOf, Observable, throwError } from 'rxjs';
 import { mergeMap } from 'rxjs/operators';
 import { HttpOptions, RequestParam, ServerResponse } from 'src/app/shared';
@@ -41,8 +41,8 @@ export class HttpService {
     };
     return this.http.post<ServerResponse>(this.baseUrl + requestParam.url, requestParam.data, httpOptions).pipe(
       mergeMap((data: ServerResponse) => {
-        if (data.responseCode !== 'OK') {
-          return throwError(() => new Error(data.params?.errmsg));
+        if (data.statusInfo.statusCode !== 200) {
+          return throwError(() => new Error(data.statusInfo?.errorMessage));
         }
         return observableOf(data);
       }));
@@ -61,8 +61,8 @@ export class HttpService {
     };
     return this.http.patch<ServerResponse>(this.baseUrl + requestParam.url, requestParam.data, httpOptions).pipe(
       mergeMap((data: ServerResponse) => {
-        if (data.responseCode !== 'OK') {
-          return throwError(() => new Error(data.params?.errmsg));
+        if (data.statusInfo.statusCode !== 200) {
+          return throwError(() => new Error(data.statusInfo?.errorMessage));
         }
         return observableOf(data);
       }));
@@ -80,8 +80,8 @@ export class HttpService {
     };
     return this.http.delete<ServerResponse> (this.baseUrl + requestParam.url, httpOptions).pipe(
       mergeMap((data: ServerResponse) => {
-        if (data.responseCode !== 'OK') {
-          return throwError(() => new Error(data.params?.errmsg));
+        if (data.statusInfo.statusCode !== 200) {
+          return throwError(() => new Error(data.statusInfo?.errorMessage));
         }
         return observableOf(data);
       }));
@@ -98,8 +98,8 @@ export class HttpService {
     };
     return this.http.put<ServerResponse>(this.baseUrl + requestParam.url, requestParam.data, httpOptions).pipe(
       mergeMap((data: ServerResponse) => {
-        if (data.responseCode !== 'OK') {
-          return throwError(() => new Error(data.params?.errmsg));
+        if (data.statusInfo.statusCode !== 200) {
+          return throwError(() => new Error(data.statusInfo?.errorMessage));
         }
         return observableOf(data);
       }));
@@ -109,9 +109,11 @@ export class HttpService {
    * for preparing headers
    */
     private getHeader(headers?: HttpOptions['headers']): HttpOptions['headers'] {
+      const access_token = sessionStorage.getItem('access_token');
       const default_headers = {
         'Accept': 'application/json',
-        // 'X-Consumer-ID': 'X-Consumer-ID',
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${access_token}`
       };
 
       if (headers) {

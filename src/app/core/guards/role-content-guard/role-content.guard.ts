@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
 import { Observable } from 'rxjs';
-import { UserService } from 'src/app/modules/user-modules/services/user.service';
+import { AuthService } from '../../services';
 import { RoleContentService } from '../../services/role-content-service/role-content.service';
 
 // content-mapping.ts
@@ -15,11 +15,11 @@ export const roleContentMapping: { [role: string]: string[] } = {
 // role-content.guard.ts
 @Injectable({ providedIn: 'root' })
 export class RoleContentGuard implements CanActivate {
-  constructor(private userService: UserService, private roleContentService: RoleContentService, private router: Router) {}
+  constructor(private authService: AuthService, private roleContentService: RoleContentService, private router: Router) {}
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
     const allowedRoles: string[] = route.data['allowedRoles'];
-    const userRoles: string[] = this.userService.getUserRoles(); // Replace this with your method to get user roles
+    const userRoles: string[] = this.authService.getUserRoles(); // Replace this with your method to get user roles
 
     const hasAccess: boolean = allowedRoles.some((role) => userRoles.includes(role));
 
