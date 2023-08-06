@@ -2,7 +2,7 @@ import { Component, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 
 import { SharedDialogOverlayComponent } from '../../../../shared/components/shared-dialog-overlay/shared-dialog-overlay.component';
-import {MatDialog} from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-grievance-raiser-form',
@@ -19,6 +19,8 @@ export class GrievanceRaiserFormComponent {
   listOfFiles: any[] = [];
   isLoading = false;
   submitted = false;
+  files: any[] = [];
+  fileUploadError:string;
 
   grievancesTypesArray = [
     'Registration', 'Affiliation', 'Hall-ticket', 'Others'
@@ -29,7 +31,7 @@ export class GrievanceRaiserFormComponent {
 
   public grievanceRaiserformGroup: FormGroup;
   constructor(private formBuilder: FormBuilder,
-              public dialog: MatDialog) { }
+    public dialog: MatDialog) { }
 
   ngOnInit() {
     this.createForm();
@@ -48,8 +50,8 @@ export class GrievanceRaiserFormComponent {
         Validators.pattern("^(0|91)?[6-9][0-9]{9}$")]),
       grievanceType: new FormControl('', [
         Validators.required]),
-        userType: new FormControl('', [
-          Validators.required])
+      userType: new FormControl('', [
+        Validators.required])
     });
   }
 
@@ -65,26 +67,26 @@ export class GrievanceRaiserFormComponent {
           return 'Email is required !!';
         }
         break;
-        case 'mobNumber':
+      case 'mobNumber':
         if (this.grievanceRaiserformGroup.get('mobNumber')?.hasError('required')) {
           return 'Mobile number is required !!';
         }
         break;
-        case 'userType':
-          if (this.grievanceRaiserformGroup.get('userType')?.hasError('required')) {
-            return 'User type is required !!';
-          }
-          break;
+      case 'userType':
+        if (this.grievanceRaiserformGroup.get('userType')?.hasError('required')) {
+          return 'User type is required !!';
+        }
+        break;
       default:
         return '';
     }
     return
   }
-  
-  ongrievanceRaiserformSubmit(value : any){
+
+  ongrievanceRaiserformSubmit(value: any) {
     console.log(value)
     this.submitted = true;
-    if( this.grievanceRaiserformGroup.valid){
+    if (this.grievanceRaiserformGroup.valid) {
       this.openBulkUploadDialog();
     }
   }
@@ -101,12 +103,12 @@ export class GrievanceRaiserFormComponent {
     this.submitted = false;
     this.grievanceRaiserformGroup.reset();
     this.listOfFiles = [];
-}
+  }
 
-  onFileChanged(event?: any){
+  onFileChanged(event?: any) {
     for (let i = 0; i <= event.target.files.length - 1; i++) {
       let selectedFile = event.target.files[i];
-   
+
       if (this.listOfFiles.indexOf(selectedFile.name) === -1) {
         this.fileList.push(selectedFile);
         console.log();
@@ -115,35 +117,77 @@ export class GrievanceRaiserFormComponent {
     }
   }
 
-  removeSelectedFile(index: any) {
-    // Delete the item from fileNames list
-    this.listOfFiles.splice(index, 1);
-    // delete file from FileList
-    this.fileList.splice(index, 1);
+  // removeSelectedFile(index: any) {
+  //   // Delete the item from fileNames list
+  //   this.listOfFiles.splice(index, 1);
+  //   // delete file from FileList
+  //   this.fileList.splice(index, 1);
+  // }
+
+  //   formatBytes(bytes: any, decimals = 2) {
+  //     if (!+bytes) return '0 Bytes'
+  //     const k = 1024
+  //     const dm = decimals < 0 ? 0 : decimals
+  //     const sizes = ['Bytes', 'KB', 'MB']
+  //     const i = Math.floor(Math.log(bytes) / Math.log(k))
+  //     return `${parseFloat((bytes / Math.pow(k, i)).toFixed(dm))} ${sizes[i]}`
+  // }
+
+  handleFileUpload(event: any) {
+    this.fileUploadError = '';
+    for (let i = 0; i <= event.target.files.length - 1; i++) {
+      let selectedFile = event.target.files[i];
+      const extension = selectedFile.name.split('.').pop();
+      const fileSize = selectedFile.size;
+      const allowedExtensions = ['pdf', 'jpeg', 'jpg', 'png', 'docx'];
+      if (allowedExtensions.includes(extension)) {
+        // validate file size to be less than 2mb if the file has a valid extension
+        if (fileSize < 2000000) {
+          if (this.listOfFiles.indexOf(selectedFile?.name) === -1) {
+            this.files.push(selectedFile);
+            this.listOfFiles.push(
+              selectedFile.name.concat(this.formatBytes(selectedFile.size))
+            );
+          } else {
+            console.log('file already exists');
+          }
+        } else {
+          this.fileUploadError = 'Please upload files with size less than 2MB';
+        }
+      } else {
+        this.fileUploadError = `Please upload ${allowedExtensions.join(', ')} files`;
+      }
+    }
   }
 
   formatBytes(bytes: any, decimals = 2) {
-    if (!+bytes) return '0 Bytes'
-    const k = 1024
-    const dm = decimals < 0 ? 0 : decimals
-    const sizes = ['Bytes', 'KB', 'MB']
-    const i = Math.floor(Math.log(bytes) / Math.log(k))
-    return `${parseFloat((bytes / Math.pow(k, i)).toFixed(dm))} ${sizes[i]}`
-}
+    if (!+bytes) return '0 Bytes';
+    const k = 1024;
+    const dm = decimals < 0 ? 0 : decimals;
+    const sizes = ['Bytes', 'KB', 'MB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return `${parseFloat((bytes / Math.pow(k, i)).toFixed(dm))} ${sizes[i]}`;
+  }
 
-openBulkUploadDialog(): void {
-  const dialogRef = this.dialog.open(SharedDialogOverlayComponent, {
-    data: { },
-    maxWidth: '400vw',
-    maxHeight: '100vh',
-    height: '50%',
-    width: '30%',
-    disableClose: true
-  });
+  removeSelectedFile(index: any) {
+    this.listOfFiles.splice(index, 1);
+    this.files.splice(index, 1);
+  }
 
-  dialogRef.afterClosed().subscribe(result => {
-    console.log('The dialog was closed');
-    //this.animal = result;
-  });
-}
+
+  openBulkUploadDialog(): void {
+    const dialogRef = this.dialog.open(SharedDialogOverlayComponent, {
+      data: {},
+      maxWidth: '400vw',
+      maxHeight: '100vh',
+      height: '50%',
+      width: '30%',
+      disableClose: true
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+      //this.animal = result;
+    });
+  }
 }
