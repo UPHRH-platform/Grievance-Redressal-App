@@ -30,12 +30,14 @@ export interface GrievancesTableData {
   }
 
   export interface userTableData {
-    fullName:string,
-    email:string,
-    phoneNumber:number,
+    name:string,
+    username:string,
+    phone:number,
     role:string,
-    accountStatus:string,
-    isMenuOption?:boolean
+    status:string,
+    isMenuOption?:boolean,
+    isActive?: boolean,
+    roles?: any
   }
 
   export interface DashboardTableData {
