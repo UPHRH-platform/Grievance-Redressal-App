@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BreadcrumbItem } from 'src/app/shared';
+import { getRole } from 'src/app/shared';
 
 @Component({
   selector: 'app-user-form',
@@ -10,10 +11,12 @@ import { BreadcrumbItem } from 'src/app/shared';
 })
 export class UserFormComponent implements OnInit {
   userForm: FormGroup
-  isUsertable:boolean = true;
-  optionList:any[]=['Active', 'Inactive']
-  roleList:any[]=['Nodal Officer','Secreatory', 'Admin']
-  editDataObject:any;
+  isUsertable: boolean = true;
+  statusList:any[]=['Active', 'Inactive']
+  roleList:any[]=[
+    'NODALOFFICER','GRIEVANCEADMIN', 'SUPERADMIN'
+  ];
+  userDetails:any;
   isEditUser:boolean = false;
   breadcrumbItems: BreadcrumbItem[] = [
     { label: 'Grievance Management', url: '/home' },
@@ -27,18 +30,17 @@ export class UserFormComponent implements OnInit {
     this.userForm = new FormGroup({
     firstName: new FormControl('', Validators.required),
     lastName: new FormControl('', Validators.required),
-    emailId: new FormControl('',[Validators.required, Validators.email]),
-    phoneNumber:  new FormControl('', Validators.required),
+    username: new FormControl('',[Validators.required, Validators.email]),
+    phone:  new FormControl('', Validators.required),
     role: new FormControl('', Validators.required),
-    activeStatus: new FormControl('', Validators.required)
+    status: new FormControl('', Validators.required)
     })
   }
 
   ngOnInit(): void {
     this.route.queryParams.subscribe((data)=>{
-      console.log('dddd',data)
-      this.editDataObject = data;
-      if(Object.keys(this.editDataObject).length){
+      this.userDetails = data;
+      if(Object.keys(this.userDetails).length){
         this.isEditUser = true;
         this.setUserFormData();
       }
@@ -48,12 +50,12 @@ export class UserFormComponent implements OnInit {
 
   setUserFormData(){
     this.userForm.setValue({
-      firstName:this.editDataObject?.fullName,
-      lastName:this.editDataObject?.fullName,
-      emailId: this.editDataObject?.email,
-      phoneNumber:this.editDataObject?.phoneNumber,
-      role:this.editDataObject?.role,
-      activeStatus:this.editDataObject?.accountStatus
+      firstName:this.userDetails?.name.split(" ")[0],
+      lastName:this.userDetails?.name.split(" ")[1],
+      username: this.userDetails?.username,
+      phone:this.userDetails?.phone,
+      role: this.userDetails?.role,
+      status:this.userDetails?.isActive ? 'Active' : 'Inactive'
     })
   }
 
@@ -64,12 +66,12 @@ export class UserFormComponent implements OnInit {
     return this.userForm.get('lastName')
   }
 
-  get emailId(){
-    return this.userForm.get('emailId')
+  get username(){
+    return this.userForm.get('username')
   }
 
-  get phoneNumber(){
-    return this.userForm.get('phoneNumber')
+  get phone(){
+    return this.userForm.get('phone')
   }
 
   get role(){
@@ -85,6 +87,10 @@ export class UserFormComponent implements OnInit {
 
   onSubmit(){
     console.log(this.userForm.value)
+  }
+
+  getUserRole(roleName: string) {
+   return getRole(roleName);
   }
 
 }
