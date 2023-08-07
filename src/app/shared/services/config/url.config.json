@@ -3,7 +3,8 @@
         "LOGIN": "/user/login",
         "GRIEVANCE_TICKETS": {
             "GET_ALL_TICKETS": "/tickets/getAllTickets",
-            "CREATE_TICKET":"/tickets/addTicket"
+            "CREATE_TICKET":"/tickets/addTicket",
+            "UPDATE_TICKET":"/tickets/updateTicketBasic"
         },
         "GET_ALL_USERS": "/user/getAllUsers?orgId=1"
     }
