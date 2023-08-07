@@ -262,7 +262,6 @@ export class GrievanceManagementComponent  {
       "searchKeyword":"",
       "filterCTUT":"",
       "from": 0,
-      // "priorityStatus": '', // if priority tab is selected
       "size": -1,
       "selectedTags": ["tag1"]
     }
@@ -283,8 +282,29 @@ export class GrievanceManagementComponent  {
       case 'Priority': 
       this.getGrievancesRequest = {
         ...this.getGrievancesRequest,
-        "filterStatus": ["Pending"],
+        "filterStatus": ["Open"],
         "priority": ["p1"]
+      }
+      break;
+      case 'Escalated to me': 
+      this.getGrievancesRequest = {
+        ...this.getGrievancesRequest,
+        "filterStatus": ["Open"],
+        "priority": ["p2"]
+      }
+      break;
+      case 'Not Assigned':
+        this.getGrievancesRequest = {
+          ...this.getGrievancesRequest,
+          "filterStatus": ["Open"],
+          "cc": [],
+        }
+      break;
+      case 'Junk': 
+      this.getGrievancesRequest = {
+        ...this.getGrievancesRequest,
+        "filterStatus": ["Closed"],
+        "isJunk": true
       }
       break;
       default: 
