@@ -37,6 +37,7 @@ export class GrievanceDetailsComponent {
   public grievanceAssignerformGroup: FormGroup;
   public grievanceResolutionForm: FormGroup;
   files: any[] = [];
+  id: string;
   breadcrumbItems: BreadcrumbItem[] = [
     { label: 'Grievance Management', url: '/home' },
     { label: 'Grievance List', url: '/grievance/manage-tickets' },
@@ -49,6 +50,9 @@ export class GrievanceDetailsComponent {
   constructor(private router: Router, private formBuilder: FormBuilder,private authService: AuthService,
      private grievanceServiceService: GrievanceServiceService, private route: ActivatedRoute ) {
     this.formData = this.router?.getCurrentNavigation()?.extras.state;
+    this.route.params.subscribe((param) => {
+      this.id = param['id'];
+    })
   }
 
   ngOnInit() {
@@ -59,28 +63,28 @@ export class GrievanceDetailsComponent {
     //assign user role
     this.userRole = this.authService.getUserRoles()[0];
     this.createForm();
-    this.route.paramMap.subscribe(params=>{
-      this.ticketIdNo = params.get('id');
-      console.log(this.ticketIdNo)
-    })
+    // this.route.paramMap.subscribe(params=>{
+    //   this.ticketIdNo = params.get('id');
+    //   console.log(this.ticketIdNo)
+    // })
 
-    this.getTicketDetails(this.ticketIdNo)
+    // this.getTicketDetails(this.ticketIdNo)
   }
 
-  getTicketDetails(id:any){
-    this.grievanceServiceService.getTicketById(id).subscribe((data)=>{
-      console.log('ddd',data)
-      this.ticketDetails = data
-    })
+  // getTicketDetails(id:any){
+  //   this.grievanceServiceService.getTicketById(id).subscribe((data)=>{
+  //     console.log('ddd',data)
+  //     this.ticketDetails = data
+  //   })
    
-  }
+  // }
 
 
 
   createForm() {
     this.grievanceResolutionForm = this.formBuilder.group({
       description: new FormControl('', [Validators.required]),
-      attachments: new FormControl('', [Validators.required])
+      attachments: new FormControl([], [Validators.required])
     }) 
   }
 
@@ -147,12 +151,23 @@ export class GrievanceDetailsComponent {
     this.files.splice(index, 1);
     if(this.files.length === 0) {
       this.grievanceResolutionForm.patchValue({
-        attachments: ''
+        attachments: []
       })
     }
   }
 
   submitResolution(value: any) {
     console.log(value);
+  }
+
+  getTicketById() {
+    this.grievanceServiceService.getTicketsById(this.id).subscribe({
+      next:(res) => {
+        console.log(res);
+      },
+      error: (err) => {
+        // Handle the error here in case of login failure
+      }
+    })
   }
 }
