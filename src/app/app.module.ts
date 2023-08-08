@@ -12,6 +12,7 @@ import { SharedModule } from './shared';
 import { CoreModule } from './core/core.module';
 import { GrievanceModulesModule } from './modules/grievance-modules/grievance-modules.module';
 import { ReactiveFormsModule } from '@angular/forms';
+import { ToastrModule } from 'ngx-toastr';
 
 
 
@@ -31,7 +32,8 @@ import { ReactiveFormsModule } from '@angular/forms';
     SharedModule,
     ReactiveFormsModule,
     CoreModule,
-    GrievanceModulesModule
+    GrievanceModulesModule,
+    ToastrModule.forRoot()
   ],
   providers: [],
   bootstrap: [AppComponent]
