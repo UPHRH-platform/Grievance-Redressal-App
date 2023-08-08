@@ -2,6 +2,8 @@ import { AfterViewInit, Component, EventEmitter, Input, Output, ViewChild } from
 import { MatTableDataSource } from '@angular/material/table';
 import {MatPaginator} from '@angular/material/paginator';
 import {MatSort, Sort} from '@angular/material/sort';
+import { ConfigService, getRole } from '../..';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 export interface TableProps {
   id?: string;
   code?: string;
@@ -43,6 +45,9 @@ export class SharedTableComponent implements AfterViewInit {
   cols!: TableColumn[];
 
   displayedColumns: Array<string> = [];
+  isFilter:boolean = false;
+  grievancesTypes: any[] = [];
+  filterForm:FormGroup
   //dataSource: MatTableDataSource<[any]> = new MatTableDataSource();
   public dataSource = new MatTableDataSource([]);
  // dataSource = new MatTableDataSource([])
@@ -62,7 +67,14 @@ export class SharedTableComponent implements AfterViewInit {
   @Output() toggleData: EventEmitter<any>= new EventEmitter<any>();
 
 
-  constructor() {}
+  constructor( private configService: ConfigService) {
+    this.grievancesTypes = this.configService.dropDownConfig.GRIEVANCE_TYPES;
+    this.filterForm = new FormGroup({
+      grievanceType: new FormControl('',Validators.required),
+      startDate: new FormControl(''),
+      endDate:new FormControl('')
+    })
+  }
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
@@ -79,6 +91,10 @@ export class SharedTableComponent implements AfterViewInit {
       if (this.dataSource.paginator) {
         this.dataSource.paginator.firstPage();
       }
+    }
+
+    toggleFilter(){
+    this.isFilter = !this.isFilter
     }
 
     onRowClick(e: Event){
@@ -107,4 +123,13 @@ export class SharedTableComponent implements AfterViewInit {
     onToggleChange(e:any){
       this.toggleData.emit(e);
     }
+    getUserRole(roleName: string) {
+      return getRole(roleName);
+     }
+
+     grievanceSelected(e:any){
+     }
+     ApplyFilter(value:any){
+      console.log(value)
+     }
 }
