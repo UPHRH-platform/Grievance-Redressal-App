@@ -65,7 +65,7 @@
                         <mat-form-field appearance="outline" class="text-class">
                             <mat-label>Role</mat-label>
                             <mat-select formControlName="role">
-                              <mat-option *ngFor="let item of roleList" [value]="item">{{getUserRole(item)}}</mat-option>
+                              <mat-option *ngFor="let item of roleList" [value]="item.name">{{getUserRole(item.name)}}</mat-option>
                             </mat-select>
                             <mat-error *ngIf="role && role.invalid && role.touched">please select role</mat-error>
 

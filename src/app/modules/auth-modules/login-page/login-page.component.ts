@@ -35,12 +35,23 @@ isOtpForm:boolean = false;
   }
 
   signInForm(){
-    console.log(this.loginForm);
     const {emailId, password} = this.loginForm.value;
     this.authService.login(emailId, password).subscribe({
       next: (res) => {
        this.authService.saveUserData(res.responseData);
+       this.getAllRoles();
        this.router.navigate(['home']);
+      },
+      error: (err) => {
+        // Handle the error here in case of login failure
+      }
+    });
+  }
+
+  getAllRoles(){
+    this.authService.getAllRoles().subscribe({
+      next: (res) => {
+       this.authService.saveAllRoles(res.responseData);
       },
       error: (err) => {
         // Handle the error here in case of login failure

@@ -19,6 +19,14 @@ export class UserService extends HttpService{
     return this.get(reqParam);
   } 
 
+  createOrUpdateUser(userDetails: any): Observable<ServerResponse>  {
+    const  reqParam: RequestParam = { 
+      url: this.configService.urlConFig.URLS.CREATE_UPDATE_USER,
+      data: userDetails
+    }
+    return this.post(reqParam);
+  }
+
   // Implement methods for other roles (e.g., isGrievanceNodal(), isNodalOfficer(), isSecretary())
 }
 
