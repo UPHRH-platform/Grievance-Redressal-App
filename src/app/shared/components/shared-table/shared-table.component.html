@@ -101,14 +101,15 @@
                           <span>Edit</span>
                         </button>
                         <button mat-menu-item >
-                            <mat-slide-toggle (change)="onToggleChange(element)">
-                              </mat-slide-toggle>
-                          <span>Deactivate</span>
+                            <mat-slide-toggle (change)="onToggleChange(element)" [color]="primary"
+                            [checked]="!element.isActive">
+                                Deactivate
+                            </mat-slide-toggle>
                         </button>
-                        <button mat-menu-item (click)="onClickDelete(element)">
+                        <!-- <button mat-menu-item (click)="onClickDelete(element)">
                             <mat-icon>delete</mat-icon>
-                            <span>Delete</span>
-                          </button>
+                            <span>Delete</span> 
+                         </button> -->
                       </mat-menu>
 
 
@@ -123,6 +124,6 @@
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
 
-    <mat-paginator *ngIf="isPageable" [pageSizeOptions]="[10, 20, 50]" showFirstLastButtons aria-label="Select page..">
+    <mat-paginator *ngIf="isPageable" [pageSizeOptions]="[10,20,50]" showFirstLastButtons aria-label="Select page..">
     </mat-paginator>
 </div>

@@ -11,6 +11,7 @@ export class AuthService extends HttpService{
   override baseUrl: string;
   private readonly TOKEN_KEY = 'access_token';
   private readonly USER_DATA = "user_data";
+  private readonly ALL_ROLES = "all_roles";
 
   constructor(http: HttpClient, private configService: ConfigService,) {
     super(http);
@@ -66,7 +67,13 @@ export class AuthService extends HttpService{
     return [this.configService.rolesConfig.ROLES.ADMIN];
   }
 
- 
+  getAllRoles(): Observable<ServerResponse> {
+    return this.get({url: this.configService.urlConFig.URLS.GET_ALL_ROLES});
+  }
+
+  saveAllRoles(roles: any): void {
+    sessionStorage.setItem(this.ALL_ROLES,JSON.stringify(roles));
+  }
 
   saveUserData(userData: any):void {
     this.saveToken(userData?.authToken);
@@ -89,6 +96,7 @@ export class AuthService extends HttpService{
   logout(): void {
     sessionStorage.removeItem(this.TOKEN_KEY);
     sessionStorage.removeItem(this.USER_DATA);
+    sessionStorage.removeItem(this.ALL_ROLES);
   }
 
   isLoggedIn(): boolean{

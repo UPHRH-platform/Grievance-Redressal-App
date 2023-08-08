@@ -8,7 +8,7 @@
         <h2 class="user-text-heading">{{isEditUser ? 'Edit User Details' : 'Create user'}}</h2>
         <div class="action-btns">
         <button  type="button" mat-raised-button  (click)="navigateToHome()" class="mr1">Cancel</button>
-        <button type="submit" mat-raised-button color="primary" [disabled]="!userForm.valid">Save</button>
+        <button type="submit" mat-raised-button color="primary" [disabled]="!userForm.valid || isProcessing">Save</button>
        </div> 
      </div>
      <div class="form-container">
@@ -65,7 +65,7 @@
                         <mat-form-field appearance="outline" class="text-class">
                             <mat-label>Role</mat-label>
                             <mat-select formControlName="role">
-                              <mat-option *ngFor="let item of roleList" [value]="item">{{getUserRole(item)}}</mat-option>
+                              <mat-option *ngFor="let item of roleList" [value]="item.name">{{getUserRole(item.name)}}</mat-option>
                             </mat-select>
                             <mat-error *ngIf="role && role.invalid && role.touched">please select role</mat-error>
 

@@ -2,7 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BreadcrumbItem } from 'src/app/shared';
-import { getRole } from 'src/app/shared';
+import { getRole, getAllRoles, getRoleObject } from 'src/app/shared';
+import { AuthService } from 'src/app/core';
+import { UserService } from '../../services/user.service';
+import { ToastrServiceService } from 'src/app/shared/services/toastr/toastr.service';
+
 
 @Component({
   selector: 'app-user-form',
@@ -13,11 +17,11 @@ export class UserFormComponent implements OnInit {
   userForm: FormGroup
   isUsertable: boolean = true;
   statusList:any[]=['Active', 'Inactive']
-  roleList:any[]=[
-    'NODALOFFICER','GRIEVANCEADMIN', 'SUPERADMIN'
-  ];
+  roleList:any[]= getAllRoles();
   userDetails:any;
   isEditUser:boolean = false;
+  loggedInUserData: any;
+  isProcessing: boolean = false;
   breadcrumbItems: BreadcrumbItem[] = [
     { label: 'Grievance Management', url: '/home' },
     { label: 'User List', url: '/user-manage' },
@@ -26,18 +30,23 @@ export class UserFormComponent implements OnInit {
 
 
   constructor(private router: Router,
-    private route: ActivatedRoute){
+    private route: ActivatedRoute,
+    private authService: AuthService,
+    private userService: UserService,
+    private toastrService: ToastrServiceService 
+    ){
     this.userForm = new FormGroup({
-    firstName: new FormControl('', Validators.required),
-    lastName: new FormControl('', Validators.required),
-    username: new FormControl('',[Validators.required, Validators.email]),
-    phone:  new FormControl('', Validators.required),
-    role: new FormControl('', Validators.required),
-    status: new FormControl('', Validators.required)
-    })
+      firstName: new FormControl('', Validators.required),
+      lastName: new FormControl('', Validators.required),
+      username: new FormControl('',[Validators.required, Validators.email]),
+      phone:  new FormControl('', Validators.required),
+      role: new FormControl('', Validators.required),
+      status: new FormControl('', Validators.required)
+    });
   }
 
   ngOnInit(): void {
+    this.loggedInUserData = this.authService.getUserData();
     this.route.queryParams.subscribe((data)=>{
       this.userDetails = data;
       if(Object.keys(this.userDetails).length){
@@ -78,19 +87,74 @@ export class UserFormComponent implements OnInit {
     return this.userForm.get('role')
   }
 
-  addUserFn(){
-    this.isUsertable = false;
-  }
   navigateToHome(){
     this.router.navigate(['user-manage'])
   }
 
-  onSubmit(){
-    console.log(this.userForm.value)
-  }
-
   getUserRole(roleName: string) {
    return getRole(roleName);
+  }
+
+  onSubmit(){
+    console.log("user details",  this.userForm.value);
+    if( this.isEditUser) {
+      this.updateUser();
+    } else {
+      this.addUser();
+    }
+    console.log(this.userForm.value)
+  }
+  
+  updateUser() {
+    const {firstName, lastName, phone, role, status, username} = this.userForm.value;
+    const {id } = this.userDetails;
+    const userDetails = {
+      name: `${firstName} ${lastName}`,
+      username,
+      phone,
+      isActive: status == 'Active' ? true : false,
+      roles: [getRoleObject(role)],
+      id,
+      updatedBy: this.loggedInUserData.userId,
+    }
+    this.isProcessing = true;
+    this.userService.createOrUpdateUser(userDetails).subscribe({
+      next: (res) => {
+        this.userDetails = res.responseData;
+        this.toastrService.showToastr("User updated successfully!", 'Success', 'success', '');
+        this.isProcessing= false;
+     },
+     error: (err) => {
+      this.toastrService.showToastr(err, 'Error', 'error', '');
+      this.isProcessing= false;
+       // Handle the error here in case of login failure
+     }}
+    );
+  }
+
+  addUser() {
+    const {firstName, lastName, phone, role, status, username} = this.userForm.value;
+    const userDetails = {
+      name: `${firstName} ${lastName}`,
+      username,
+      phone,
+      isActive: status == 'Active' ? true : false,
+      roles: [getRoleObject(role)],
+      orgId: 1
+    }
+    this.isProcessing= true;
+    this.userService.createOrUpdateUser(userDetails).subscribe({
+      next: (res) => {
+        this.userDetails = res.responseData;
+        this.toastrService.showToastr("User add successfully!", 'Success', 'success', '');
+        this.isProcessing= false;
+     },
+     error: (err) => {
+      this.toastrService.showToastr(err, 'Error', 'error', '');
+      this.isProcessing= false;
+       // Handle the error here in case of login failure
+     }}
+    );
   }
 
 }

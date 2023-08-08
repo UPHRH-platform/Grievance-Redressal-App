@@ -18,3 +18,14 @@ export const getRole = (roleName: string) : string => {
       }
     return role;
 }
+
+export const getAllRoles = () => {
+    const roles = sessionStorage.getItem('all_roles') ? sessionStorage.getItem('all_roles') : "[]";
+    const allRoles: any[] = roles ? JSON.parse(roles) : [];
+    return allRoles;
+}
+
+export const getRoleObject = (roleCode: string) => {
+    const allRoles = getAllRoles();
+    return allRoles.find(role => role.name === roleCode);
+}
