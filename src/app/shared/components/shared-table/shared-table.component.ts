@@ -4,6 +4,7 @@ import {MatPaginator} from '@angular/material/paginator';
 import {MatSort, Sort} from '@angular/material/sort';
 import { ConfigService, getRole } from '../..';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { AuthService } from 'src/app/core';
 export interface TableProps {
   id?: string;
   code?: string;
@@ -47,6 +48,7 @@ export class SharedTableComponent implements AfterViewInit {
   displayedColumns: Array<string> = [];
   isFilter:boolean = false;
   grievancesTypes: any[] = [];
+  userRole:string;
   filterForm:FormGroup
   //dataSource: MatTableDataSource<[any]> = new MatTableDataSource();
   public dataSource = new MatTableDataSource([]);
@@ -67,7 +69,8 @@ export class SharedTableComponent implements AfterViewInit {
   @Output() toggleData: EventEmitter<any>= new EventEmitter<any>();
 
 
-  constructor( private configService: ConfigService) {
+  constructor( private configService: ConfigService,
+    private authService: AuthService) {
     this.grievancesTypes = this.configService.dropDownConfig.GRIEVANCE_TYPES;
     this.filterForm = new FormGroup({
       grievanceType: new FormControl('',Validators.required),
@@ -83,6 +86,7 @@ export class SharedTableComponent implements AfterViewInit {
 
   ngOnInit(): void {
     this.displayedColumns = this.tableColumns?.map((tableColumn:any) => tableColumn.columnDef);
+    this.userRole = this.authService.getUserRoles()[0];
   }
 
     applyFilter(filterValue: string) {

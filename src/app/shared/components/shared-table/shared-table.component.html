@@ -6,7 +6,7 @@
             </mat-form-field>
         </div>
        
-        <div class="ml2" class="filter-container">
+        <div class="ml2" class="filter-container" *ngIf="userRole == 'Secretary'">
             <div (click)="toggleFilter()">
                 <mat-icon class="icon-class" fontIcon="filter_list_alt"></mat-icon>
                 <mat-label class="">Filter</mat-label>
