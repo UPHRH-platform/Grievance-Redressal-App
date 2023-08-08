@@ -74,6 +74,7 @@ export class ManageUserComponent implements OnInit {
        }});
      }
      this.users.splice(userIndex,1,event);
+     this.initializeColumns();
    })
   }
 
