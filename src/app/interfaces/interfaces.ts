@@ -25,11 +25,12 @@ export interface GrievancesTableData {
   }
 
   export interface DialogData {
-    examsTableColumns: [];
-    exams: [];
+    title: string;
+    content: any;
   }
 
   export interface userTableData {
+    id: number,
     name:string,
     username:string,
     phone:number,

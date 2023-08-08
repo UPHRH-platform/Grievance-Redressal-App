@@ -14,8 +14,8 @@ export class ConfirmationPopupComponent {
 
   }
 
-  onClose(){
-    this.dialogRef.close()
+  onClose(isConfirmed: boolean){
+    this.dialogRef.close(isConfirmed);
   }
 
 }

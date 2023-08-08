@@ -5,6 +5,7 @@ import { BreadcrumbItem } from 'src/app/shared';
 import { getRole, getAllRoles, getRoleObject } from 'src/app/shared';
 import { AuthService } from 'src/app/core';
 import { UserService } from '../../services/user.service';
+import { ToastrServiceService } from 'src/app/shared/services/toastr/toastr.service';
 
 
 @Component({
@@ -20,6 +21,7 @@ export class UserFormComponent implements OnInit {
   userDetails:any;
   isEditUser:boolean = false;
   loggedInUserData: any;
+  isProcessing: boolean = false;
   breadcrumbItems: BreadcrumbItem[] = [
     { label: 'Grievance Management', url: '/home' },
     { label: 'User List', url: '/user-manage' },
@@ -30,7 +32,8 @@ export class UserFormComponent implements OnInit {
   constructor(private router: Router,
     private route: ActivatedRoute,
     private authService: AuthService,
-    private userService: UserService
+    private userService: UserService,
+    private toastrService: ToastrServiceService 
     ){
     this.userForm = new FormGroup({
       firstName: new FormControl('', Validators.required),
@@ -114,11 +117,16 @@ export class UserFormComponent implements OnInit {
       id,
       updatedBy: this.loggedInUserData.userId,
     }
+    this.isProcessing = true;
     this.userService.createOrUpdateUser(userDetails).subscribe({
       next: (res) => {
         this.userDetails = res.responseData;
+        this.toastrService.showToastr("User updated successfully!", 'Success', 'success', '');
+        this.isProcessing= false;
      },
      error: (err) => {
+      this.toastrService.showToastr(err, 'Error', 'error', '');
+      this.isProcessing= false;
        // Handle the error here in case of login failure
      }}
     );
@@ -134,11 +142,16 @@ export class UserFormComponent implements OnInit {
       roles: [getRoleObject(role)],
       orgId: 1
     }
+    this.isProcessing= true;
     this.userService.createOrUpdateUser(userDetails).subscribe({
       next: (res) => {
         this.userDetails = res.responseData;
+        this.toastrService.showToastr("User add successfully!", 'Success', 'success', '');
+        this.isProcessing= false;
      },
      error: (err) => {
+      this.toastrService.showToastr(err, 'Error', 'error', '');
+      this.isProcessing= false;
        // Handle the error here in case of login failure
      }}
     );

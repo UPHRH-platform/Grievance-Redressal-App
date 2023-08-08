@@ -7,6 +7,7 @@ import { ConfirmationPopupComponent } from 'src/app/shared/components/confirmati
 import { BreadcrumbItem } from 'src/app/shared';
 import { UserService } from '../../services/user.service';
 import { getRole } from 'src/app/shared';
+import { ToastrServiceService } from 'src/app/shared/services/toastr/toastr.service';
 
 @Component({
   selector: 'app-manage-user',
@@ -25,15 +26,15 @@ export class ManageUserComponent implements OnInit {
   constructor(
     private router: Router,
     private dialog: MatDialog,
-    private userService: UserService 
+    private userService: UserService,
+    private toastrService: ToastrServiceService 
   ){
 
   }
 
   ngOnInit(): void {
-    this.getAllUsers()
-    this.initializeColumns()
-    
+    this.getAllUsers();
+    this.initializeColumns();
   }
 
   goToUserDetail(userDetail?:any){
@@ -48,16 +49,31 @@ export class ManageUserComponent implements OnInit {
 
   
   toggleUserStatus(event:any) {
+    console.log("Event receieved", event);
+    const status = event.isActive ? 'deactivate' : 'activate';
    const dialogRef = this.dialog.open(ConfirmationPopupComponent, {
-    data: {},
+    data: { title: `Are you sure you want to ${status} ?`},
     maxWidth:'400vw',
     maxHeight:'100vh',
     height:'30%',
     width:'30%',
     disableClose: true
    });
-   dialogRef.afterClosed().subscribe(result=>{
-    console.log('dialog closed')
+   let updatedUserData = {...event};
+   const userIndex = this.users.findIndex(user => user.id === updatedUserData.id);
+   dialogRef.afterClosed().subscribe(isConfirmed=>{
+     if(isConfirmed) {
+      updatedUserData.isActive = !event.isActive;
+      this.userService.createOrUpdateUser(updatedUserData).subscribe({
+        next: (res) => {
+          this.users.splice(userIndex,1,updatedUserData);
+       },
+       error: (err) => {  
+          this.users.splice(userIndex,1,event);
+         // Handle the error here in case of login failure
+       }});
+     }
+     this.users.splice(userIndex,1,event);
    })
   }
 
@@ -120,9 +136,10 @@ export class ManageUserComponent implements OnInit {
       next: (res) => {
         this.isDataLoading = false;
         this.users = res.responseData.map((user:userTableData) => {
-          const { name, username,  phone, isActive, roles } = user;
+          const { name, username,  phone, isActive, roles, id } = user;
           const role= roles[0].name;
           return {
+            id,
             name,
             username,
             phone,
@@ -133,7 +150,7 @@ export class ManageUserComponent implements OnInit {
       },
       error: (err) => {
         this.isDataLoading = false;
-        console.error(err);
+        this.toastrService.showToastr(err, 'Error', 'error', '');
         // Handle the error here in case of login failure
       }
     });
