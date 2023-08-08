@@ -39,7 +39,7 @@ const routes: Routes = [
         loadChildren :()=> import('./modules/grievance-modules/grievance-modules.module').then(m=>m.GrievanceModulesModule),
         canActivate: [AuthGuard, RoleContentGuard],
         data: {
-          allowedRoles: [Roles.GRIEVANCE_NODAL, Roles.NODAL_OFFICER, Roles.SECRETARY],
+          allowedRoles: [Roles.GRIEVANCE_NODAL, Roles.NODAL_OFFICER, Roles.SECRETARY, Roles.ADMIN],
         },
       },
       {

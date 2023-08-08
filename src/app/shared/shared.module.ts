@@ -26,7 +26,7 @@ import { ConfigService } from './services/config/config.service';
     CommonModule,
     MaterialModule,
     ReactiveFormsModule,
-    RouterModule
+    RouterModule,
   ],
   exports :
   [
