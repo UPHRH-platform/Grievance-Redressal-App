@@ -59,6 +59,17 @@ export class GrievanceServiceService extends HttpService {
     }
     return this.get(reqParam);
   }
+
+  updateTicket(request:object): Observable<ServerResponse> {
+    console.log(request);
+      const reqParam: RequestParam = {
+        url: this.configService.urlConFig.URLS.GRIEVANCE_TICKETS.UPDATE_TICKET,
+        data: {
+          ...request
+        }
+      }
+      return this.post(reqParam);
+  }
 }
 
 
