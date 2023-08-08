@@ -63,6 +63,7 @@ export class GrievanceDetailsComponent {
     //assign user role
     this.userRole = this.authService.getUserRoles()[0];
     this.createForm();
+    this.getTicketById();
     // this.route.paramMap.subscribe(params=>{
     //   this.ticketIdNo = params.get('id');
     //   console.log(this.ticketIdNo)
