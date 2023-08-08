@@ -37,64 +37,71 @@ export class GrievanceDetailsComponent {
   public grievanceAssignerformGroup: FormGroup;
   public grievanceResolutionForm: FormGroup;
   files: any[] = [];
+  id: string;
   breadcrumbItems: BreadcrumbItem[] = [
     { label: 'Grievance Management', url: '/home' },
     { label: 'Grievance List', url: '/grievance/manage-tickets' },
     { label: 'Grievance Details', url: '' },
   ];
-  currentTabName:string = ''
-  ticketDetails:any;
-  ticketIdNo:any;
+  currentTabName: string = ''
+  ticketDetails: any;
+  ticketIdNo: any;
+  ticketUpdateRequest:any;
 
-  constructor(private router: Router, private formBuilder: FormBuilder,private authService: AuthService,
-     private grievanceServiceService: GrievanceServiceService, private route: ActivatedRoute ) {
+  constructor(private router: Router, private formBuilder: FormBuilder, private authService: AuthService,
+    private grievanceServiceService: GrievanceServiceService, private route: ActivatedRoute) {
     this.formData = this.router?.getCurrentNavigation()?.extras.state;
+    this.route.params.subscribe((param) => {
+      this.id = param['id'];
+    })
   }
 
   ngOnInit() {
-    // this.initiateData();
+    this.initiateData();
     this.grievanceAssignerformGroup = this.formBuilder.group({
       grievanceOfficer: new FormControl('arun@awe.com', [Validators.required]),
     });
     //assign user role
     this.userRole = this.authService.getUserRoles()[0];
     this.createForm();
-    this.route.paramMap.subscribe(params=>{
-      this.ticketIdNo = params.get('id');
-      console.log(this.ticketIdNo)
-    })
+    this.getTicketById();
+    // this.route.paramMap.subscribe(params=>{
+    //   this.ticketIdNo = params.get('id');
+    //   console.log(this.ticketIdNo)
+    // })
 
-    this.getTicketDetails(this.ticketIdNo)
+    // this.getTicketDetails(this.ticketIdNo)
+    this.getTicketById()
   }
 
-  getTicketDetails(id:any){
-    this.grievanceServiceService.getTicketById(id).subscribe((data)=>{
-      console.log('ddd',data)
-      this.ticketDetails = data
-    })
-   
-  }
+  // getTicketDetails(id:any){
+  //   this.grievanceServiceService.getTicketById(id).subscribe((data)=>{
+  //     console.log('ddd',data)
+  //     this.ticketDetails = data
+  //   })
+
+  // }
 
 
 
   createForm() {
     this.grievanceResolutionForm = this.formBuilder.group({
       description: new FormControl('', [Validators.required]),
-      attachments: new FormControl('', [Validators.required])
-    }) 
+      attachments: new FormControl([], [Validators.required])
+    })
   }
 
   initiateData() {
     console.log(this.formData.data);
     this.listOfFiles = this.formData.data.attachedDocs;
-    this.ticketId= this.formData.data.id;
-    this.creationTime= this.formData.data.creationTime;
-    this.escalationTime= this.formData.data.escalationTime;
-    this.grievanceRaiser= this.formData.data.grievanceRaiser;
-    this.grievanceType= this.formData.data.raiserType;
-    this.userType= this.formData.data.userType;
-    this.desc= this.formData.data.description;
-    this.currentTabName=this.formData?.data?.tabName
+    this.ticketId = this.formData.data.id;
+    this.creationTime = this.formData.data.creationTime;
+    this.escalationTime = this.formData.data.escalationTime;
+    this.grievanceRaiser = this.formData.data.grievanceRaiser;
+    this.grievanceType = this.formData.data.raiserType;
+    this.userType = this.formData.data.userType;
+    this.desc = this.formData.data.description;
+    this.currentTabName = this.formData?.data?.tabName
   }
   grievanceOfficerSelected(e: any) {
     this.grievanceAssignerformGroup.controls['grievanceOfficer'].disable();
@@ -104,7 +111,7 @@ export class GrievanceDetailsComponent {
     this.selectedOfficer = '';
     this.grievanceAssignerformGroup.controls['grievanceOfficer'].enable();
   }
-  previewSelectedFile() {}
+  previewSelectedFile() { }
 
   handleFileUpload(event: any) {
     this.fileUploadError = '';
@@ -145,14 +152,82 @@ export class GrievanceDetailsComponent {
   removeSelectedFile(index: any) {
     this.listOfFiles.splice(index, 1);
     this.files.splice(index, 1);
-    if(this.files.length === 0) {
+    if (this.files.length === 0) {
       this.grievanceResolutionForm.patchValue({
-        attachments: ''
+        attachments: []
       })
     }
   }
 
   submitResolution(value: any) {
     console.log(value);
+  }
+
+  getTicketById() {
+    this.grievanceServiceService.getTicketsById(this.id).subscribe({
+      next: (res) => {
+        console.log(res);
+      },
+      error: (err) => {
+        // Handle the error here in case of login failure
+      }
+    })
+  }
+
+  handleClick(params:any) {
+    this.ticketUpdateRequest = {
+      // "priority":"p1",
+      // "assignedTo":2,
+      // "cc": [1],
+      "notes":"Priority is changed from P3 to P1",
+      "description": "Holiday list is not displaying",
+      "active":true,
+      "id":1
+    }
+    switch(params) {
+      case 'markjunk': 
+        this.ticketUpdateRequest = {
+          ...this.ticketUpdateRequest,
+          isJunk:true
+        }
+        break;
+      case 'reopen': 
+      this.ticketUpdateRequest = {
+        ...this.ticketUpdateRequest,
+        status: "Open",
+      }
+      break;
+      // this is failing
+      case 'nudge': 
+      this.ticketUpdateRequest = {
+        ...this.ticketUpdateRequest,
+        priority: "p1"
+      }
+      break;
+      case 'markothers': 
+      this.ticketUpdateRequest = {
+        ...this.ticketUpdateRequest,
+        "cc":[],
+      }
+      break;
+      case 'unjunk': 
+      this.ticketUpdateRequest = {
+        ...this.ticketUpdateRequest,
+        "isJunk": false
+      }
+      break;
+      default: 
+      this.ticketUpdateRequest = {
+        ...this.ticketUpdateRequest,
+      }
+      break;
+    }
+    this.updateTicketDetails();
+  }
+
+  updateTicketDetails() {
+    this.grievanceServiceService.updateTicket(this.ticketUpdateRequest).subscribe((data)=>{
+      console.log(data)
+    })
   }
 }

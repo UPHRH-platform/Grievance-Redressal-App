@@ -15,13 +15,13 @@ export class UserService extends HttpService{
   }
 
   getAllUsers(): Observable<ServerResponse>  {
-    const  reqParam: RequestParam = { url: this.configService.urlConFig.URLS.GET_ALL_USERS}
+    const  reqParam: RequestParam = { url: this.configService.urlConFig.URLS.USER.GET_ALL_USERS}
     return this.get(reqParam);
   } 
 
   createOrUpdateUser(userDetails: any): Observable<ServerResponse>  {
     const  reqParam: RequestParam = { 
-      url: this.configService.urlConFig.URLS.CREATE_UPDATE_USER,
+      url: this.configService.urlConFig.URLS.USER.CREATE_UPDATE_USER,
       data: userDetails
     }
     return this.post(reqParam);
