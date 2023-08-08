@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/core';
+import { ToastrServiceService } from 'src/app/shared/services/toastr/toastr.service';
 
 
 @Component({
@@ -14,7 +15,7 @@ loginForm: FormGroup;
 otpForm:FormGroup;
 isEnableOtpLogin:boolean = false;
 isOtpForm:boolean = false;
-  constructor(private router:Router, private authService: AuthService){
+  constructor(private router:Router, private authService: AuthService, private toastrService: ToastrServiceService){
     this.loginForm = new FormGroup({
       emailId: new FormControl('', [Validators.email, Validators.required]),
       password: new FormControl('',Validators.required)
@@ -43,6 +44,7 @@ isOtpForm:boolean = false;
        this.router.navigate(['home']);
       },
       error: (err) => {
+        this.toastrService.showToastr(err, 'Error', 'error', '');
         // Handle the error here in case of login failure
       }
     });
