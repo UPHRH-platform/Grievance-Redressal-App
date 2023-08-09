@@ -21,6 +21,7 @@ export class GrievanceManagementComponent  {
   userRole: string;
   tabs: any[] = [];
   selectedTab:any=null;
+  responseLength: number;
   breadcrumbItems: BreadcrumbItem[] = [
     { label: 'Grievance Management', url: '/home' },
     { label: 'Grievance List', url: 'grievance/manage-tickets' },
@@ -40,9 +41,8 @@ export class GrievanceManagementComponent  {
 
   ngOnInit(): void {
     this.userRole = this.authService.getUserRoles()[0];
-    console.log(this.userRole)
     this.initializeTabs();
-    this.getTicketsRequestObject();
+    // this.getTicketsRequestObject();
   }
 
   initializeTabs(): void {
@@ -63,47 +63,46 @@ export class GrievanceManagementComponent  {
     //Initialize column as per user Role
     this.initializeColumns();
     //Fetch grievances as per user  role
-    this.getgrievances();
     this.getTicketsRequestObject();
   }
 
   initializeColumns(): void {
     this.grievancesTableColumns = [
       {
-        columnDef: 'id',
+        columnDef: 'ticketId',
         header: 'ID',
         isSortable: true,
-        cell: (element: Record<string, any>) => `${element['id']}`
+        cell: (element: Record<string, any>) => `${element['ticketId']}`
       },
       {
         columnDef: 'grievanceRaiser',
         header: 'Grievance Raiser',
         isSortable: true,
-        cell: (element: Record<string, any>) => `${element['grievanceRaiser']}`
+        cell: (element: Record<string, any>) => `${element['firstName'] + ' ' + element['lastName']}`
       },
       {
-        columnDef: 'userType',
+        columnDef: 'requesterType',
         header: 'User Type',
         isSortable: true,
-        cell: (element: Record<string, any>) => `${element['userType']}`
+        cell: (element: Record<string, any>) => `${element['requesterType']}`
       },
       {
-        columnDef: 'raiserType',
+        columnDef: 'assignedToName',
         header: 'Raiser Type',
         isSortable: true,
-        cell: (element: Record<string, any>) => `${element['raiserType']}`
+        cell: (element: Record<string, any>) => `${element['assignedToName']}`
       },
       {
-        columnDef: 'creationTime',
+        columnDef: 'createdDate',
         header: 'Creation Time',
         isSortable: true,
-        cell: (element: Record<string, any>) => `${element['creationTime']}`
+        cell: (element: Record<string, any>) => `${element['createdDate']}`
       },
       {
-        columnDef: 'escalationTime',
+        columnDef: 'escalatedDate',
         header: 'Escalation time',
         isSortable: true,
-        cell: (element: Record<string, any>) => `${element['escalationTime']}`
+        cell: (element: Record<string, any>) => `${element['escalatedDate']}`
       },
       {
         columnDef: 'isLink',
@@ -116,149 +115,149 @@ export class GrievanceManagementComponent  {
     ];
   }
 
-  getgrievances() {
-    this.isDataLoading = true;
-    setTimeout(() => {
-      this.isDataLoading = false;
-    }, 2000);
-    this.grievances = [
-      {
-        id: "340",
-        grievanceRaiser: 'Kalpana Shrivastav',
-        userType:'Institue',
-        status:"Not-Assigned",
-        raiserType:'Affiliation',
-        creationTime: "23-06-2023",
-        escalationTime: "23-12-2023",
-        description: "This is a lorem ipsum description which is pretty much large enough to test a description.This is a lorem ipsum description which is pretty much large enough to test a description",
-        attachedDocs:["Doc 1","Doc2"]
-      },
-      {
-        id: "327",
-        grievanceRaiser: 'Devpratap Nagendra',
-        userType:'Candiadate',
-        raiserType:'Others',
-        status:"Not-Assigned",
-        creationTime: "23-06-2023",
-        escalationTime: "23-12-2023",
-        description: "This is a lorem ipsum description which is pretty much large enough to test a description",
-        attachedDocs:["Doc 1","Doc2"]
-      },
-      {
-        id: "336",
-        grievanceRaiser: 'Mani Charri',
-        userType:'Candiadate',
-        status:"Not-Assigned",
-        raiserType:'Others',
-        creationTime: "23-06-2023",
-        escalationTime: "23-12-2023",
-        description: "This is a lorem ipsum description which is pretty much large enough to test a description"
+  // getgrievances() {
+  //   this.isDataLoading = true;
+  //   setTimeout(() => {
+  //     this.isDataLoading = false;
+  //   }, 2000);
+  //   // this.grievances = [
+  //   //   {
+  //   //     id: "340",
+  //   //     grievanceRaiser: 'Kalpana Shrivastav',
+  //   //     userType:'Institue',
+  //   //     status:"Not-Assigned",
+  //   //     raiserType:'Affiliation',
+  //   //     creationTime: "23-06-2023",
+  //   //     escalationTime: "23-12-2023",
+  //   //     description: "This is a lorem ipsum description which is pretty much large enough to test a description.This is a lorem ipsum description which is pretty much large enough to test a description",
+  //   //     attachedDocs:["Doc 1","Doc2"]
+  //   //   },
+  //   //   {
+  //   //     id: "327",
+  //   //     grievanceRaiser: 'Devpratap Nagendra',
+  //   //     userType:'Candiadate',
+  //   //     raiserType:'Others',
+  //   //     status:"Not-Assigned",
+  //   //     creationTime: "23-06-2023",
+  //   //     escalationTime: "23-12-2023",
+  //   //     description: "This is a lorem ipsum description which is pretty much large enough to test a description",
+  //   //     attachedDocs:["Doc 1","Doc2"]
+  //   //   },
+  //   //   {
+  //   //     id: "336",
+  //   //     grievanceRaiser: 'Mani Charri',
+  //   //     userType:'Candiadate',
+  //   //     status:"Not-Assigned",
+  //   //     raiserType:'Others',
+  //   //     creationTime: "23-06-2023",
+  //   //     escalationTime: "23-12-2023",
+  //   //     description: "This is a lorem ipsum description which is pretty much large enough to test a description"
      
-      },
-      {
-        id: "335",
-        grievanceRaiser: 'Geethesh Misra',
-        userType:'Candiadate',
-        status:"Not-Assigned",
-        raiserType:'Others',
-        creationTime: "23-06-2023",
-        escalationTime: "23-12-2023",
-        description: "This is a lorem ipsum description which is pretty much large enough to test a description"
+  //   //   },
+  //   //   {
+  //   //     id: "335",
+  //   //     grievanceRaiser: 'Geethesh Misra',
+  //   //     userType:'Candiadate',
+  //   //     status:"Not-Assigned",
+  //   //     raiserType:'Others',
+  //   //     creationTime: "23-06-2023",
+  //   //     escalationTime: "23-12-2023",
+  //   //     description: "This is a lorem ipsum description which is pretty much large enough to test a description"
      
-      },
-      {
-        id: "334",
-        grievanceRaiser: 'Vinodini Vaishnav',
-        userType:'Candiadate',
-        status:"Not-Assigned",
-        raiserType:'Others',
-        creationTime: "23-06-2023",
-        escalationTime: "23-12-2023",
-        description: "This is a lorem ipsum description which is pretty much large enough to test a description"
+  //   //   },
+  //   //   {
+  //   //     id: "334",
+  //   //     grievanceRaiser: 'Vinodini Vaishnav',
+  //   //     userType:'Candiadate',
+  //   //     status:"Not-Assigned",
+  //   //     raiserType:'Others',
+  //   //     creationTime: "23-06-2023",
+  //   //     escalationTime: "23-12-2023",
+  //   //     description: "This is a lorem ipsum description which is pretty much large enough to test a description"
      
-      },
-      {
-        id: "333",
-        grievanceRaiser: 'Apporva Nautiyal',
-        userType:'Candiadate',
-        status:"Not-Assigned",
-        raiserType:'Others',
-        creationTime: "23-06-2023",
-        escalationTime: "23-12-2023",
-        description: "This is a lorem ipsum description which is pretty much large enough to test a description"
+  //   //   },
+  //   //   {
+  //   //     id: "333",
+  //   //     grievanceRaiser: 'Apporva Nautiyal',
+  //   //     userType:'Candiadate',
+  //   //     status:"Not-Assigned",
+  //   //     raiserType:'Others',
+  //   //     creationTime: "23-06-2023",
+  //   //     escalationTime: "23-12-2023",
+  //   //     description: "This is a lorem ipsum description which is pretty much large enough to test a description"
      
-      },
-      {
-        id: "332",
-        grievanceRaiser: 'Nancy Jain',
-        userType:'Candiadate',
-        status:"Not-Assigned",
-        raiserType:'Others',
-        creationTime: "23-06-2023",
-        escalationTime: "23-12-2023",
-        description: "This is a lorem ipsum description which is pretty much large enough to test a description"
+  //   //   },
+  //   //   {
+  //   //     id: "332",
+  //   //     grievanceRaiser: 'Nancy Jain',
+  //   //     userType:'Candiadate',
+  //   //     status:"Not-Assigned",
+  //   //     raiserType:'Others',
+  //   //     creationTime: "23-06-2023",
+  //   //     escalationTime: "23-12-2023",
+  //   //     description: "This is a lorem ipsum description which is pretty much large enough to test a description"
      
-      },
-      {
-        id: "331",
-        grievanceRaiser: 'Deepak Sharma',
-        userType:'Candiadate',
-        status:"Not-Assigned",
-        raiserType:'Others',
-        creationTime: "23-06-2023",
-        escalationTime: "23-12-2023",
-        description: "This is a lorem ipsum description which is pretty much large enough to test a description"
+  //   //   },
+  //   //   {
+  //   //     id: "331",
+  //   //     grievanceRaiser: 'Deepak Sharma',
+  //   //     userType:'Candiadate',
+  //   //     status:"Not-Assigned",
+  //   //     raiserType:'Others',
+  //   //     creationTime: "23-06-2023",
+  //   //     escalationTime: "23-12-2023",
+  //   //     description: "This is a lorem ipsum description which is pretty much large enough to test a description"
      
-      },
-      {
-        id: "330",
-        grievanceRaiser: 'Usha Singh',
-        userType:'Candiadate',
-        status:"Not-Assigned",
-        raiserType:'Others',
-        creationTime: "23-06-2023",
-        escalationTime: "23-12-2023",
-        description: "This is a lorem ipsum description which is pretty much large enough to test a description"
+  //   //   },
+  //   //   {
+  //   //     id: "330",
+  //   //     grievanceRaiser: 'Usha Singh',
+  //   //     userType:'Candiadate',
+  //   //     status:"Not-Assigned",
+  //   //     raiserType:'Others',
+  //   //     creationTime: "23-06-2023",
+  //   //     escalationTime: "23-12-2023",
+  //   //     description: "This is a lorem ipsum description which is pretty much large enough to test a description"
      
-      },
-      {
-        id: "27",
-        grievanceRaiser: 'Kamlesh Pandey',
-        userType:'Candiadate',
-        status:"Not-Assigned",
-        raiserType:'Others',
-        creationTime: "23-06-2023",
-        escalationTime: "23-12-2023",
-        description: "This is a lorem ipsum description which is pretty much large enough to test a description"
+  //   //   },
+  //   //   {
+  //   //     id: "27",
+  //   //     grievanceRaiser: 'Kamlesh Pandey',
+  //   //     userType:'Candiadate',
+  //   //     status:"Not-Assigned",
+  //   //     raiserType:'Others',
+  //   //     creationTime: "23-06-2023",
+  //   //     escalationTime: "23-12-2023",
+  //   //     description: "This is a lorem ipsum description which is pretty much large enough to test a description"
      
-      },
-      {
-        id: "317",
-        grievanceRaiser: 'Pappiya Mukherjee',
-        userType:'Candiadate',
-        status:"Not-Assigned",
-        raiserType:'Others',
-        creationTime: "23-06-2023",
-        escalationTime: "23-12-2023",
-        description: "This is a lorem ipsum description which is pretty much large enough to test a description"
-      }
+  //   //   },
+  //   //   {
+  //   //     id: "317",
+  //   //     grievanceRaiser: 'Pappiya Mukherjee',
+  //   //     userType:'Candiadate',
+  //   //     status:"Not-Assigned",
+  //   //     raiserType:'Others',
+  //   //     creationTime: "23-06-2023",
+  //   //     escalationTime: "23-12-2023",
+  //   //     description: "This is a lorem ipsum description which is pretty much large enough to test a description"
+  //   //   }
      
-    ]; 
-  }
+  //   // ]; 
+  // }
 
   onTabChange(event: MatTabChangeEvent): void {
     // Here  we  have userrole and tab index with these 2 we know we need to fetch data for which tab of which user role so we pass relevant payload in get grievance service
     const selectedIndex = event.index;
     this.selectedTab = this.tabs[selectedIndex].name;
-    this.getgrievances();
+    // this.getgrievances();
     this.getTicketsRequestObject();
   }
 
   onClickItem(e: any) {
-    console.log(e?.id)
+    console.log(e?.ticketId)
     e.tabName= this.selectedTab
-    let id = parseInt(e?.id)
-    this.router.navigate(['/grievance/'+2], {state: {data: e}});
+    let id = parseInt(e?.ticketId)
+    this.router.navigate(['/grievance/'+ id], {state: {data: e}});
     // this.router.navigate(['/grievance',  2 ]);
    // this.router.navigate(['/grievance', e.id]);
   }
@@ -273,8 +272,8 @@ export class GrievanceManagementComponent  {
       "date": "",
       // "isJunk": true,
       // "priority": "HIGH, MEDIUM, LOW",
-      "offset": 1,
-      "size": -1,
+      "offset": this.pageIndex,
+      "size": 1,
       "sort":{
            "createdTimeTS": "asc"
       }
@@ -348,9 +347,13 @@ export class GrievanceManagementComponent  {
 
   /** integration */
   getAllTickets() {
+    this.isDataLoading = true;
     this.grievanceService.getAllTickets(this.getGrievancesRequest).subscribe({
       next: (res) => {
-        console.log(res.responseData);
+        this.isDataLoading = false;
+        console.log("response ===>, res", res);
+        this.responseLength = res.body.count;
+        this.grievances = res.body.data;
       },
       error: (err) => {
         // Handle the error here in case of Api failure
