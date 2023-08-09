@@ -30,13 +30,10 @@
                 </div>
                 <br />
             </div>
-            <div  mat-dialog-actions class="flex flex-row flex items-center">
-
-                <span class="flex flex-row items-center">
-                    <button class="bottom-0 align-bottom "  mat-stroked-button color="primary" (click)="onNoClick()">Cancel</button>
-                    <button  *ngIf="!otpSubitted" mat-stroked-button color="primary" (click)="onSubmit()">Submit</button>
-                </span>
-                </div>
+            <mat-dialog-actions align="end">
+                <button class="bottom-0 align-bottom "  mat-stroked-button (click)="onNoClick()">Cancel</button>
+                <button  *ngIf="!otpSubitted" mat-raised-button color="primary" (click)="onSubmit()">Submit</button>
+            </mat-dialog-actions >
         </form>
     </div>
 

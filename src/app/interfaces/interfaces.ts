@@ -39,6 +39,7 @@ export interface GrievancesTableData {
   export interface DialogData {
     title: string;
     content: any;
+    otpSubmitted?: boolean;
   }
 
   export interface userTableData {

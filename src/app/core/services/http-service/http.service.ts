@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { of as observableOf, Observable, throwError } from 'rxjs';
 import { mergeMap } from 'rxjs/operators';
-import { HttpOptions, RequestParam, ServerResponse } from 'src/app/shared';
+import { HttpOptions, RequestParam, ServerResponse, Response } from 'src/app/shared';
 
 @Injectable({
   providedIn: 'root',
@@ -27,7 +27,17 @@ export class HttpService {
     headers: requestParam.header ? requestParam.header : this.getHeader(),
     params: requestParam.param
   };
-  return this.http.get<ServerResponse>(this.baseUrl + requestParam.url, httpOptions);
+  return this.http.get<Response>(this.baseUrl + requestParam.url, httpOptions).pipe(
+    mergeMap((data: Response) => {
+      if (data.status !== 200) {
+        return throwError(() => new Error(data.error));
+      }
+      const serverRes: ServerResponse ={
+        statusInfo: {statusCode: 200, statusMessage: "success"},
+        responseData: data.body
+      }
+      return observableOf(serverRes);
+    }));
 }
 
    /**
@@ -39,12 +49,16 @@ export class HttpService {
       headers: requestParam.header ? this.getHeader(requestParam.header) : this.getHeader(),
       params: requestParam.param
     };
-    return this.http.post<ServerResponse>(this.baseUrl + requestParam.url, requestParam.data, httpOptions).pipe(
-      mergeMap((data: ServerResponse) => {
-        if (data.statusInfo.statusCode !== 200) {
-          return throwError(() => new Error(data.statusInfo?.errorMessage));
+    return this.http.post<Response>(this.baseUrl + requestParam.url, requestParam.data, httpOptions).pipe(
+      mergeMap((data: Response) => {
+        if (data.status !== 200) {
+          return throwError(() => new Error(data.error));
         }
-        return observableOf(data);
+        const serverRes: ServerResponse ={
+          statusInfo: {statusCode: 200, statusMessage: "success"},
+          responseData: data.body
+        }
+        return observableOf(serverRes);
       }));
   }
 
@@ -59,12 +73,16 @@ export class HttpService {
       headers: requestParam.header ? requestParam.header : this.getHeader(),
       params: requestParam.param
     };
-    return this.http.patch<ServerResponse>(this.baseUrl + requestParam.url, requestParam.data, httpOptions).pipe(
-      mergeMap((data: ServerResponse) => {
-        if (data.statusInfo.statusCode !== 200) {
-          return throwError(() => new Error(data.statusInfo?.errorMessage));
+    return this.http.patch<Response>(this.baseUrl + requestParam.url, requestParam.data, httpOptions).pipe(
+      mergeMap((data: Response) => {
+        if (data.status !== 200) {
+          return throwError(() => new Error(data.error));
         }
-        return observableOf(data);
+        const serverRes: ServerResponse ={
+          statusInfo: {statusCode: 200, statusMessage: "success"},
+          responseData: data.body
+        }
+        return observableOf(serverRes);
       }));
   }
 
@@ -78,12 +96,16 @@ export class HttpService {
       params: requestParam.param,
       body: requestParam.data
     };
-    return this.http.delete<ServerResponse> (this.baseUrl + requestParam.url, httpOptions).pipe(
-      mergeMap((data: ServerResponse) => {
-        if (data.statusInfo.statusCode !== 200) {
-          return throwError(() => new Error(data.statusInfo?.errorMessage));
+    return this.http.delete<Response> (this.baseUrl + requestParam.url, httpOptions).pipe(
+      mergeMap((data: Response) => {
+        if (data.status !== 200) {
+          return throwError(() => new Error(data.error));
         }
-        return observableOf(data);
+        const serverRes: ServerResponse ={
+          statusInfo: {statusCode: 200, statusMessage: "success"},
+          responseData: data.body
+        }
+        return observableOf(serverRes);
       }));
   }
 
@@ -96,12 +118,16 @@ export class HttpService {
       headers: requestParam.header,
       params: requestParam.param,
     };
-    return this.http.put<ServerResponse>(this.baseUrl + requestParam.url, requestParam.data, httpOptions).pipe(
-      mergeMap((data: ServerResponse) => {
-        if (data.statusInfo.statusCode !== 200) {
-          return throwError(() => new Error(data.statusInfo?.errorMessage));
+    return this.http.put<Response>(this.baseUrl + requestParam.url, requestParam.data, httpOptions).pipe(
+      mergeMap((data: Response) => {
+        if (data.status !== 200) {
+          return throwError(() => new Error(data.error));
         }
-        return observableOf(data);
+        const serverRes: ServerResponse ={
+          statusInfo: {statusCode: 200, statusMessage: "success"},
+          responseData: data.body
+        }
+        return observableOf(serverRes);
       }));
   }
 

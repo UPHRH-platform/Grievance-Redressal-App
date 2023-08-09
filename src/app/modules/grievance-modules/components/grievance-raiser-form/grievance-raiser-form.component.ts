@@ -24,7 +24,7 @@ export class GrievanceRaiserFormComponent {
   submitted = false;
   files: any[] = [];
   fileUploadError: string;
-
+  ticketDetails: any;
   grievancesTypes: any[] = [];
   userTypesArray = [
     'Candidate', 'Institute', 'Faculty', 'Others'
@@ -52,14 +52,14 @@ export class GrievanceRaiserFormComponent {
       email: new FormControl('', [
         Validators.required,
         Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")]),
-      mobNumber: new FormControl('', [
+      phone: new FormControl('', [
         Validators.required,
         Validators.pattern("^(0|91)?[6-9][0-9]{9}$")]),
       grievanceType: new FormControl('', [
         Validators.required]),
       userType: new FormControl('', [
         Validators.required]),
-      attachments: new FormControl('', ),
+      attachmentUrls: new FormControl('', ),
       description: new FormControl('', [Validators.required]),
 
     });
@@ -77,8 +77,8 @@ export class GrievanceRaiserFormComponent {
           return 'Email is required !!';
         }
         break;
-      case 'mobNumber':
-        if (this.grievanceRaiserformGroup.get('mobNumber')?.hasError('required')) {
+      case 'phone':
+        if (this.grievanceRaiserformGroup.get('phone')?.hasError('required')) {
           return 'Mobile number is required !!';
         }
         break;
@@ -179,9 +179,9 @@ export class GrievanceRaiserFormComponent {
   }
 
 
-  openBulkUploadDialog(): void {
+  openSharedDialog(otpSubmitted: boolean): void {
     const dialogRef = this.dialog.open(SharedDialogOverlayComponent, {
-      data: {},
+      data: {otpSubmitted},
       maxWidth: '400vw',
       maxHeight: '100vh',
       height: '50%',
@@ -190,39 +190,41 @@ export class GrievanceRaiserFormComponent {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
-      //this.animal = result;
+      console.log('The dialog was closed', result);
+      if(!!result) {
+        this.createTicket();
+      }
     });
   }
 
-  ongrievanceRaiserformSubmit(value: any) {
+  onSubmit(value: any) {
     console.log(value)
-    this.submitted = true;
-    if (this.grievanceRaiserformGroup.valid) {
-      const ticketDetails = {
-        "requestedBy": 1,
-        "name": value.name,
-        "email": value.email,
-        "userType": value.userType,
-        "phone": value.mobNumber,
-        "sourceId": 3,
-        "cc": [],
-        "description": value.description,
-        "helpdeskId": 1,
-        "appId": 1,
-        "appName": "grievance app",
-        "appKey": "6488a559-8e46-4a61-9410-bbe130710737"
-      }
-
-      this.grievanceService.createTicket(ticketDetails).subscribe({
-        next:(res) =>{
-          this.toastrService.showToastr("Ticket created successfully!", 'Success', 'success', '');
-        },
-        error: (err) =>{
-          this.toastrService.showToastr(err, 'Error', 'error', '');
-        }
-      });
-      // this.openBulkUploadDialog();
+    const {name, email, phone, grievanceType, userType, description } =  value;
+    this.ticketDetails = {
+      name,
+      email,
+      phone,
+      cc: [grievanceType],
+      userType,
+      description,
+      attachmentUrls: []
     }
+    this.openSharedDialog(false); 
+  }
+
+  createTicket() {
+    this.submitted = true;
+    this.grievanceService.createTicket(this.ticketDetails).subscribe({
+      next: (res) => {
+        this.toastrService.showToastr("Grievance ticket is created successfully!", 'Success', 'success', '');
+        this.submitted= false;
+        this.openSharedDialog(true);
+     },
+     error: (err) => {
+      this.toastrService.showToastr(err, 'Error', 'error', '');
+      this.submitted= false;
+       // Handle the error here in case of login failure
+     }
+    });  
   }
 }

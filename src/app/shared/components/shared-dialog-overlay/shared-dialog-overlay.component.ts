@@ -3,6 +3,9 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 import { DialogData } from '../../../interfaces/interfaces';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { OtpService } from 'src/app/core/services/otp-service/otp.service';
+import { forkJoin } from 'rxjs';
+import { ToastrServiceService,  } from 'src/app/shared/services/toastr/toastr.service';
 
 @Component({
   selector: 'app-shared-dialog-overlay',
@@ -18,8 +21,12 @@ export class SharedDialogOverlayComponent {
   constructor(
     private formBuilder: FormBuilder,
     public dialogRef: MatDialogRef<SharedDialogOverlayComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: DialogData
-  ) { }
+    @Inject(MAT_DIALOG_DATA) public data: DialogData,
+    private toastrService: ToastrServiceService,
+    private otpService: OtpService
+  ) { 
+    
+  }
 
 
   ongrievanceRaiserotpformSubmit(value: any) {
@@ -27,11 +34,24 @@ export class SharedDialogOverlayComponent {
   }
 
   ngOnInit() {
+    this.otpSubitted = !!this.data.otpSubmitted;
+    this.generateOtps();
     this.createForm();
   }
 
-  createForm() {
+  generateOtps() {
+    const otpRequests = [this.otpService.getEmailOtp(),this.otpService.getMobileOtp()];
+    forkJoin(otpRequests).subscribe({
+      next: (res) => {
+        console.log(res);
+      },
+      error: (error) => {
+        this.toastrService.showToastr(error, 'Error', 'error', '');
+      }
+    })
+  }
 
+  createForm() {
     this.grievanceRaiserOtpformGroup = this.formBuilder.group({
       mobileOTP: new FormControl('', [
         Validators.required,
@@ -45,13 +65,10 @@ export class SharedDialogOverlayComponent {
   onNoClick(): void {
     this.dialogRef.close();
   }
+
   onSubmit() {
     if (this.grievanceRaiserOtpformGroup.valid) {
-      this.submitOtp();
+      this.dialogRef.close(this.grievanceRaiserOtpformGroup.value);
     }
-  }
-
-  submitOtp() {
-    this.otpSubitted = true;
   }
 }
