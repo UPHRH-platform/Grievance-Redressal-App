@@ -12,6 +12,12 @@ export interface ServerResponse {
     responseData?: any;
 }
 
+export interface Response {
+    status: number;
+    body?: any;
+    error?: string;
+}
+
 export interface StatusInfo {
     statusCode: number;
     statusMessage: string;
