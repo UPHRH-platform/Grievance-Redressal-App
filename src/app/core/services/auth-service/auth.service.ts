@@ -64,7 +64,7 @@ export class AuthService extends HttpService{
       }
     }
     // return [role];
-    return [this.configService.rolesConfig.ROLES.ADMIN];
+    return [this.configService.rolesConfig.ROLES.SECRETARY];
   }
 
   getAllRoles(): Observable<ServerResponse> {

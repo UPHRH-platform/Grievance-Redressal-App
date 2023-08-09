@@ -9,6 +9,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from 'src/app/core';
 import { BreadcrumbItem } from 'src/app/shared';
 import { GrievanceServiceService } from '../../services/grievance-service.service';
+import { ToastrServiceService } from 'src/app/shared/services/toastr/toastr.service';
 
 @Component({
   selector: 'app-grievance-details',
@@ -38,6 +39,7 @@ export class GrievanceDetailsComponent {
   public grievanceResolutionForm: FormGroup;
   files: any[] = [];
   id: string;
+  userId:string;
   breadcrumbItems: BreadcrumbItem[] = [
     { label: 'Grievance Management', url: '/home' },
     { label: 'Grievance List', url: '/grievance/manage-tickets' },
@@ -49,7 +51,8 @@ export class GrievanceDetailsComponent {
   ticketUpdateRequest:any;
 
   constructor(private router: Router, private formBuilder: FormBuilder, private authService: AuthService,
-    private grievanceServiceService: GrievanceServiceService, private route: ActivatedRoute) {
+    private grievanceServiceService: GrievanceServiceService, private route: ActivatedRoute,
+    private toastrService: ToastrServiceService) {
     this.formData = this.router?.getCurrentNavigation()?.extras.state;
     this.route.params.subscribe((param) => {
       this.id = param['id'];
@@ -63,6 +66,8 @@ export class GrievanceDetailsComponent {
     });
     //assign user role
     this.userRole = this.authService.getUserRoles()[0];
+    this.userId= this.authService.getUserData().userId;
+    console.log('useData',this.userId)
     this.createForm();
     this.getTicketById();
     // this.route.paramMap.subscribe(params=>{
@@ -169,7 +174,8 @@ export class GrievanceDetailsComponent {
         console.log(res);
       },
       error: (err) => {
-        // Handle the error here in case of login failure
+        // Handle the error here in case of Api failure
+        this.toastrService.showToastr(err, 'Error', 'error', '');
       }
     })
   }
@@ -179,41 +185,46 @@ export class GrievanceDetailsComponent {
       // "priority":"p1",
       // "assignedTo":2,
       // "cc": [1],
-      "notes":"Priority is changed from P3 to P1",
-      "description": "Holiday list is not displaying",
-      "active":true,
-      "id":1
+      "requestedBy": this.userId,
+      // "notes":"Priority is changed from P3 to P1",
+      // "description": "Holiday list is not displaying",
+      // "active":true,
+      "id":this.id
     }
     switch(params) {
       case 'markjunk': 
         this.ticketUpdateRequest = {
           ...this.ticketUpdateRequest,
-          isJunk:true
+          isJunk:true,
+          status:'Closed'
+          
         }
         break;
       case 'reopen': 
       this.ticketUpdateRequest = {
         ...this.ticketUpdateRequest,
         status: "Open",
+        isJunk: false
       }
       break;
       // this is failing
       case 'nudge': 
       this.ticketUpdateRequest = {
         ...this.ticketUpdateRequest,
-        priority: "p1"
+        priority: "HIGH"
       }
       break;
       case 'markothers': 
       this.ticketUpdateRequest = {
         ...this.ticketUpdateRequest,
-        "cc":[],
+        "cc":[-1],
       }
       break;
       case 'unjunk': 
       this.ticketUpdateRequest = {
         ...this.ticketUpdateRequest,
-        "isJunk": false
+        "isJunk": false,
+        status:"Open"
       }
       break;
       default: 
@@ -226,8 +237,13 @@ export class GrievanceDetailsComponent {
   }
 
   updateTicketDetails() {
-    this.grievanceServiceService.updateTicket(this.ticketUpdateRequest).subscribe((data)=>{
-      console.log(data)
+    this.grievanceServiceService.updateTicket(this.ticketUpdateRequest).subscribe({
+      next: (res) =>{
+        console.log(res)
+        this.toastrService.showToastr("Ticket updated successfully!", 'Success', 'success', '');
+      },error: (err) =>{
+        this.toastrService.showToastr(err, 'Error', 'error', '');
+      }
     })
   }
 }

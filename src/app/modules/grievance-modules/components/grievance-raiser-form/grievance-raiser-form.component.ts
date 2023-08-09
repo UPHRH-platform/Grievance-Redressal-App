@@ -5,8 +5,7 @@ import { SharedDialogOverlayComponent } from '../../../../shared/components/shar
 import { MatDialog } from '@angular/material/dialog';
 import { GrievanceServiceService } from '../../services/grievance-service.service';
 import { ConfigService } from 'src/app/shared';
-import { ToastrServiceService,  } from 'src/app/shared/services/toastr/toastr.service';
-
+import { ToastrServiceService } from 'src/app/shared/services/toastr/toastr.service';
 
 @Component({
   selector: 'app-grievance-raiser-form',
