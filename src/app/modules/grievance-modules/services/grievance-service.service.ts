@@ -54,7 +54,7 @@ export class GrievanceServiceService extends HttpService {
 
   getTicketsById(id: string): Observable<ServerResponse> {
     const reqParam: RequestParam = {
-      url: `${this.configService.urlConFig.URLS.GRIEVANCE_TICKETS.URLS.GET_TICKET_BY_ID}${id}`,
+      url: `${this.configService.urlConFig.URLS.GRIEVANCE_TICKETS.GET_TICKET_BY_ID}${id}`,
       data: {}
     }
     return this.get(reqParam);

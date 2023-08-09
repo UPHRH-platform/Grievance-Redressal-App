@@ -7,7 +7,7 @@ import {
 } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from 'src/app/core';
-import { BreadcrumbItem } from 'src/app/shared';
+import { BreadcrumbItem, ConfigService } from 'src/app/shared';
 import { GrievanceServiceService } from '../../services/grievance-service.service';
 import { ToastrServiceService } from 'src/app/shared/services/toastr/toastr.service';
 
@@ -37,6 +37,7 @@ export class GrievanceDetailsComponent {
   ];
   public grievanceAssignerformGroup: FormGroup;
   public grievanceResolutionForm: FormGroup;
+  public assignGrievanceTypeForm:FormGroup;
   files: any[] = [];
   id: string;
   userId:string;
@@ -49,10 +50,13 @@ export class GrievanceDetailsComponent {
   ticketDetails: any;
   ticketIdNo: any;
   ticketUpdateRequest:any;
+  grievancesTypes:any[]=[]
 
   constructor(private router: Router, private formBuilder: FormBuilder, private authService: AuthService,
     private grievanceServiceService: GrievanceServiceService, private route: ActivatedRoute,
-    private toastrService: ToastrServiceService) {
+    private toastrService: ToastrServiceService, private configService:ConfigService) {
+    this.grievancesTypes = this.configService.dropDownConfig.GRIEVANCE_TYPES;
+    this.grievancesTypes = this.grievancesTypes.filter(item=> item.name !== 'Others')
     this.formData = this.router?.getCurrentNavigation()?.extras.state;
     this.route.params.subscribe((param) => {
       this.id = param['id'];
@@ -66,9 +70,11 @@ export class GrievanceDetailsComponent {
     });
     //assign user role
     this.userRole = this.authService.getUserRoles()[0];
+    console.log(this.userRole)
     this.userId= this.authService.getUserData().userId;
     console.log('useData',this.userId)
     this.createForm();
+    this.createAssignForm();
     this.getTicketById();
     // this.route.paramMap.subscribe(params=>{
     //   this.ticketIdNo = params.get('id');
@@ -93,6 +99,16 @@ export class GrievanceDetailsComponent {
     this.grievanceResolutionForm = this.formBuilder.group({
       description: new FormControl('', [Validators.required]),
       attachments: new FormControl([], [Validators.required])
+    })
+  }
+
+  grievanceSelected(grievance: Event) {
+    console.log(grievance)
+  }
+
+  createAssignForm(){
+    this.assignGrievanceTypeForm = this.formBuilder.group({
+      grievanceType: new FormControl('', Validators.required)
     })
   }
 
@@ -180,12 +196,14 @@ export class GrievanceDetailsComponent {
     })
   }
 
-  handleClick(params:any) {
+  handleClick(params:any, data?:any) {
+    console.log('data.value',data)
+  // const {attachments, description} = value
     this.ticketUpdateRequest = {
       // "priority":"p1",
       // "assignedTo":2,
       // "cc": [1],
-      "requestedBy": this.userId,
+      "requestedBy": 1,
       // "notes":"Priority is changed from P3 to P1",
       // "description": "Holiday list is not displaying",
       // "active":true,
@@ -217,7 +235,7 @@ export class GrievanceDetailsComponent {
       case 'markothers': 
       this.ticketUpdateRequest = {
         ...this.ticketUpdateRequest,
-        "cc":[-1],
+        "cc":-1,
       }
       break;
       case 'unjunk': 
@@ -225,6 +243,20 @@ export class GrievanceDetailsComponent {
         ...this.ticketUpdateRequest,
         "isJunk": false,
         status:"Open"
+      }
+      break;
+      case 'resolved': 
+      this.ticketUpdateRequest = {
+        ...this.ticketUpdateRequest,
+        assigneeTicketAttachment:[data.attachments],
+        comment: data.description,
+        status:"Close"
+      }
+      break;
+      case 'assign': 
+      this.ticketUpdateRequest = {
+        ...this.ticketUpdateRequest,
+       cc: data.grievanceType
       }
       break;
       default: 
@@ -237,6 +269,7 @@ export class GrievanceDetailsComponent {
   }
 
   updateTicketDetails() {
+    console.log('this.ticketUpdateRequest',this.ticketUpdateRequest)
     this.grievanceServiceService.updateTicket(this.ticketUpdateRequest).subscribe({
       next: (res) =>{
         console.log(res)

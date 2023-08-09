@@ -54,6 +54,7 @@ export class GrievanceManagementComponent  {
         break;
       case Roles.GRIEVANCE_NODAL:
         this.tabs = Tabs['Grievance Nodal'];
+        this.selectedTab =this.tabs[0].name;
         break;
     }
     //Initialize column as per user Role
@@ -251,9 +252,9 @@ export class GrievanceManagementComponent  {
   }
 
   onClickItem(e: any) {
-    console.log(e?.id)
+    console.log(e)
     e.tabName= this.selectedTab
-    let id = parseInt(e?.id)
+    // let id = parseInt(e?.ticketId)
     this.router.navigate(['/grievance/'+2], {state: {data: e}});
     // this.router.navigate(['/grievance',  2 ]);
    // this.router.navigate(['/grievance', e.id]);
