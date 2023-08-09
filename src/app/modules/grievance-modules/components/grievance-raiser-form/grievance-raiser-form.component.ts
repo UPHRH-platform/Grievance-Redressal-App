@@ -5,6 +5,7 @@ import { SharedDialogOverlayComponent } from '../../../../shared/components/shar
 import { MatDialog } from '@angular/material/dialog';
 import { GrievanceServiceService } from '../../services/grievance-service.service';
 import { ConfigService } from 'src/app/shared';
+import { ToastrServiceService } from 'src/app/shared/services/toastr/toastr.service';
 
 @Component({
   selector: 'app-grievance-raiser-form',
@@ -33,7 +34,8 @@ export class GrievanceRaiserFormComponent {
     private formBuilder: FormBuilder,
     public dialog: MatDialog,
     private grievanceService: GrievanceServiceService,
-    private configService: ConfigService
+    private configService: ConfigService,
+    private toastrService: ToastrServiceService
     ) { 
       this.grievancesTypes = this.configService.dropDownConfig.GRIEVANCE_TYPES;
     }
@@ -212,8 +214,13 @@ export class GrievanceRaiserFormComponent {
         "appKey": "6488a559-8e46-4a61-9410-bbe130710737"
       }
 
-      this.grievanceService.createTicket(ticketDetails).subscribe((data)=>{
-        console.log('dataaa',data)
+      this.grievanceService.createTicket(ticketDetails).subscribe({
+        next:(res) =>{
+          this.toastrService.showToastr("Ticket created successfully!", 'Success', 'success', '');
+        },
+        error: (err) =>{
+          this.toastrService.showToastr(err, 'Error', 'error', '');
+        }
       });
       // this.openBulkUploadDialog();
     }

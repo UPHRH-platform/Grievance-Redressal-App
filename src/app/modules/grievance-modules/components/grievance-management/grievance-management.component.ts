@@ -6,6 +6,7 @@ import { AuthService } from 'src/app/core';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { BreadcrumbItem, ConfigService } from 'src/app/shared';
 import { GrievanceServiceService } from '../../services/grievance-service.service';
+import { ToastrServiceService } from 'src/app/shared/services/toastr/toastr.service';
 
 
 @Component({
@@ -29,7 +30,8 @@ export class GrievanceManagementComponent  {
     private router: Router,
     private authService: AuthService,
     private configService: ConfigService,
-    private grievanceService: GrievanceServiceService ){
+    private grievanceService: GrievanceServiceService,
+    private toastrService:ToastrServiceService ){
     }
 
   pageIndex = 0;
@@ -38,6 +40,7 @@ export class GrievanceManagementComponent  {
 
   ngOnInit(): void {
     this.userRole = this.authService.getUserRoles()[0];
+    console.log(this.userRole)
     this.initializeTabs();
     this.getTicketsRequestObject();
   }
@@ -262,60 +265,82 @@ export class GrievanceManagementComponent  {
 
   getTicketsRequestObject() {
     this.getGrievancesRequest = {
-      "helpdeskId":1,
       "searchKeyword":"",
-      "filterCTUT":"",
-      "from": 0,
+      filter: {
+        "status": [], 
+        "cc":'' //pass id
+       },
+      "date": "",
+      // "isJunk": true,
+      // "priority": "HIGH, MEDIUM, LOW",
+      "offset": 1,
       "size": -1,
-      "selectedTags": ["tag1"]
+      "sort":{
+           "createdTimeTS": "asc"
+      }
     }
+     this.userRole
     switch(this.selectedTab) {
       case 'Pending': 
         this.getGrievancesRequest = {
           ...this.getGrievancesRequest,
-          "filterStatus": ['Open']
+          filter:{
+            status:['Open'],
+            cc: this.userRole === 'Nodal Officer' ? 'UserID': ''
+          }
         }
         break;
       case 'Resolved': 
       this.getGrievancesRequest = {
         ...this.getGrievancesRequest,
-        "filterStatus": ['Closed']
+        filter:{
+          status:['Closed'],
+          cc: this.userRole === 'Nodal Officer' ? 'UserID': ''
+        }
       }
       break;
       // this is failing
       case 'Priority': 
       this.getGrievancesRequest = {
         ...this.getGrievancesRequest,
-        "filterStatus": ["Open"],
-        "priority": ["p1"]
+        filter:{
+          status:['Open'],
+          cc: this.userRole === 'Nodal Officer' ? 'UserID': ''
+        },
+        "priority": "HIGH"
       }
       break;
       case 'Escalated to me': 
       this.getGrievancesRequest = {
         ...this.getGrievancesRequest,
-        "filterStatus": ["Open"],
-        "priority": ["p2"]
+        filter:{
+          status:['Open'],
+          cc: ''
+        },
+        "priority": "MEDIUM"
       }
       break;
       case 'Not Assigned':
         this.getGrievancesRequest = {
           ...this.getGrievancesRequest,
-          "filterStatus": ["Open"],
-          "cc": [],
+          filter:{
+            status:['Open'],
+            cc: ''
+          },
         }
       break;
       case 'Junk': 
       this.getGrievancesRequest = {
         ...this.getGrievancesRequest,
-        "filterStatus": ["Closed"],
+        filter:{
+          status:['Closed'],
+          cc: ''
+        },
         "isJunk": true
       }
       break;
       default: 
-      this.getGrievancesRequest = {
-        ...this.getGrievancesRequest,
-        "filterStatus": ["Pending"]
-      }
+      this.getGrievancesRequest
       break;
     }
     this.getAllTickets();
@@ -328,7 +353,8 @@ export class GrievanceManagementComponent  {
         console.log(res.responseData);
       },
       error: (err) => {
-        // Handle the error here in case of login failure
+        // Handle the error here in case of Api failure
+        this.toastrService.showToastr(err, 'Error', 'error', '');
       }
     })
     
