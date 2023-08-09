@@ -124,6 +124,19 @@
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
 
-    <mat-paginator *ngIf="isPageable" [pageSizeOptions]="[10,20,50]" showFirstLastButtons aria-label="Select page..">
+    <mat-paginator *ngIf="isPageable && !isServerSidePagination" [pageSizeOptions]="[10,20,50]" showFirstLastButtons aria-label="Select page..">
     </mat-paginator>
+    <mat-paginator #paginator
+    *ngIf="isPageable && isServerSidePagination"
+               class="demo-paginator"
+               (page)="handlePageEvent($event)"
+               [length]="pageLength"
+               [pageSize]="pageSize"
+               [disabled]="false"
+               [showFirstLastButtons]="true"
+               [pageSizeOptions]="[10,20,50]"
+               [hidePageSize]="false"
+               [pageIndex]="pageIndex"
+               aria-label="Select page">
+</mat-paginator>
 </div>

@@ -32,6 +32,10 @@ export class GrievanceManagementComponent  {
     private grievanceService: GrievanceServiceService ){
     }
 
+  pageIndex = 0;
+  pageLength = 0;
+  pageSize = 0;
+
   ngOnInit(): void {
     this.userRole = this.authService.getUserRoles()[0];
     this.initializeTabs();
@@ -328,6 +332,15 @@ export class GrievanceManagementComponent  {
       }
     })
     
+  }
+
+  handlePageChange(event: any) {
+    console.log(event);
+      this.pageIndex = event.pageIndex;
+      this.pageSize = event.pageSize;
+      this.pageLength = event.length;
+
+      // call API here
   }
 
 }
