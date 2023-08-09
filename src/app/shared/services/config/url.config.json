@@ -11,6 +11,9 @@
         "USER": {
             "GET_ALL_USERS": "/user/getAllUsers?orgId=1",
             "CREATE_UPDATE_USER": "/user/createOrUpdate"
+        },
+        "OTP":{
+            "GENERATE_OTP": "/otp/generate-otp"
         }
     }
 }

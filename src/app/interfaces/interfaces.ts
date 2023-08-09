@@ -28,6 +28,10 @@ export interface GrievancesTableData {
     title: string;
     content: any;
     otpSubmitted?: boolean;
+    name?: string;
+    email?: string;
+    phone?: string;
+    ticketId?: number;
   }
 
   export interface userTableData {
