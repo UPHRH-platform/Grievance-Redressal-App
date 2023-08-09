@@ -24,7 +24,7 @@ export class GrievanceRaiserFormComponent {
   submitted = false;
   files: any[] = [];
   fileUploadError: string;
-  ticketDetails: any;
+  ticketDetails: any = {};
   grievancesTypes: any[] = [];
   userTypesArray = [
     'Candidate', 'Institute', 'Faculty', 'Others'
@@ -42,6 +42,7 @@ export class GrievanceRaiserFormComponent {
 
   ngOnInit() {
     this.createForm();
+    this.openSharedDialog(false);
   }
 
   createForm() {
@@ -93,20 +94,11 @@ export class GrievanceRaiserFormComponent {
     return
   }
 
-
-
-  radioChecked(e: any, e1: any) {
-    console.log(e)
-  }
-
-  grievanceSelected(grievance: Event) {
-    console.log(grievance)
-  }
-
   onReset() {
     this.submitted = false;
     this.grievanceRaiserformGroup.reset();
     this.listOfFiles = [];
+    this.ticketDetails= {};
   }
 
   onFileChanged(event?: any) {
@@ -180,19 +172,33 @@ export class GrievanceRaiserFormComponent {
 
 
   openSharedDialog(otpSubmitted: boolean): void {
+    const {name, email, phone, id} = this.ticketDetails;
+    let dialogData: any = {
+      otpSubmitted,
+      name,
+      email,
+      phone
+    }
+    if(otpSubmitted){
+      dialogData.ticketId = id;
+    }
     const dialogRef = this.dialog.open(SharedDialogOverlayComponent, {
-      data: {otpSubmitted},
+      data: dialogData,
       maxWidth: '400vw',
       maxHeight: '100vh',
-      height: '50%',
-      width: '30%',
+      height: '55%',
+      width: '40%',
       disableClose: true
     });
 
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed', result);
       if(!!result) {
-        this.createTicket();
+        if(result === 'close_success')  {
+          this.onReset();
+        }else  {
+          this.createTicket(result);
+        } 
       }
     });
   }
@@ -200,24 +206,31 @@ export class GrievanceRaiserFormComponent {
   onSubmit(value: any) {
     console.log(value)
     const {name, email, phone, grievanceType, userType, description } =  value;
+    const firstName= name.split(" ")[0];
+    const lastName= name.split(" ")[1];
     this.ticketDetails = {
       name,
+      firstName,
+      lastName: !!lastName  ? lastName : "",
       email,
       phone,
-      cc: [grievanceType],
-      userType,
+      cc: grievanceType,
+      userType: userType?.toUpperCase(),
       description,
       attachmentUrls: []
     }
     this.openSharedDialog(false); 
   }
 
-  createTicket() {
+  createTicket(otpDetails: any) {
     this.submitted = true;
-    this.grievanceService.createTicket(this.ticketDetails).subscribe({
+    const ticketDetails = {...this.ticketDetails, otp: otpDetails?.mobileOTP};
+    delete ticketDetails.name;
+    this.grievanceService.createTicket(ticketDetails).subscribe({
       next: (res) => {
         this.toastrService.showToastr("Grievance ticket is created successfully!", 'Success', 'success', '');
         this.submitted= false;
+        this.ticketDetails.id= res.responseData.id;
         this.openSharedDialog(true);
      },
      error: (err) => {
