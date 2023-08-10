@@ -8,7 +8,7 @@
             </app-shared-skeleton-loading>
             <app-shared-table *ngIf="!isDataLoading" [tableColumns]="grievancesTableColumns" [tableData]="grievances" [isPageable]="true"
             [length]="responseLength" [pageSize]="pageSize" [pageIndex]="pageIndex" 
-                (rowAction)="onClickItem($event)" [isServerSidePagination]="true" (pageChange)="handlePageChange($event)">
+                (rowAction)="onClickItem($event)" [isServerSidePagination]="true" (pageChange)="handlePageChange($event)" (searchParmas)="getSearchParams($event)">
             </app-shared-table>
         </mat-tab>
     </mat-tab-group>

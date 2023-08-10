@@ -196,14 +196,14 @@ export class GrievanceDetailsComponent {
         this.ticketUpdateRequest = {
           ...this.ticketUpdateRequest,
           isJunk:true,
-          status:'Closed'
+          status:'CLOSED'
           
         }
         break;
       case 'reopen': 
       this.ticketUpdateRequest = {
         ...this.ticketUpdateRequest,
-        status: "Open",
+        status: "OPEN",
         isJunk: false
       }
       break;
@@ -224,7 +224,7 @@ export class GrievanceDetailsComponent {
       this.ticketUpdateRequest = {
         ...this.ticketUpdateRequest,
         "isJunk": false,
-        status:"Open"
+        status:"OPEN"
       }
       break;
       case 'resolved': 
@@ -232,7 +232,7 @@ export class GrievanceDetailsComponent {
         ...this.ticketUpdateRequest,
         assigneeTicketAttachment:[data.attachments],
         comment: data.description,
-        status:"Close"
+        status:"CLOSED"
       }
       break;
       case 'assign': 
@@ -255,6 +255,7 @@ export class GrievanceDetailsComponent {
     this.grievanceServiceService.updateTicket(this.ticketUpdateRequest).subscribe({
       next: (res) =>{
         console.log(res)
+        this.getTicketById();
         this.toastrService.showToastr("Ticket updated successfully!", 'Success', 'success', '');
       },error: (err) =>{
         this.toastrService.showToastr(err, 'Error', 'error', '');
