@@ -4,7 +4,6 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { DialogData } from '../../../interfaces/interfaces';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { OtpService } from 'src/app/core/services/otp-service/otp.service';
-import { forkJoin } from 'rxjs';
 import { ToastrServiceService,  } from 'src/app/shared/services/toastr/toastr.service';
 
 @Component({
@@ -17,7 +16,7 @@ export class SharedDialogOverlayComponent {
   public grievanceRaiserOtpformGroup: FormGroup;
 
   otpSubitted: boolean = false;
-  ticketId: Number = 345;
+  ticketId: any;
   constructor(
     private formBuilder: FormBuilder,
     public dialogRef: MatDialogRef<SharedDialogOverlayComponent>,
@@ -34,14 +33,22 @@ export class SharedDialogOverlayComponent {
   }
 
   ngOnInit() {
-    this.otpSubitted = !!this.data.otpSubmitted;
-    this.generateOtps();
-    this.createForm();
+    this.otpSubitted = !!this.data?.otpSubmitted;
+    this.ticketId = this.data?.ticketId ? this.data?.ticketId : null;
+    if(!this.otpSubitted){
+      this.generateOtps();
+      this.createForm();
+    }
   }
 
   generateOtps() {
-    const otpRequests = [this.otpService.getEmailOtp(),this.otpService.getMobileOtp()];
-    forkJoin(otpRequests).subscribe({
+    const {name, email, phone} = this.data;
+    const otpRequestData= {
+      name,
+      email,
+      phone
+    }
+    this.otpService.generateOtp(otpRequestData).subscribe({
       next: (res) => {
         console.log(res);
       },
@@ -57,13 +64,16 @@ export class SharedDialogOverlayComponent {
         Validators.required,
         Validators.minLength(6), Validators.maxLength(6)]),
       emailOTP: new FormControl('', [
-        Validators.required,
         Validators.minLength(6), Validators.maxLength(6)])
     });
   }
 
   onNoClick(): void {
     this.dialogRef.close();
+  }
+
+  onClose(): void {
+    this.dialogRef.close("close_success");
   }
 
   onSubmit() {

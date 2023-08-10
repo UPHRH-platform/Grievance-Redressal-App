@@ -58,6 +58,7 @@ export class GrievanceManagementComponent  {
         break;
       case Roles.GRIEVANCE_NODAL:
         this.tabs = Tabs['Grievance Nodal'];
+        this.selectedTab =this.tabs[0].name;
         break;
     }
     //Initialize column as per user Role

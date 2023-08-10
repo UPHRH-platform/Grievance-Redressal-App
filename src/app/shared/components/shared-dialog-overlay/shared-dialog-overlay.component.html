@@ -3,48 +3,50 @@
     <div *ngIf="!otpSubitted">
         <form [formGroup]="grievanceRaiserOtpformGroup"
             (ngSubmit)="ongrievanceRaiserotpformSubmit(grievanceRaiserOtpformGroup.value)">
-            <div class="flex flex-column flex justify-between items-center">
+            <div class="flex flex-column flex justify-between items-center mt3">
                 <h2>Enter O T P</h2>
             </div>
     
             <div class="flex flex-column flex justify-between items-center">
                 <div class="flex flex-row  justify-between items-center">
                     <div class="flex flex-column ">
-                        <h4>Mobile OTP</h4>
-                        <mat-form-field appearance="outline" style="width:16.5rem">
-                            <mat-label></mat-label>
+                        <mat-form-field appearance="outline">
+                            <mat-label>Enter email OTP</mat-label>
+                            <input matInput placeholder="0 - 0 - 0 - 0 - 0 - 0"  formControlName="emailOTP">
+                            
+                            <mat-error *ngIf="grievanceRaiserOtpformGroup.controls['emailOTP'].invalid">
+                            </mat-error>
+                        </mat-form-field>
+                        <p class="small-font">Enter the 6 digit OTP sent to your email address.</p>
+               
+                        <mat-form-field appearance="outline" class="mt2">
+                            <mat-label>Enter mobile OTP</mat-label>
                             <input matInput placeholder="0 - 0 - 0 - 0 - 0 - 0" formControlName="mobileOTP">
                             <mat-error *ngIf="grievanceRaiserOtpformGroup.controls['mobileOTP'].invalid">
                             </mat-error>
                         </mat-form-field>
-               
-    
-                        <h4 >Email OTP</h4>
-                        <mat-form-field appearance="outline" style="width:16.5rem">
-                            <mat-label></mat-label>
-                            <input matInput placeholder="0 - 0 - 0 - 0 - 0 - 0"  formControlName="emailOTP">
-                            <mat-error *ngIf="grievanceRaiserOtpformGroup.controls['emailOTP'].invalid">
-                            </mat-error>
-                        </mat-form-field>
+                        <p class="small-font">Enter the 6 digit OTP sent to your mobile number.</p>
+
+                        <button [disabled]="!grievanceRaiserOtpformGroup.valid" mat-raised-button color="primary" (click)="onSubmit()" class="fit mt2">Submit</button>
+                        <button mat-button color="primary" (click)="onNoClick()" class="mt1">Go back, re-enter the details</button>
+                        
                     </div>
                 </div>
-                <br />
             </div>
-            <mat-dialog-actions align="end">
-                <button class="bottom-0 align-bottom "  mat-stroked-button (click)="onNoClick()">Cancel</button>
-                <button  *ngIf="!otpSubitted" mat-raised-button color="primary" (click)="onSubmit()">Submit</button>
-            </mat-dialog-actions >
         </form>
     </div>
 
     <div *ngIf="otpSubitted">
-        <div class="mt4 flex flex-column flex justify-between items-center   text-align: center;">
-            <h2 class="mt4">Ticket Generated Successfully !!!</h2>
-            <mat-icon class="mt4">check_circle_outline</mat-icon>
-            <br/>
-            <div  class="mt3">
+        <div class="mt4 flex flex-column flex justify-center items-center">
+            
+            <mat-icon class="mt4 big-icon" inline>check_circle_outline</mat-icon>
+            
+            <div class="mt3 flex flex-column flex justify-center items-center">
+                <h2>Ticket Generated Successfully !!!</h2>
                 <p>Your ticket Id is {{ticketId}}. Please check your registered email ID for more details</p>
-       
+                <mat-dialog-actions >
+                    <button class="bottom-0 align-bottom mt2"  mat-stroked-button (click)="onClose()">Close</button>
+                </mat-dialog-actions >
             </div>
          </div>
         </div>

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { ServerResponse, RequestParam } from 'src/app/shared';
+import { ServerResponse, RequestParam, ConfigService } from 'src/app/shared';
 import { HttpService } from "src/app/core";
 import { environment } from '../../../../environments/environment';
 
@@ -10,25 +10,18 @@ import { environment } from '../../../../environments/environment';
 })
 export class OtpService extends HttpService {
   override baseUrl: string;
-  constructor(http: HttpClient) {
+  constructor(http: HttpClient, private configService: ConfigService) {
     super(http);
     this.baseUrl = environment.apiUrl;
   }
 
-  getMobileOtp(): Observable<ServerResponse>  {
-   return this.post({url: ""});
+  generateOtp(otpReqData: any): Observable<ServerResponse>  {
+    const reqParam: RequestParam = {
+      url: this.configService.urlConFig.URLS.OTP.GENERATE_OTP,
+      data: otpReqData,
+    }
+   return this.post(reqParam);
   }
 
-  getEmailOtp(): Observable<ServerResponse>  {
-    return this.post({url: ""});
-  }
-
-  verifyMobileOtp(): Observable<ServerResponse>  {
-    return this.post({url: ""});
-  }
-
-  verifyEmailOtp(): Observable<ServerResponse>  {
-    return this.post({url: ""});
-  }
 
 }

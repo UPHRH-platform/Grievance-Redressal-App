@@ -1,0 +1,14 @@
+mat-icon.big-icon {
+    font-size: 3rem;
+    color: green;
+    overflow: visible;
+}
+
+.small-font {
+    font-size: 0.9rem;
+    margin-top: -1rem;
+}
+
+.mdc-button.fit{
+    width: 100%;
+}
