@@ -46,48 +46,29 @@ export class GrievanceDetailsComponent {
     { label: 'Grievance Details', url: '' },
   ];
   currentTabName: string = ''
-  ticketDetails: any;
+  ticketDetails: any = [];
   ticketIdNo: any;
   ticketUpdateRequest:any;
 
   constructor(private router: Router, private formBuilder: FormBuilder, private authService: AuthService,
     private grievanceServiceService: GrievanceServiceService, private route: ActivatedRoute,
     private toastrService: ToastrServiceService) {
-    this.formData = this.router?.getCurrentNavigation()?.extras.state;
     this.route.params.subscribe((param) => {
       this.id = param['id'];
     })
   }
 
   ngOnInit() {
-    this.initiateData();
+    this.getTicketById();
+    // this.initiateData();
     this.grievanceAssignerformGroup = this.formBuilder.group({
       grievanceOfficer: new FormControl('arun@awe.com', [Validators.required]),
     });
     //assign user role
     this.userRole = this.authService.getUserRoles()[0];
     this.userId= this.authService.getUserData().userId;
-    console.log('useData',this.userId)
     this.createForm();
-    this.getTicketById();
-    // this.route.paramMap.subscribe(params=>{
-    //   this.ticketIdNo = params.get('id');
-    //   console.log(this.ticketIdNo)
-    // })
-
-    // this.getTicketDetails(this.ticketIdNo)
-    this.getTicketById()
   }
-
-  // getTicketDetails(id:any){
-  //   this.grievanceServiceService.getTicketById(id).subscribe((data)=>{
-  //     console.log('ddd',data)
-  //     this.ticketDetails = data
-  //   })
-
-  // }
-
-
 
   createForm() {
     this.grievanceResolutionForm = this.formBuilder.group({
@@ -96,18 +77,19 @@ export class GrievanceDetailsComponent {
     })
   }
 
-  initiateData() {
-    console.log(this.formData.data);
-    this.listOfFiles = this.formData.data.attachedDocs;
-    this.ticketId = this.formData.data.id;
-    this.creationTime = this.formData.data.creationTime;
-    this.escalationTime = this.formData.data.escalationTime;
-    this.grievanceRaiser = this.formData.data.grievanceRaiser;
-    this.grievanceType = this.formData.data.raiserType;
-    this.userType = this.formData.data.userType;
-    this.desc = this.formData.data.description;
-    this.currentTabName = this.formData?.data?.tabName
-  }
+  // initiateData() {
+  //   console.log(this.formData.data);
+  //   this.listOfFiles = this.formData.data.attachedDocs;
+  //   this.ticketId = this.formData.data.id;
+  //   this.creationTime = this.formData.data.creationTime;
+  //   this.escalationTime = this.formData.data.escalationTime;
+  //   this.grievanceRaiser = this.formData.data.grievanceRaiser;
+  //   this.grievanceType = this.formData.data.raiserType;
+  //   this.userType = this.formData.data.userType;
+  //   this.desc = this.formData.data.description;
+  //   this.currentTabName = this.formData?.data?.tabName
+  // }
+
   grievanceOfficerSelected(e: any) {
     this.grievanceAssignerformGroup.controls['grievanceOfficer'].disable();
     this.selectedOfficer = e.value;
@@ -169,9 +151,10 @@ export class GrievanceDetailsComponent {
   }
 
   getTicketById() {
+    this.ticketDetails = [];
     this.grievanceServiceService.getTicketsById(this.id).subscribe({
       next: (res) => {
-        console.log(res);
+        this.ticketDetails = res.responseData;
       },
       error: (err) => {
         // Handle the error here in case of Api failure

@@ -182,22 +182,22 @@
             <div class="first-row-container mt3">
               <div class="first-container">
                 <mat-label class="label-text">Ticket ID</mat-label>
-                <h3 class="textData">{{ ticketId }}</h3>
+                <h3 class="textData">{{ ticketDetails?.id }}</h3>
               </div>
               <div class="first-container">
                 <mat-label class="label-text">Grievance Raiser</mat-label>
-                <h3 class="textData">{{ grievanceRaiser }}</h3>
+                <h3 class="textData">{{ ticketDetails?.firstName}} {{ticketDetails?.lastName}}</h3>
               </div>
             </div>
 
             <div class="first-row-container mt2">
               <div class="first-container">
                 <mat-label class="label-text">Creation Time</mat-label>
-                <h3 class="textData">{{ creationTime }}</h3>
+                <h3 class="textData">{{ ticketDetails?.createdDate !== null ? ticketDetails?.createdDate : '-'}}</h3>
               </div>
               <div class="first-container">
                 <mat-label class="label-text">Escalation Time</mat-label>
-                <h3 class="textData">{{ escalationTime }}</h3>
+                <h3 class="textData">{{ ticketDetails?.escalationDate !== null ? ticketDetails?.escalationDate : '-'}}</h3>
               </div>
             </div>
 
@@ -209,7 +209,7 @@
               <div class="first-container">
                 <mat-label class="label-text">User Type</mat-label>
                 <div class="first-container">
-                  <h3 class="textData">{{ userType }}</h3>
+                  <h3 class="textData">{{ ticketDetails?.requesterType }}</h3>
                 </div>
               </div>
             </div>
@@ -217,7 +217,7 @@
             <div class="first-row-container mt2">
               <div class="desc-content">
                 <mat-label class="label-text">Description</mat-label>
-                <h3 class="textData">{{ desc }}</h3>
+                <h3 class="textData">{{ ticketDetails?.description }}</h3>
               </div>
             </div>
 
@@ -225,8 +225,8 @@
               <div class="desc-content">
                 <mat-label class="label-text">Attached Document</mat-label>
                 <!-- <h3 class="textData">{{desc}}</h3> -->
-                <div class="attach-docs">
-                  <span>{{ "File name.doc" }}</span>
+                <div class="attach-docs" *ngFor="let attachment of ticketDetails?.raiserTicketAttachmentURLs">
+                  <span>{{ ticket }}</span>
                   <span class="text-primary">{{ "view" }}</span>
                 </div>
               </div>

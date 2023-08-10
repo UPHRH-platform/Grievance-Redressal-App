@@ -37,7 +37,7 @@ export class GrievanceManagementComponent  {
 
   pageIndex = 0;
   pageLength = 0;
-  pageSize = 0;
+  pageSize = 10;
 
   ngOnInit(): void {
     this.userRole = this.authService.getUserRoles()[0];
@@ -102,7 +102,8 @@ export class GrievanceManagementComponent  {
         columnDef: 'escalatedDate',
         header: 'Escalation time',
         isSortable: true,
-        cell: (element: Record<string, any>) => `${element['escalatedDate']}`
+        cell: (element: Record<string, any>) => 
+          `${element['escalatedDate']}` !== "null" ? `${element['escalatedDate']}` : '-'
       },
       {
         columnDef: 'isLink',
@@ -254,7 +255,7 @@ export class GrievanceManagementComponent  {
   }
 
   onClickItem(e: any) {
-    console.log(e?.ticketId)
+    // console.log(e?.ticketId)
     e.tabName= this.selectedTab
     let id = parseInt(e?.ticketId)
     this.router.navigate(['/grievance/'+ id], {state: {data: e}});
@@ -272,8 +273,8 @@ export class GrievanceManagementComponent  {
       "date": "",
       // "isJunk": true,
       // "priority": "HIGH, MEDIUM, LOW",
-      "offset": this.pageIndex,
-      "size": 1,
+      "offset": this.pageIndex, // does not work currently
+      "size": this.pageSize, // does not work currently
       "sort":{
            "createdTimeTS": "asc"
       }
@@ -351,9 +352,9 @@ export class GrievanceManagementComponent  {
     this.grievanceService.getAllTickets(this.getGrievancesRequest).subscribe({
       next: (res) => {
         this.isDataLoading = false;
-        console.log("response ===>, res", res);
-        this.responseLength = res.body.count;
-        this.grievances = res.body.data;
+        // console.log("response ===>, res", res);
+        this.responseLength = res.responseData.count;
+        this.grievances = res.responseData.data;
       },
       error: (err) => {
         // Handle the error here in case of Api failure
@@ -364,11 +365,10 @@ export class GrievanceManagementComponent  {
   }
 
   handlePageChange(event: any) {
-    console.log(event);
       this.pageIndex = event.pageIndex;
       this.pageSize = event.pageSize;
       this.pageLength = event.length;
-
+      this.getAllTickets();
       // call API here
   }
 

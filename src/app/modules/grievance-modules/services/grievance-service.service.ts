@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { ConfigService, RequestParam, ServerResponse } from 'src/app/shared';
+import { ConfigService, RequestParam, Response, ServerResponse } from 'src/app/shared';
 import { environment } from 'src/environments/environment';
 import { HttpService } from "src/app/core";
 
@@ -41,8 +41,8 @@ export class GrievanceServiceService extends HttpService {
 
   /** ticket details and list services */
   
-  getAllTickets(request:object): Observable<ServerResponse> {
-    console.log(request);
+  getAllTickets(request:object) {
+    // console.log(request);
       const reqParam: RequestParam = {
         url: this.configService.urlConFig.URLS.GRIEVANCE_TICKETS.GET_ALL_TICKETS,
         data: {
@@ -54,7 +54,7 @@ export class GrievanceServiceService extends HttpService {
 
   getTicketsById(id: string): Observable<ServerResponse> {
     const reqParam: RequestParam = {
-      url: `${this.configService.urlConFig.URLS.GRIEVANCE_TICKETS.URLS.GET_TICKET_BY_ID}${id}`,
+      url: `${this.configService.urlConFig.URLS.GRIEVANCE_TICKETS.GET_TICKET_BY_ID}${id}`,
       data: {}
     }
     return this.get(reqParam);
