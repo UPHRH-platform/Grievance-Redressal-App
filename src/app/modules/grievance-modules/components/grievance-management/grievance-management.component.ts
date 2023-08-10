@@ -129,7 +129,7 @@ export class GrievanceManagementComponent  {
     // console.log(e?.ticketId)
     e.tabName= this.selectedTab
     let id = parseInt(e?.ticketId)
-    this.router.navigate(['/grievance/'+ id], {state: {data: e}});
+    this.router.navigate(['/grievance/'+ id],{ queryParams: {tabName:this.selectedTab}});
     // this.router.navigate(['/grievance',  2 ]);
    // this.router.navigate(['/grievance', e.id]);
   }

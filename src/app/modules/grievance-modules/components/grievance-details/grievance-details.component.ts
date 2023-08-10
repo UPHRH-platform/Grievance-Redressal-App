@@ -77,7 +77,9 @@ export class GrievanceDetailsComponent {
     this.userId= this.authService.getUserData().userId;
     this.createForm();
     this.createAssignForm();
-    console.log(this.currentTabName);
+    this.route.queryParams.subscribe((data)=>{
+      this.currentTabName = data['tabName']
+    })
   }
 
   createForm() {

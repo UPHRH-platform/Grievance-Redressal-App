@@ -284,9 +284,11 @@
             </form>
             <div *ngIf="userRole === 'Nodal Officer' && currentTabName === 'Resolved'" class="resolution-class">
               <mat-label class="label-text">Resolution Comment (s)</mat-label>
-              <div class="mt2" *ngFor="let comment of ticketDetails?.comments; let i = index"> 
+              <div class="mt1 mb1" *ngFor="let comment of ticketDetails?.comments; let i = index"> 
                 <span class="textData">{{comment.comment}}</span>
               </div>
+              <div class="mt2">
+              <mat-label class="label-text">Resolution Attachments (s)</mat-label>
               <mat-card-content *ngIf="ticketDetails?.assigneeTicketAttachment?.length > 0">
                 <div *ngFor="let attachment of ticketDetails?.assigneeTicketAttachment; let i = index" class="preview">
                   <div class="layout">
@@ -297,6 +299,8 @@
                   </div>
                 </div>
               </mat-card-content>
+              <div *ngIf="ticketDetails?.assigneeTicketAttachment?.length === 0"> - </div>
+              </div>
             </div>
 
             <div class="mt2" *ngIf="userRole === 'Grievance Nodal' && currentTabName === 'Not Assigned'">
