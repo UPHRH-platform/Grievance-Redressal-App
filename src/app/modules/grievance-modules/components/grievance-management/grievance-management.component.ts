@@ -38,6 +38,7 @@ export class GrievanceManagementComponent  {
   pageIndex = 0;
   pageLength = 0;
   pageSize = 10;
+  searchParams:string = ''
 
   ngOnInit(): void {
     this.userRole = this.authService.getUserRoles()[0];
@@ -125,6 +126,13 @@ export class GrievanceManagementComponent  {
     this.getTicketsRequestObject();
   }
 
+  getSearchParams(searchterm:any){
+    console.log('searchterm',searchterm)
+    this.searchParams = searchterm;
+    this.getTicketsRequestObject()
+  }
+
+
   onClickItem(e: any) {
     // console.log(e?.ticketId)
     e.tabName= this.selectedTab
@@ -136,7 +144,7 @@ export class GrievanceManagementComponent  {
 
   getTicketsRequestObject() {
     this.getGrievancesRequest = {
-      "searchKeyword":"",
+      "searchKeyword":this.searchParams,
       filter: {
         "status": [], 
         "cc":'' //pass id
