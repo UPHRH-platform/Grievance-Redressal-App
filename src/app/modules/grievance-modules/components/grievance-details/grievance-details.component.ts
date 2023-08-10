@@ -47,7 +47,7 @@ export class GrievanceDetailsComponent {
     { label: 'Grievance Details', url: '' },
   ];
   currentTabName: string = ''
-  ticketDetails: any;
+  ticketDetails: any = {};
   ticketIdNo: any;
   ticketUpdateRequest:any;
   grievancesTypes:any[]=[]
@@ -56,7 +56,6 @@ export class GrievanceDetailsComponent {
     private grievanceServiceService: GrievanceServiceService, private route: ActivatedRoute,
     private toastrService: ToastrServiceService, private configService:ConfigService) {
     this.grievancesTypes = this.configService.dropDownConfig.GRIEVANCE_TYPES;
-    this.grievancesTypes = this.grievancesTypes.filter(item=> item.name !== 'Others')
     this.formData = this.router?.getCurrentNavigation()?.extras.state;
     this.route.params.subscribe((param) => {
       this.id = param['id'];
@@ -64,36 +63,24 @@ export class GrievanceDetailsComponent {
   }
 
   ngOnInit() {
-    this.initiateData();
+    this.getTicketById();
     this.grievanceAssignerformGroup = this.formBuilder.group({
       grievanceOfficer: new FormControl('arun@awe.com', [Validators.required]),
     });
     //assign user role
     this.userRole = this.authService.getUserRoles()[0];
+    if(this.userRole === 'Grievance Nodal') {
+    this.grievancesTypes = this.grievancesTypes.filter(item=> item.name !== 'Others')
+    }
     console.log(this.userRole)
+    this.currentTabName = this.formData?.data?.tabName;
     this.userId= this.authService.getUserData().userId;
-    console.log('useData',this.userId)
     this.createForm();
     this.createAssignForm();
-    this.getTicketById();
-    // this.route.paramMap.subscribe(params=>{
-    //   this.ticketIdNo = params.get('id');
-    //   console.log(this.ticketIdNo)
-    // })
-
-    // this.getTicketDetails(this.ticketIdNo)
-    this.getTicketById()
+    this.route.queryParams.subscribe((data)=>{
+      this.currentTabName = data['tabName']
+    })
   }
-
-  // getTicketDetails(id:any){
-  //   this.grievanceServiceService.getTicketById(id).subscribe((data)=>{
-  //     console.log('ddd',data)
-  //     this.ticketDetails = data
-  //   })
-
-  // }
-
-
 
   createForm() {
     this.grievanceResolutionForm = this.formBuilder.group({
@@ -112,18 +99,6 @@ export class GrievanceDetailsComponent {
     })
   }
 
-  initiateData() {
-    console.log(this.formData.data);
-    this.listOfFiles = this.formData.data.attachedDocs;
-    this.ticketId = this.formData.data.id;
-    this.creationTime = this.formData.data.creationTime;
-    this.escalationTime = this.formData.data.escalationTime;
-    this.grievanceRaiser = this.formData.data.grievanceRaiser;
-    this.grievanceType = this.formData.data.raiserType;
-    this.userType = this.formData.data.userType;
-    this.desc = this.formData.data.description;
-    this.currentTabName = this.formData?.data?.tabName
-  }
   grievanceOfficerSelected(e: any) {
     this.grievanceAssignerformGroup.controls['grievanceOfficer'].disable();
     this.selectedOfficer = e.value;
@@ -185,9 +160,16 @@ export class GrievanceDetailsComponent {
   }
 
   getTicketById() {
+    this.ticketDetails = {};
     this.grievanceServiceService.getTicketsById(this.id).subscribe({
       next: (res) => {
-        console.log(res);
+        console.log(res.responseData);
+        this.ticketDetails = res.responseData;
+          this.configService.dropDownConfig.GRIEVANCE_TYPES.map((grievance: any) => {
+            if(this.ticketDetails.assignedToId === grievance.id) {
+              this.ticketDetails.assignedToName = grievance.name;
+            }
+          })
       },
       error: (err) => {
         // Handle the error here in case of Api failure
