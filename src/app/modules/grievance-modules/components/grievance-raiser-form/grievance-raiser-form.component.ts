@@ -20,11 +20,10 @@ export class GrievanceRaiserFormComponent {
 
   @ViewChild('attachments') attachment: any;
 
-  fileList: File[] = [];
   listOfFiles: any[] = [];
   isLoading = false;
   submitted = false;
-  files: any[] = [];
+  files: File[] = [];
   fileUploadError: string;
   ticketDetails: any = {};
   grievancesTypes: any[] = [];
@@ -100,20 +99,10 @@ export class GrievanceRaiserFormComponent {
     this.submitted = false;
     this.grievanceRaiserformGroup.reset();
     this.listOfFiles = [];
+    this.files= [];
     this.ticketDetails= {};
   }
 
-  onFileChanged(event?: any) {
-    for (let i = 0; i <= event.target.files.length - 1; i++) {
-      let selectedFile = event.target.files[i];
-
-      if (this.listOfFiles.indexOf(selectedFile.name) === -1) {
-        this.fileList.push(selectedFile);
-        console.log();
-        this.listOfFiles.push(selectedFile.name.concat(this.formatBytes(selectedFile.size)));
-      }
-    }
-  }
 
 
   handleFileUpload(event: any) {
