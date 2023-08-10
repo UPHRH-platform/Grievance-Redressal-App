@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
-import {MatPaginator} from '@angular/material/paginator';
+import {MatPaginator, PageEvent} from '@angular/material/paginator';
 import {MatSort, Sort} from '@angular/material/sort';
 import { ConfigService, getRole } from '../..';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
@@ -61,12 +61,17 @@ export class SharedTableComponent implements AfterViewInit {
   @Input() set tableData(data: any[]) {
     this.setTableDataSource(data);
   }
-
+  @Input() pageLength: number;
+  @Input() pageSize: number;
+  @Input() pageIndex: number;
+  @Input() isServerSidePagination: boolean;
 
   @Output() rowAction: EventEmitter<any> = new EventEmitter<any>();
   @Output() editData: EventEmitter<any>= new EventEmitter<any>();
   @Input() hasFilterOptions = true;
   @Output() toggleData: EventEmitter<any>= new EventEmitter<any>();
+  @Output() pageChange: EventEmitter<any> = new EventEmitter<any>();
+  pageEvent: PageEvent;
 
 
   constructor( private configService: ConfigService,
@@ -130,6 +135,10 @@ export class SharedTableComponent implements AfterViewInit {
     getUserRole(roleName: string) {
       return getRole(roleName);
      }
+
+    handlePageEvent(e: PageEvent) {
+      this.pageChange.emit(e);
+    }
 
      grievanceSelected(e:any){
      }

@@ -47,7 +47,7 @@ export class GrievanceDetailsComponent {
     { label: 'Grievance Details', url: '' },
   ];
   currentTabName: string = ''
-  ticketDetails: any;
+  ticketDetails: any = [];
   ticketIdNo: any;
   ticketUpdateRequest:any;
   grievancesTypes:any[]=[]
@@ -64,7 +64,8 @@ export class GrievanceDetailsComponent {
   }
 
   ngOnInit() {
-    this.initiateData();
+    this.getTicketById();
+    // this.initiateData();
     this.grievanceAssignerformGroup = this.formBuilder.group({
       grievanceOfficer: new FormControl('arun@awe.com', [Validators.required]),
     });
@@ -72,7 +73,6 @@ export class GrievanceDetailsComponent {
     this.userRole = this.authService.getUserRoles()[0];
     console.log(this.userRole)
     this.userId= this.authService.getUserData().userId;
-    console.log('useData',this.userId)
     this.createForm();
     this.createAssignForm();
     this.getTicketById();
@@ -84,16 +84,6 @@ export class GrievanceDetailsComponent {
     // this.getTicketDetails(this.ticketIdNo)
     this.getTicketById()
   }
-
-  // getTicketDetails(id:any){
-  //   this.grievanceServiceService.getTicketById(id).subscribe((data)=>{
-  //     console.log('ddd',data)
-  //     this.ticketDetails = data
-  //   })
-
-  // }
-
-
 
   createForm() {
     this.grievanceResolutionForm = this.formBuilder.group({
@@ -185,9 +175,10 @@ export class GrievanceDetailsComponent {
   }
 
   getTicketById() {
+    this.ticketDetails = [];
     this.grievanceServiceService.getTicketsById(this.id).subscribe({
       next: (res) => {
-        console.log(res);
+        this.ticketDetails = res.responseData;
       },
       error: (err) => {
         // Handle the error here in case of Api failure

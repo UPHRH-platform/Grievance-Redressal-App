@@ -1,17 +1,29 @@
 export interface GrievancesTableData {
-    id: string;
-    grievanceRaiser: string;
-    userType:string;
-    raiserType:string;
-    creationTime: string;
-    escalationTime: string;
-    status: string;
-    isLink? : boolean;
-    description?: string;
-    attachedDocs?: Array<string>;
-  }
-
-
+    id: string,
+    ticketId: number,
+    firstName: string,
+    lastName: string,
+    phone: string,
+    email: string,
+    requesterType: string,
+    assignedToId: any,
+    assignedToName: string,
+    description: string,
+    junk: boolean,
+    createdDate: string,
+    updatedDate: string,
+    createdDateTS: number,
+    updatedDateTS: number,
+    lastUpdatedBy: number,
+    escalated: boolean,
+    escalatedDate: string,
+    escalatedDateTS: number,
+    escalatedTo: number,
+    status: string,
+    requestType: any,
+    priority: string,
+    escalatedBy: number
+}
   export interface TableColumn {
     columnDef: string;
     header: string;
