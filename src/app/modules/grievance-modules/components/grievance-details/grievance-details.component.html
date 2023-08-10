@@ -282,7 +282,7 @@
                 <span class="error">{{ fileUploadError }}</span>
               </div>
             </form>
-            <div *ngIf="userRole === 'Nodal Officer' && currentTabName === 'Resolved'" class="resolution-class">
+            <div *ngIf="((userRole === 'Grievance Nodal' || userRole == 'Nodal Officer') && currentTabName === 'Resolved')" class="resolution-class">
               <mat-label class="label-text">Resolution Comment (s)</mat-label>
               <div class="mt1 mb1" *ngFor="let comment of ticketDetails?.comments; let i = index"> 
                 <span class="textData">{{comment.comment}}</span>
