@@ -4,8 +4,10 @@ import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms'
 import { SharedDialogOverlayComponent } from '../../../../shared/components/shared-dialog-overlay/shared-dialog-overlay.component';
 import { MatDialog } from '@angular/material/dialog';
 import { GrievanceServiceService } from '../../services/grievance-service.service';
-import { ConfigService } from 'src/app/shared';
+import { ConfigService, ServerResponse } from 'src/app/shared';
 import { ToastrServiceService } from 'src/app/shared/services/toastr/toastr.service';
+import { UploadService } from 'src/app/core/services/upload-service/upload.service';
+import { Observable, forkJoin, of, switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-grievance-raiser-form',
@@ -35,14 +37,14 @@ export class GrievanceRaiserFormComponent {
     public dialog: MatDialog,
     private grievanceService: GrievanceServiceService,
     private configService: ConfigService,
-    private toastrService: ToastrServiceService
+    private toastrService: ToastrServiceService,
+    private uploadService: UploadService,
     ) { 
       this.grievancesTypes = this.configService.dropDownConfig.GRIEVANCE_TYPES;
     }
 
   ngOnInit() {
     this.createForm();
-    this.openSharedDialog(false);
   }
 
   createForm() {
@@ -113,21 +115,6 @@ export class GrievanceRaiserFormComponent {
     }
   }
 
-  // removeSelectedFile(index: any) {
-  //   // Delete the item from fileNames list
-  //   this.listOfFiles.splice(index, 1);
-  //   // delete file from FileList
-  //   this.fileList.splice(index, 1);
-  // }
-
-  //   formatBytes(bytes: any, decimals = 2) {
-  //     if (!+bytes) return '0 Bytes'
-  //     const k = 1024
-  //     const dm = decimals < 0 ? 0 : decimals
-  //     const sizes = ['Bytes', 'KB', 'MB']
-  //     const i = Math.floor(Math.log(bytes) / Math.log(k))
-  //     return `${parseFloat((bytes / Math.pow(k, i)).toFixed(dm))} ${sizes[i]}`
-  // }
 
   handleFileUpload(event: any) {
     this.fileUploadError = '';
@@ -154,6 +141,9 @@ export class GrievanceRaiserFormComponent {
         this.fileUploadError = `Please upload ${allowedExtensions.join(', ')} files`;
       }
     }
+    console.log("Files info", this.listOfFiles);
+    console.log("Files info", this.files);
+
   }
 
   formatBytes(bytes: any, decimals = 2) {
@@ -222,22 +212,68 @@ export class GrievanceRaiserFormComponent {
     this.openSharedDialog(false); 
   }
 
+  uploadFiles() {
+    if (this.files.length === 0) {
+      // Return an observable that emits an empty array
+      return of([]);
+    }
+    let uploadFileRequests :Observable<ServerResponse>[] =[];
+    this.files.forEach((file) => {
+      const formData: FormData = new FormData();
+      formData.append('file', file); 
+      uploadFileRequests.push(this.uploadService.uploadFile(formData));
+    });
+    return forkJoin(uploadFileRequests);
+  }
+
+  // createTicket(otpDetails: any) {
+  //   this.submitted = true;
+  //   const ticketDetails = {...this.ticketDetails, otp: otpDetails?.mobileOTP};
+  //   delete ticketDetails.name;
+  //   this.grievanceService.createTicket(ticketDetails).subscribe({
+  //     next: (res) => {
+  //       this.toastrService.showToastr("Grievance ticket is created successfully!", 'Success', 'success', '');
+  //       this.submitted= false;
+  //       this.ticketDetails.id= res.responseData.id;
+  //       this.openSharedDialog(true);
+  //    },
+  //    error: (err) => {
+  //     this.toastrService.showToastr(err, 'Error', 'error', '');
+  //     this.submitted= false;
+  //      // Handle the error here in case of login failure
+  //    }
+  //   });  
+  // }
+
   createTicket(otpDetails: any) {
     this.submitted = true;
-    const ticketDetails = {...this.ticketDetails, otp: otpDetails?.mobileOTP};
+    const ticketDetails = { ...this.ticketDetails, otp: otpDetails?.mobileOTP };
     delete ticketDetails.name;
-    this.grievanceService.createTicket(ticketDetails).subscribe({
+  
+    // Call uploadFiles to upload attachments
+    this.uploadFiles().pipe(
+      switchMap((uploadResponses) => {
+        // Extract attachmentUrls from uploadResponses
+        const attachmentUrls = uploadResponses.map((response: any) => response.responseData.fileUrl);
+  
+        // Add attachmentUrls to ticketDetails
+        ticketDetails.attachmentUrls = attachmentUrls;
+  
+        // Call the createTicket API with updated ticketDetails
+        return this.grievanceService.createTicket(ticketDetails);
+      })
+    ).subscribe({
       next: (res) => {
         this.toastrService.showToastr("Grievance ticket is created successfully!", 'Success', 'success', '');
-        this.submitted= false;
-        this.ticketDetails.id= res.responseData.id;
+        this.submitted = false;
+        this.ticketDetails.id = res.responseData.id;
         this.openSharedDialog(true);
-     },
-     error: (err) => {
-      this.toastrService.showToastr(err, 'Error', 'error', '');
-      this.submitted= false;
-       // Handle the error here in case of login failure
-     }
-    });  
+      },
+      error: (err) => {
+        this.toastrService.showToastr(err, 'Error', 'error', '');
+        this.submitted = false;
+        // Handle the error here in case of file upload or ticket creation failure
+      }
+    });
   }
 }

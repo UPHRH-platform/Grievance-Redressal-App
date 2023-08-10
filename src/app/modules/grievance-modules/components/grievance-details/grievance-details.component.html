@@ -201,14 +201,14 @@
               </div>
               <div class="first-container">
                 <mat-label class="label-text">Escalation Time</mat-label>
-                <h3 class="textData">{{ ticketDetails?.escalationDate !== null ? ticketDetails?.escalationDate : '-'}}</h3>
+                <h3 class="textData">{{ ticketDetails?.escalatedDate !== null ? ticketDetails?.escalatedDate : '-'}}</h3>
               </div>
             </div>
 
             <div class="first-row-container mt2">
               <div class="first-container">
                 <mat-label class="label-text">Grievance Type</mat-label>
-                <h3 class="textData">{{ grievanceType }}</h3>
+                <h3 class="textData">{{ticketDetails?.assignedToName}}</h3>
               </div>
               <div class="first-container">
                 <mat-label class="label-text">User Type</mat-label>
@@ -227,17 +227,17 @@
 
             <div class="first-row-container mt2">
               <div class="desc-content">
-                <mat-label class="label-text">Attached Document</mat-label>
-                <!-- <h3 class="textData">{{desc}}</h3> -->
+                <mat-label class="label-text">Attached Document (s)</mat-label>
                 <div class="attach-docs" *ngFor="let attachment of ticketDetails?.raiserTicketAttachmentURLs">
-                  <span>{{ ticket }}</span>
-                  <span class="text-primary">{{ "view" }}</span>
+                  <span>{{ attachment.attachment_url }}</span>
+                  <a target="_blank" class="action-buttons" href={{attachment.attachment_url}}><span>{{ "view" }}</span></a>
                 </div>
+                <div *ngIf="ticketDetails?.raiserTicketAttachmentURLs?.length === 0">-</div>
               </div>
             </div>
             <!-- nodal officer -->
             <mat-divider *ngIf="userRole === 'Nodal Officer' || 'Grievance Nodal' && currentTabName !== 'Resolved'"
-              class="mt2"></mat-divider>
+              style="margin-top:1rem !important"></mat-divider>
             <form [formGroup]="grievanceResolutionForm">
               <div *ngIf="userRole === 'Nodal Officer' && currentTabName !== 'Resolved'" id="nodal"
                 class="resolution-class">
@@ -282,6 +282,26 @@
                 <span class="error">{{ fileUploadError }}</span>
               </div>
             </form>
+            <div *ngIf="userRole === 'Nodal Officer' && currentTabName === 'Resolved'" class="resolution-class">
+              <mat-label class="label-text">Resolution Comment (s)</mat-label>
+              <div class="mt1 mb1" *ngFor="let comment of ticketDetails?.comments; let i = index"> 
+                <span class="textData">{{comment.comment}}</span>
+              </div>
+              <div class="mt2">
+              <mat-label class="label-text">Resolution Attachments (s)</mat-label>
+              <mat-card-content *ngIf="ticketDetails?.assigneeTicketAttachment?.length > 0">
+                <div *ngFor="let attachment of ticketDetails?.assigneeTicketAttachment; let i = index" class="preview">
+                  <div class="layout">
+                    <span>{{ attachment.attachment_url }}</span>
+                    <div>
+                      <a target="_blank" class="action-buttons" href={{attachment.attachment_url}}><span>view</span></a>
+                    </div>
+                  </div>
+                </div>
+              </mat-card-content>
+              <div *ngIf="ticketDetails?.assigneeTicketAttachment?.length === 0"> - </div>
+              </div>
+            </div>
 
             <div class="mt2" *ngIf="userRole === 'Grievance Nodal' && currentTabName === 'Not Assigned'">
               <h4>Assign To</h4>

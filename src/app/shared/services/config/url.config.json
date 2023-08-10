@@ -14,6 +14,9 @@
         },
         "OTP":{
             "GENERATE_OTP": "/otp/generate-otp"
+        },
+        "FILE": {
+            "UPLOAD": "/ticket/file/upload"
         }
     }
 }
