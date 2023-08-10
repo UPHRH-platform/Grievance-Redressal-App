@@ -1,0 +1,27 @@
+.toolbar-header {
+    height: 40px;
+    padding: 2%;
+    background-color: lightgray;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.iconCls {
+    cursor: pointer;
+}
+
+.content-container{
+    display: flex;
+    flex-direction: column;
+    padding: 2%;
+}
+.conf-text{
+    padding: 10%;
+    font-size: 19px;
+    font-family: system-ui;
+}
+.action-btns {
+    display: flex;
+    justify-content: end;
+}

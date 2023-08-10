@@ -1,0 +1,66 @@
+/* You can add global styles to this file, and also import other style files */
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+@import "../node_modules/ngx-toastr/toastr.css";
+@import 'ngx-toastr/toastr';
+
+.content {
+    flex: 1;
+    padding: 1rem 8rem; /* Add space on both sides */
+    background-color: #F0F3F4;
+    min-height: 98vh;
+}
+
+#dashboard {
+    .mat-grid-tile-content {
+        align-items: flex-start !important;
+    }
+}
+
+/** angular material table styles **/
+// .mdc-data-table__table {
+.mdc-data-table__cell {
+    .mdc-button {
+        color: rgba(0,0,0,0.6) !important;
+        font-weight: 400;
+        letter-spacing: 0.25px;
+        line-height: 20px;
+        opacity: 1;
+        font-size: 14px;
+        font-style: normal;
+        font-family: 'Lato', sans-serif;
+    }
+}
+.mdc-data-table__header-cell {
+    color: rgba(0, 0, 0, 0.87);
+    font-weight:700;
+    letter-spacing: 0.25px;
+    line-height: 20px;
+    opacity: 1;
+    font-size: 14px;
+    font-style: normal;
+    font-family: 'Lato', sans-serif;
+}
+
+#nodal {
+    .mat-mdc-form-field {
+        width: -moz-available; 
+        width: -webkit-fill-available;
+        width: stretch;
+    }
+}
+.resolution-class {
+    .mat-grid-tile-content {
+        align-items: flex-start;
+        justify-content: left;
+    }
+    .resolution-form .mat-mdc-text-field-wrapper {
+        border: 1px solid rgba(0,0,0,0.16);
+    }
+    .resolution-form .mdc-text-field, .mat-mdc-form-field-focus-overlay{
+        background-color: white !important;
+    }
+}
+
+

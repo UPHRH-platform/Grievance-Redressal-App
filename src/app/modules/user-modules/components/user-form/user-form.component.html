@@ -1,0 +1,95 @@
+<app-breadcrumb [breadcrumbItems]="breadcrumbItems"></app-breadcrumb>
+<div class="content">
+    <div>
+<!-- create User form UI -->
+<div class="user-form-container">
+    <form [formGroup]="userForm"  (ngSubmit)="onSubmit()">
+    <div class="user-container">
+        <h2 class="user-text-heading">{{isEditUser ? 'Edit User Details' : 'Create user'}}</h2>
+        <div class="action-btns">
+        <button  type="button" mat-raised-button  (click)="navigateToHome()" class="mr1">Cancel</button>
+        <button type="submit" mat-raised-button color="primary" [disabled]="!userForm.valid || isProcessing">Save</button>
+       </div> 
+     </div>
+     <div class="form-container">
+      <div class="form-internal-wrapper">
+        <h1>{{'User Details'}}</h1>
+        
+            <div class="wrapper-form">
+                <div class="first-row-container" style="margin-top: 1%;">
+                    <div class="first-container">
+                        <h4>First Name</h4>
+                        <mat-form-field appearance="outline" class="text-class">
+                            <mat-label>First name</mat-label>
+                            <input matInput placeholder="Enter first name" formControlName="firstName" required>
+                            <mat-error *ngIf="firstName && firstName.invalid && firstName.touched">please enter first name</mat-error>
+
+                          </mat-form-field>
+                    </div>
+                    <div class="first-container">
+                        <h4>Last Name</h4>
+                        <mat-form-field appearance="outline" class="text-class">
+                            <mat-label>Last name</mat-label>
+                            <input matInput placeholder="Enter last name" formControlName="lastName" required>
+                            <mat-error *ngIf="lastName && lastName.invalid && lastName.touched">please enter last name</mat-error>
+
+                          </mat-form-field>
+                    </div>
+                </div>
+
+                <div class="first-row-container" style="margin-top: 1%;">
+                    <div class="first-container">
+                        <h4>Email Id</h4>
+                        <mat-form-field appearance="outline" class="text-class">
+                            <mat-label>Email id</mat-label>
+                            <input matInput placeholder="pat@example.com" required formControlName="username" required>
+                            <mat-error *ngIf="username && username.invalid && username.touched">please Enter email Id</mat-error>
+
+                          </mat-form-field>
+                    </div>
+                    <div class="first-container">
+                        <h4>Phone Number</h4>
+                        <mat-form-field appearance="outline" class="text-class">
+                            <mat-label>Phone number</mat-label>
+                            <input type="number" matInput placeholder="Enter Phone number" formControlName="phone" required>
+                            <mat-error *ngIf="phone && phone.invalid && phone.touched">please Enter phone number</mat-error>
+
+                          </mat-form-field>
+                    </div>
+
+                </div>
+
+                <div class="first-row-container" style="margin-top: 1%;">
+                    <div class="first-container">
+                        <h4>Role</h4>
+                        <mat-form-field appearance="outline" class="text-class">
+                            <mat-label>Role</mat-label>
+                            <mat-select formControlName="role">
+                              <mat-option *ngFor="let item of roleList" [value]="item.name">{{getUserRole(item.name)}}</mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="role && role.invalid && role.touched">please select role</mat-error>
+
+                          </mat-form-field>
+                    </div>
+
+                </div>
+
+                <div>
+                    <mat-label class="label-text">Active Status</mat-label>
+                    <div class="first-container" style="margin-top: 2%;">
+                        <mat-radio-group aria-label="Select an option" formControlName="status">
+                            <mat-radio-button value="1" class="radio-btn" *ngFor="let status of statusList" [value]="status">{{status}}</mat-radio-button>
+                           
+                          </mat-radio-group>
+                    </div>
+                </div>
+            </div>
+      </div>
+     </div>
+  
+    </form>
+
+</div>
+</div>
+
+</div>

@@ -1,1 +1,147 @@
-<p>grievance-raiser-form works!</p>
+<div class="content">
+    <div>
+        <!-- create User form UI -->
+        <div class="user-form-container">
+            <form [formGroup]="grievanceRaiserformGroup"
+                (ngSubmit)="onSubmit(grievanceRaiserformGroup.value)">
+                <div class="user-container">
+                    <h2 class="user-text-heading">{{'Grievance Raiser'}}</h2>
+                    <div class="action-btns">
+                        <button mat-stroked-button style="margin-right: 15px;"
+                            (click)="onReset()">Reset</button>
+                        <button type="submit" mat-raised-button color="primary" [disabled]="!grievanceRaiserformGroup.valid || submitted">Submit</button>
+                    </div>
+                </div>
+                <div class="form-container">
+                    <div class="form-internal-wrapper">
+                        <h1>{{'Raiser Details'}}</h1>
+                        <div class="wrapper-form">
+                            <div class="first-row-container" style="margin-top: 1%;">
+                                <div class="first-container">
+                                    <h4>Name</h4>
+                                    <mat-form-field appearance="outline" class="text-class">
+                                        <mat-label>Name</mat-label>
+                                        <input matInput placeholder="Enter name" formControlName="name" required>
+                                        <mat-error *ngIf="grievanceRaiserformGroup.controls['name'].invalid">
+                                            {{getError('name')}}
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+                                <div class="first-container">
+                                    <h4>Email Id</h4>
+                                    <mat-form-field appearance="outline" class="text-class">
+                                        <mat-label>Email id</mat-label>
+                                        <input matInput placeholder="pat@example.com" required formControlName="email"
+                                            required>
+                                        <mat-error *ngIf="grievanceRaiserformGroup.controls['email'].invalid">
+                                            {{getError('email')}}
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+
+                            <div class="first-row-container" style="margin-top: 1%;">
+                                <div class="first-container">
+                                    <h4>Phone Number</h4>
+                                    <mat-form-field appearance="outline" class="text-class">
+                                        <mat-label>Phone number</mat-label>
+                                        <input type="number" matInput placeholder="Enter Phone number"
+                                            formControlName="phone" required>
+                                        <mat-error *ngIf="grievanceRaiserformGroup.controls['phone'].invalid">
+                                            {{getError('phone')}}
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+                                <div class="first-container">
+                                    <h4>Type of grievance</h4>
+                                    <mat-form-field appearance="outline">
+                                        <mat-label>Type of Grievance</mat-label>
+                                        <mat-select
+                                            formControlName="grievanceType">
+                                            <span *ngFor='let grievance of grievancesTypes;let i = index'>
+                                                <mat-option [value]="grievance.id">{{grievance.name}}</mat-option>
+                                            </span>
+                                        </mat-select>
+                                        <mat-error *ngIf="grievanceRaiserformGroup.controls['grievanceType'].invalid">
+                                            {{getError('grievanceType')}}
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+
+                            </div>
+
+                            <div class="first-row-container" style="margin-top: 1%;">
+                                <div class="first-container" style="width: 37%;">
+                                    <h4>User Type</h4>
+                                    <mat-radio-group color="primary" name="answer" aria-label="User Type"
+                                        formControlName="userType" class="form-control">
+                                        <span *ngFor='let userType of userTypesArray;let i = index'>
+                                            <mat-radio-button [value]="userType" class="ml3"
+                                                >{{userType}}</mat-radio-button>
+                                        </span>
+
+                                    </mat-radio-group>
+                                    <mat-error
+                                        *ngIf="submitted && grievanceRaiserformGroup.controls['userType'].errors?.['required']">
+                                        {{getError('userType')}}
+                                    </mat-error>
+                                </div>
+
+                            </div>
+
+                            <div class="first-row-container" style="margin-top: 1%;">
+                                <div class="first-container" style="width: 40%;">
+                                    <h4>Description</h4>
+                                    <mat-form-field style="width: 100%;">
+                                        <textarea matInput placeholder="Leave a comment" formControlName="description"></textarea>
+                                    </mat-form-field>
+                                </div>
+
+                            </div>
+                            <div class="resolution-class">
+                                <mat-grid-list cols="6" rowHeight="26px" [gutterSize]="'100px'">
+                                    <mat-grid-tile colspan="3" rowspan="1">
+                                        <mat-label class="attachment-label left" (click)="fileupload.click()">Attach
+                                            file (s)</mat-label>
+                                        <mat-label class="attachment-label right" (click)="fileupload.click()">+ Add
+                                            attachments</mat-label>
+                                        <input hidden id="fileUpload" #fileupload type="file"
+                                        formControlName="attachmentUrls"
+                                            (change)="handleFileUpload($event)" multiple
+                                            accept=".pdf, .jpeg, .png, .docx" />
+                                    </mat-grid-tile>
+                                </mat-grid-list>
+                                <mat-grid-list cols="6" rowHeight="8rem" [gutterSize]="'100px'">
+                                    <mat-grid-tile colspan="3" rowspan="1">
+                                        <mat-card class="attachment-view">
+                                            <!-- if no files are available -->
+                                            <mat-card-content class="empty-content-class"
+                                                *ngIf="files.length == 0">Supports only PDF, JPEG, PNG, DOC with maximum
+                                                size of
+                                                2MB.</mat-card-content>
+                                            <mat-card-content *ngIf="files.length > 0" class="file-list-container">
+                                                <div *ngFor="let file of files; let i = index" class="preview">
+                                                    <div class="layout">
+                                                        <span>{{file.name}}</span>
+                                                        <div>
+                                                            <span class="action-buttons"
+                                                                (click)="removeSelectedFile(index)">Delete</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </mat-card-content>
+                                        </mat-card>
+                                    </mat-grid-tile>
+                                </mat-grid-list>
+                                <span class="error">{{fileUploadError}}</span>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+    </div>
+
+</div>

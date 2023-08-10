@@ -1,14 +1,17 @@
-import { NgModule } from '@angular/core';
+import { Component, NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { GrievanceRaiserFormComponent } from './components/grievance-raiser-form/grievance-raiser-form.component';
+import { GrievanceManagementComponent } from './components/grievance-management/grievance-management.component';
+import { GrievanceDetailsComponent } from './components/grievance-details/grievance-details.component';
 
-const routes: Routes = [
+
+const routes: Routes = [ 
   {
-    path: '', component:GrievanceRaiserFormComponent, pathMatch: 'full',
+    path: 'manage-tickets', component:GrievanceManagementComponent, pathMatch: 'full',
   },
   {
-    path: 'login', loadChildren :()=> import('../auth-modules/auth-modules.module').then(m=>m.AuthModulesModule)
-  }
+    path: ':id', component:GrievanceDetailsComponent, pathMatch: 'full',
+  },
+
 ];
 
 @NgModule({

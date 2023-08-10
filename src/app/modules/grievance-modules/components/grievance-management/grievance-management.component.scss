@@ -1,0 +1,101 @@
+.examcycle{
+    min-height: 94vh;
+    background-color:#F0F3F4;  
+    width: 100%;
+}
+
+.container{
+    margin-left: 40rem;
+    margin-right: 20rem;
+}
+
+.body-header{
+    display:flex;
+    flex-direction: row;
+    justify-content: space-between;
+   
+
+}
+.button-group {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    align-items: center;
+}
+
+
+.btn-1{
+    color: #045DAD;
+    width: 6rem;
+    padding: 12px;
+    border-width: 16px;
+    border-radius: 4px;
+    font-weight: 600;
+    border: 1.5px solid rgba(4,93,173, 1);
+    opacity: 1;
+
+}
+.btn-2{
+    background-color: #045DAD;
+    color:#fff;
+    width: 6rem;
+    padding:12px;
+    border-radius: 4px;
+    font-weight: 600;
+    border: 1.5px solid rgba(4,93,173, 1);
+    opacity: 1;
+
+}
+.body{
+  width:100%;
+  background-color: #fff;
+  height: fit-content;
+  padding-bottom: 2rem;
+}
+.examcycleform{
+    display: flex;
+    margin-left: 2rem;
+}
+.btn-3{
+    background-color: #045DAD;
+    color:#fff;
+    width: 6rem;
+    padding:12px;
+    border-radius: 4px;
+    font-weight: 600;
+    border: 1.5px solid rgba(4,93,173, 1);
+    opacity: 1;
+
+}
+
+.card1  {
+    height: 9rem;
+    width:17rem;
+    border: thin solid rgb(185, 181, 181);
+    border-radius: 4px;
+
+}
+.time{
+    font-weight:100;
+    font-size: small;
+    margin-left: 4px;
+    margin-top:3px
+}
+::ng-deep .custom-timepicker:focus {
+    appearance: outline;
+    outline: none; /* This removes the default blue outline on some browsers */
+    border-color: rgba(4,93,173, 1);
+    border-width: 12px  ;
+}
+.custom-timepicker:focus {
+    outline:none;
+    
+}
+.custom-timepicker{
+    font-size: medium;
+}
+
+.example-full-width {
+    width: 100%;
+    min-width: 100%;
+  }
