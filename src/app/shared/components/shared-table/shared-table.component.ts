@@ -49,7 +49,9 @@ export class SharedTableComponent implements AfterViewInit {
   isFilter:boolean = false;
   grievancesTypes: any[] = [];
   userRole:string;
-  filterForm:FormGroup
+  filterForm:FormGroup;
+  isClient:boolean = false;
+  accumulatedSearchTerm:string = '';
   //dataSource: MatTableDataSource<[any]> = new MatTableDataSource();
   public dataSource = new MatTableDataSource([]);
  // dataSource = new MatTableDataSource([])
@@ -71,7 +73,9 @@ export class SharedTableComponent implements AfterViewInit {
   @Input() hasFilterOptions = true;
   @Output() toggleData: EventEmitter<any>= new EventEmitter<any>();
   @Output() pageChange: EventEmitter<any> = new EventEmitter<any>();
+  @Output() searchParmas: EventEmitter<any> = new EventEmitter<any>();
   pageEvent: PageEvent;
+  private timeoutId: any;
 
 
   constructor( private configService: ConfigService,
@@ -95,11 +99,23 @@ export class SharedTableComponent implements AfterViewInit {
   }
 
     applyFilter(filterValue: string) {
-      this.dataSource.filter = filterValue.trim().toLowerCase();
-      console.log(this.dataSource.filter);
-      if (this.dataSource.paginator) {
-        this.dataSource.paginator.firstPage();
+      if(this.isClient){
+        this.dataSource.filter = filterValue.trim().toLowerCase();
+        console.log(this.dataSource.filter);
+        if (this.dataSource.paginator) {
+          this.dataSource.paginator.firstPage();
+        }
       }
+      else {
+        clearTimeout(this.timeoutId)
+
+        this.accumulatedSearchTerm  = filterValue
+         this.timeoutId= setTimeout(()=>{
+          this.searchParmas.emit(this.accumulatedSearchTerm)
+        },1000
+        )  
+      }
+      
     }
 
     toggleFilter(){
