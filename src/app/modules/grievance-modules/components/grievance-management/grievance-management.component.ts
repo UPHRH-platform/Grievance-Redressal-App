@@ -22,6 +22,9 @@ export class GrievanceManagementComponent  {
   tabs: any[] = [];
   selectedTab:any=null;
   responseLength: number;
+  startDate:number = 0;
+  endDate:number = 0;
+  grievanceType:any;
   breadcrumbItems: BreadcrumbItem[] = [
     { label: 'Grievance Management', url: '/home' },
     { label: 'Grievance List', url: 'grievance/manage-tickets' },
@@ -130,6 +133,12 @@ export class GrievanceManagementComponent  {
     console.log('searchterm',searchterm)
     this.searchParams = searchterm;
     this.getTicketsRequestObject()
+  }
+
+  onClickApplyFilter(event:any){
+    this.grievanceType = event.grievanceType
+    this.startDate =  new Date(event.startDate).getTime();
+    this.endDate = new Date(event.endDate).getTime();
   }
 
 
