@@ -7,6 +7,7 @@ import { MatTabChangeEvent } from '@angular/material/tabs';
 import { BreadcrumbItem, ConfigService } from 'src/app/shared';
 import { GrievanceServiceService } from '../../services/grievance-service.service';
 import { ToastrServiceService } from 'src/app/shared/services/toastr/toastr.service';
+import { PageEvent } from '@angular/material/paginator';
 
 
 @Component({
@@ -21,27 +22,33 @@ export class GrievanceManagementComponent  {
   userRole: string;
   tabs: any[] = [];
   selectedTab:any=null;
-  responseLength: number;
+  length: number;
   breadcrumbItems: BreadcrumbItem[] = [
     { label: 'Grievance Management', url: '/home' },
     { label: 'Grievance List', url: 'grievance/manage-tickets' },
   ];
-  getGrievancesRequest = {};
+  grievancesTypes:any[] = [];
+  getGrievancesRequest: any;
   constructor( 
     private router: Router,
     private authService: AuthService,
     private configService: ConfigService,
     private grievanceService: GrievanceServiceService,
     private toastrService:ToastrServiceService ){
+
     }
 
-  pageIndex = 0;
-  pageLength = 0;
-  pageSize = 10;
-  searchParams:string = ''
+  pageIndex: number = 0;
+  pageSize: number = 10;
+  searchParams:string = '';
+  sortHeader: string = 'created_date_ts';
+  direction: string = 'desc';
+  userId: string;
 
   ngOnInit(): void {
+    this.grievancesTypes = this.configService.dropDownConfig.GRIEVANCE_TYPES;
     this.userRole = this.authService.getUserRoles()[0];
+    this.userId= this.authService.getUserData().userId;
     this.initializeTabs();
     // this.getTicketsRequestObject();
   }
@@ -77,7 +84,7 @@ export class GrievanceManagementComponent  {
         cell: (element: Record<string, any>) => `${element['ticketId']}`
       },
       {
-        columnDef: 'grievanceRaiser',
+        columnDef: 'firstName',
         header: 'Grievance Raiser',
         isSortable: true,
         cell: (element: Record<string, any>) => `${element['firstName'] + ' ' + element['lastName']}`
@@ -89,19 +96,19 @@ export class GrievanceManagementComponent  {
         cell: (element: Record<string, any>) => `${element['requesterType']}`
       },
       {
-        columnDef: 'assignedToName',
+        columnDef: 'assignedToId',
         header: 'Raiser Type',
         isSortable: true,
-        cell: (element: Record<string, any>) => `${element['assignedToName']}`
+        cell: (element: Record<string, any>) => `${element['assignedTo']}`
       },
       {
-        columnDef: 'createdDate',
+        columnDef: 'created_date_ts',
         header: 'Creation Time',
         isSortable: true,
         cell: (element: Record<string, any>) => `${element['createdDate']}`
       },
       {
-        columnDef: 'escalatedDate',
+        columnDef: 'escalated_date_ts',
         header: 'Escalation time',
         isSortable: true,
         cell: (element: Record<string, any>) => 
@@ -143,6 +150,7 @@ export class GrievanceManagementComponent  {
   }
 
   getTicketsRequestObject() {
+    console.log(this.pageSize);
     this.getGrievancesRequest = {
       "searchKeyword":this.searchParams,
       filter: {
@@ -152,10 +160,10 @@ export class GrievanceManagementComponent  {
       "date": "",
       "page": this.pageIndex, // does not work currently
       "size": this.pageSize, // does not work currently
-      "sort":{
-           "created_date_ts": "desc"
-      }
+      sort: {},
+           // based on sort header -- column name and asc/dsc}
     }
+    this.getGrievancesRequest.sort[this.sortHeader] = this.direction;
      this.userRole
     switch(this.selectedTab) {
       case 'Pending': 
@@ -163,7 +171,7 @@ export class GrievanceManagementComponent  {
           ...this.getGrievancesRequest,
           filter:{
             status:['Open'],
-            cc: this.userRole === 'Nodal Officer' ? 'UserID': ''
+            cc: this.userRole === 'Nodal Officer' ? this.userId: ''
           }
         }
         break;
@@ -229,9 +237,15 @@ export class GrievanceManagementComponent  {
     this.grievanceService.getAllTickets(this.getGrievancesRequest).subscribe({
       next: (res) => {
         this.isDataLoading = false;
-        // console.log("response ===>, res", res);
-        this.responseLength = res.responseData.count;
+        this.length = res.responseData.count;
         this.grievances = res.responseData.data;
+        this.grievances.map((obj: any) => {
+          this.grievancesTypes.map((grievanceType, index) => {
+            if(obj.assignedToId === grievanceType.id) {
+              obj.assignedTo = grievanceType.name;
+            }
+          })
+        })
       },
       error: (err) => {
         // Handle the error here in case of Api failure
@@ -241,12 +255,18 @@ export class GrievanceManagementComponent  {
     
   }
 
-  handlePageChange(event: any) {
+  handlePageChange(event: PageEvent) {
       this.pageIndex = event.pageIndex;
       this.pageSize = event.pageSize;
-      this.pageLength = event.length;
-      this.getAllTickets();
+      this.length = event.length;
+      this.getTicketsRequestObject();
       // call API here
+  }
+
+  handleSortChange(e: any) {
+    this.sortHeader = e.active;
+    this.direction = e.direction;
+    this.getTicketsRequestObject();
   }
 
 }

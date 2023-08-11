@@ -55,7 +55,7 @@ export class SharedTableComponent implements AfterViewInit {
   //dataSource: MatTableDataSource<[any]> = new MatTableDataSource();
   public dataSource = new MatTableDataSource([]);
  // dataSource = new MatTableDataSource([])
-  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatPaginator, {read: true}) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort ;
 
   @Input() isPageable = true;
@@ -63,10 +63,13 @@ export class SharedTableComponent implements AfterViewInit {
   @Input() set tableData(data: any[]) {
     this.setTableDataSource(data);
   }
-  @Input() pageLength: number;
+  @Input() length: number;
   @Input() pageSize: number;
   @Input() pageIndex: number;
-  @Input() isServerSidePagination: boolean;
+  @Input() isServerSidePagination: boolean = false;
+  @Input() showFirstLastButtons: boolean = true;
+  @Input() showPageSizeOptions: boolean = true;
+  @Input() hidePageSize: boolean = false;
 
   @Output() rowAction: EventEmitter<any> = new EventEmitter<any>();
   @Output() editData: EventEmitter<any>= new EventEmitter<any>();
@@ -76,7 +79,8 @@ export class SharedTableComponent implements AfterViewInit {
   @Output() searchParmas: EventEmitter<any> = new EventEmitter<any>();
   pageEvent: PageEvent;
   private timeoutId: any;
-
+  @Output() sortChange: EventEmitter<any> = new EventEmitter<any>();
+  @Input() isServerSideSorting: boolean = false;
 
   constructor( private configService: ConfigService,
     private authService: AuthService) {
@@ -160,5 +164,11 @@ export class SharedTableComponent implements AfterViewInit {
      }
      ApplyFilter(value:any){
       console.log(value)
+     }
+
+     onSortChange(e: any) {
+      if(this.isServerSideSorting) {
+      this.sortChange.emit(e);
+      }
      }
 }
