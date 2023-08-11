@@ -77,6 +77,7 @@ export class SharedTableComponent implements AfterViewInit {
   @Output() toggleData: EventEmitter<any>= new EventEmitter<any>();
   @Output() pageChange: EventEmitter<any> = new EventEmitter<any>();
   @Output() searchParmas: EventEmitter<any> = new EventEmitter<any>();
+  @Output() filteredvalue: EventEmitter<any> = new EventEmitter<any>();
   pageEvent: PageEvent;
   private timeoutId: any;
   @Output() sortChange: EventEmitter<any> = new EventEmitter<any>();
@@ -86,7 +87,7 @@ export class SharedTableComponent implements AfterViewInit {
     private authService: AuthService) {
     this.grievancesTypes = this.configService.dropDownConfig.GRIEVANCE_TYPES;
     this.filterForm = new FormGroup({
-      grievanceType: new FormControl('',Validators.required),
+      grievanceType: new FormControl('', Validators.required),
       startDate: new FormControl(''),
       endDate:new FormControl('')
     })
@@ -130,6 +131,10 @@ export class SharedTableComponent implements AfterViewInit {
       console.log(e);
     }
 
+    resetFilter(){
+      this.filterForm.reset();
+    }
+
     setTableDataSource(data : any) {
      
       this.dataSource = new MatTableDataSource(data);
@@ -163,7 +168,9 @@ export class SharedTableComponent implements AfterViewInit {
      grievanceSelected(e:any){
      }
      ApplyFilter(value:any){
-      console.log(value)
+      console.log('filtered value',value)
+      this.filteredvalue.emit(value)
+
      }
 
      onSortChange(e: any) {

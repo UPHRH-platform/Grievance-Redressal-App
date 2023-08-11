@@ -23,6 +23,10 @@ export class GrievanceManagementComponent  {
   tabs: any[] = [];
   selectedTab:any=null;
   length: number;
+  responseLength: number;
+  startDate = new Date("2020/03/03").getTime()
+  endDate = new Date().getTime()
+  grievanceType:number;
   breadcrumbItems: BreadcrumbItem[] = [
     { label: 'Grievance Management', url: '/home' },
     { label: 'Grievance List', url: 'grievance/manage-tickets' },
@@ -139,6 +143,13 @@ export class GrievanceManagementComponent  {
     this.getTicketsRequestObject()
   }
 
+  onClickApplyFilter(event:any){
+    this.grievanceType = event.grievanceType
+    this.startDate =  new Date(event.startDate).getTime();
+    this.endDate = new Date(event.endDate).getTime() + ((23*60*60 + 59*60+59) * 1000);
+    console.log(this.startDate, this.endDate)
+  }
+
 
   onClickItem(e: any) {
     // console.log(e?.ticketId)
@@ -151,28 +162,26 @@ export class GrievanceManagementComponent  {
 
   getTicketsRequestObject() {
     this.getGrievancesRequest = {
-      filter: {
+      searchKeyword: this.searchParams,
+       filter: {
+        status: [],
+        cc: this.grievanceType ? this.grievanceType: null,
        },
-      "page": this.pageIndex,
-      "size": this.pageSize,
-      sort: {},
+      "page": this.pageIndex, // does not work currently
+      "size": this.pageSize, // does not work currently
+      "sort":{
+           "created_date_ts": "desc"
+      }
            // based on sort header -- column name and asc/dsc}
     }
     this.getGrievancesRequest.sort[this.sortHeader] = this.direction;
-    if(this.searchParams !== "") {
-      this.getGrievancesRequest = {
-        ...this.getGrievancesRequest,
-        searchKeyword: this.searchParams
-      }
-    }
-     this.userRole
     switch(this.selectedTab) {
       case 'Pending': 
         this.getGrievancesRequest = {
           ...this.getGrievancesRequest,
           filter:{
             status:['OPEN'],
-            cc: this.userRole === 'Nodal Officer' ?  this.userId: ''
+            cc: this.userRole === 'Nodal Officer' ? this.userId : null
           }
         }
         break;
@@ -181,7 +190,7 @@ export class GrievanceManagementComponent  {
         ...this.getGrievancesRequest,
         filter:{
           status:['CLOSED'],
-          cc: this.userRole === 'Nodal Officer' ? this.userId: ''
+          cc: this.userRole === 'Nodal Officer' ? this.userId: null
         }
       }
       break;
@@ -191,7 +200,7 @@ export class GrievanceManagementComponent  {
         ...this.getGrievancesRequest,
         filter:{
           status:['OPEN'],
-          cc: this.userRole === 'Nodal Officer' ? this.userId: ''
+          cc: this.userRole === 'Nodal Officer' ? this.userId: null
         },
         priority: "HIGH"
       }
@@ -200,8 +209,8 @@ export class GrievanceManagementComponent  {
       this.getGrievancesRequest = {
         ...this.getGrievancesRequest,
         filter:{
-          status:['CLOSED'],
-          cc: ''
+          status:['OPEN'],
+          cc: null
         },
         isEscalated: true,
         priority: "MEDIUM"
@@ -212,7 +221,7 @@ export class GrievanceManagementComponent  {
           ...this.getGrievancesRequest,
           filter:{
             status:['OPEN'],
-            cc: ''
+            cc: null
           },
         }
       break;
@@ -221,7 +230,7 @@ export class GrievanceManagementComponent  {
         ...this.getGrievancesRequest,
         filter:{
           status:['CLOSED'],
-          cc: ''
+          cc: null
         },
         isJunk: true
       }
@@ -240,7 +249,8 @@ export class GrievanceManagementComponent  {
       next: (res) => {
         this.isDataLoading = false;
         this.length = res.responseData.count;
-        this.grievances = res.responseData.data;
+        this.grievances = res.responseData.results;
+        if(this.grievances.length > 0) {
         this.grievances.map((obj: any) => {
           this.grievancesTypes.map((grievanceType, index) => {
             if(obj.assignedToId === grievanceType.id) {
@@ -248,6 +258,7 @@ export class GrievanceManagementComponent  {
             }
           })
         })
+      }
       },
       error: (err) => {
         // Handle the error here in case of Api failure

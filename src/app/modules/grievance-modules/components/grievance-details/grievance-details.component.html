@@ -151,7 +151,7 @@
   <div class="second-main-wrapper">
     <div class="user-form-container">
       <div class="user-container">
-        <h2 class="user-text-heading">{{ "Profile" }}</h2>
+        <h2 class="user-text-heading">{{currentTabName}}</h2>
         <div class="action-btns">
           <button mat-raised-button class="MR15" *ngIf="userRole === 'Nodal Officer' && currentTabName !== 'Resolved'"
             (click)="handleClick('markothers')">Mark As Others</button>
