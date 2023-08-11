@@ -150,28 +150,29 @@ export class GrievanceManagementComponent  {
   }
 
   getTicketsRequestObject() {
-    console.log(this.pageSize);
     this.getGrievancesRequest = {
-      "searchKeyword":this.searchParams,
       filter: {
-        "status": [], 
-        "cc":'' //pass id
        },
-      "date": "",
-      "page": this.pageIndex, // does not work currently
-      "size": this.pageSize, // does not work currently
+      "page": this.pageIndex,
+      "size": this.pageSize,
       sort: {},
            // based on sort header -- column name and asc/dsc}
     }
     this.getGrievancesRequest.sort[this.sortHeader] = this.direction;
+    if(this.searchParams !== "") {
+      this.getGrievancesRequest = {
+        ...this.getGrievancesRequest,
+        searchKeyword: this.searchParams
+      }
+    }
      this.userRole
     switch(this.selectedTab) {
       case 'Pending': 
         this.getGrievancesRequest = {
           ...this.getGrievancesRequest,
           filter:{
-            status:['Open'],
-            cc: this.userRole === 'Nodal Officer' ? this.userId: ''
+            status:['OPEN'],
+            cc: this.userRole === 'Nodal Officer' ?  this.userId: ''
           }
         }
         break;
@@ -179,8 +180,8 @@ export class GrievanceManagementComponent  {
       this.getGrievancesRequest = {
         ...this.getGrievancesRequest,
         filter:{
-          status:['Closed'],
-          cc: this.userRole === 'Nodal Officer' ? 'UserID': ''
+          status:['CLOSED'],
+          cc: this.userRole === 'Nodal Officer' ? this.userId: ''
         }
       }
       break;
@@ -189,27 +190,28 @@ export class GrievanceManagementComponent  {
       this.getGrievancesRequest = {
         ...this.getGrievancesRequest,
         filter:{
-          status:['Open'],
-          cc: this.userRole === 'Nodal Officer' ? 'UserID': ''
+          status:['OPEN'],
+          cc: this.userRole === 'Nodal Officer' ? this.userId: ''
         },
-        "priority": "HIGH"
+        priority: "HIGH"
       }
       break;
       case 'Escalated to me': 
       this.getGrievancesRequest = {
         ...this.getGrievancesRequest,
         filter:{
-          status:['Open'],
+          status:['CLOSED'],
           cc: ''
         },
-        "priority": "MEDIUM"
+        isEscalated: true,
+        priority: "MEDIUM"
       }
       break;
       case 'Not Assigned':
         this.getGrievancesRequest = {
           ...this.getGrievancesRequest,
           filter:{
-            status:['Open'],
+            status:['OPEN'],
             cc: ''
           },
         }
@@ -218,10 +220,10 @@ export class GrievanceManagementComponent  {
       this.getGrievancesRequest = {
         ...this.getGrievancesRequest,
         filter:{
-          status:['Closed'],
+          status:['CLOSED'],
           cc: ''
         },
-        "isJunk": true
+        isJunk: true
       }
       break;
       default: 
