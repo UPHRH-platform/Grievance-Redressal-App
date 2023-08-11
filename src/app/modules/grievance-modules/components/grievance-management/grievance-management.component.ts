@@ -22,6 +22,9 @@ export class GrievanceManagementComponent  {
   tabs: any[] = [];
   selectedTab:any=null;
   responseLength: number;
+  startDate = new Date("2020/03/03").getTime()
+  endDate = new Date().getTime()
+  grievanceType:number;
   breadcrumbItems: BreadcrumbItem[] = [
     { label: 'Grievance Management', url: '/home' },
     { label: 'Grievance List', url: 'grievance/manage-tickets' },
@@ -132,6 +135,13 @@ export class GrievanceManagementComponent  {
     this.getTicketsRequestObject()
   }
 
+  onClickApplyFilter(event:any){
+    this.grievanceType = event.grievanceType
+    this.startDate =  new Date(event.startDate).getTime();
+    this.endDate = new Date(event.endDate).getTime() + ((23*60*60 + 59*60+59) * 1000);
+    console.log(this.startDate, this.endDate)
+  }
+
 
   onClickItem(e: any) {
     // console.log(e?.ticketId)
@@ -147,9 +157,9 @@ export class GrievanceManagementComponent  {
       "searchKeyword":this.searchParams,
       filter: {
         "status": [], 
-        "cc":'' //pass id
+        "cc":this.grievanceType ? this.grievanceType : '' //pass id
        },
-      "date": "",
+      "date":"",
       "page": this.pageIndex, // does not work currently
       "size": this.pageSize, // does not work currently
       "sort":{
@@ -162,7 +172,7 @@ export class GrievanceManagementComponent  {
         this.getGrievancesRequest = {
           ...this.getGrievancesRequest,
           filter:{
-            status:['Open'],
+            status:['OPEN'],
             cc: this.userRole === 'Nodal Officer' ? 'UserID': ''
           }
         }
@@ -171,7 +181,7 @@ export class GrievanceManagementComponent  {
       this.getGrievancesRequest = {
         ...this.getGrievancesRequest,
         filter:{
-          status:['Closed'],
+          status:['CLOSED'],
           cc: this.userRole === 'Nodal Officer' ? 'UserID': ''
         }
       }
@@ -181,7 +191,7 @@ export class GrievanceManagementComponent  {
       this.getGrievancesRequest = {
         ...this.getGrievancesRequest,
         filter:{
-          status:['Open'],
+          status:['OPEN'],
           cc: this.userRole === 'Nodal Officer' ? 'UserID': ''
         },
         "priority": "HIGH"
@@ -191,7 +201,7 @@ export class GrievanceManagementComponent  {
       this.getGrievancesRequest = {
         ...this.getGrievancesRequest,
         filter:{
-          status:['Open'],
+          status:['OPEN'],
           cc: ''
         },
         "priority": "MEDIUM"
@@ -201,7 +211,7 @@ export class GrievanceManagementComponent  {
         this.getGrievancesRequest = {
           ...this.getGrievancesRequest,
           filter:{
-            status:['Open'],
+            status:['OPEN'],
             cc: ''
           },
         }
@@ -210,7 +220,7 @@ export class GrievanceManagementComponent  {
       this.getGrievancesRequest = {
         ...this.getGrievancesRequest,
         filter:{
-          status:['Closed'],
+          status:['CLOSED'],
           cc: ''
         },
         "isJunk": true

@@ -42,8 +42,8 @@
 
                     </div>
                     <div class="action-btns">
-                        <button  type="button" mat-raised-button  class="mr1">Reset</button>
-                        <button type="submit" mat-raised-button color="primary" >Apply</button>
+                        <button  type="reset" mat-raised-button  class="mr1" (click)="resetFilter()">Reset</button>
+                        <button type="submit" mat-raised-button color="primary" [disabled]="!filterForm.valid">Apply</button>
                        </div> 
 
                 </form>
