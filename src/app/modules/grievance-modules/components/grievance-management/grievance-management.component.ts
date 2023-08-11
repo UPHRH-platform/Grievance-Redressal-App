@@ -133,6 +133,7 @@ export class GrievanceManagementComponent  {
     // Here  we  have userrole and tab index with these 2 we know we need to fetch data for which tab of which user role so we pass relevant payload in get grievance service
     const selectedIndex = event.index;
     this.selectedTab = this.tabs[selectedIndex].name;
+    this.searchParams = "";
     // this.getgrievances();
     this.getTicketsRequestObject();
   }
@@ -172,11 +173,9 @@ export class GrievanceManagementComponent  {
       "page": this.pageIndex, // does not work currently
       "size": this.pageSize, // does not work currently
       "sort":{
-           "created_date_ts": "desc"
+           [this.sortHeader]: this.direction
       }
-           // based on sort header -- column name and asc/dsc}
     }
-    this.getGrievancesRequest.sort[this.sortHeader] = this.direction;
     switch(this.selectedTab) {
       case 'Pending': 
         this.getGrievancesRequest = {
@@ -279,8 +278,10 @@ export class GrievanceManagementComponent  {
   }
 
   handleSortChange(e: any) {
+    console.log(e);
     this.sortHeader = e.active;
     this.direction = e.direction;
+    console.log(this.sortHeader);
     this.getTicketsRequestObject();
   }
 
