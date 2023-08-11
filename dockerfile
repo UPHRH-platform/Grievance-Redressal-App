@@ -22,7 +22,7 @@ RUN npm run build
 # Use a lightweight web server to serve the app
 FROM nginx:alpine
 COPY --from=build /app/dist/grievance-app /usr/share/nginx/html
-EXPOSE 80
+EXPOSE 4200
 
 # Start the nginx web server
 CMD ["nginx", "-g", "daemon off;"]
