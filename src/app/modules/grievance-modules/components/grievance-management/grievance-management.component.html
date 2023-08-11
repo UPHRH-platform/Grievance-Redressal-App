@@ -6,9 +6,9 @@
             <ng-template mat-tab-label>{{ tab.name }}</ng-template>
             <app-shared-skeleton-loading [isLoading]="isDataLoading">
             </app-shared-skeleton-loading>
-            <app-shared-table *ngIf="!isDataLoading" [tableColumns]="grievancesTableColumns" [tableData]="grievances" [isPageable]="true"
-            [length]="responseLength" [pageSize]="pageSize" [pageIndex]="pageIndex" 
-                (rowAction)="onClickItem($event)" [isServerSidePagination]="true" (pageChange)="handlePageChange($event)" (searchParmas)="getSearchParams($event)">
+            <app-shared-table *ngIf="!isDataLoading" (filteredvalue)="onClickApplyFilter($event)" [tableColumns]="grievancesTableColumns" [tableData]="grievances" [isPageable]="true"
+            [length]="length" [pageSize]="pageSize" [hidePageSize]="false" [showPageSizeOptions]="true" [showFirstLastButtons]="true" [pageIndex]="pageIndex" 
+                (rowAction)="onClickItem($event)" [isServerSideSorting]="true" (sortChange)="handleSortChange($event)" [isServerSidePagination]="true" (pageChange)="handlePageChange($event)" (searchParmas)="getSearchParams($event)">
             </app-shared-table>
         </mat-tab>
     </mat-tab-group>

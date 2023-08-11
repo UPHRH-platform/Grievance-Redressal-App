@@ -55,7 +55,7 @@ export class SharedTableComponent implements AfterViewInit {
   //dataSource: MatTableDataSource<[any]> = new MatTableDataSource();
   public dataSource = new MatTableDataSource([]);
  // dataSource = new MatTableDataSource([])
-  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatPaginator, {read: true}) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort ;
 
   @Input() isPageable = true;
@@ -63,10 +63,13 @@ export class SharedTableComponent implements AfterViewInit {
   @Input() set tableData(data: any[]) {
     this.setTableDataSource(data);
   }
-  @Input() pageLength: number;
+  @Input() length: number;
   @Input() pageSize: number;
   @Input() pageIndex: number;
-  @Input() isServerSidePagination: boolean;
+  @Input() isServerSidePagination: boolean = false;
+  @Input() showFirstLastButtons: boolean = true;
+  @Input() showPageSizeOptions: boolean = true;
+  @Input() hidePageSize: boolean = false;
 
   @Output() rowAction: EventEmitter<any> = new EventEmitter<any>();
   @Output() editData: EventEmitter<any>= new EventEmitter<any>();
@@ -74,15 +77,17 @@ export class SharedTableComponent implements AfterViewInit {
   @Output() toggleData: EventEmitter<any>= new EventEmitter<any>();
   @Output() pageChange: EventEmitter<any> = new EventEmitter<any>();
   @Output() searchParmas: EventEmitter<any> = new EventEmitter<any>();
+  @Output() filteredvalue: EventEmitter<any> = new EventEmitter<any>();
   pageEvent: PageEvent;
   private timeoutId: any;
-
+  @Output() sortChange: EventEmitter<any> = new EventEmitter<any>();
+  @Input() isServerSideSorting: boolean = false;
 
   constructor( private configService: ConfigService,
     private authService: AuthService) {
     this.grievancesTypes = this.configService.dropDownConfig.GRIEVANCE_TYPES;
     this.filterForm = new FormGroup({
-      grievanceType: new FormControl('',Validators.required),
+      grievanceType: new FormControl('', Validators.required),
       startDate: new FormControl(''),
       endDate:new FormControl('')
     })
@@ -126,6 +131,10 @@ export class SharedTableComponent implements AfterViewInit {
       console.log(e);
     }
 
+    resetFilter(){
+      this.filterForm.reset();
+    }
+
     setTableDataSource(data : any) {
      
       this.dataSource = new MatTableDataSource(data);
@@ -159,6 +168,14 @@ export class SharedTableComponent implements AfterViewInit {
      grievanceSelected(e:any){
      }
      ApplyFilter(value:any){
-      console.log(value)
+      console.log('filtered value',value)
+      this.filteredvalue.emit(value)
+
+     }
+
+     onSortChange(e: any) {
+      if(this.isServerSideSorting) {
+      this.sortChange.emit(e);
+      }
      }
 }
