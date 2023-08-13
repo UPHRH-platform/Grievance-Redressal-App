@@ -63,7 +63,13 @@ const routes: Routes = [
         path: 'new-ticket',
         component: GrievanceRaiserFormComponent,
         pathMatch: 'full',
+      },
+      {
+        path: "**",
+        redirectTo:"/"
+
       }
+
     ]
   }
   
