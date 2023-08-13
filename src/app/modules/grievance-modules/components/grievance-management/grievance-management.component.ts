@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router  } from '@angular/router';
+import { ActivatedRoute, Router  } from '@angular/router';
 import { TableColumn, GrievancesTableData } from '../../../../interfaces/interfaces';
 import { Tabs } from 'src/app/shared/config';
 import { AuthService } from 'src/app/core';
@@ -33,13 +33,14 @@ export class GrievanceManagementComponent  {
   ];
   grievancesTypes:any[] = [];
   getGrievancesRequest: any;
+  selectedTabName: any;
   constructor( 
     private router: Router,
+    private route: ActivatedRoute,
     private authService: AuthService,
     private configService: ConfigService,
     private grievanceService: GrievanceServiceService,
     private toastrService:ToastrServiceService ){
-
     }
 
   pageIndex: number = 0;
@@ -48,13 +49,25 @@ export class GrievanceManagementComponent  {
   sortHeader: string = 'created_date_ts';
   direction: string = 'desc';
   userId: string;
+  activeTabIndex: number;
 
   ngOnInit(): void {
     this.grievancesTypes = this.configService.dropDownConfig.GRIEVANCE_TYPES;
     this.userRole = this.authService.getUserRoles()[0];
     this.userId= this.authService.getUserData().userId;
+    this.route.queryParams.subscribe((param) => {
+      if(!!param){
+        this.selectedTabName = param['tabName'];
+        if(this.tabs.length) {
+          if(!!this.selectedTabName) {
+            this.selectedTab = this.tabs.find(tab => tab.name === this.selectedTabName);
+            this.activeTabIndex= this.tabs.findIndex(tab => tab.name === this.selectedTabName);
+          }
+          this.getTicketsRequestObject();
+        } 
+      }
+    });
     this.initializeTabs();
-    // this.getTicketsRequestObject();
   }
 
   initializeTabs(): void {
@@ -62,17 +75,22 @@ export class GrievanceManagementComponent  {
     switch(this.userRole ){
       case Roles.NODAL_OFFICER:
         this.tabs = Tabs['Nodal Officer'];
-        this.selectedTab =this.tabs[0].name;
         break;
       case Roles.SECRETARY:
         this.tabs = Tabs['Secretary'];
-        this.selectedTab =this.tabs[0].name;
         break;
       case Roles.GRIEVANCE_NODAL:
         this.tabs = Tabs['Grievance Nodal'];
-        this.selectedTab =this.tabs[0].name;
         break;
     }
+    if(!!this.selectedTabName) {
+      this.selectedTab = this.tabs.find(tab => tab.name === this.selectedTabName);
+      this.activeTabIndex= this.tabs.findIndex(tab => tab.name === this.selectedTabName);
+    } else {
+      this.selectedTab =this.tabs[0];
+      this.activeTabIndex=0;
+    }
+
     //Initialize column as per user Role
     this.initializeColumns();
     //Fetch grievances as per user  role
@@ -132,10 +150,9 @@ export class GrievanceManagementComponent  {
   onTabChange(event: MatTabChangeEvent): void {
     // Here  we  have userrole and tab index with these 2 we know we need to fetch data for which tab of which user role so we pass relevant payload in get grievance service
     const selectedIndex = event.index;
-    this.selectedTab = this.tabs[selectedIndex].name;
+    this.selectedTab = this.tabs[selectedIndex];
     this.searchParams = "";
-    // this.getgrievances();
-    this.getTicketsRequestObject();
+    this.router.navigate(['/grievance/manage-tickets/'],{ queryParams: {tabName: this.selectedTab.name}});
   }
 
   getSearchParams(searchterm:any){
@@ -157,9 +174,9 @@ export class GrievanceManagementComponent  {
 
   onClickItem(e: any) {
     // console.log(e?.ticketId)
-    e.tabName= this.selectedTab
+    e.tabName= this.selectedTab.name
     let id = parseInt(e?.ticketId)
-    this.router.navigate(['/grievance/manage-tickets/'+ id],{ queryParams: {tabName:this.selectedTab}});
+    this.router.navigate(['/grievance/manage-tickets/'+ id],{ queryParams: {tabName:this.selectedTab.name}});
     // this.router.navigate(['/grievance',  2 ]);
    // this.router.navigate(['/grievance', e.id]);
   }
@@ -176,7 +193,7 @@ export class GrievanceManagementComponent  {
            [this.sortHeader]: this.direction
       }
     }
-    switch(this.selectedTab) {
+    switch(this.selectedTab.name) {
       case 'Pending': 
         this.getGrievancesRequest = {
           ...this.getGrievancesRequest,

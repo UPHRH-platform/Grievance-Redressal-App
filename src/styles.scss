@@ -4,6 +4,7 @@ html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 @import "../node_modules/ngx-toastr/toastr.css";
 @import 'ngx-toastr/toastr';
+@import '../node_modules/css-star-rating/scss/star-rating';
 
 .content {
     flex: 1;
@@ -61,6 +62,22 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     .resolution-form .mdc-text-field, .mat-mdc-form-field-focus-overlay{
         background-color: white !important;
     }
+}
+
+.container-full {
+    background-color: #F0F3F4;
+}
+
+
+.form-internal-wrapper {
+    padding: 3%;
+}
+
+.gray-container {
+    margin: 2rem 0;
+    background-color: #efefef;
+    padding: 1rem;
+    border-radius: 10px;
 }
 
 

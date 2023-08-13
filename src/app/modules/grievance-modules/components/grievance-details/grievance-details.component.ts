@@ -17,7 +17,6 @@ import { ToastrServiceService } from 'src/app/shared/services/toastr/toastr.serv
   styleUrls: ['./grievance-details.component.css'],
 })
 export class GrievanceDetailsComponent {
-  formData: any;
   ticketId: string;
   grievanceRaiser: string;
   creationTime: string;
@@ -41,12 +40,8 @@ export class GrievanceDetailsComponent {
   files: any[] = [];
   id: string;
   userId:string;
-  breadcrumbItems: BreadcrumbItem[] = [
-    { label: 'Grievance Management', url: '/home' },
-    { label: 'Grievance List', url: '/grievance/manage-tickets' },
-    { label: 'Grievance Details', url: '' },
-  ];
-  currentTabName: string = ''
+  breadcrumbItems: BreadcrumbItem[] = [];
+  currentTabName: string = '';
   ticketDetails: any = {};
   ticketIdNo: any;
   ticketUpdateRequest:any;
@@ -56,7 +51,6 @@ export class GrievanceDetailsComponent {
     private grievanceServiceService: GrievanceServiceService, private route: ActivatedRoute,
     private toastrService: ToastrServiceService, private configService:ConfigService) {
     this.grievancesTypes = this.configService.dropDownConfig.GRIEVANCE_TYPES;
-    this.formData = this.router?.getCurrentNavigation()?.extras.state;
     this.route.params.subscribe((param) => {
       this.id = param['id'];
     })
@@ -73,12 +67,16 @@ export class GrievanceDetailsComponent {
     this.grievancesTypes = this.grievancesTypes.filter(item=> item.name !== 'Others')
     }
     console.log(this.userRole)
-    this.currentTabName = this.formData?.data?.tabName;
     this.userId= this.authService.getUserData().userId;
     this.createForm();
     this.createAssignForm();
     this.route.queryParams.subscribe((data)=>{
       this.currentTabName = data['tabName']
+      this.breadcrumbItems = [
+        { label: 'Grievance Management', url: '/home' },
+        { label: 'Grievance List', url: ['/grievance/manage-tickets'], queryParams:  {tabName: this.currentTabName} },
+        { label: 'Grievance Details', url: '' },
+      ];
     })
   }
 
