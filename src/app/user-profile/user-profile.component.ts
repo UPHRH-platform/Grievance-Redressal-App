@@ -29,7 +29,7 @@ export class UserProfileComponent {
   }
 
   ngOnInit(): void {
-
+    //Implement logic to fecth user deatils and bind them in UI
   }
 
   setUserFormData() {
