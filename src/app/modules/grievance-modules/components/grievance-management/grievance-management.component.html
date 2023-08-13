@@ -1,7 +1,7 @@
 <app-breadcrumb [breadcrumbItems]="breadcrumbItems"></app-breadcrumb>
 <div class="content">
     <h3>Grievance List</h3>
-    <mat-tab-group (selectedTabChange)="onTabChange($event)" mat-align-tabs="start">
+    <mat-tab-group (selectedTabChange)="onTabChange($event)" mat-align-tabs="start" [selectedIndex]="activeTabIndex">
         <mat-tab *ngFor="let tab of tabs">
             <ng-template mat-tab-label>{{ tab.name }}</ng-template>
             <app-shared-skeleton-loading [isLoading]="isDataLoading">
