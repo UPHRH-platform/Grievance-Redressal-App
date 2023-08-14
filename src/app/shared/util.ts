@@ -20,7 +20,7 @@ export const getRole = (roleName: string) : string => {
 }
 
 export const getAllRoles = () => {
-    const roles = sessionStorage.getItem('all_roles') ? sessionStorage.getItem('all_roles') : "[]";
+    const roles = localStorage.getItem('all_roles') ? localStorage.getItem('all_roles') : "[]";
     const allRoles: any[] = roles ? JSON.parse(roles) : [];
     return allRoles;
 }
