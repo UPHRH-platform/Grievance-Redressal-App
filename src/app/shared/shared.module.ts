@@ -11,6 +11,7 @@ import { ConfirmationPopupComponent } from './components/confirmation-popup/conf
 import { CommonLayoutComponent } from './components/common-layout/common-layout.component';
 import { BreadcrumbComponent } from './components/breadcrumb/breadcrumb.component';
 import { ConfigService } from './services/config/config.service';
+import { CommonFilterComponent } from './components/common-filter/common-filter.component';
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import { ConfigService } from './services/config/config.service';
     ConfirmationPopupComponent,
     CommonLayoutComponent,
     BreadcrumbComponent,
+    CommonFilterComponent,
   ],
   imports: [
     CommonModule,
@@ -33,7 +35,8 @@ import { ConfigService } from './services/config/config.service';
     SharedTableComponent,
     HeaderComponent,
     SharedSkeletonLoadingComponent,
-    BreadcrumbComponent
+    BreadcrumbComponent,
+    CommonFilterComponent
   ],
   providers: [ConfigService]
 })
