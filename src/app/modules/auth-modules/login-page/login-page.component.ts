@@ -87,4 +87,8 @@ isOtpForm:boolean = false;
     console.log(this.otpForm)
   }
 
+  navigateToGrievanceRaiserPage() {
+    this.router.navigate(['/new-ticket']);
+  }
+
 }

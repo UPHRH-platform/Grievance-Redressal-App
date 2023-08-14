@@ -72,31 +72,31 @@ export class AuthService extends HttpService{
   }
 
   saveAllRoles(roles: any): void {
-    sessionStorage.setItem(this.ALL_ROLES,JSON.stringify(roles));
+    localStorage.setItem(this.ALL_ROLES,JSON.stringify(roles));
   }
 
   saveUserData(userData: any):void {
     this.saveToken(userData?.authToken);
-    sessionStorage.setItem(this.USER_DATA,JSON.stringify(userData));
+    localStorage.setItem(this.USER_DATA,JSON.stringify(userData));
   }
 
   getUserData() {
-    const userData = sessionStorage.getItem(this.USER_DATA);
+    const userData = localStorage.getItem(this.USER_DATA);
     return userData ? JSON.parse(userData) : null;
   }
 
   saveToken(token: string): void {
-    sessionStorage.setItem(this.TOKEN_KEY, token);
+    localStorage.setItem(this.TOKEN_KEY, token);
   }
 
   getToken(): string | null {
-    return sessionStorage.getItem(this.TOKEN_KEY);
+    return localStorage.getItem(this.TOKEN_KEY);
   }
 
   logout(): void {
-    sessionStorage.removeItem(this.TOKEN_KEY);
-    sessionStorage.removeItem(this.USER_DATA);
-    sessionStorage.removeItem(this.ALL_ROLES);
+    localStorage.removeItem(this.TOKEN_KEY);
+    localStorage.removeItem(this.USER_DATA);
+    localStorage.removeItem(this.ALL_ROLES);
   }
 
   isLoggedIn(): boolean{
