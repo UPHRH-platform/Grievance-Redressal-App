@@ -135,7 +135,7 @@ export class HttpService {
    * for preparing headers
    */
     private getHeader(headers?: HttpOptions['headers']): HttpOptions['headers'] {
-      const access_token = sessionStorage.getItem('access_token');
+      const access_token = localStorage.getItem('access_token');
       const default_headers = {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
