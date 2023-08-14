@@ -10,9 +10,6 @@ import { HttpService } from "src/app/core";
 })
 export class GrievanceServiceService extends HttpService {
   override baseUrl: string;
-  private token: string | null;
-  private readonly TOKEN_KEY = 'access_token';
-  private readonly USER_DATA = "user_data";
   constructor(http: HttpClient, private configService: ConfigService) { 
     super(http);
     this.baseUrl = environment.apiUrl;
