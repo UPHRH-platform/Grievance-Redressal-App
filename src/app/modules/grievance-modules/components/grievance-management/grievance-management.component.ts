@@ -8,6 +8,7 @@ import { BreadcrumbItem, ConfigService } from 'src/app/shared';
 import { GrievanceServiceService } from '../../services/grievance-service.service';
 import { ToastrServiceService } from 'src/app/shared/services/toastr/toastr.service';
 import { PageEvent } from '@angular/material/paginator';
+import { FormControl, FormGroup } from '@angular/forms';
 
 
 @Component({
@@ -26,7 +27,9 @@ export class GrievanceManagementComponent  {
   responseLength: number;
   startDate = new Date("2020/03/03").getTime()
   endDate = new Date().getTime()
-  grievanceType:number;
+  grievanceType:any;
+  accumulatedSearchTerm:string = '';
+  private timeoutId: any;
   breadcrumbItems: BreadcrumbItem[] = [
     { label: 'Grievance Management', url: '/home' },
     { label: 'Grievance List', url: 'grievance/manage-tickets' },
@@ -34,6 +37,8 @@ export class GrievanceManagementComponent  {
   grievancesTypes:any[] = [];
   getGrievancesRequest: any;
   selectedTabName: any;
+  searchForm:FormGroup;
+  resetFields:boolean =false;
   constructor( 
     private router: Router,
     private route: ActivatedRoute,
@@ -41,6 +46,9 @@ export class GrievanceManagementComponent  {
     private configService: ConfigService,
     private grievanceService: GrievanceServiceService,
     private toastrService:ToastrServiceService ){
+      this.searchForm =  new FormGroup({
+        searchData:  new FormControl('')
+      })
     }
 
   pageIndex: number = 0;
@@ -148,17 +156,36 @@ export class GrievanceManagementComponent  {
   }
 
   onTabChange(event: MatTabChangeEvent): void {
+    this.searchParams = "";
+    this.resetFields = true;
+    this.grievanceService.resetFilterValue.next(this.resetFields)
+    this.resetFilterValue('');
     // Here  we  have userrole and tab index with these 2 we know we need to fetch data for which tab of which user role so we pass relevant payload in get grievance service
     const selectedIndex = event.index;
     this.selectedTab = this.tabs[selectedIndex];
     this.searchParams = "";
     this.router.navigate(['/grievance/manage-tickets/'],{ queryParams: {tabName: this.selectedTab.name}});
+    // this.getgrievances();
+    this.getTicketsRequestObject();
   }
 
-  getSearchParams(searchterm:any){
-    console.log('searchterm',searchterm)
-    this.searchParams = searchterm;
-    this.getTicketsRequestObject()
+
+  applyFilter(searchterms:any){
+   
+   clearTimeout(this.timeoutId)
+    this.searchParams  = searchterms
+     this.timeoutId= setTimeout(()=>{
+      this.getTicketsRequestObject()
+    },1000
+    ) 
+  }
+
+  resetFilterValue(event:any){
+    this.startDate = new Date("2020/03/03").getTime();
+    this.endDate = new Date().getTime();
+    this.grievanceType = null;
+    this.searchForm.reset();
+    this.getTicketsRequestObject();
   }
 
   onClickApplyFilter(event:any){
@@ -167,13 +194,11 @@ export class GrievanceManagementComponent  {
       this.startDate =  new Date(event.startDate).getTime();
       this.endDate = new Date(event.endDate).getTime() + ((23*60*60 + 59*60+59) * 1000);
     }
-    console.log(this.startDate, this.endDate, this.grievanceType)
     this.getTicketsRequestObject()
   }
 
 
   onClickItem(e: any) {
-    // console.log(e?.ticketId)
     e.tabName= this.selectedTab.name
     let id = parseInt(e?.ticketId)
     this.router.navigate(['/grievance/manage-tickets/'+ id],{ queryParams: {tabName:this.selectedTab.name}});
