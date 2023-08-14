@@ -2,11 +2,28 @@
 <div class="content">
     <h3>Grievance List</h3>
     <mat-tab-group (selectedTabChange)="onTabChange($event)" mat-align-tabs="start" [selectedIndex]="activeTabIndex">
+
         <mat-tab *ngFor="let tab of tabs">
             <ng-template mat-tab-label>{{ tab.name }}</ng-template>
             <app-shared-skeleton-loading [isLoading]="isDataLoading">
             </app-shared-skeleton-loading>
-            <app-shared-table *ngIf="!isDataLoading" (filteredvalue)="onClickApplyFilter($event)" [tableColumns]="grievancesTableColumns" [tableData]="grievances" [isPageable]="true"
+            <div style="display: flex; flex-direction: row;">
+                <div>
+                <form [formGroup]="searchForm">
+                <mat-form-field>
+                  <input
+                    matInput
+                    formControlName="searchData"
+                    appearance="standard"
+                    (keyup)="applyFilter($event.target.value)"
+                    placeholder="Search"
+                  />
+                </mat-form-field>
+              </form>
+            </div>
+            <app-common-filter (filteredvalue)="onClickApplyFilter($event)" (resetFilterValue)="resetFilterValue($event)"></app-common-filter>
+              </div>
+            <app-shared-table *ngIf="!isDataLoading" [tableColumns]="grievancesTableColumns" [tableData]="grievances" [isPageable]="true"
             [length]="length" [pageSize]="pageSize" [hidePageSize]="false" [showPageSizeOptions]="true" [showFirstLastButtons]="true" [pageIndex]="pageIndex" 
                 (rowAction)="onClickItem($event)" [isServerSideSorting]="true" (sortChange)="handleSortChange($event)" [isServerSidePagination]="true" (pageChange)="handlePageChange($event)" (searchParmas)="getSearchParams($event)">
             </app-shared-table>
