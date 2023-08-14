@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { ConfigService, RequestParam, Response, ServerResponse } from 'src/app/shared';
 import { environment } from 'src/environments/environment';
 import { HttpService } from "src/app/core";
@@ -13,6 +13,7 @@ export class GrievanceServiceService extends HttpService {
   private token: string | null;
   private readonly TOKEN_KEY = 'access_token';
   private readonly USER_DATA = "user_data";
+  resetFilterValue = new Subject<any>();
   constructor(http: HttpClient, private configService: ConfigService) { 
     super(http);
     this.baseUrl = environment.apiUrl;
