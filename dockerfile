@@ -20,10 +20,10 @@ COPY ./src/environments/environment.prod.ts ./src/environments/environment.ts
 RUN npm run build
 
 # Use a lightweight web server to serve the app
-FROM nginx:alpine
-
+FROM node:16
 COPY --from=build /app/dist/grievance-app /usr/share/nginx/html
-EXPOSE 80
+RUN npm install -g http-server
+EXPOSE 8080
 
 # Start the nginx web server
-CMD ["nginx", "-g", "daemon off;"]
+CMD ["http-server", "-p", "8080"]
