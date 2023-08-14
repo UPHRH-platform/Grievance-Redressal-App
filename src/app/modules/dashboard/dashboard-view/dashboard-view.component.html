@@ -3,37 +3,62 @@
     <div class="inner-content">
         <app-shared-skeleton-loading [isLoading]="isDataLoading">
         </app-shared-skeleton-loading>
-        <div *ngIf="!isDataLoading">
-            <mat-form-field>
-                <mat-label>Enter a date range</mat-label>
-                <mat-date-range-input [rangePicker]="picker">
-                  <input matStartDate placeholder="Start date">
-                  <input matEndDate placeholder="End date">
-                </mat-date-range-input>
-                <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
-                <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-                <mat-date-range-picker #picker></mat-date-range-picker>
-              </mat-form-field>
+        <div class="pt1 pb2">
+        <div *ngIf="!isDataLoading" class="clearfix custom-margin mxn1">
+            <div class="flex flex-wrap justify-end">
+                <div class="pr2">
+                    <mat-form-field appearance="outline">
+                        <mat-select (selectionChange)="grievanceSelected($event)" multiple formControlName="grievanceType" placeholder="Department">
+                          <span *ngFor='let grievance of grievancesTypes;let i = index'>
+                            <mat-option [value]="grievance.id">{{grievance.name}}</mat-option>
+                          </span>
+                        </mat-select>
+                      </mat-form-field>
+                </div>
+                <div class="">
+                    <mat-form-field appearance="outline">
+                        <mat-date-range-input [rangePicker]="picker">
+                          <input matStartDate placeholder="Start date">
+                          <input matEndDate placeholder="End date">
+                        </mat-date-range-input>
+                        <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
+                        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-date-range-picker #picker></mat-date-range-picker>
+                      </mat-form-field>
+                </div>
+            </div>
         </div>
-        <div *ngIf="!isDataLoading" class="custom-margin">
-        <mat-grid-list cols="6" rowHeight="10rem" [gutterSize]="'100px'">
-            <mat-grid-tile colspan="4" rowspan="1">
-                <app-shared-table class="table1" [hasFilterOptions]="false" [tableColumns]="dashboardAnaytics1Columns" [tableData]="dashboardAnalytics1Data" [isPageable]="false"></app-shared-table>
-            </mat-grid-tile>
-            <mat-grid-tile colspan="2" rowspan="1">
-                <app-shared-table class="table2" [hasFilterOptions]="false" [tableColumns]="dashboardAnalytics3Columns" [tableData]="dashboardAnalytics3Data" [isPageable]="false"></app-shared-table>
-            </mat-grid-tile>
-        </mat-grid-list>
-          <mat-grid-list cols="6" rowHeight="10rem" [gutterSize]="'100px'">
-            <mat-grid-tile colspan="4" rowspan="1">
-                <app-shared-table class="table1" [hasFilterOptions]="false" [tableColumns]="dashboardAnalyticsColumns" [tableData]="dashboardAnalyticsData" [isPageable]="false"></app-shared-table>
-            </mat-grid-tile>
-            <mat-grid-tile colspan="2" rowspan="1">
-                <app-shared-table class="table2" [hasFilterOptions]="false" [tableColumns]="dashboardAnaytics2Columns" [tableData]="dashboardAnalytics2Data" [isPageable]="false"></app-shared-table>
-            </mat-grid-tile>
-        </mat-grid-list>
-        <div class="custom-margin">
-        <app-shared-table [hasFilterOptions]="false" [tableColumns]="dashboardDataColumns" [tableData]="dashboardData" [isPageable]="true"></app-shared-table>
+        <div *ngIf="!isDataLoading" class="clearfix mxn1 mt2">
+            <div class="flex flex-wrap">
+            <div class="col col-6 px1">
+                <div class="p2" style="background-color: white">
+                    <div>
+                    <label class="title">Ticket assignment matrix</label>
+                    <p class="desc">Percentage of approved work allocation order by MDO</p>
+                    <app-shared-table [hasFilterOptions]="false" [tableColumns]="assignmentMatrixColumns" [tableData]="assignmentMatrixData" [isPageable]="false"></app-shared-table>
+                  </div>
+                  </div>
+            </div>
+            <div class="col col-6 px1">
+                <div class="p2" style="background-color: white">
+                    <div>
+                    <label class="title">Key performance indicators</label>
+                    <p class="desc">Percentage of approved work allocation orders by MDO</p>
+                    <div style="display: flex; justify-content: space-between; text-transform: capitalize; padding-top:10px; padding-bottom:10px; padding-left: 10px; padding-right: 10px; background-color: #f6f6f6;" class="mt1" *ngFor="let item of dashboardData.performanceIndicators | keyvalue">
+                        <span>{{camelCaseToWords(item.key)}}</span>
+                        <span>{{item.value}}</span>
+                    </div>
+                    </div>
+                  </div>
+            </div>
+            </div>
+            <div class="col col-12 px1 mt2">
+                <div class="p2" style="background-color: white;height: 100%">
+                    <label class="title">Ticket resolution matrix</label>
+                    <p class="desc">Comprehensiveness of tagged roles in this MDO</p>
+                    <app-shared-table [hasFilterOptions]="false" [tableColumns]="resolutionMatrixColumns" [tableData]="resolutionMatrixData" [isPageable]="false"></app-shared-table>
+                  </div>
+            </div>
         </div>
         </div>
     </div>

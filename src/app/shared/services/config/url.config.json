@@ -20,6 +20,9 @@
         },
         "FEEDBACK": {
             "SAVE": "/feedback/save"
+        },
+        "DASHBOARD": {
+            "GET_DASHBOARD_DATA": ""
         }
     }
 }
