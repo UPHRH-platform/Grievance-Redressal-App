@@ -9,7 +9,7 @@ const routes: Routes = [
     path: 'manage-tickets', component:GrievanceManagementComponent, pathMatch: 'full',
   },
   {
-    path: ':id', component:GrievanceDetailsComponent, pathMatch: 'full',
+    path: 'manage-tickets/:id', component:GrievanceDetailsComponent, pathMatch: 'full',
   },
 
 ];

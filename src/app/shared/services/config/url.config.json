@@ -17,6 +17,9 @@
         },
         "FILE": {
             "UPLOAD": "/ticket/file/upload"
+        },
+        "FEEDBACK": {
+            "SAVE": "/feedback/save"
         }
     }
 }

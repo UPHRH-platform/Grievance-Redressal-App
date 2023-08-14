@@ -1,0 +1,27 @@
+<div class="content">
+    <h2>Feeback Details</h2>
+    <div class="form-container form-internal-wrapper">
+        <p>Hi {{guestName}},</p>
+        <p>We have marked your ticket as <b>Resolved</b>, Please check your ticket details below:</p>
+
+        <div class="gray-container">
+            <p><span class="bold">Ticket Id:</span>  <span>  {{ticketId}}</span></p>
+            <p><span class="bold">Ticket Title:</span>  <span>  {{ticketTitle}}</span></p>
+            <p><span class="bold">Admin Remarks:</span></p>
+            <p> {{resolutionComment}}</p>
+        </div>
+        <p>If the problem is solved to your satisfaction, please spare a minute to let us know about your support experience by participating in the rating below.</p>
+        <p>Your bedback will help us serve you better.</p>
+        <div class="gray-container">
+            <form [formGroup]="feedbackForm"
+                (ngSubmit)="onSubmit()">
+                <div class="rating-form-container">
+                    <star-rating [starType]="'svg'" (ratingChange)="updateRating($event)" size="large"></star-rating>
+                    <button type="submit" mat-raised-button color="primary" [disabled]="!feedbackForm.valid || isProcessing">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+   
+</div>
+

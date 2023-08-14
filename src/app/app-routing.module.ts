@@ -63,7 +63,16 @@ const routes: Routes = [
         path: 'new-ticket',
         component: GrievanceRaiserFormComponent,
         pathMatch: 'full',
+      },
+      {
+        path: 'feedback', loadChildren :()=> import('../app/modules/feedback/feedback.module').then(m=>m.FeedbackModule)
+      },
+      {
+        path: "**",
+        redirectTo:"/"
+
       }
+
     ]
   }
   

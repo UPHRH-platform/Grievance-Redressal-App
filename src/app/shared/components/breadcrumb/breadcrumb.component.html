@@ -4,7 +4,7 @@
             <mat-icon class="icon-cls">home</mat-icon>
         </span>
         <li class="breadcrumb-item" *ngFor="let item of breadcrumbItems; let last = last" [attr.aria-current]="last ? 'page' : null" [ngClass]="last ? 'active': ''" >
-            <span *ngIf="!last" [routerLink]="item.url">{{ item.label }}</span>
+            <span *ngIf="!last" [routerLink]="item.url"  [queryParams]="item?.queryParams">{{ item.label }}</span>
             <span *ngIf="last">{{ item.label }}</span>
         </li>
     </ol>

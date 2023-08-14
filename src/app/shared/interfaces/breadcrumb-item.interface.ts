@@ -1,4 +1,5 @@
 export interface BreadcrumbItem {
     label: string;
-    url: string;
+    url: any;
+    queryParams?: any;
   }
