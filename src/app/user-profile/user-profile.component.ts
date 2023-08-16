@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { UserService } from '../modules/user-modules/services/user.service';
+import { AuthService } from '../core';
+import { ToastrServiceService } from '../shared/services/toastr/toastr.service';
 
 @Component({
   selector: 'app-user-profile',
@@ -14,10 +17,11 @@ export class UserProfileComponent {
   roleList: any[] = ['Nodal Officer', 'Secreatory', 'Admin']
   editDataObject: any;
   isEditData:boolean = false;
-
+  userId: string;
+  userDetails: any = {};
 
   constructor(private router: Router,
-    private route: ActivatedRoute) {
+    private route: ActivatedRoute, private userService: UserService, private authService: AuthService, private toastrService: ToastrServiceService) {
     this.userForm = new FormGroup({
       firstName: new FormControl('', Validators.required),
       lastName: new FormControl('', Validators.required),
@@ -29,7 +33,23 @@ export class UserProfileComponent {
   }
 
   ngOnInit(): void {
+    const userData = this.authService.getUserData();
+    this.userId = userData.userId;
+    if(this.userId) {
+      this.getUserDetails();
+    }
     //Implement logic to fecth user deatils and bind them in UI
+  }
+
+  getUserDetails() {
+    this.userService.getUserDetails(this.userId).subscribe({
+      next: (res) => {
+        this.userDetails = res.responseData;
+      },
+      error: (err)=> {
+        this.toastrService.showToastr(err, 'Error', 'error', '');
+      }
+    })
   }
 
   setUserFormData() {
@@ -75,7 +95,18 @@ export class UserProfileComponent {
   }
 
   onSubmit() {
-    console.log(this.userForm.value)
+    console.log(this.userForm.value);
+    this.userService.createOrUpdateUser(this.userDetails).subscribe({
+      next:(res) => {
+        console.log(res);
+        this.toastrService.showToastr('User details updated successfully', 'Success', 'success', '');
+        // this.userDetails = res.responseData;
+        // getUserDetails(this.userId);
+      },
+      error: (err) => {
+        this.toastrService.showToastr(err, 'Error', 'error', '');
+      }
+    })
   }
 
 

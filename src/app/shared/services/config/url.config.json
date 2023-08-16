@@ -10,7 +10,8 @@
         },
         "USER": {
             "GET_ALL_USERS": "/user/getAllUsers?orgId=1",
-            "CREATE_UPDATE_USER": "/user/createOrUpdate"
+            "CREATE_UPDATE_USER": "/user/createOrUpdate",
+            "GET_USERDETAILS_BY_ID": "/user/getUser?id="
         },
         "OTP":{
             "GENERATE_OTP": "/otp/generate-otp"

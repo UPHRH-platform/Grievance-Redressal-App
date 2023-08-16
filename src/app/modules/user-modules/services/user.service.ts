@@ -27,6 +27,13 @@ export class UserService extends HttpService{
     return this.post(reqParam);
   }
 
+  getUserDetails(id: string): Observable<ServerResponse> {
+    const reqParam: RequestParam = {
+      url: `${this.configService.urlConFig.URLS.USER.GET_USERDETAILS_BY_ID}${id}`
+    }
+    return this.get(reqParam);
+  }
+
   // Implement methods for other roles (e.g., isGrievanceNodal(), isNodalOfficer(), isSecretary())
 }
 
