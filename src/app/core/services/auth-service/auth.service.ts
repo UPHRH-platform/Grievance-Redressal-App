@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { of as observableOf, Observable } from 'rxjs';
 import { ServerResponse, ConfigService, RequestParam } from 'src/app/shared';
 import { HttpService } from "src/app/core";
 import { environment } from '../../../../environments/environment';
@@ -50,13 +50,13 @@ export class AuthService extends HttpService{
       const userRole = userData.roles[0].name;
       switch(userRole) {
         case 'SUPERADMIN':
-          role= this.configService.rolesConfig.ROLES.SECRETARY;
+          role= this.configService.rolesConfig.ROLES.SUPERADMIN;
           break;
         case 'NODALOFFICER':
-          role= this.configService.rolesConfig.ROLES.NODAL_OFFICER;
+          role= this.configService.rolesConfig.ROLES.NODALOFFICER;
           break;
         case 'GRIEVANCEADMIN':
-          role= this.configService.rolesConfig.ROLES.GRIEVANCE_NODAL;
+          role= this.configService.rolesConfig.ROLES.GRIEVANCEADMIN;
           break;
         case 'ADMIN':
           role= this.configService.rolesConfig.ROLES.ADMIN;
@@ -64,11 +64,37 @@ export class AuthService extends HttpService{
       }
     }
     // return [role];
-    return [this.configService.rolesConfig.ROLES.SECRETARY];
+    return [this.configService.rolesConfig.ROLES.ADMIN];
   }
 
   getAllRoles(): Observable<ServerResponse> {
-    return this.get({url: this.configService.urlConFig.URLS.GET_ALL_ROLES});
+    const res = {
+      statusInfo: {statusCode: 200, statusMessage: "success"},
+      responseData: [
+        {
+            "id": 1,
+            "name": "GRIEVANCEADMIN",
+            "orgId": 1
+        },
+        {
+            "id": 2,
+            "name": "SUPERADMIN",
+            "orgId": 1
+        },
+        {
+            "id": 3,
+            "name": "NODALOFFICER",
+            "orgId": 1
+        },
+        {
+          "id": 4,
+          "name": "ADMIN",
+          "orgId": 1,
+        }
+    ]
+    }
+    return observableOf(res);
+    // return this.get({url: this.configService.urlConFig.URLS.GET_ALL_ROLES});
   }
 
   saveAllRoles(roles: any): void {

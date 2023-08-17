@@ -11,7 +11,6 @@ export class UserService extends HttpService{
   override baseUrl: string;
   constructor(private configService: ConfigService, http: HttpClient) {
     super(http);
-    this.baseUrl = environment.apiUrl;
   }
 
   getAllUsers(): Observable<ServerResponse>  {
@@ -32,6 +31,16 @@ export class UserService extends HttpService{
       url: `${this.configService.urlConFig.URLS.USER.GET_USERDETAILS_BY_ID}${id}`
     }
     return this.get(reqParam);
+  }
+
+  createUser(userDetails: any): Observable<ServerResponse> {
+    const reqParam: RequestParam = {
+      url: this.configService.urlConFig.URLS.USER.CREATE_USER,
+      data: {
+        request: userDetails
+      }
+    }
+    return this.post(reqParam);
   }
 
   // Implement methods for other roles (e.g., isGrievanceNodal(), isNodalOfficer(), isSecretary())

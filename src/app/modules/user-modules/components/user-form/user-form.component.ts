@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { BreadcrumbItem } from 'src/app/shared';
+import { BreadcrumbItem, ConfigService } from 'src/app/shared';
 import { getRole, getAllRoles, getRoleObject } from 'src/app/shared';
 import { AuthService } from 'src/app/core';
 import { UserService } from '../../services/user.service';
@@ -33,7 +33,8 @@ export class UserFormComponent implements OnInit {
     private route: ActivatedRoute,
     private authService: AuthService,
     private userService: UserService,
-    private toastrService: ToastrServiceService 
+    private toastrService: ToastrServiceService,
+    private configService: ConfigService, 
     ){
     this.userForm = new FormGroup({
       firstName: new FormControl('', Validators.required),
@@ -133,17 +134,24 @@ export class UserFormComponent implements OnInit {
   }
 
   addUser() {
-    const {firstName, lastName, phone, role, status, username} = this.userForm.value;
+    const {firstName, lastName, email, phone, role, status, username} = this.userForm.value;
     const userDetails = {
-      name: `${firstName} ${lastName}`,
-      username,
-      phone,
-      isActive: status == 'Active' ? true : false,
+      firstName,
+      lastname: lastName,
+      email: username,
+      /* below two fields are not mandatory to be sent of backend */
+      // emailVerified: true,
+      //password: "",
+      userName: `${firstName} ${lastName}`,
+
+      phoneNumber: phone,
+      channel: this.configService.urlConFig.URLS.USER_CREATE_CHANNEL,
+      // isActive: status == 'Active' ? true : false,
       roles: [getRoleObject(role)],
-      orgId: 1
+      // orgId: 1
     }
     this.isProcessing= true;
-    this.userService.createOrUpdateUser(userDetails).subscribe({
+    this.userService.createUser(userDetails).subscribe({
       next: (res) => {
         this.userDetails = res.responseData;
         this.toastrService.showToastr("User add successfully!", 'Success', 'success', '');

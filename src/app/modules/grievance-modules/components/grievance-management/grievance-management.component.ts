@@ -81,13 +81,13 @@ export class GrievanceManagementComponent  {
   initializeTabs(): void {
     const Roles = this.configService.rolesConfig.ROLES
     switch(this.userRole ){
-      case Roles.NODAL_OFFICER:
+      case Roles.NODALOFFICER:
         this.tabs = Tabs['Nodal Officer'];
         break;
-      case Roles.SECRETARY:
+      case Roles.SUPERADMIN:
         this.tabs = Tabs['Secretary'];
         break;
-      case Roles.GRIEVANCE_NODAL:
+      case Roles.GRIEVANCEADMIN:
         this.tabs = Tabs['Grievance Nodal'];
         break;
     }
@@ -166,7 +166,6 @@ export class GrievanceManagementComponent  {
     this.searchParams = "";
     this.router.navigate(['/grievance/manage-tickets/'],{ queryParams: {tabName: this.selectedTab.name}});
     // this.getgrievances();
-    this.getTicketsRequestObject();
   }
 
 

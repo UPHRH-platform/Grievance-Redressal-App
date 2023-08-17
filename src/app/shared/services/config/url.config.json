@@ -10,8 +10,10 @@
         },
         "USER": {
             "GET_ALL_USERS": "/user/getAllUsers?orgId=1",
+            "CREATE_USER": "/v1/user/create",
             "CREATE_UPDATE_USER": "/user/createOrUpdate",
-            "GET_USERDETAILS_BY_ID": "/user/getUser?id="
+            "GET_USERDETAILS_BY_ID": "/user/getUser?id=",
+            "USER_CREATE_CHANNEL": "uphrh"
         },
         "OTP":{
             "GENERATE_OTP": "/otp/generate-otp"
