@@ -71,8 +71,20 @@
 
                           </mat-form-field>
                     </div>
+                    <!-- <div class="first-container">
+                        <h4>Department</h4>
+                        <mat-form-field appearance="outline" class="text-class">
+                            <mat-label>Department</mat-label>
+                            <mat-select formControlName="department">
+                              <mat-option *ngFor="let item of grievanceTypes" [value]="item.name">{{item.name}}</mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="role && role.invalid && role.touched">please select role</mat-error> 
+
+                          </mat-form-field> -->
+                    <!-- </div>  -->
 
                 </div>
+
 
                 <div>
                     <mat-label class="label-text">Active Status</mat-label>

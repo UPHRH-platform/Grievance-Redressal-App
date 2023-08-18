@@ -9,11 +9,11 @@
             "GET_TICKET_BY_ID":"/ticket/info?id="
         },
         "USER": {
-            "GET_ALL_USERS": "/user/getAllUsers?orgId=1",
             "CREATE_USER": "/v1/user/create",
-            "CREATE_UPDATE_USER": "/user/createOrUpdate",
-            "GET_USERDETAILS_BY_ID": "/user/getUser?id=",
-            "USER_CREATE_CHANNEL": "uphrh"
+            "UPDATE_USER": "/v1/user/update",
+            "DELETE_USER": "/v1/user/deactivate",
+            "GET_USERDETAILS_BY_ID": "/v1/user/details",
+            "GET_ALL_USERS": "/v1/user/list"
         },
         "OTP":{
             "GENERATE_OTP": "/otp/generate-otp"

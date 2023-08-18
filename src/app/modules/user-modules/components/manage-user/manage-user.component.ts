@@ -48,35 +48,35 @@ export class ManageUserComponent implements OnInit {
 
 
   
-  toggleUserStatus(event:any) {
-    console.log("Event receieved", event);
-    const status = event.isActive ? 'deactivate' : 'activate';
-   const dialogRef = this.dialog.open(ConfirmationPopupComponent, {
-    data: { title: `Are you sure you want to ${status} ?`},
-    maxWidth:'400vw',
-    maxHeight:'100vh',
-    height:'30%',
-    width:'30%',
-    disableClose: true
-   });
-   let updatedUserData = {...event};
-   const userIndex = this.users.findIndex(user => user.id === updatedUserData.id);
-   dialogRef.afterClosed().subscribe(isConfirmed=>{
-     if(isConfirmed) {
-      updatedUserData.isActive = !event.isActive;
-      this.userService.createOrUpdateUser(updatedUserData).subscribe({
-        next: (res) => {
-          this.users.splice(userIndex,1,updatedUserData);
-       },
-       error: (err) => {  
-          this.users.splice(userIndex,1,event);
-         // Handle the error here in case of login failure
-       }});
-     }
-     this.users.splice(userIndex,1,event);
-     this.initializeColumns();
-   })
-  }
+  // toggleUserStatus(event:any) {
+  //   console.log("Event receieved", event);
+  //   const status = event.isActive ? 'deactivate' : 'activate';
+  //  const dialogRef = this.dialog.open(ConfirmationPopupComponent, {
+  //   data: { title: `Are you sure you want to ${status} ?`},
+  //   maxWidth:'400vw',
+  //   maxHeight:'100vh',
+  //   height:'30%',
+  //   width:'30%',
+  //   disableClose: true
+  //  });
+  //  let updatedUserData = {...event};
+  //  const userIndex = this.users.findIndex(user => user.id === updatedUserData.id);
+  //  dialogRef.afterClosed().subscribe(isConfirmed=>{
+  //    if(isConfirmed) {
+  //     updatedUserData.isActive = !event.isActive;
+  //     this.userService.createOrUpdateUser(updatedUserData).subscribe({
+  //       next: (res) => {
+  //         this.users.splice(userIndex,1,updatedUserData);
+  //      },
+  //      error: (err) => {  
+  //         this.users.splice(userIndex,1,event);
+  //        // Handle the error here in case of login failure
+  //      }});
+  //    }
+  //    this.users.splice(userIndex,1,event);
+  //    this.initializeColumns();
+  //  })
+  // }
 
   initializeColumns(): void {
     this.usersTableColumns = [

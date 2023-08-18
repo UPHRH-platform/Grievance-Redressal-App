@@ -96,7 +96,7 @@ export class UserProfileComponent {
 
   onSubmit() {
     console.log(this.userForm.value);
-    this.userService.createOrUpdateUser(this.userDetails).subscribe({
+    this.userService.updateUser(this.userDetails).subscribe({
       next:(res) => {
         console.log(res);
         this.toastrService.showToastr('User details updated successfully', 'Success', 'success', '');

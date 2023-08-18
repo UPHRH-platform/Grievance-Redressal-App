@@ -14,13 +14,17 @@ export class UserService extends HttpService{
   }
 
   getAllUsers(): Observable<ServerResponse>  {
-    const  reqParam: RequestParam = { url: this.configService.urlConFig.URLS.USER.GET_ALL_USERS}
+    // const  reqParam: RequestParam = { url: this.configService.urlConFig.URLS.USER.GET_ALL_USERS}
+    const reqParam: RequestParam = {
+      url: 'http://localhost:5298/api/v1/user/list'
+    }
     return this.get(reqParam);
   } 
 
-  createOrUpdateUser(userDetails: any): Observable<ServerResponse>  {
+  updateUser(userDetails: any): Observable<ServerResponse>  {
     const  reqParam: RequestParam = { 
-      url: this.configService.urlConFig.URLS.USER.CREATE_UPDATE_USER,
+      url: 'http://localhost:5298/api/v1/user/update',
+      // url: this.configService.urlConFig.URLS.USER.UPDATE_USER,
       data: userDetails
     }
     return this.post(reqParam);
@@ -35,7 +39,8 @@ export class UserService extends HttpService{
 
   createUser(userDetails: any): Observable<ServerResponse> {
     const reqParam: RequestParam = {
-      url: this.configService.urlConFig.URLS.USER.CREATE_USER,
+      // url: this.configService.urlConFig.URLS.USER.CREATE_USER,
+      url: 'http://localhost:5298/api/v1/user/create',
       data: {
         request: userDetails
       }

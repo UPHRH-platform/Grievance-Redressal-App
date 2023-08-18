@@ -22,6 +22,7 @@ export class UserFormComponent implements OnInit {
   isEditUser:boolean = false;
   loggedInUserData: any;
   isProcessing: boolean = false;
+  grievanceTypes: any = [];
   breadcrumbItems: BreadcrumbItem[] = [
     { label: 'Grievance Management', url: '/home' },
     { label: 'User List', url: '/user-manage' },
@@ -36,13 +37,15 @@ export class UserFormComponent implements OnInit {
     private toastrService: ToastrServiceService,
     private configService: ConfigService, 
     ){
+    this.grievanceTypes = this.configService.dropDownConfig.GRIEVANCE_TYPES;
     this.userForm = new FormGroup({
       firstName: new FormControl('', Validators.required),
       lastName: new FormControl('', Validators.required),
       username: new FormControl('',[Validators.required, Validators.email]),
       phone:  new FormControl('', Validators.required),
       role: new FormControl('', Validators.required),
-      status: new FormControl('', Validators.required)
+      status: new FormControl('', Validators.required),
+      // department: new FormControl(''),
     });
   }
 
@@ -109,17 +112,28 @@ export class UserFormComponent implements OnInit {
   updateUser() {
     const {firstName, lastName, phone, role, status, username} = this.userForm.value;
     const {id } = this.userDetails;
-    const userDetails = {
-      name: `${firstName} ${lastName}`,
-      username,
-      phone,
-      isActive: status == 'Active' ? true : false,
-      roles: [getRoleObject(role)],
+    const requestObj = {
       id,
-      updatedBy: this.loggedInUserData.userId,
+      request: {
+        firstName,
+        lastName,
+        email: username,
+        attributes: {
+          departmentNAme: 'grievances',
+          phoneNumber: phone,
+          Role: role // not sure if this can be updated
+      },
+        name: `${firstName} ${lastName}`,
+        username,
+        phone,
+        isActive: status == 'Active' ? true : false,
+        roles: [getRoleObject(role)],
+        id,
+        updatedBy: this.loggedInUserData.userId,
+      }
     }
     this.isProcessing = true;
-    this.userService.createOrUpdateUser(userDetails).subscribe({
+    this.userService.updateUser(requestObj).subscribe({
       next: (res) => {
         this.userDetails = res.responseData;
         this.toastrService.showToastr("User updated successfully!", 'Success', 'success', '');
@@ -134,23 +148,32 @@ export class UserFormComponent implements OnInit {
   }
 
   addUser() {
-    const {firstName, lastName, email, phone, role, status, username} = this.userForm.value;
+    const {firstName, lastName, phone, role, status, username} = this.userForm.value;
     const userDetails = {
       firstName,
-      lastname: lastName,
+      lastName,
       email: username,
-      /* below two fields are not mandatory to be sent of backend */
-      // emailVerified: true,
-      //password: "",
-      userName: `${firstName} ${lastName}`,
-
+      username: username,
+      enabled: status === 'Active'? true: false,
+      emailVerified: false,
+      credentials: [
+        {
+            type: "password",
+            value: "ka09eF$299",
+            temporary: "false"
+        }
+    ],
+    attributes: {
+      departmentNAme: 'grievances',
       phoneNumber: phone,
-      channel: this.configService.urlConFig.URLS.USER_CREATE_CHANNEL,
-      // isActive: status == 'Active' ? true : false,
-      roles: [getRoleObject(role)],
-      // orgId: 1
+      Role: role
+  },
+     
+      // roles: [getRoleObject(role)],
+      // // orgId: 1
     }
     this.isProcessing= true;
+    console.log(userDetails);
     this.userService.createUser(userDetails).subscribe({
       next: (res) => {
         this.userDetails = res.responseData;
