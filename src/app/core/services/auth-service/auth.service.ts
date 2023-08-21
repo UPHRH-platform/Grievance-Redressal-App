@@ -9,6 +9,7 @@ import { environment } from '../../../../environments/environment';
 @Injectable({ providedIn: 'root' })
 export class AuthService extends HttpService{
   override baseUrl: string;
+  private userManagementbaseURL: string;
   private readonly TOKEN_KEY = 'access_token';
   private readonly USER_DATA = "user_data";
   private readonly ALL_ROLES = "all_roles";
@@ -16,16 +17,46 @@ export class AuthService extends HttpService{
   constructor(http: HttpClient, private configService: ConfigService,) {
     super(http);
     this.baseUrl = environment.apiUrl;
+    this.userManagementbaseURL = environment.usermanagementApiURL;
   }
 
   login(username: string, password: string): Observable<ServerResponse> {
     // Implement your login API call and get the JWT token
     const reqParam: RequestParam = {
-      url: this.configService.urlConFig.URLS.LOGIN,
+      url: this.baseUrl + this.configService.urlConFig.URLS.LOGIN,
       data: {username,password},
       header: {
         'Content-Type': 'application/json',
         'Accept': 'application/json'
+      }
+    }
+    return this.post(reqParam);
+  }
+
+  generateOTP(username: string): Observable<ServerResponse> {
+    const reqParam: RequestParam = {
+      url: this.userManagementbaseURL + this.configService.urlConFig.URLS.LOGIN_GENERATE_OTP,
+      data: {username},
+      header: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJSR3RkMkZzeG1EMnJER3I4dkJHZ0N6MVhyalhZUzBSSyJ9.kMLn6177rvY53i0RAN3SPD5m3ctwaLb32pMYQ65nBdA',
+      }
+    }
+    return this.post(reqParam);
+  }
+
+  loginWithOTP(email: string, otp: any): Observable<ServerResponse> {
+    const reqParam: RequestParam = {
+      url: this.userManagementbaseURL + this.configService.urlConFig.URLS.OTP_LOGIN,
+      header: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJSR3RkMkZzeG1EMnJER3I4dkJHZ0N6MVhyalhZUzBSSyJ9.kMLn6177rvY53i0RAN3SPD5m3ctwaLb32pMYQ65nBdA',
+      },
+      data: {
+        email: email,
+        otp: otp
       }
     }
     return this.post(reqParam);
@@ -47,7 +78,7 @@ export class AuthService extends HttpService{
     let role = '';
     if (token) {
       const userData= this.getUserData();
-      const userRole = userData.roles[0].name;
+      const userRole = userData.userRepresentation.attributes.Role[0];
       switch(userRole) {
         case 'SUPERADMIN':
           role= this.configService.rolesConfig.ROLES.SUPERADMIN;
@@ -63,8 +94,8 @@ export class AuthService extends HttpService{
           break;
       }
     }
-    // return [role];
-    return [this.configService.rolesConfig.ROLES.ADMIN];
+    return [role];
+    // return [this.configService.rolesConfig.ROLES.ADMIN];
   }
 
   getAllRoles(): Observable<ServerResponse> {
@@ -78,7 +109,7 @@ export class AuthService extends HttpService{
         },
         {
             "id": 2,
-            "name": "SUPERADMIN",
+            "name": "SUPERADMIN", //secretary
             "orgId": 1
         },
         {
@@ -102,7 +133,7 @@ export class AuthService extends HttpService{
   }
 
   saveUserData(userData: any):void {
-    this.saveToken(userData?.authToken);
+    this.saveToken(userData?.accessToken);
     localStorage.setItem(this.USER_DATA,JSON.stringify(userData));
   }
 

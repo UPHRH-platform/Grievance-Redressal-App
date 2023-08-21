@@ -55,8 +55,10 @@ export class SharedTableComponent implements AfterViewInit {
   //dataSource: MatTableDataSource<[any]> = new MatTableDataSource();
   public dataSource = new MatTableDataSource([]);
  // dataSource = new MatTableDataSource([])
-  @ViewChild(MatPaginator, {read: true}) paginator: MatPaginator;
-  @ViewChild(MatSort) sort: MatSort ;
+  // @ViewChild(MatPaginator, {read: true}) paginator: MatPaginator;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatPaginator, {read: true}) customPaginator: MatPaginator;
+  @ViewChild(MatSort) sort: MatSort;
 
   @Input() isPageable = true;
   @Input() tableColumns: TableColumn[] ;
@@ -96,6 +98,9 @@ export class SharedTableComponent implements AfterViewInit {
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
+    if(this.isServerSidePagination) {
+      this.dataSource.paginator = this.customPaginator;
+    }
   }
 
   ngOnInit(): void {

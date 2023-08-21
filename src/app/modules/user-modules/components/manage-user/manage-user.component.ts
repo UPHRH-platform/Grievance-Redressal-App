@@ -22,6 +22,8 @@ export class ManageUserComponent implements OnInit {
     { label: 'Grievance Management', url: '/home' },
     { label: 'User List', url: '/user-manage' },
   ];
+  pageSize: number = 10;
+  length: number = 0;
 
   constructor(
     private router: Router,
@@ -38,8 +40,9 @@ export class ManageUserComponent implements OnInit {
   }
 
   goToUserDetail(userDetail?:any){
+    const id = userDetail.id;
     if(userDetail){
-      this.router.navigate(['/user-manage/userform'],{ queryParams: userDetail})
+      this.router.navigate(['/user-manage/userform'],{ queryParams: {id: id}})
     }
     else {
       this.router.navigate(['/user-manage/userform'])
@@ -136,9 +139,26 @@ export class ManageUserComponent implements OnInit {
     this.userService.getAllUsers().subscribe({
       next: (res) => {
         this.isDataLoading = false;
-        this.users = res.responseData.map((user:userTableData) => {
-          const { name, username,  phone, isActive, roles, id } = user;
-          const role= roles[0].name;
+        this.users = res.responseData.map((user:any) => {
+          const { username, firstName, lastName, enabled, email, attributes, id } = user;
+          let name = '';
+          let isActive = '';
+          let role = '';
+          let phone = '';
+          if(firstName && lastName !== undefined) {
+          name = `${firstName} + ' ' + ${lastName}`;
+          }
+          if(enabled) {
+          isActive = enabled == true? 'Active': 'Inactive';
+          }
+          if(attributes !== undefined) {
+          if(attributes.hasOwnProperty('Role') && attributes.Role[0]) {
+          role = attributes.Role[0];
+          }
+          if(attributes.hasOwnProperty('phoneNumber') && attributes.phoneNumber[0]) {
+          phone = attributes.phoneNumber[0]
+          }
+        }
           return {
             id,
             name,
@@ -148,6 +168,7 @@ export class ManageUserComponent implements OnInit {
             role
           }
         })
+        this.length = this.users.length;
       },
       error: (err) => {
         this.isDataLoading = false;

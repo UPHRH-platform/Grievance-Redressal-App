@@ -28,6 +28,7 @@ export class UserFormComponent implements OnInit {
     { label: 'User List', url: '/user-manage' },
     { label: 'User Details', url: '/user-manage/userform' },
   ];
+  userId: string;
 
 
   constructor(private router: Router,
@@ -51,24 +52,44 @@ export class UserFormComponent implements OnInit {
 
   ngOnInit(): void {
     this.loggedInUserData = this.authService.getUserData();
-    this.route.queryParams.subscribe((data)=>{
-      this.userDetails = data;
-      if(Object.keys(this.userDetails).length){
-        this.isEditUser = true;
-        this.setUserFormData();
+    console.log(this.route);
+    this.route.queryParams.subscribe((param)=>{
+      console.log(param['id']);
+      this.userId = param['id'];
+      if(this.userId !== '') {
+        this.getUserDetails();
       }
+      // this.userDetails = data;
+      // if(Object.keys(this.userDetails).length){
+      //   this.isEditUser = true;
+      //   this.setUserFormData();
+      // }
     })
 
   }
 
+  getUserDetails() {
+    this.userService.getUserDetails(this.userId).subscribe({
+      next: (res) => {
+        console.log(res);
+      }
+    })
+  }
+
   setUserFormData(){
+    let firstName = '', lastName = '';
+    console.log(this.userDetails);
+    if(this.userDetails.name !== "") {
+      firstName = this.userDetails.name.split(" ")[0],
+      lastName = this.userDetails.name.split(" ")[1]
+    };
     this.userForm.setValue({
-      firstName:this.userDetails?.name.split(" ")[0],
-      lastName:this.userDetails?.name.split(" ")[1],
+      firstName: firstName,
+      lastName: lastName,
       username: this.userDetails?.username,
       phone:this.userDetails?.phone,
       role: this.userDetails?.role,
-      status:this.userDetails?.isActive ? 'Active' : 'Inactive'
+      status:this.userDetails.isActive
     })
   }
 
@@ -129,7 +150,7 @@ export class UserFormComponent implements OnInit {
         isActive: status == 'Active' ? true : false,
         roles: [getRoleObject(role)],
         id,
-        updatedBy: this.loggedInUserData.userId,
+        updatedBy: this.loggedInUserData.id,
       }
     }
     this.isProcessing = true;
@@ -155,7 +176,7 @@ export class UserFormComponent implements OnInit {
       email: username,
       username: username,
       enabled: status === 'Active'? true: false,
-      emailVerified: false,
+      emailVerified: true,
       credentials: [
         {
             type: "password",
@@ -168,9 +189,6 @@ export class UserFormComponent implements OnInit {
       phoneNumber: phone,
       Role: role
   },
-     
-      // roles: [getRoleObject(role)],
-      // // orgId: 1
     }
     this.isProcessing= true;
     console.log(userDetails);

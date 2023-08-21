@@ -64,6 +64,11 @@ isOtpForm:boolean = false;
   getOTP(){
     if(this.loginForm.value.emailId){
      this.isOtpForm = true
+     this.authService.generateOTP(this.loginForm.value.emailId).subscribe({
+      next: (res) => {
+        console.log(res);
+      }
+     })
     }
     else{
       alert('please enter emailId')
@@ -84,7 +89,13 @@ isOtpForm:boolean = false;
   }
 
   SubmitOTP(){
-    console.log(this.otpForm)
+   this.authService.loginWithOTP(this.loginForm.value.emailId, this.otpForm.value.otp).subscribe({
+    next: (res) => {
+      this.authService.saveUserData(res.responseData);
+      this.getAllRoles();
+       this.router.navigate(['home']);
+    }
+   })
   }
 
   navigateToGrievanceRaiserPage() {

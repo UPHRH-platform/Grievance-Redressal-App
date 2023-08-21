@@ -62,8 +62,9 @@ export class GrievanceManagementComponent  {
   ngOnInit(): void {
     this.grievancesTypes = this.configService.dropDownConfig.GRIEVANCE_TYPES;
     this.userRole = this.authService.getUserRoles()[0];
-    this.userId= this.authService.getUserData().userId;
+    this.userId = this.authService.getUserData().userRepresentation.id;
     this.route.queryParams.subscribe((param) => {
+      console.log(param);
       if(!!param){
         this.selectedTabName = param['tabName'];
         if(this.tabs.length) {
@@ -71,7 +72,6 @@ export class GrievanceManagementComponent  {
             this.selectedTab = this.tabs.find(tab => tab.name === this.selectedTabName);
             this.activeTabIndex= this.tabs.findIndex(tab => tab.name === this.selectedTabName);
           }
-          this.getTicketsRequestObject();
         } 
       }
     });
@@ -79,7 +79,7 @@ export class GrievanceManagementComponent  {
   }
 
   initializeTabs(): void {
-    const Roles = this.configService.rolesConfig.ROLES
+    const Roles = this.configService.rolesConfig.ROLES;
     switch(this.userRole ){
       case Roles.NODALOFFICER:
         this.tabs = Tabs['Nodal Officer'];
@@ -98,7 +98,6 @@ export class GrievanceManagementComponent  {
       this.selectedTab =this.tabs[0];
       this.activeTabIndex=0;
     }
-
     //Initialize column as per user Role
     this.initializeColumns();
     //Fetch grievances as per user  role
@@ -170,8 +169,8 @@ export class GrievanceManagementComponent  {
 
 
   applyFilter(searchterms:any){
-   
-   clearTimeout(this.timeoutId)
+    alert("apply filter");
+   clearTimeout(this.timeoutId) 
     this.searchParams  = searchterms
      this.timeoutId= setTimeout(()=>{
       this.getTicketsRequestObject()
@@ -193,7 +192,7 @@ export class GrievanceManagementComponent  {
       this.startDate =  new Date(event.startDate).getTime();
       this.endDate = new Date(event.endDate).getTime() + ((23*60*60 + 59*60+59) * 1000);
     }
-    this.getTicketsRequestObject()
+    this.getTicketsRequestObject();
   }
 
 
@@ -314,7 +313,7 @@ export class GrievanceManagementComponent  {
       this.pageIndex = event.pageIndex;
       this.pageSize = event.pageSize;
       this.length = event.length;
-      this.getTicketsRequestObject();
+      // this.getTicketsRequestObject();
       // call API here
   }
 

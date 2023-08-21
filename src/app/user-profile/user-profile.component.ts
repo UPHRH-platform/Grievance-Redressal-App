@@ -34,7 +34,9 @@ export class UserProfileComponent {
 
   ngOnInit(): void {
     const userData = this.authService.getUserData();
-    this.userId = userData.userId;
+    this.userId = userData.userRepresentation.id;
+    console.log(this.userId);
+    console.log(this.authService.getUserData());
     if(this.userId) {
       this.getUserDetails();
     }
@@ -45,6 +47,9 @@ export class UserProfileComponent {
     this.userService.getUserDetails(this.userId).subscribe({
       next: (res) => {
         this.userDetails = res.responseData;
+        if(this.userDetails) {
+          this.setUserFormData();
+        }
       },
       error: (err)=> {
         this.toastrService.showToastr(err, 'Error', 'error', '');
@@ -54,12 +59,12 @@ export class UserProfileComponent {
 
   setUserFormData() {
     this.userForm.setValue({
-      firstName: this.editDataObject?.fullName,
-      lastName: this.editDataObject?.fullName,
-      emailId: this.editDataObject?.email,
-      phoneNumber: this.editDataObject?.phoneNumber,
-      role: this.editDataObject?.role,
-      activeStatus: this.editDataObject?.accountStatus
+      firstName: this.userDetails?.firstName,
+      lastName: this.userDetails?.lastName,
+      emailId: this.userDetails?.email,
+      phoneNumber: this.userDetails?.phoneNumber,
+      role: this.userDetails?.role,
+      activeStatus: this.userDetails?.enabled
     })
   }
 

@@ -3,6 +3,7 @@ import { TableColumn, DashboardTableData, DashboardAnalytics } from '../../../in
 import { BreadcrumbItem, ConfigService } from 'src/app/shared';
 import { DashboardService } from '../services/dashboard.service';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { ToastrServiceService } from 'src/app/shared/services/toastr/toastr.service';
 
 @Component({
   selector: 'app-dashboard-view',
@@ -22,9 +23,12 @@ export class DashboardViewComponent {
   resolutionMatrixData: any = [];
   resolutionMatrixColumns: any = [];
   grievancesTypes:any[]=[];
+  startDate = new Date("2020/03/03").getTime();
+  endDate = new Date().getTime();
+  ccList: any = [];
   public assignGrievanceTypeForm:FormGroup;
 
-  constructor(private dashboardService: DashboardService, private configService: ConfigService, private formBuilder: FormBuilder) {}
+  constructor(private dashboardService: DashboardService, private configService: ConfigService, private formBuilder: FormBuilder, private toastrService: ToastrServiceService) {}
 
   ngOnInit(): void {
     this.grievancesTypes = this.configService.dropDownConfig.GRIEVANCE_TYPES;
@@ -135,10 +139,27 @@ export class DashboardViewComponent {
 
   getDashboardData() {
       this.isDataLoading = true;
+      const request = {
+        date: {
+          to: this.endDate,
+          from: this.startDate
+        },
+        filter: {
+          ccList: this.ccList
+        }
+      }
       setTimeout(() => {
         this.isDataLoading = false;
       }, 2000);
-      this.dashboardData = this.dashboardService.getDashboardData().body;
+      this.dashboardService.getDashboardData(request).subscribe({
+        next: (res) => {
+          console.log(res);
+        },
+        error: (err) => {
+          this.toastrService.showToastr(err, 'Error', 'error', '');
+          // Handle the error here in case of login failure
+        }
+      })
       //assignmentmatrix data
       const tag = [];
       const value:any = [];
