@@ -26,21 +26,64 @@ export class DashboardViewComponent {
   startDate = new Date("2020/03/03").getTime();
   endDate = new Date().getTime();
   ccList: any = [];
+  filterForm: FormGroup;
+  filterDateRange = {startDate: '', endDate: ''};
   public assignGrievanceTypeForm:FormGroup;
+  grievanceTypeNames: any = [];
 
   constructor(private dashboardService: DashboardService, private configService: ConfigService, private formBuilder: FormBuilder, private toastrService: ToastrServiceService) {}
 
   ngOnInit(): void {
+    this.filterForm = this.formBuilder.group({
+      grievanceType: new FormControl([]),
+      startDate: new FormControl(this.startDate),
+      endDate:new FormControl(this.endDate)
+    })
     this.grievancesTypes = this.configService.dropDownConfig.GRIEVANCE_TYPES;
-    this.initializeColumns();
-    this.getDashboardData();
-    this.createAssignForm();
+    this.getDashboardObjectData(this.filterForm.value.startDate, this.filterForm.value.endDate);
+    // this.readFilterData();
   }
 
-  createAssignForm(){
-    this.assignGrievanceTypeForm = this.formBuilder.group({
-      grievanceType: new FormControl('')
+  // readFilterData() {
+  //   let ccList: any;
+  //   let dateRange: any;
+  //   let dateObject: any;
+  //   if(sessionStorage.getItem('departmentFilter') !== undefined) {
+  //      ccList = sessionStorage.getItem('departmentFilter');
+  //      if(ccList !== null) {
+  //         this.ccList = JSON.parse(ccList);
+  //          this.grievanceTypeNames = this.getGrievanceTypeNames(this.ccList);
+  //      }
+  //      this.filterForm.patchValue({
+  //       grievanceType: this.grievanceTypeNames
+  //      })
+  //      console.log(this.filterForm.value);
+  //   }
+  //   if(sessionStorage.getItem('dateRange') !== undefined) {
+  //     dateRange = sessionStorage.getItem('dateRange');
+  //       dateObject = JSON.parse(dateRange);
+  //       if(dateObject !== null) {
+  //       this.startDate = dateObject.startDate;
+  //       this.endDate = dateObject.endDate;
+  //       this.filterForm.patchValue({
+  //         startDate: this.startDate,
+  //         endDate: this.endDate
+  //        })
+  //       }
+  //   }
+  //   this.getDashboardObjectData(this.filterForm.value.startDate, this.filterForm.value.endDate);
+  // }
+
+  getGrievanceTypeNames(grievanceType: any) {
+    const grievanceNames: any = [];
+    grievanceType.map((obj: any, index: number) => {
+      this.grievancesTypes.map((type) => {
+        if(obj === type.id) {
+          grievanceNames.push(type.name); 
+        }
+      })
     })
+    return grievanceNames;
   }
 
   initializeColumns(): void {
@@ -121,11 +164,11 @@ export class DashboardViewComponent {
   cell: (element: Record<string, any>) => `${element['isOpen']}`
 },
 {
-  columnDef: 'openTicket',
+  columnDef: 'openTicketGte15',
   header: 'Open Ticket',
   isSortable: true,
   isLink: false,
-  cell: (element: Record<string, any>) => `${element['openTicket']}`
+  cell: (element: Record<string, any>) => `${element['openTicketGte15']}`
 },
 {
   columnDef: 'unassigned',
@@ -137,12 +180,18 @@ export class DashboardViewComponent {
     ]
   }
 
-  getDashboardData() {
+  getDashboardObjectData(startDate:any, endDate: any) {
+    this.dashboardData = [];
+    const tag:any = [];
+    const value:any = [];
+    const resolutionMatrix: any = [];
+    this.assignmentMatrixData = [];
+    this.resolutionMatrixData = [];
       this.isDataLoading = true;
       const request = {
         date: {
-          to: this.endDate,
-          from: this.startDate
+          to: endDate,
+          from: startDate
         },
         filter: {
           ccList: this.ccList
@@ -153,7 +202,33 @@ export class DashboardViewComponent {
       }, 2000);
       this.dashboardService.getDashboardData(request).subscribe({
         next: (res) => {
-          console.log(res);
+          this.dashboardData = res.responseData;
+          this.initializeColumns();
+          if(this.dashboardData){
+            // assignmentMatrix
+            for(const key in this.dashboardData.assignmentMatrix) {
+                tag.push(this.camelCaseToWords(key));
+                value.push(this.dashboardData.assignmentMatrix[key])
+            }
+            tag.map((obj:any, index:number) => {
+              this.assignmentMatrixData.push({
+                id: index + 1,
+                tag: obj,
+                value: value[index]
+              })
+            })
+            // resolutionMatrix
+            resolutionMatrix.push(this.dashboardData.resolutionMatrix);
+            this.dashboardData.resolutionMatrixArray = resolutionMatrix;
+            console.log(this.dashboardData.resolutionMatrixArray);
+        this.dashboardData.resolutionMatrixArray.map((obj: any, index: number) => {
+        let i = index;
+        for(const key in obj) {
+          i = i + 1;
+          this.resolutionMatrixData.push({id: i, departmentName: this.camelCaseToWords(key), ...obj[key]});
+        }
+      })
+          }
         },
         error: (err) => {
           this.toastrService.showToastr(err, 'Error', 'error', '');
@@ -161,26 +236,8 @@ export class DashboardViewComponent {
         }
       })
       //assignmentmatrix data
-      const tag = [];
-      const value:any = [];
-      for(const key in this.dashboardData.assignmentMatrix) {
-          tag.push(this.camelCaseToWords(key));
-          value.push(this.dashboardData.assignmentMatrix[key])
-      }
-      tag.map((obj, index) => {
-        this.assignmentMatrixData.push({
-          id: index + 1,
-          tag: obj,
-          value: value[index]
-        })
-      })
-      this.dashboardData.resolutionMatrix.map((obj: any, index: number) => {
-        let i = index;
-        for(const key in obj) {
-          i = i + 1;
-          this.resolutionMatrixData.push({id: i, departmentName: this.camelCaseToWords(key), ...obj[key]});
-        }
-      })
+     
+      
     }
 
     camelCaseToWords(s: string) {
@@ -188,8 +245,36 @@ export class DashboardViewComponent {
       return result.charAt(0).toUpperCase() + result.slice(1);
     }
 
-    grievanceSelected(grievance: Event) {
-      console.log(grievance)
+    grievanceSelected(grievance: any) {
+      this.ccList = grievance.value;
+    }
+
+    changeEvent(type: string, event: any) {
+      if(type == 'startDate') {
+        this.startDate = event.value.getTime();
+        this.filterDateRange.startDate = event.value;
+       this.filterForm.patchValue({
+         startDate: event.value.getTime()
+       })
+      }
+      if(type === 'endDate') {
+        this.filterDateRange.endDate = event.value;
+        this.endDate = event.value.getTime();
+        this.filterForm.patchValue({
+          endDate: event.value.getTime()
+        })
+      }
+    }
+
+    applyFilter() {
+      // sessionStorage.setItem('departmentFilter', JSON.stringify(this.ccList));
+      // sessionStorage.setItem('dateRange', JSON.stringify(this.filterDateRange));
+      this.getDashboardObjectData(this.filterForm.value.startDate, this.filterForm.value.endDate);
+    }
+
+    ngDestroy() {
+      sessionStorage.removeItem('departmentFilter');
+      sessionStorage.removeItem('dateRange');
     }
 }
 

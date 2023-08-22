@@ -5,28 +5,39 @@
         </app-shared-skeleton-loading>
         <div class="pt1 pb2">
         <div *ngIf="!isDataLoading" class="clearfix custom-margin mxn1">
-            <div class="flex flex-wrap justify-end">
+          <form [formGroup]="filterForm">
+            <div class="flex flex-wrap justify-end custom-align">
                 <div class="pr2">
                     <mat-form-field appearance="outline">
-                        <mat-select (selectionChange)="grievanceSelected($event)" multiple formControlName="grievanceType" placeholder="Department">
+                        <mat-select multiple formControlName="grievanceType" placeholder="Department" (selectionChange)="grievanceSelected($event)">
                           <span *ngFor='let grievance of grievancesTypes;let i = index'>
                             <mat-option [value]="grievance.id">{{grievance.name}}</mat-option>
                           </span>
                         </mat-select>
                       </mat-form-field>
                 </div>
-                <div class="">
+                <div class="pr2">
                     <mat-form-field appearance="outline">
                         <mat-date-range-input [rangePicker]="picker">
-                          <input matStartDate placeholder="Start date">
-                          <input matEndDate placeholder="End date">
+                          <input matStartDate placeholder="Start date" (dateInput)="changeEvent('startDate', $event)" (dateChange)="changeEvent('endDate', $event)">
+                          <input matEndDate placeholder="End date" (dateInput)="changeEvent('endDate', $event)" (dateChange)="changeEvent('endDate', $event)">
                         </mat-date-range-input>
                         <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
                         <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
                         <mat-date-range-picker #picker></mat-date-range-picker>
                       </mat-form-field>
                 </div>
+                <div class="action-btns">
+                  <button type="reset" mat-raised-button class="mr1" (click)="resetFilter()">
+                      Reset
+                  </button>
+
+                  <button type="button" mat-raised-button color="primary" (click)="applyFilter()">
+                      Apply
+                  </button>
+              </div>
             </div>
+            </form>
         </div>
         <div *ngIf="!isDataLoading" class="clearfix mxn1 mt2">
             <div class="flex flex-wrap">

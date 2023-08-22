@@ -120,12 +120,12 @@ export class HttpService {
     };
     return this.http.put<Response>(requestParam.url, requestParam.data, httpOptions).pipe(
       mergeMap((data: Response) => {
-        if (data.status !== 200) {
+        if (data.status && data.status !== 200) {
           return throwError(() => new Error(data.error));
         }
         const serverRes: ServerResponse ={
           statusInfo: {statusCode: 200, statusMessage: "success"},
-          responseData: data.body
+          responseData: data.body? data.body : data
         }
         return observableOf(serverRes);
       }));

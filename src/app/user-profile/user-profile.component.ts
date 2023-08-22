@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from '../modules/user-modules/services/user.service';
 import { AuthService } from '../core';
 import { ToastrServiceService } from '../shared/services/toastr/toastr.service';
+import { getRole } from 'src/app/shared';
 
 @Component({
   selector: 'app-user-profile',
@@ -48,6 +49,7 @@ export class UserProfileComponent {
       next: (res) => {
         this.userDetails = res.responseData;
         if(this.userDetails) {
+          console.log(this.userDetails);
           this.setUserFormData();
         }
       },
@@ -62,9 +64,9 @@ export class UserProfileComponent {
       firstName: this.userDetails?.firstName,
       lastName: this.userDetails?.lastName,
       emailId: this.userDetails?.email,
-      phoneNumber: this.userDetails?.phoneNumber,
-      role: this.userDetails?.role,
-      activeStatus: this.userDetails?.enabled
+      phoneNumber: this.userDetails?.attributes.phoneNumber[0],
+      // role: this.userDetails?.attributes.Role[0],
+      // activeStatus: this.userDetails?.enabled === true? 'Active' : 'Inactive'
     })
   }
 
@@ -99,9 +101,24 @@ export class UserProfileComponent {
     this.isEditData = false;
   }
 
+  getUserRole(roleName: string) {
+    return getRole(roleName);
+   }
+
   onSubmit() {
     console.log(this.userForm.value);
-    this.userService.updateUser(this.userDetails).subscribe({
+    const updateUserRequest = {
+      userName: this.userDetails.id,
+      request: {
+      firstName: this.userForm.value.firstName,
+      lastName: this.userForm.value.lastName,
+      email: this.userForm.value.emailId,
+      attributes: {
+        phoneNumber: this.userForm.value.phoneNumber
+      }
+      }
+    }
+    this.userService.updateUser(updateUserRequest).subscribe({
       next:(res) => {
         console.log(res);
         this.toastrService.showToastr('User details updated successfully', 'Success', 'success', '');
@@ -112,6 +129,10 @@ export class UserProfileComponent {
         this.toastrService.showToastr(err, 'Error', 'error', '');
       }
     })
+  }
+
+  goToHome() {
+    this.router.navigate(['/']);
   }
 
 

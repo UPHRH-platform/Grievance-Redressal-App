@@ -42,7 +42,7 @@
                         <h4>Email Id</h4>
                         <mat-form-field appearance="outline" class="text-class">
                             <mat-label>Email id</mat-label>
-                            <input matInput placeholder="pat@example.com" required formControlName="username" required>
+                            <input matInput placeholder="pat@example.com" readonly="true" formControlName="username" required>
                             <mat-error *ngIf="username && username.invalid && username.touched">please Enter email Id</mat-error>
 
                           </mat-form-field>
@@ -65,7 +65,7 @@
                         <mat-form-field appearance="outline" class="text-class">
                             <mat-label>Role</mat-label>
                             <mat-select formControlName="role">
-                              <mat-option *ngFor="let item of roleList" [value]="item.name">{{getUserRole(item.name)}}</mat-option>
+                              <mat-option *ngFor="let item of roleList" [value]="item.name" >{{getUserRole(item.name)}}</mat-option>
                             </mat-select>
                             <mat-error *ngIf="role && role.invalid && role.touched">please select role</mat-error>
 

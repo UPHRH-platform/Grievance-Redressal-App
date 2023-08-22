@@ -20,6 +20,9 @@ export class UserService extends HttpService{
     // const  reqParam: RequestParam = { url: this.configService.urlConFig.URLS.USER.GET_ALL_USERS}
     const reqParam: RequestParam = {
       url: this.userManagementbaseURL + this.configService.urlConFig.URLS.USER.GET_ALL_USERS,
+      header: {
+        'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJSR3RkMkZzeG1EMnJER3I4dkJHZ0N6MVhyalhZUzBSSyJ9.kMLn6177rvY53i0RAN3SPD5m3ctwaLb32pMYQ65nBdA',
+      },
       data: {request}
     }
     return this.post(reqParam);
@@ -28,9 +31,12 @@ export class UserService extends HttpService{
   updateUser(userDetails: any): Observable<ServerResponse>  {
     const  reqParam: RequestParam = { 
       url: this.userManagementbaseURL + this.configService.urlConFig.URLS.USER.UPDATE_USER,
+      header: {
+        'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJSR3RkMkZzeG1EMnJER3I4dkJHZ0N6MVhyalhZUzBSSyJ9.kMLn6177rvY53i0RAN3SPD5m3ctwaLb32pMYQ65nBdA',
+      },
       data: userDetails
     }
-    return this.post(reqParam);
+    return this.put(reqParam);
   }
 
   getUserDetails(id: string): Observable<ServerResponse> {
@@ -39,6 +45,9 @@ export class UserService extends HttpService{
     }
     const reqParam: RequestParam = {
       url: this.userManagementbaseURL + this.configService.urlConFig.URLS.USER.GET_USERDETAILS_BY_ID,
+      header: {
+        'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJSR3RkMkZzeG1EMnJER3I4dkJHZ0N6MVhyalhZUzBSSyJ9.kMLn6177rvY53i0RAN3SPD5m3ctwaLb32pMYQ65nBdA',
+      },
       data: {request}
     }
     return this.post(reqParam);
@@ -47,9 +56,23 @@ export class UserService extends HttpService{
   createUser(userDetails: any): Observable<ServerResponse> {
     const reqParam: RequestParam = {
       url: this.userManagementbaseURL + this.configService.urlConFig.URLS.USER.CREATE_USER,
+      header: {
+        'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJSR3RkMkZzeG1EMnJER3I4dkJHZ0N6MVhyalhZUzBSSyJ9.kMLn6177rvY53i0RAN3SPD5m3ctwaLb32pMYQ65nBdA',
+      },
       data: {
         request: userDetails
       }
+    }
+    return this.post(reqParam);
+  }
+
+  deactivateUser(request: any): Observable<ServerResponse>  {
+    const  reqParam: RequestParam = { 
+      url: this.userManagementbaseURL + this.configService.urlConFig.URLS.USER.DELETE_USER,
+      header: {
+        'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJSR3RkMkZzeG1EMnJER3I4dkJHZ0N6MVhyalhZUzBSSyJ9.kMLn6177rvY53i0RAN3SPD5m3ctwaLb32pMYQ65nBdA',
+      },
+      data: request
     }
     return this.post(reqParam);
   }

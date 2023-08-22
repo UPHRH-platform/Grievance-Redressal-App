@@ -13,7 +13,7 @@
         "USER": {
             "CREATE_USER": "/api/v1/user/create",
             "UPDATE_USER": "/api/v1/user/update",
-            "DELETE_USER": "/v1/user/deactivate",
+            "DELETE_USER": "/api/v1/user/deactivate",
             "GET_USERDETAILS_BY_ID": "/api/v1/user/details",
             "GET_ALL_USERS": "/api/v1/user/list"
         },

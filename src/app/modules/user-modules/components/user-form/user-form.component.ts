@@ -56,7 +56,9 @@ export class UserFormComponent implements OnInit {
     this.route.queryParams.subscribe((param)=>{
       console.log(param['id']);
       this.userId = param['id'];
-      if(this.userId !== '') {
+      console.log(this.userId);
+      if(this.userId !== undefined) {
+        this.isEditUser = true;
         this.getUserDetails();
       }
       // this.userDetails = data;
@@ -71,7 +73,8 @@ export class UserFormComponent implements OnInit {
   getUserDetails() {
     this.userService.getUserDetails(this.userId).subscribe({
       next: (res) => {
-        console.log(res);
+        this.userDetails = res.responseData;
+        this.setUserFormData();
       }
     })
   }
@@ -79,18 +82,19 @@ export class UserFormComponent implements OnInit {
   setUserFormData(){
     let firstName = '', lastName = '';
     console.log(this.userDetails);
-    if(this.userDetails.name !== "") {
-      firstName = this.userDetails.name.split(" ")[0],
-      lastName = this.userDetails.name.split(" ")[1]
+    if((this.userDetails.firstName && this.userDetails.firstName !== "") && (this.userDetails.lastName && this.userDetails.lastName !== "")) {
+      firstName = this.userDetails.firstName,
+      lastName = this.userDetails.lastName
     };
     this.userForm.setValue({
       firstName: firstName,
       lastName: lastName,
       username: this.userDetails?.username,
-      phone:this.userDetails?.phone,
-      role: this.userDetails?.role,
-      status:this.userDetails.isActive
+      phone:this.userDetails?.attributes.phoneNumber,
+      role:this.userDetails?.attributes.Role[0],
+      status: this.userDetails?.enabled === true? 'Active' : 'Inactive'
     })
+    console.log(this.userForm.value);
   }
 
   get firstName(){
@@ -134,23 +138,15 @@ export class UserFormComponent implements OnInit {
     const {firstName, lastName, phone, role, status, username} = this.userForm.value;
     const {id } = this.userDetails;
     const requestObj = {
-      id,
+      userName: id,
       request: {
         firstName,
         lastName,
-        email: username,
         attributes: {
-          departmentNAme: 'grievances',
+          departmentName: 'grievances',
           phoneNumber: phone,
           Role: role // not sure if this can be updated
       },
-        name: `${firstName} ${lastName}`,
-        username,
-        phone,
-        isActive: status == 'Active' ? true : false,
-        roles: [getRoleObject(role)],
-        id,
-        updatedBy: this.loggedInUserData.id,
       }
     }
     this.isProcessing = true;
@@ -161,7 +157,7 @@ export class UserFormComponent implements OnInit {
         this.isProcessing= false;
      },
      error: (err) => {
-      this.toastrService.showToastr(err, 'Error', 'error', '');
+      // this.toastrService.showToastr(err, 'Error', 'error', '');
       this.isProcessing= false;
        // Handle the error here in case of login failure
      }}

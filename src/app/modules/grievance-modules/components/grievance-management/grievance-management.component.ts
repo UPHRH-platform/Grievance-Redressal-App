@@ -25,8 +25,8 @@ export class GrievanceManagementComponent  {
   selectedTab:any=null;
   length: number;
   responseLength: number;
-  startDate = new Date("2020/03/03").getTime()
-  endDate = new Date().getTime()
+  startDate = new Date("2020/03/03").getTime();
+  endDate = new Date().getTime();
   grievanceType:any;
   accumulatedSearchTerm:string = '';
   private timeoutId: any;
@@ -54,7 +54,7 @@ export class GrievanceManagementComponent  {
   pageIndex: number = 0;
   pageSize: number = 10;
   searchParams:string = '';
-  sortHeader: string = 'created_date_ts';
+  sortHeader: string = 'createdDateTS';
   direction: string = 'desc';
   userId: string;
   activeTabIndex: number;
@@ -131,13 +131,13 @@ export class GrievanceManagementComponent  {
         cell: (element: Record<string, any>) => `${element['assignedTo']}`
       },
       {
-        columnDef: 'created_date_ts',
+        columnDef: 'createdDateTS',
         header: 'Creation Time',
         isSortable: true,
         cell: (element: Record<string, any>) => `${element['createdDate']}`
       },
       {
-        columnDef: 'escalated_date_ts',
+        columnDef: 'escalatedDateTS',
         header: 'Escalation time',
         isSortable: true,
         cell: (element: Record<string, any>) => 
@@ -169,7 +169,6 @@ export class GrievanceManagementComponent  {
 
 
   applyFilter(searchterms:any){
-    alert("apply filter");
    clearTimeout(this.timeoutId) 
     this.searchParams  = searchterms
      this.timeoutId= setTimeout(()=>{
@@ -288,6 +287,7 @@ export class GrievanceManagementComponent  {
     this.isDataLoading = true;
     this.grievanceService.getAllTickets(this.getGrievancesRequest).subscribe({
       next: (res) => {
+        console.log(res);
         this.isDataLoading = false;
         this.length = res.responseData.count;
         this.grievances = res.responseData.results;
