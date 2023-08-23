@@ -67,7 +67,7 @@ export class GrievanceDetailsComponent {
     this.grievancesTypes = this.grievancesTypes.filter(item=> item.name !== 'Others')
     }
     console.log(this.userRole)
-    this.userId= this.authService.getUserData().userId;
+    this.userId= this.authService.getUserData().userRepresentation.id;
     this.createForm();
     this.createAssignForm();
     this.route.queryParams.subscribe((data)=>{

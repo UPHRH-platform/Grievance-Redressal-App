@@ -170,7 +170,6 @@
             <button type="submit" mat-raised-button color="primary"
               *ngIf="(currentTabName == 'Escalated to me' || currentTabName == 'Not Assigned' || currentTabName == 'Pending')"
               (click)="handleClick('nudge')">Send Reminder</button>
-
           </span>
           <button type="submit" *ngIf="userRole === 'Nodal Officer' && currentTabName !== 'Resolved'"
             [disabled]="!grievanceResolutionForm.valid" (click)="handleClick('resolved',grievanceResolutionForm.value)"

@@ -16,7 +16,7 @@ export class FeedbackService extends HttpService{
 
   saveFeedack(feedbackDetails: any): Observable<ServerResponse>  {
     const  reqParam: RequestParam = { 
-      url: this.configService.urlConFig.URLS.FEEDBACK.SAVE,
+      url: this.baseUrl + this.configService.urlConFig.URLS.FEEDBACK.SAVE,
       data: feedbackDetails,
     }
     return this.post(reqParam);

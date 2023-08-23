@@ -13,12 +13,6 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     min-height: 98vh;
 }
 
-#dashboard {
-    .mat-grid-tile-content {
-        align-items: flex-start !important;
-    }
-}
-
 /** angular material table styles **/
 // .mdc-data-table__table {
 .mdc-data-table__cell {
@@ -78,6 +72,21 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     background-color: #efefef;
     padding: 1rem;
     border-radius: 10px;
+}
+
+#dashboard {
+    .mat-mdc-form-field-infix {
+        min-height: auto !important;
+        padding-top: 10px;
+        padding-bottom: 10px;
+    }
+    .mdc-text-field--outlined .mdc-notched-outline {
+        z-index: 0;
+        background-color: white;
+    }
+    .mdc-text-field--filled {
+        background-color: white !important;
+    }
 }
 
 

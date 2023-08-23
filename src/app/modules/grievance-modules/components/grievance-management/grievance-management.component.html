@@ -2,7 +2,6 @@
 <div class="content">
     <h3>Grievance List</h3>
     <mat-tab-group (selectedTabChange)="onTabChange($event)" mat-align-tabs="start" [selectedIndex]="activeTabIndex">
-
         <mat-tab *ngFor="let tab of tabs">
             <ng-template mat-tab-label>{{ tab.name }}</ng-template>
             <app-shared-skeleton-loading [isLoading]="isDataLoading">
@@ -19,9 +18,11 @@
                     placeholder="Search"
                   />
                 </mat-form-field>
+                
               </form>
+              
             </div>
-            <app-common-filter (filteredvalue)="onClickApplyFilter($event)" (resetFilterValue)="resetFilterValue($event)"></app-common-filter>
+            <app-common-filter (filteredvalue)="onClickApplyFilter($event)" (resetFilterValue)="resetFilterValueData($event)"></app-common-filter>
               </div>
             <app-shared-table *ngIf="!isDataLoading" [tableColumns]="grievancesTableColumns" [tableData]="grievances" [isPageable]="true"
             [length]="length" [pageSize]="pageSize" [hidePageSize]="false" [showPageSizeOptions]="true" [showFirstLastButtons]="true" [pageIndex]="pageIndex" 

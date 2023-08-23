@@ -4,13 +4,13 @@ export const getRole = (roleName: string) : string => {
     let role = "";
     switch(roleName) {
         case 'SUPERADMIN':
-          role= Roles.SECRETARY;
+          role= Roles.SUPERADMIN;
           break;
         case 'NODALOFFICER':
-          role= Roles.NODAL_OFFICER;
+          role= Roles.NODALOFFICER;
           break;
         case 'GRIEVANCEADMIN':
-          role= Roles.GRIEVANCE_NODAL;
+          role= Roles.GRIEVANCEADMIN;
           break;
         case 'ADMIN':
           role= Roles.ADMIN;
