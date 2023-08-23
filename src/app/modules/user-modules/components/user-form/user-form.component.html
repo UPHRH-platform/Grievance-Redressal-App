@@ -42,7 +42,7 @@
                         <h4>Email Id</h4>
                         <mat-form-field appearance="outline" class="text-class">
                             <mat-label>Email id</mat-label>
-                            <input matInput placeholder="pat@example.com" readonly="isEditUser? true: false" formControlName="username" required>
+                            <input matInput placeholder="pat@example.com" [readonly]="isEditUser === true? true: false" formControlName="username" required>
                             <mat-error *ngIf="username && username.invalid && username.touched">please Enter email Id</mat-error>
 
                           </mat-form-field>
