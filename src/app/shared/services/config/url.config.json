@@ -1,6 +1,8 @@
 {
     "URLS": {
         "LOGIN": "/user/login",
+        "LOGIN_GENERATE_OTP": "/api/v1/user/keycloak/otp",
+        "OTP_LOGIN": "/api/v1/user/keycloak/login",
         "GET_ALL_ROLES": "/roles/getAllRoles?orgId=1",
         "GRIEVANCE_TICKETS": {
             "GET_ALL_TICKETS": "/search/searchTickets",
@@ -9,8 +11,11 @@
             "GET_TICKET_BY_ID":"/ticket/info?id="
         },
         "USER": {
-            "GET_ALL_USERS": "/user/getAllUsers?orgId=1",
-            "CREATE_UPDATE_USER": "/user/createOrUpdate"
+            "CREATE_USER": "/api/v1/user/create",
+            "UPDATE_USER": "/api/v1/user/update",
+            "DELETE_USER": "/api/v1/user/deactivate",
+            "GET_USERDETAILS_BY_ID": "/api/v1/user/details",
+            "GET_ALL_USERS": "/api/v1/user/list"
         },
         "OTP":{
             "GENERATE_OTP": "/otp/generate-otp"
@@ -20,6 +25,9 @@
         },
         "FEEDBACK": {
             "SAVE": "/feedback/save"
+        },
+        "DASHBOARD": {
+            "GET_DASHBOARD_DATA": "/search/dashboardReport"
         }
     }
 }

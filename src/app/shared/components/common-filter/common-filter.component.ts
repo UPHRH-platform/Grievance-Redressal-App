@@ -25,7 +25,7 @@ export class CommonFilterComponent implements OnInit {
       startDate: new FormControl(''),
       endDate:new FormControl('')
     })
-    this.grievanceService.resetFilterValue.subscribe((data)=>{
+    this.grievanceService.resetFilterValue.subscribe((data: any)=>{
       if(data){
         this.resetFilter();
         this.isFilter = false;

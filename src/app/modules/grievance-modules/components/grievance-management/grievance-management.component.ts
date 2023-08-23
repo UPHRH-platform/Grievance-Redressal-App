@@ -25,8 +25,8 @@ export class GrievanceManagementComponent  {
   selectedTab:any=null;
   length: number;
   responseLength: number;
-  startDate = new Date("2020/03/03").getTime()
-  endDate = new Date().getTime()
+  startDate = new Date("2020/03/03").getTime();
+  endDate = new Date().getTime();
   grievanceType:any;
   accumulatedSearchTerm:string = '';
   private timeoutId: any;
@@ -54,7 +54,7 @@ export class GrievanceManagementComponent  {
   pageIndex: number = 0;
   pageSize: number = 10;
   searchParams:string = '';
-  sortHeader: string = 'created_date_ts';
+  sortHeader: string = 'createdDateTS';
   direction: string = 'desc';
   userId: string;
   activeTabIndex: number;
@@ -62,16 +62,18 @@ export class GrievanceManagementComponent  {
   ngOnInit(): void {
     this.grievancesTypes = this.configService.dropDownConfig.GRIEVANCE_TYPES;
     this.userRole = this.authService.getUserRoles()[0];
-    this.userId= this.authService.getUserData().userId;
+    this.userId = this.authService.getUserData().userRepresentation.id;
     this.route.queryParams.subscribe((param) => {
+      console.log("param ====>", param);
       if(!!param){
         this.selectedTabName = param['tabName'];
+        console.log("tabNameeeeee", this.selectedTabName);
         if(this.tabs.length) {
           if(!!this.selectedTabName) {
             this.selectedTab = this.tabs.find(tab => tab.name === this.selectedTabName);
+            console.log("inside onInit",this.selectedTab);
             this.activeTabIndex= this.tabs.findIndex(tab => tab.name === this.selectedTabName);
           }
-          this.getTicketsRequestObject();
         } 
       }
     });
@@ -79,26 +81,26 @@ export class GrievanceManagementComponent  {
   }
 
   initializeTabs(): void {
-    const Roles = this.configService.rolesConfig.ROLES
+    const Roles = this.configService.rolesConfig.ROLES;
     switch(this.userRole ){
-      case Roles.NODAL_OFFICER:
+      case Roles.NODALOFFICER:
         this.tabs = Tabs['Nodal Officer'];
         break;
-      case Roles.SECRETARY:
+      case Roles.SUPERADMIN:
         this.tabs = Tabs['Secretary'];
         break;
-      case Roles.GRIEVANCE_NODAL:
+      case Roles.GRIEVANCEADMIN:
         this.tabs = Tabs['Grievance Nodal'];
         break;
     }
     if(!!this.selectedTabName) {
       this.selectedTab = this.tabs.find(tab => tab.name === this.selectedTabName);
+      console.log("inside initializeTabs", this.selectedTab);
       this.activeTabIndex= this.tabs.findIndex(tab => tab.name === this.selectedTabName);
     } else {
       this.selectedTab =this.tabs[0];
       this.activeTabIndex=0;
     }
-
     //Initialize column as per user Role
     this.initializeColumns();
     //Fetch grievances as per user  role
@@ -132,13 +134,13 @@ export class GrievanceManagementComponent  {
         cell: (element: Record<string, any>) => `${element['assignedTo']}`
       },
       {
-        columnDef: 'created_date_ts',
+        columnDef: 'createdDateTS',
         header: 'Creation Time',
         isSortable: true,
         cell: (element: Record<string, any>) => `${element['createdDate']}`
       },
       {
-        columnDef: 'escalated_date_ts',
+        columnDef: 'escalatedDateTS',
         header: 'Escalation time',
         isSortable: true,
         cell: (element: Record<string, any>) => 
@@ -156,23 +158,22 @@ export class GrievanceManagementComponent  {
   }
 
   onTabChange(event: MatTabChangeEvent): void {
-    this.searchParams = "";
-    this.resetFields = true;
-    this.grievanceService.resetFilterValue.next(this.resetFields)
-    this.resetFilterValue('');
-    // Here  we  have userrole and tab index with these 2 we know we need to fetch data for which tab of which user role so we pass relevant payload in get grievance service
     const selectedIndex = event.index;
     this.selectedTab = this.tabs[selectedIndex];
-    this.searchParams = "";
     this.router.navigate(['/grievance/manage-tickets/'],{ queryParams: {tabName: this.selectedTab.name}});
+    this.searchParams = "";
+    this.resetFields = true;
+    // debugger;
+    this.grievanceService.resetFilterValue.next(this.resetFields);
+    this.resetFilterValueData('');
+    // Here  we  have userrole and tab index with these 2 we know we need to fetch data for which tab of which user role so we pass relevant payload in get grievance service
+
     // this.getgrievances();
-    this.getTicketsRequestObject();
   }
 
 
   applyFilter(searchterms:any){
-   
-   clearTimeout(this.timeoutId)
+   clearTimeout(this.timeoutId) 
     this.searchParams  = searchterms
      this.timeoutId= setTimeout(()=>{
       this.getTicketsRequestObject()
@@ -180,7 +181,7 @@ export class GrievanceManagementComponent  {
     ) 
   }
 
-  resetFilterValue(event:any){
+  resetFilterValueData(event:any){
     this.startDate = new Date("2020/03/03").getTime();
     this.endDate = new Date().getTime();
     this.grievanceType = null;
@@ -194,7 +195,7 @@ export class GrievanceManagementComponent  {
       this.startDate =  new Date(event.startDate).getTime();
       this.endDate = new Date(event.endDate).getTime() + ((23*60*60 + 59*60+59) * 1000);
     }
-    this.getTicketsRequestObject()
+    this.getTicketsRequestObject();
   }
 
 
@@ -207,6 +208,7 @@ export class GrievanceManagementComponent  {
   }
 
   getTicketsRequestObject() {
+    console.log(this.selectedTab);
     this.getGrievancesRequest = {
       searchKeyword: this.searchParams,
        filter: {
@@ -290,6 +292,7 @@ export class GrievanceManagementComponent  {
     this.isDataLoading = true;
     this.grievanceService.getAllTickets(this.getGrievancesRequest).subscribe({
       next: (res) => {
+        console.log(res);
         this.isDataLoading = false;
         this.length = res.responseData.count;
         this.grievances = res.responseData.results;
@@ -315,7 +318,7 @@ export class GrievanceManagementComponent  {
       this.pageIndex = event.pageIndex;
       this.pageSize = event.pageSize;
       this.length = event.length;
-      this.getTicketsRequestObject();
+      // this.getTicketsRequestObject();
       // call API here
   }
 

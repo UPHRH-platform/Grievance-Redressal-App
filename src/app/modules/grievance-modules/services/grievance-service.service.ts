@@ -22,7 +22,7 @@ export class GrievanceServiceService extends HttpService {
   createTicket(data?:any): Observable<ServerResponse> {
     // Implement your login API call and get the JWT token
     const reqParam: RequestParam = {
-      url: this.configService.urlConFig.URLS.GRIEVANCE_TICKETS.CREATE_TICKET,
+      url: this.baseUrl + this.configService.urlConFig.URLS.GRIEVANCE_TICKETS.CREATE_TICKET,
       data: data,
       header: {
         'Content-Type': 'application/json',
@@ -45,7 +45,7 @@ export class GrievanceServiceService extends HttpService {
   getAllTickets(request:object) {
     // console.log(request);
       const reqParam: RequestParam = {
-        url: this.configService.urlConFig.URLS.GRIEVANCE_TICKETS.GET_ALL_TICKETS,
+        url: this.baseUrl + this.configService.urlConFig.URLS.GRIEVANCE_TICKETS.GET_ALL_TICKETS,
         data: {
           ...request
         }
@@ -55,7 +55,7 @@ export class GrievanceServiceService extends HttpService {
 
   getTicketsById(id: string): Observable<ServerResponse> {
     const reqParam: RequestParam = {
-      url: `${this.configService.urlConFig.URLS.GRIEVANCE_TICKETS.GET_TICKET_BY_ID}${id}`,
+      url: this.baseUrl + `${this.configService.urlConFig.URLS.GRIEVANCE_TICKETS.GET_TICKET_BY_ID}${id}`,
       data: {}
     }
     return this.get(reqParam);
@@ -64,7 +64,7 @@ export class GrievanceServiceService extends HttpService {
   updateTicket(request:object): Observable<ServerResponse> {
     console.log(request);
       const reqParam: RequestParam = {
-        url: this.configService.urlConFig.URLS.GRIEVANCE_TICKETS.UPDATE_TICKET,
+        url: this.baseUrl + this.configService.urlConFig.URLS.GRIEVANCE_TICKETS.UPDATE_TICKET,
         data: {
           ...request
         }
