@@ -23,12 +23,12 @@
                     <textarea formControlName="comment" matInput cdkTextareaAutosize
                       #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="4" cdkAutosizeMaxRows="4"></textarea>
                   </mat-form-field>
-                 
+                  <div class="w-100">
+                    <button type="submit" class="float-right" mat-raised-button color="primary" [disabled]="!feedbackForm.valid || isProcessing">Submit</button>
+                  </div>
             </form>
         </div>
-        <div class="w-100">
-            <button type="submit" class="float-right" mat-raised-button color="primary" [disabled]="!feedbackForm.valid || isProcessing">Submit</button>
-          </div>
+       
     </div>
    
 </div>

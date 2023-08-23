@@ -64,12 +64,14 @@ export class GrievanceManagementComponent  {
     this.userRole = this.authService.getUserRoles()[0];
     this.userId = this.authService.getUserData().userRepresentation.id;
     this.route.queryParams.subscribe((param) => {
-      console.log(param);
+      console.log("param ====>", param);
       if(!!param){
         this.selectedTabName = param['tabName'];
+        console.log("tabNameeeeee", this.selectedTabName);
         if(this.tabs.length) {
           if(!!this.selectedTabName) {
             this.selectedTab = this.tabs.find(tab => tab.name === this.selectedTabName);
+            console.log("inside onInit",this.selectedTab);
             this.activeTabIndex= this.tabs.findIndex(tab => tab.name === this.selectedTabName);
           }
         } 
@@ -93,6 +95,7 @@ export class GrievanceManagementComponent  {
     }
     if(!!this.selectedTabName) {
       this.selectedTab = this.tabs.find(tab => tab.name === this.selectedTabName);
+      console.log("inside initializeTabs", this.selectedTab);
       this.activeTabIndex= this.tabs.findIndex(tab => tab.name === this.selectedTabName);
     } else {
       this.selectedTab =this.tabs[0];
@@ -155,15 +158,16 @@ export class GrievanceManagementComponent  {
   }
 
   onTabChange(event: MatTabChangeEvent): void {
-    this.searchParams = "";
-    this.resetFields = true;
-    this.grievanceService.resetFilterValue.next(this.resetFields)
-    this.resetFilterValue('');
-    // Here  we  have userrole and tab index with these 2 we know we need to fetch data for which tab of which user role so we pass relevant payload in get grievance service
     const selectedIndex = event.index;
     this.selectedTab = this.tabs[selectedIndex];
-    this.searchParams = "";
     this.router.navigate(['/grievance/manage-tickets/'],{ queryParams: {tabName: this.selectedTab.name}});
+    this.searchParams = "";
+    this.resetFields = true;
+    // debugger;
+    this.grievanceService.resetFilterValue.next(this.resetFields);
+    this.resetFilterValueData('');
+    // Here  we  have userrole and tab index with these 2 we know we need to fetch data for which tab of which user role so we pass relevant payload in get grievance service
+
     // this.getgrievances();
   }
 
@@ -177,7 +181,7 @@ export class GrievanceManagementComponent  {
     ) 
   }
 
-  resetFilterValue(event:any){
+  resetFilterValueData(event:any){
     this.startDate = new Date("2020/03/03").getTime();
     this.endDate = new Date().getTime();
     this.grievanceType = null;
@@ -204,6 +208,7 @@ export class GrievanceManagementComponent  {
   }
 
   getTicketsRequestObject() {
+    console.log(this.selectedTab);
     this.getGrievancesRequest = {
       searchKeyword: this.searchParams,
        filter: {
