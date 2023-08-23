@@ -15,7 +15,10 @@ export class FeedbackComponent {
   ticketId: "";
   ticketTitle: "";
   resolutionComment: "";
+  emailId: "";
+  phone: "";
   isProcessing: boolean= false;
+  disableSubmitButton = false;
   constructor( 
     private formBuilder: FormBuilder,
     private feedbackService: FeedbackService,
@@ -31,6 +34,8 @@ export class FeedbackComponent {
       this.ticketId= params['ticketId'];
       this.ticketTitle=  params['ticketTitle'];
       this.resolutionComment=  params['resolutionComment'];
+      this.emailId = params['email'];
+      this.phone = params['phone'];
     })
     this.initForm();
   }
@@ -46,12 +51,17 @@ export class FeedbackComponent {
     console.log(this.feedbackForm.value);
     const { rating, comment } = this.feedbackForm.value;
     const feedbackDetails = {
+      firstName: this.guestName.split(" ")[0],
+      lastName: this.guestName.split(" ")[1] || 'lastName',
+      email: this.emailId,
+      phone: this.phone,
       rating,
       comment
     }
     this.isProcessing=true;
     this.feedbackService.saveFeedack(feedbackDetails).subscribe({
       next: (res) => {
+        this.disableSubmitButton = true;
         this.toastrService.showToastr("Your feedback is saved successfully!", 'Success', 'success', '');
         this.isProcessing= false;
       },
@@ -64,6 +74,6 @@ export class FeedbackComponent {
   }
 
   updateRating(event: any) {
-    this.feedbackForm.setValue({rating: event?.rating})
+    this.feedbackForm.patchValue({rating: event?.rating})
   }
 }
