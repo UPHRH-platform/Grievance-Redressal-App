@@ -38,14 +38,16 @@ export class FeedbackComponent {
   initForm(){
     this.feedbackForm = this.formBuilder.group({
       rating: new FormControl('', [Validators.required]),
+      comment: new FormControl(''),
     }); 
   }
 
   onSubmit() {
     console.log(this.feedbackForm.value);
-    const { rating } = this.feedbackForm.value;
+    const { rating, comment } = this.feedbackForm.value;
     const feedbackDetails = {
-      rating
+      rating,
+      comment
     }
     this.isProcessing=true;
     this.feedbackService.saveFeedack(feedbackDetails).subscribe({
