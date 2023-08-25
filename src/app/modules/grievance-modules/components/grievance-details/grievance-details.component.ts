@@ -7,9 +7,11 @@ import {
 } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from 'src/app/core';
-import { BreadcrumbItem, ConfigService } from 'src/app/shared';
+import { BreadcrumbItem, ConfigService, ServerResponse } from 'src/app/shared';
 import { GrievanceServiceService } from '../../services/grievance-service.service';
 import { ToastrServiceService } from 'src/app/shared/services/toastr/toastr.service';
+import { Observable, forkJoin, of, switchMap } from 'rxjs';
+import { UploadService } from 'src/app/core/services/upload-service/upload.service';
 
 @Component({
   selector: 'app-grievance-details',
@@ -49,7 +51,7 @@ export class GrievanceDetailsComponent {
 
   constructor(private router: Router, private formBuilder: FormBuilder, private authService: AuthService,
     private grievanceServiceService: GrievanceServiceService, private route: ActivatedRoute,
-    private toastrService: ToastrServiceService, private configService:ConfigService) {
+    private toastrService: ToastrServiceService, private configService:ConfigService, private uploadService: UploadService) {
     this.grievancesTypes = this.configService.dropDownConfig.GRIEVANCE_TYPES;
     this.route.params.subscribe((param) => {
       this.id = param['id'];
@@ -153,8 +155,43 @@ export class GrievanceDetailsComponent {
     }
   }
 
+  uploadFiles() {
+    if (this.files.length === 0) {
+      // Return an observable that emits an empty array
+      return of([]);
+    }
+    let uploadFileRequests :Observable<ServerResponse>[] =[];
+    this.files.forEach((file) => {
+      const formData: FormData = new FormData();
+      formData.append('file', file); 
+      uploadFileRequests.push(this.uploadService.uploadFile(formData));
+    });
+    return forkJoin(uploadFileRequests);
+  }
+
   submitResolution(value: any) {
-    console.log(value);
+    this.uploadFiles().pipe(
+      switchMap((uploadResponses) => {
+        // Extract attachmentUrls from uploadResponses
+        const attachmentUrls = uploadResponses.map((response: any) => response.responseData.fileUrl);
+        const request = {
+          ...this.ticketUpdateRequest,
+          assigneeTicketAttachment: attachmentUrls
+        }
+        console.log(request);
+        // Call the createTicket API with updated ticketDetails
+        return this.grievanceServiceService.updateTicket(request);
+      })
+    ).subscribe({
+      next: (res) => {
+        this.toastrService.showToastr("Ticket marked as resolved", 'Success', 'success', '');
+        this.getTicketById();
+      },
+      error: (err) => {
+        this.toastrService.showToastr(err, 'Error', 'error', '');
+        // Handle the error here in case of file upload or ticket creation failure
+      }
+    });
   }
 
   getTicketById() {
@@ -180,14 +217,12 @@ export class GrievanceDetailsComponent {
     console.log('data.value',data)
   // const {attachments, description} = value
     this.ticketUpdateRequest = {
-      // "priority":"p1",
-      // "assignedTo":2,
-      // "cc": [1],
-      "requestedBy": 1,
-      // "notes":"Priority is changed from P3 to P1",
-      // "description": "Holiday list is not displaying",
-      // "active":true,
-      "id":this.id
+      requestedBy: 1, // need to modify based on Shishir's inputs
+      cc: this.ticketDetails.assignedToId,
+      isJunk: this.ticketDetails.junk,
+      status: this.ticketDetails.status,
+      priority: this.ticketDetails.priority,
+      id:this.id
     }
     switch(params) {
       case 'markjunk': 
@@ -228,7 +263,6 @@ export class GrievanceDetailsComponent {
       case 'resolved': 
       this.ticketUpdateRequest = {
         ...this.ticketUpdateRequest,
-        assigneeTicketAttachment:[data.attachments],
         comment: data.description,
         status:"CLOSED"
       }
@@ -245,7 +279,12 @@ export class GrievanceDetailsComponent {
       }
       break;
     }
-    this.updateTicketDetails();
+    if(params === 'resolved') {
+      this.uploadFiles();
+    }
+    else {
+      this.updateTicketDetails();
+    }
   }
 
   updateTicketDetails() {
