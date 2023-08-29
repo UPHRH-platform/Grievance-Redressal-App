@@ -49,7 +49,6 @@ export class UserProfileComponent {
       next: (res) => {
         this.userDetails = res.responseData;
         if(this.userDetails) {
-          console.log(this.userDetails);
           this.setUserFormData();
         }
       },
@@ -106,19 +105,22 @@ export class UserProfileComponent {
    }
 
   onSubmit() {
-    console.log(this.userForm.value);
-    const updateUserRequest = {
-      userName: this.userDetails.id,
+    const {firstName, lastName, phoneNumber, username} = this.userForm.value;
+    const {id, attributes, enabled } = this.userDetails;
+    const requestObj = {
+      userName: id,
       request: {
-      firstName: this.userForm.value.firstName,
-      lastName: this.userForm.value.lastName,
-      email: this.userForm.value.emailId,
-      attributes: {
-        phoneNumber: this.userForm.value.phoneNumber
-      }
+        firstName,
+        lastName,
+        enabled: enabled,
+        attributes: {
+          departmentName: attributes.departmentNAme[0],
+          phoneNumber: phoneNumber,
+          Role: attributes.Role[0]
+      },
       }
     }
-    this.userService.updateUser(updateUserRequest).subscribe({
+    this.userService.updateUser(requestObj).subscribe({
       next:(res) => {
         console.log(res);
         this.toastrService.showToastr('User details updated successfully', 'Success', 'success', '');
