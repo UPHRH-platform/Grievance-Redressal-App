@@ -142,13 +142,16 @@ export class UserFormComponent implements OnInit {
       request: {
         firstName,
         lastName,
+        enabled: status === 'Active'? true: false,
         attributes: {
           departmentName: 'grievances',
           phoneNumber: phone,
-          Role: role // not sure if this can be updated
+          Role: role
       },
       }
     }
+    console.log(requestObj)
+    console.log(this.userDetails);
     this.isProcessing = true;
     this.userService.updateUser(requestObj).subscribe({
       next: (res) => {

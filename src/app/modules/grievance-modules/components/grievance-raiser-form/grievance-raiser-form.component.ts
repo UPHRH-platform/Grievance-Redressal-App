@@ -56,7 +56,7 @@ export class GrievanceRaiserFormComponent {
         Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")]),
       phone: new FormControl('', [
         Validators.required,
-        Validators.pattern("^(0|91)?[6-9][0-9]{9}$")]),
+        Validators.pattern("^(0|91)?[6-9][0-9]{9}$"), Validators.max(99999999999)]),
       grievanceType: new FormControl('', [
         Validators.required]),
       userType: new FormControl('', [
@@ -73,10 +73,16 @@ export class GrievanceRaiserFormComponent {
         if (this.grievanceRaiserformGroup.get('name')?.hasError('required')) {
           return 'Name is required !!';
         }
+        if(this.grievanceRaiserformGroup.get('name')?.hasError('pattern')) {
+          return 'Name should contain string characters only';
+        }
         break;
       case 'email':
         if (this.grievanceRaiserformGroup.get('email')?.hasError('required')) {
           return 'Email is required !!';
+        }
+        if(this.grievanceRaiserformGroup.get('email')?.hasError('pattern')) {
+          return 'Enter a valid Email ID';
         }
         break;
       case 'phone':
@@ -165,7 +171,7 @@ export class GrievanceRaiserFormComponent {
       data: dialogData,
       maxWidth: '400vw',
       maxHeight: '100vh',
-      height: '55%',
+      height: 'auto',
       width: '40%',
       disableClose: true
     });

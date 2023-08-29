@@ -42,11 +42,12 @@
   
   .first-container {
   width: 31%;
+  margin-right: 40px;
   position: relative;
   }
   
   .text-class {
-  width: 84%;
+  width: 100%;
   }
   
   .radio-btn {
@@ -131,5 +132,17 @@
 
   .file-list-container {
     overflow-y: auto;
+  }
+
+  h4 {
+    opacity: 1;
+    color: rgba(0,0,0,0.87);
+    font-family:'Lato', sans-serif;;
+    font-size: 14px;
+    font-weight: 700;
+    font-style: normal;
+    letter-spacing: 0.25px;
+    text-align: left;
+    line-height: 20px;
   }
   
