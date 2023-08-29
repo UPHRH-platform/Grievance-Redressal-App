@@ -8,9 +8,22 @@ import { AuthService } from 'src/app/core';
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent {
+  private readonly TOKEN_KEY = 'access_token';
+  showProfileNavBar = false;
  constructor(private router: Router, private authService: AuthService){
 
  }
+
+ ngOnInit() {
+  const token = this.getToken();
+  if(token) {
+    this.showProfileNavBar = true;
+  }
+ }
+
+ getToken(): string | null {
+  return localStorage.getItem(this.TOKEN_KEY);
+}
 
  navigateToProfilePage(){
   this.router.navigate(['/user-profile']);

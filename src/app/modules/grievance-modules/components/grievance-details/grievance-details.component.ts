@@ -217,7 +217,7 @@ export class GrievanceDetailsComponent {
     console.log('data.value',data)
   // const {attachments, description} = value
     this.ticketUpdateRequest = {
-      requestedBy: 1, // need to modify based on Shishir's inputs
+      requestedBy: this.userId,
       cc: this.ticketDetails.assignedToId,
       isJunk: this.ticketDetails.junk,
       status: this.ticketDetails.status,
