@@ -172,12 +172,14 @@ export class UserFormComponent implements OnInit {
 
   addUser() {
     const {firstName, lastName, phone, role, status, username, department} = this.userForm.value;
-    const userDetails = {
+    console.log(this.userForm.value);
+    const enabled = status === 'Active'? true : false;
+    const requestObj = {
       firstName,
       lastName,
       email: username,
       username: username,
-      enabled: status === 'Active'? true: false,
+      enabled: enabled,
       emailVerified: true,
       credentials: [
         {
@@ -188,14 +190,13 @@ export class UserFormComponent implements OnInit {
     ],
     attributes: {
       module: 'grievance',
-      departmentName: role === 'NODALOFFICER' ? department: role === 'GRIEVANCEADMIN' || role === 'ADMIN' ? -1 : null,
+      departmentName: role === 'NODALOFFICER' ? department: role === 'GRIEVANCEADMIN' || role === 'ADMIN' ? -1 : [],
       phoneNumber: phone,
-      role: role
+      Role: role
   },
     }
     this.isProcessing= true;
-    console.log(userDetails);
-    this.userService.createUser(userDetails).subscribe({
+    this.userService.createUser(requestObj).subscribe({
       next: (res) => {
         this.userDetails = res.responseData;
         this.toastrService.showToastr("User created successfully!", 'Success', 'success', '');
