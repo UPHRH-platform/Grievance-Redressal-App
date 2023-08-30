@@ -17,9 +17,6 @@
     /* box-shadow: 0px 0px 3px 0px gray */
 }
 
-.form-internal-wrapper {
-    padding: 3%;
-}
 .wrapper-form {
     display: flex;
     flex-direction: column;

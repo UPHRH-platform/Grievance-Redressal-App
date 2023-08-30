@@ -4,7 +4,8 @@
 
 export const environment = {
   production: false,
-  apiUrl: 'https://grievances.uphrh.in',
+  apiUrl: 'https://grievances.uphrh.in/api',
+  usermanagementApiURL: 'https://uphrh.in/api',
 };
 
 /*

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { BreadcrumbItem } from 'src/app/shared';
+import { BreadcrumbItem, ConfigService } from 'src/app/shared';
 import { getRole, getAllRoles, getRoleObject } from 'src/app/shared';
 import { AuthService } from 'src/app/core';
 import { UserService } from '../../services/user.service';
@@ -22,50 +22,83 @@ export class UserFormComponent implements OnInit {
   isEditUser:boolean = false;
   loggedInUserData: any;
   isProcessing: boolean = false;
+  grievanceTypes: any = [];
   breadcrumbItems: BreadcrumbItem[] = [
     { label: 'Grievance Management', url: '/home' },
     { label: 'User List', url: '/user-manage' },
     { label: 'User Details', url: '/user-manage/userform' },
   ];
+  userId: string;
 
 
   constructor(private router: Router,
     private route: ActivatedRoute,
     private authService: AuthService,
     private userService: UserService,
-    private toastrService: ToastrServiceService 
+    private toastrService: ToastrServiceService,
+    private configService: ConfigService, 
     ){
+    this.grievanceTypes = this.configService.dropDownConfig.GRIEVANCE_TYPES;
     this.userForm = new FormGroup({
-      firstName: new FormControl('', Validators.required),
-      lastName: new FormControl('', Validators.required),
+      firstName: new FormControl('', [Validators.required, Validators.pattern("^[a-zA-Z]+$")]),
+      lastName: new FormControl('', [Validators.required, Validators.pattern("^[a-zA-Z]+$")]),
       username: new FormControl('',[Validators.required, Validators.email]),
-      phone:  new FormControl('', Validators.required),
+      phone:  new FormControl('', [Validators.required, Validators.pattern("^(0|91)?[6-9][0-9]{9}$")]),
       role: new FormControl('', Validators.required),
-      status: new FormControl('', Validators.required)
+      status: new FormControl('', Validators.required),
+      department: new FormControl(''),
     });
   }
 
   ngOnInit(): void {
     this.loggedInUserData = this.authService.getUserData();
-    this.route.queryParams.subscribe((data)=>{
-      this.userDetails = data;
-      if(Object.keys(this.userDetails).length){
+    this.userForm.patchValue({
+      departmentName: null
+    })
+    console.log(this.route);
+    this.route.queryParams.subscribe((param)=>{
+      console.log(param['id']);
+      this.userId = param['id'];
+      console.log(this.userId);
+      if(this.userId !== undefined) {
         this.isEditUser = true;
-        this.setUserFormData();
+        this.getUserDetails();
       }
+      // this.userDetails = data;
+      // if(Object.keys(this.userDetails).length){
+      //   this.isEditUser = true;
+      //   this.setUserFormData();
+      // }
     })
 
   }
 
-  setUserFormData(){
-    this.userForm.setValue({
-      firstName:this.userDetails?.name.split(" ")[0],
-      lastName:this.userDetails?.name.split(" ")[1],
-      username: this.userDetails?.username,
-      phone:this.userDetails?.phone,
-      role: this.userDetails?.role,
-      status:this.userDetails?.isActive ? 'Active' : 'Inactive'
+  getUserDetails() {
+    this.userService.getUserDetails(this.userId).subscribe({
+      next: (res) => {
+        this.userDetails = res.responseData;
+        this.setUserFormData();
+      }
     })
+  }
+
+  setUserFormData(){
+    let firstName = '', lastName = '';
+    console.log(this.userDetails);
+    if((this.userDetails.firstName && this.userDetails.firstName !== "") && (this.userDetails.lastName && this.userDetails.lastName !== "")) {
+      firstName = this.userDetails.firstName,
+      lastName = this.userDetails.lastName
+    };
+    this.userForm.setValue({
+      firstName: firstName,
+      lastName: lastName,
+      username: this.userDetails?.username,
+      phone:this.userDetails?.attributes.phoneNumber,
+      role:this.userDetails?.attributes.Role[0],
+      status: this.userDetails?.enabled === true? 'Active' : 'Inactive',
+      department: this.userDetails?.attributes?.departmentName[0] ? this.userDetails?.attributes.departmentName[0] : null
+    })
+    console.log(this.userForm.value);
   }
 
   get firstName(){
@@ -102,27 +135,72 @@ export class UserFormComponent implements OnInit {
     } else {
       this.addUser();
     }
-    console.log(this.userForm.value)
   }
   
   updateUser() {
     const {firstName, lastName, phone, role, status, username} = this.userForm.value;
     const {id } = this.userDetails;
-    const userDetails = {
-      name: `${firstName} ${lastName}`,
-      username,
-      phone,
-      isActive: status == 'Active' ? true : false,
-      roles: [getRoleObject(role)],
-      id,
-      updatedBy: this.loggedInUserData.userId,
+    const requestObj = {
+      userName: id,
+      request: {
+        firstName,
+        lastName,
+        enabled: status === 'Active'? true: false,
+        
+        attributes: {
+          departmentName: 'grievances',
+          phoneNumber: phone,
+          Role: role
+      },
+      }
     }
     this.isProcessing = true;
-    this.userService.createOrUpdateUser(userDetails).subscribe({
+    this.userService.updateUser(requestObj).subscribe({
       next: (res) => {
         this.userDetails = res.responseData;
         this.toastrService.showToastr("User updated successfully!", 'Success', 'success', '');
         this.isProcessing= false;
+        this.navigateToHome();
+     },
+     error: (err) => {
+      // this.toastrService.showToastr(err, 'Error', 'error', '');
+      this.isProcessing= false;
+       // Handle the error here in case of login failure
+     }}
+    );
+  }
+
+  addUser() {
+    const {firstName, lastName, phone, role, status, username, department} = this.userForm.value;
+    const userDetails = {
+      firstName,
+      lastName,
+      email: username,
+      username: username,
+      enabled: status === 'Active'? true: false,
+      emailVerified: true,
+      credentials: [
+        {
+            type: "password",
+            value: "ka09eF$299",
+            temporary: "false"
+        }
+    ],
+    attributes: {
+      module: 'grievance',
+      departmentName: role === 'NODALOFFICER' ? department: role === 'GRIEVANCEADMIN' || role === 'ADMIN' ? -1 : null,
+      phoneNumber: phone,
+      role: role
+  },
+    }
+    this.isProcessing= true;
+    console.log(userDetails);
+    this.userService.createUser(userDetails).subscribe({
+      next: (res) => {
+        this.userDetails = res.responseData;
+        this.toastrService.showToastr("User created successfully!", 'Success', 'success', '');
+        this.isProcessing= false;
+        this.navigateToHome();
      },
      error: (err) => {
       this.toastrService.showToastr(err, 'Error', 'error', '');
@@ -132,29 +210,11 @@ export class UserFormComponent implements OnInit {
     );
   }
 
-  addUser() {
-    const {firstName, lastName, phone, role, status, username} = this.userForm.value;
-    const userDetails = {
-      name: `${firstName} ${lastName}`,
-      username,
-      phone,
-      isActive: status == 'Active' ? true : false,
-      roles: [getRoleObject(role)],
-      orgId: 1
+  getRoleChange(event: any) {
+    console.log(event.value);
+    if(event.value === 'NODALOFFICER') {
+      this.userForm.get('department')?.addValidators(Validators.required);
     }
-    this.isProcessing= true;
-    this.userService.createOrUpdateUser(userDetails).subscribe({
-      next: (res) => {
-        this.userDetails = res.responseData;
-        this.toastrService.showToastr("User add successfully!", 'Success', 'success', '');
-        this.isProcessing= false;
-     },
-     error: (err) => {
-      this.toastrService.showToastr(err, 'Error', 'error', '');
-      this.isProcessing= false;
-       // Handle the error here in case of login failure
-     }}
-    );
   }
 
 }

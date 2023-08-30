@@ -5,7 +5,7 @@
             <form [formGroup]="grievanceRaiserformGroup"
                 (ngSubmit)="onSubmit(grievanceRaiserformGroup.value)">
                 <div class="user-container">
-                    <h2 class="user-text-heading">{{'Grievance Raiser'}}</h2>
+                    <h2 class="user-text-heading">{{'Grievance Registration Page'}}</h2>
                     <div class="action-btns">
                         <button mat-stroked-button style="margin-right: 15px;"
                             (click)="onReset()">Reset</button>
@@ -14,14 +14,14 @@
                 </div>
                 <div class="form-container">
                     <div class="form-internal-wrapper">
-                        <h1>{{'Raiser Details'}}</h1>
+                        <!-- <h1>{{'Raiser Details'}}</h1> -->
                         <div class="wrapper-form">
                             <div class="first-row-container" style="margin-top: 1%;">
                                 <div class="first-container">
                                     <h4>Name</h4>
                                     <mat-form-field appearance="outline" class="text-class">
                                         <mat-label>Name</mat-label>
-                                        <input matInput placeholder="Enter name" formControlName="name" required>
+                                        <input matInput placeholder="Type here" formControlName="name" required>
                                         <mat-error *ngIf="grievanceRaiserformGroup.controls['name'].invalid">
                                             {{getError('name')}}
                                         </mat-error>
@@ -31,7 +31,7 @@
                                     <h4>Email Id</h4>
                                     <mat-form-field appearance="outline" class="text-class">
                                         <mat-label>Email id</mat-label>
-                                        <input matInput placeholder="pat@example.com" required formControlName="email"
+                                        <input matInput placeholder="Type here" required formControlName="email"
                                             required>
                                         <mat-error *ngIf="grievanceRaiserformGroup.controls['email'].invalid">
                                             {{getError('email')}}
@@ -45,7 +45,7 @@
                                     <h4>Phone Number</h4>
                                     <mat-form-field appearance="outline" class="text-class">
                                         <mat-label>Phone number</mat-label>
-                                        <input type="number" matInput placeholder="Enter Phone number"
+                                        <input type="number" matInput placeholder="Type here"
                                             formControlName="phone" required>
                                         <mat-error *ngIf="grievanceRaiserformGroup.controls['phone'].invalid">
                                             {{getError('phone')}}
@@ -54,7 +54,7 @@
                                 </div>
                                 <div class="first-container">
                                     <h4>Type of grievance</h4>
-                                    <mat-form-field appearance="outline">
+                                    <mat-form-field appearance="outline" style="width: 100%;">
                                         <mat-label>Type of Grievance</mat-label>
                                         <mat-select
                                             formControlName="grievanceType">
@@ -71,12 +71,12 @@
                             </div>
 
                             <div class="first-row-container" style="margin-top: 1%;">
-                                <div class="first-container" style="width: 37%;">
+                                <div class="">
                                     <h4>User Type</h4>
                                     <mat-radio-group color="primary" name="answer" aria-label="User Type"
                                         formControlName="userType" class="form-control">
-                                        <span *ngFor='let userType of userTypesArray;let i = index'>
-                                            <mat-radio-button [value]="userType" class="ml3"
+                                        <span *ngFor='let userType of userTypesArray;let i = index' class="raiser-radio-btn">
+                                            <mat-radio-button [value]="userType" class="mr2"
                                                 >{{userType}}</mat-radio-button>
                                         </span>
 
@@ -89,18 +89,23 @@
 
                             </div>
 
-                            <div class="first-row-container" style="margin-top: 1%;">
-                                <div class="first-container" style="width: 40%;">
+                            <div class="first-row-container mt3">
+                                <div class="first-container resolution-class" style="width: 67%;">
                                     <h4>Description</h4>
-                                    <mat-form-field style="width: 100%;">
+                                    <!-- <mat-form-field style="width: 100%;">
                                         <textarea matInput placeholder="Leave a comment" formControlName="description"></textarea>
-                                    </mat-form-field>
+                                    </mat-form-field> -->
+                                    <mat-form-field class="resolution-form" style="width:100%">
+                                        <mat-label>Type here</mat-label>
+                                        <textarea formControlName="description" matInput cdkTextareaAutosize
+                                          #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="4" cdkAutosizeMaxRows="4"></textarea>
+                                      </mat-form-field>
                                 </div>
 
                             </div>
-                            <div class="resolution-class">
+                            <div class="resolution-class mt2" style="width: 67%;">
                                 <mat-grid-list cols="6" rowHeight="26px" [gutterSize]="'100px'">
-                                    <mat-grid-tile colspan="3" rowspan="1">
+                                    <mat-grid-tile colspan="6" rowspan="1" style="width: 100% !important">
                                         <mat-label class="attachment-label left" (click)="fileupload.click()">Attach
                                             file (s)</mat-label>
                                         <mat-label class="attachment-label right" (click)="fileupload.click()">+ Add
@@ -112,7 +117,7 @@
                                     </mat-grid-tile>
                                 </mat-grid-list>
                                 <mat-grid-list cols="6" rowHeight="8rem" [gutterSize]="'100px'">
-                                    <mat-grid-tile colspan="3" rowspan="1">
+                                    <mat-grid-tile colspan="6" rowspan="1">
                                         <mat-card class="attachment-view">
                                             <!-- if no files are available -->
                                             <mat-card-content class="empty-content-class"

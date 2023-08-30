@@ -17,7 +17,7 @@ export class OtpService extends HttpService {
 
   generateOtp(otpReqData: any): Observable<ServerResponse>  {
     const reqParam: RequestParam = {
-      url: this.configService.urlConFig.URLS.OTP.GENERATE_OTP,
+      url: this.baseUrl + this.configService.urlConFig.URLS.OTP.GENERATE_OTP,
       data: otpReqData,
     }
    return this.post(reqParam);
