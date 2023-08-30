@@ -52,9 +52,9 @@ export class SharedDialogOverlayComponent {
       next: (res) => {
         console.log(res);
       },
-      error: (error) => {
-        this.toastrService.showToastr(error, 'Error', 'error', '');
-      }
+      // error: (error) => {
+      //   this.toastrService.showToastr(error, 'Error', 'error', '');
+      // }
     })
   }
 
