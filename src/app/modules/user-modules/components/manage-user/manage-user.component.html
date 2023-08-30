@@ -10,14 +10,10 @@
      <div class="user-table-wrapper">
         <app-shared-skeleton-loading [isLoading]="isDataLoading">
         </app-shared-skeleton-loading>
-        <!-- <app-shared-table *ngIf="!isDataLoading" [tableColumns]="usersTableColumns" [tableData]="users" [isPageable]="true"
-          [length]="length" [pageSize]="pageSize" [isServerSidePagination]="true" > -->
-         <app-shared-table *ngIf="!isDataLoading" [tableColumns]="usersTableColumns" [tableData]="users" [isPageable]="true"
-         [length]="length" [pageSize]="pageSize" [hidePageSize]="false" [showPageSizeOptions]="true" [showFirstLastButtons]="true" [pageIndex]="pageIndex" 
-         (editData)="goToUserDetail($event)" [isServerSideSorting]="true" (toggleData)="toggleUserStatus($event)" [isServerSidePagination]="true" (pageChange)="handlePageChange($event)">
-         </app-shared-table>
+        <app-shared-table *ngIf="!isDataLoading" [tableColumns]="usersTableColumns" [tableData]="users" [isPageable]="true"
+         (editData)="goToUserDetail($event)" (toggleData)="toggleUserStatus($event)">
 
-    <!-- </app-shared-table> -->
+    </app-shared-table>
      </div>
 </div>
 </div>

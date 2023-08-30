@@ -9,68 +9,20 @@ import { environment } from "src/environments/environment";
 @Injectable({ providedIn: 'root' })
 export class UserService extends HttpService{
   override baseUrl: string;
-  private userManagementbaseURL: string;
   constructor(private configService: ConfigService, http: HttpClient) {
     super(http);
-    this.userManagementbaseURL = environment.usermanagementApiURL;
     this.baseUrl = environment.apiUrl;
   }
 
-  getAllUsers(request: object): Observable<ServerResponse>  {
-    // const  reqParam: RequestParam = { url: this.configService.urlConFig.URLS.USER.GET_ALL_USERS}
-    const reqParam: RequestParam = {
-      url: this.baseUrl + this.configService.urlConFig.URLS.USER.GET_ALL_USERS,
-      // header: {
-      //   'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJSR3RkMkZzeG1EMnJER3I4dkJHZ0N6MVhyalhZUzBSSyJ9.kMLn6177rvY53i0RAN3SPD5m3ctwaLb32pMYQ65nBdA',
-      // },
-      data: request
-    }
-    return this.post(reqParam);
+  getAllUsers(): Observable<ServerResponse>  {
+    const  reqParam: RequestParam = { url: this.configService.urlConFig.URLS.USER.GET_ALL_USERS}
+    return this.get(reqParam);
   } 
 
-  updateUser(userDetails: any): Observable<ServerResponse>  {
+  createOrUpdateUser(userDetails: any): Observable<ServerResponse>  {
     const  reqParam: RequestParam = { 
-      url: this.userManagementbaseURL + this.configService.urlConFig.URLS.USER.UPDATE_USER,
-      header: {
-        'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJSR3RkMkZzeG1EMnJER3I4dkJHZ0N6MVhyalhZUzBSSyJ9.kMLn6177rvY53i0RAN3SPD5m3ctwaLb32pMYQ65nBdA',
-      },
+      url: this.configService.urlConFig.URLS.USER.CREATE_UPDATE_USER,
       data: userDetails
-    }
-    return this.put(reqParam);
-  }
-
-  getUserDetails(id: string): Observable<ServerResponse> {
-    // const request = {
-    //   userName: id
-    // }
-    const reqParam: RequestParam = {
-      url: `${this.baseUrl + this.configService.urlConFig.URLS.USER.GET_USERDETAILS_BY_ID}?id=${id}`,
-      // header: {
-      //   'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJSR3RkMkZzeG1EMnJER3I4dkJHZ0N6MVhyalhZUzBSSyJ9.kMLn6177rvY53i0RAN3SPD5m3ctwaLb32pMYQ65nBdA',
-      // },
-      // data: {request}
-    }
-    return this.get(reqParam);
-  }
-
-  createUser(userDetails: any): Observable<ServerResponse> {
-    const reqParam: RequestParam = {
-      url: this.baseUrl + this.configService.urlConFig.URLS.USER.CREATE_USER,
-      // header: {
-      //   'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJSR3RkMkZzeG1EMnJER3I4dkJHZ0N6MVhyalhZUzBSSyJ9.kMLn6177rvY53i0RAN3SPD5m3ctwaLb32pMYQ65nBdA',
-      // },
-      data: userDetails
-    }
-    return this.post(reqParam);
-  }
-
-  deactivateUser(request: any): Observable<ServerResponse>  {
-    const  reqParam: RequestParam = { 
-      url: this.userManagementbaseURL + this.configService.urlConFig.URLS.USER.DELETE_USER,
-      header: {
-        'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJSR3RkMkZzeG1EMnJER3I4dkJHZ0N6MVhyalhZUzBSSyJ9.kMLn6177rvY53i0RAN3SPD5m3ctwaLb32pMYQ65nBdA',
-      },
-      data: request
     }
     return this.post(reqParam);
   }

@@ -27,14 +27,14 @@ export class HttpService {
     headers: requestParam.header ? requestParam.header : this.getHeader(),
     params: requestParam.param
   };
-  return this.http.get<Response>(requestParam.url, httpOptions).pipe(
+  return this.http.get<Response>(this.baseUrl + requestParam.url, httpOptions).pipe(
     mergeMap((data: Response) => {
-      if (data.status && data.status !== 200) {
+      if (data.status !== 200) {
         return throwError(() => new Error(data.error));
       }
       const serverRes: ServerResponse ={
         statusInfo: {statusCode: 200, statusMessage: "success"},
-        responseData: data.body? data.body : data
+        responseData: data.body
       }
       return observableOf(serverRes);
     }));
@@ -49,14 +49,14 @@ export class HttpService {
       headers: requestParam.header ? this.getHeader(requestParam.header) : this.getHeader(),
       params: requestParam.param
     };
-    return this.http.post<Response>(requestParam.url, requestParam.data, httpOptions).pipe(
+    return this.http.post<Response>(this.baseUrl + requestParam.url, requestParam.data, httpOptions).pipe(
       mergeMap((data: Response) => {
-        if (data.status && data.status !== 200) {
+        if (data.status !== 200) {
           return throwError(() => new Error(data.error));
         }
         const serverRes: ServerResponse ={
           statusInfo: {statusCode: 200, statusMessage: "success"},
-          responseData: data.body? data.body : data
+          responseData: data.body
         }
         return observableOf(serverRes);
       }));
@@ -73,7 +73,7 @@ export class HttpService {
       headers: requestParam.header ? requestParam.header : this.getHeader(),
       params: requestParam.param
     };
-    return this.http.patch<Response>(requestParam.url, requestParam.data, httpOptions).pipe(
+    return this.http.patch<Response>(this.baseUrl + requestParam.url, requestParam.data, httpOptions).pipe(
       mergeMap((data: Response) => {
         if (data.status !== 200) {
           return throwError(() => new Error(data.error));
@@ -96,7 +96,7 @@ export class HttpService {
       params: requestParam.param,
       body: requestParam.data
     };
-    return this.http.delete<Response> (requestParam.url, httpOptions).pipe(
+    return this.http.delete<Response> (this.baseUrl + requestParam.url, httpOptions).pipe(
       mergeMap((data: Response) => {
         if (data.status !== 200) {
           return throwError(() => new Error(data.error));
@@ -118,14 +118,14 @@ export class HttpService {
       headers: requestParam.header,
       params: requestParam.param,
     };
-    return this.http.put<Response>(requestParam.url, requestParam.data, httpOptions).pipe(
+    return this.http.put<Response>(this.baseUrl + requestParam.url, requestParam.data, httpOptions).pipe(
       mergeMap((data: Response) => {
-        if (data.status && data.status !== 200) {
+        if (data.status !== 200) {
           return throwError(() => new Error(data.error));
         }
         const serverRes: ServerResponse ={
           statusInfo: {statusCode: 200, statusMessage: "success"},
-          responseData: data.body? data.body : data
+          responseData: data.body
         }
         return observableOf(serverRes);
       }));
@@ -135,7 +135,7 @@ export class HttpService {
    * for preparing headers
    */
     private getHeader(headers?: HttpOptions['headers']): HttpOptions['headers'] {
-      const access_token = localStorage.getItem('access_token');
+      const access_token = sessionStorage.getItem('access_token');
       const default_headers = {
         'Accept': 'application/json',
         'Content-Type': 'application/json',

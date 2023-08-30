@@ -3,7 +3,6 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/core';
 import { ToastrServiceService } from 'src/app/shared/services/toastr/toastr.service';
-import { UserService } from '../../user-modules/services/user.service';
 
 
 @Component({
@@ -16,7 +15,7 @@ loginForm: FormGroup;
 otpForm:FormGroup;
 isEnableOtpLogin:boolean = false;
 isOtpForm:boolean = false;
-  constructor(private router:Router, private authService: AuthService, private toastrService: ToastrServiceService, private userService: UserService){
+  constructor(private router:Router, private authService: AuthService, private toastrService: ToastrServiceService){
     this.loginForm = new FormGroup({
       emailId: new FormControl('', [Validators.email, Validators.required]),
       password: new FormControl('',Validators.required)
@@ -24,7 +23,7 @@ isOtpForm:boolean = false;
     })
 
     this.otpForm = new FormGroup({
-      otp:new FormControl('', [Validators.required, Validators.minLength(6), Validators.maxLength(6)])
+      otp:new FormControl('', Validators.required)
     })
   }
 
@@ -65,11 +64,6 @@ isOtpForm:boolean = false;
   getOTP(){
     if(this.loginForm.value.emailId){
      this.isOtpForm = true
-     this.authService.generateOTP(this.loginForm.value.emailId).subscribe({
-      next: (res) => {
-        console.log(res);
-      }
-     })
     }
     else{
       alert('please enter emailId')
@@ -90,28 +84,7 @@ isOtpForm:boolean = false;
   }
 
   SubmitOTP(){
-   this.authService.loginWithOTP(this.loginForm.value.emailId, this.otpForm.value.otp).subscribe({
-    next: (res) => {
-      this.authService.saveUserData(res.responseData);
-      this.getAllRoles();
-      this.getUserDetails();
-       this.router.navigate(['home']);
-    }
-   })
-  }
-
-  getUserDetails() {
-    // keyclock ID
-    const userId = this.authService.getUserData().userRepresentation.id;
-    this.userService.getUserDetails(userId).subscribe({
-      next: (res) => {
-        localStorage.setItem('userId', JSON.stringify(res.responseData.id));
-      }
-    });
-  }
-
-  navigateToGrievanceRaiserPage() {
-    this.router.navigate(['/new-ticket']);
+    console.log(this.otpForm)
   }
 
 }

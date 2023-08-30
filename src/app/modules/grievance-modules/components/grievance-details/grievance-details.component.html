@@ -151,7 +151,7 @@
   <div class="second-main-wrapper">
     <div class="user-form-container">
       <div class="user-container">
-        <h2 class="user-text-heading">{{currentTabName}}</h2>
+        <h2 class="user-text-heading">{{ "Profile" }}</h2>
         <div class="action-btns">
           <button mat-raised-button class="MR15" *ngIf="userRole === 'Nodal Officer' && currentTabName !== 'Resolved'"
             (click)="handleClick('markothers')">Mark As Others</button>
@@ -170,6 +170,7 @@
             <button type="submit" mat-raised-button color="primary"
               *ngIf="(currentTabName == 'Escalated to me' || currentTabName == 'Not Assigned' || currentTabName == 'Pending')"
               (click)="handleClick('nudge')">Send Reminder</button>
+
           </span>
           <button type="submit" *ngIf="userRole === 'Nodal Officer' && currentTabName !== 'Resolved'"
             [disabled]="!grievanceResolutionForm.valid" (click)="handleClick('resolved',grievanceResolutionForm.value)"
@@ -281,7 +282,7 @@
                 <span class="error">{{ fileUploadError }}</span>
               </div>
             </form>
-            <div *ngIf="((userRole === 'Grievance Nodal' || userRole == 'Nodal Officer') && currentTabName === 'Resolved')" class="resolution-class">
+            <div *ngIf="userRole === 'Nodal Officer' && currentTabName === 'Resolved'" class="resolution-class">
               <mat-label class="label-text">Resolution Comment (s)</mat-label>
               <div class="mt1 mb1" *ngFor="let comment of ticketDetails?.comments; let i = index"> 
                 <span class="textData">{{comment.comment}}</span>

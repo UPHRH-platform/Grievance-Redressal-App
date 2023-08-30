@@ -17,7 +17,7 @@ export class UploadService extends HttpService {
 
   uploadFile(fileData: any):  Observable<ServerResponse> {
     const reqParam: RequestParam = {
-      url: this.baseUrl + this.configService.urlConFig.URLS.FILE.UPLOAD,
+      url: this.configService.urlConFig.URLS.FILE.UPLOAD,
       data: fileData,
       header: {
         Accept: "*/*",

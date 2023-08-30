@@ -21,7 +21,7 @@ const routes: Routes = [
         component: HomePageComponent, 
         canActivate: [AuthGuard, RoleContentGuard],
         data: {
-          allowedRoles: [Roles.GRIEVANCEADMIN, Roles.NODALOFFICER, Roles.SUPERADMIN, Roles.ADMIN],
+          allowedRoles: [Roles.GRIEVANCE_NODAL, Roles.NODAL_OFFICER, Roles.SECRETARY, Roles.ADMIN],
         },
         pathMatch: 'full',
       },
@@ -39,7 +39,7 @@ const routes: Routes = [
         loadChildren :()=> import('./modules/grievance-modules/grievance-modules.module').then(m=>m.GrievanceModulesModule),
         canActivate: [AuthGuard, RoleContentGuard],
         data: {
-          allowedRoles: [Roles.GRIEVANCEADMIN, Roles.NODALOFFICER, Roles.SUPERADMIN, Roles.ADMIN],
+          allowedRoles: [Roles.GRIEVANCE_NODAL, Roles.NODAL_OFFICER, Roles.SECRETARY, Roles.ADMIN],
         },
       },
       {
@@ -55,7 +55,7 @@ const routes: Routes = [
         component: UserProfileComponent, 
         canActivate: [AuthGuard],
         // data: {
-        //   allowedRoles: [Roles.ADMIN, Roles.GRIEVANCEADMIN, Roles.NODALOFFICER, Roles.SUPERADMIN],
+        //   allowedRoles: [Roles.ADMIN, Roles.GRIEVANCE_NODAL, Roles.NODAL_OFFICER, Roles.SECRETARY],
         // },
         pathMatch: 'full',
       },
@@ -63,16 +63,7 @@ const routes: Routes = [
         path: 'new-ticket',
         component: GrievanceRaiserFormComponent,
         pathMatch: 'full',
-      },
-      {
-        path: 'feedback', loadChildren :()=> import('../app/modules/feedback/feedback.module').then(m=>m.FeedbackModule)
-      },
-      {
-        path: "**",
-        redirectTo:"/"
-
       }
-
     ]
   }
   

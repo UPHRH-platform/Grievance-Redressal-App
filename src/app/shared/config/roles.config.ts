@@ -1,6 +1,6 @@
 export const Roles = {
     "ADMIN": "Admin",
-    "GRIEVANCEADMIN": "Grievance Nodal",
-    "NODALOFFICER": "Nodal Officer",
-    "SUPERADMIN": "Secretary"
+    "GRIEVANCE_NODAL": "Grievance Nodal",
+    "NODAL_OFFICER": "Nodal Officer",
+    "SECRETARY": "Secretary"
 }
