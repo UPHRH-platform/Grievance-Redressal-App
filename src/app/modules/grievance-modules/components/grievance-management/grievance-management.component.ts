@@ -60,6 +60,11 @@ export class GrievanceManagementComponent  {
   activeTabIndex: number;
 
   ngOnInit(): void {
+    let userData: any;
+    userData = localStorage.getItem('userDetails');
+    if(userData !== undefined) {
+      this.grievanceType = JSON.parse(userData).attributes?.departmentName[0];
+    }
     this.grievancesTypes = this.configService.dropDownConfig.GRIEVANCE_TYPES;
     this.userRole = this.authService.getUserRoles()[0];
     this.userId = this.authService.getUserData().userRepresentation.id;

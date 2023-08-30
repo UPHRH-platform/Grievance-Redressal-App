@@ -105,7 +105,7 @@ isOtpForm:boolean = false;
     const userId = this.authService.getUserData().userRepresentation.id;
     this.userService.getUserDetails(userId).subscribe({
       next: (res) => {
-        localStorage.setItem('userId', JSON.stringify(res.responseData.id));
+        localStorage.setItem('userDetails', JSON.stringify(res.responseData));
       }
     });
   }
