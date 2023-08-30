@@ -40,18 +40,21 @@ export class UserFormComponent implements OnInit {
     ){
     this.grievanceTypes = this.configService.dropDownConfig.GRIEVANCE_TYPES;
     this.userForm = new FormGroup({
-      firstName: new FormControl('', Validators.required),
-      lastName: new FormControl('', Validators.required),
+      firstName: new FormControl('', [Validators.required, Validators.pattern("^[a-zA-Z]+$")]),
+      lastName: new FormControl('', [Validators.required, Validators.pattern("^[a-zA-Z]+$")]),
       username: new FormControl('',[Validators.required, Validators.email]),
-      phone:  new FormControl('', Validators.required),
+      phone:  new FormControl('', [Validators.required, Validators.pattern("^(0|91)?[6-9][0-9]{9}$")]),
       role: new FormControl('', Validators.required),
       status: new FormControl('', Validators.required),
-      // department: new FormControl(''),
+      department: new FormControl(''),
     });
   }
 
   ngOnInit(): void {
     this.loggedInUserData = this.authService.getUserData();
+    this.userForm.patchValue({
+      departmentName: null
+    })
     console.log(this.route);
     this.route.queryParams.subscribe((param)=>{
       console.log(param['id']);
@@ -92,7 +95,8 @@ export class UserFormComponent implements OnInit {
       username: this.userDetails?.username,
       phone:this.userDetails?.attributes.phoneNumber,
       role:this.userDetails?.attributes.Role[0],
-      status: this.userDetails?.enabled === true? 'Active' : 'Inactive'
+      status: this.userDetails?.enabled === true? 'Active' : 'Inactive',
+      department: this.userDetails?.attributes?.departmentName[0] ? this.userDetails?.attributes.departmentName[0] : null
     })
     console.log(this.userForm.value);
   }
@@ -131,7 +135,6 @@ export class UserFormComponent implements OnInit {
     } else {
       this.addUser();
     }
-    console.log(this.userForm.value)
   }
   
   updateUser() {
@@ -143,6 +146,7 @@ export class UserFormComponent implements OnInit {
         firstName,
         lastName,
         enabled: status === 'Active'? true: false,
+        
         attributes: {
           departmentName: 'grievances',
           phoneNumber: phone,
@@ -150,14 +154,13 @@ export class UserFormComponent implements OnInit {
       },
       }
     }
-    console.log(requestObj)
-    console.log(this.userDetails);
     this.isProcessing = true;
     this.userService.updateUser(requestObj).subscribe({
       next: (res) => {
         this.userDetails = res.responseData;
         this.toastrService.showToastr("User updated successfully!", 'Success', 'success', '');
         this.isProcessing= false;
+        this.navigateToHome();
      },
      error: (err) => {
       // this.toastrService.showToastr(err, 'Error', 'error', '');
@@ -168,7 +171,7 @@ export class UserFormComponent implements OnInit {
   }
 
   addUser() {
-    const {firstName, lastName, phone, role, status, username} = this.userForm.value;
+    const {firstName, lastName, phone, role, status, username, department} = this.userForm.value;
     const userDetails = {
       firstName,
       lastName,
@@ -184,9 +187,10 @@ export class UserFormComponent implements OnInit {
         }
     ],
     attributes: {
-      departmentNAme: 'grievances',
+      module: 'grievance',
+      departmentName: role === 'NODALOFFICER' ? department: role === 'GRIEVANCEADMIN' || role === 'ADMIN' ? -1 : null,
       phoneNumber: phone,
-      Role: role
+      role: role
   },
     }
     this.isProcessing= true;
@@ -194,8 +198,9 @@ export class UserFormComponent implements OnInit {
     this.userService.createUser(userDetails).subscribe({
       next: (res) => {
         this.userDetails = res.responseData;
-        this.toastrService.showToastr("User add successfully!", 'Success', 'success', '');
+        this.toastrService.showToastr("User created successfully!", 'Success', 'success', '');
         this.isProcessing= false;
+        this.navigateToHome();
      },
      error: (err) => {
       this.toastrService.showToastr(err, 'Error', 'error', '');
@@ -203,6 +208,13 @@ export class UserFormComponent implements OnInit {
        // Handle the error here in case of login failure
      }}
     );
+  }
+
+  getRoleChange(event: any) {
+    console.log(event.value);
+    if(event.value === 'NODALOFFICER') {
+      this.userForm.get('department')?.addValidators(Validators.required);
+    }
   }
 
 }

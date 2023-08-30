@@ -50,13 +50,13 @@ export class GrievanceRaiserFormComponent {
 
     this.grievanceRaiserformGroup = this.formBuilder.group({
       name: new FormControl('', [
-        Validators.required]),
+        Validators.required, Validators.pattern("^[a-zA-Z]+$")]),
       email: new FormControl('', [
         Validators.required,
         Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")]),
       phone: new FormControl('', [
         Validators.required,
-        Validators.pattern("^(0|91)?[6-9][0-9]{9}$"), Validators.max(99999999999)]),
+        Validators.pattern("^(0|91)?[6-9][0-9]{9}$")]),
       grievanceType: new FormControl('', [
         Validators.required]),
       userType: new FormControl('', [
@@ -73,8 +73,8 @@ export class GrievanceRaiserFormComponent {
         if (this.grievanceRaiserformGroup.get('name')?.hasError('required')) {
           return 'Name is required !!';
         }
-        if(this.grievanceRaiserformGroup.get('name')?.hasError('pattern')) {
-          return 'Name should contain string characters only';
+        if (this.grievanceRaiserformGroup.get('name')?.hasError('pattern')) {
+          return 'Should contain characters between a-z/A-z only';
         }
         break;
       case 'email':
@@ -88,6 +88,9 @@ export class GrievanceRaiserFormComponent {
       case 'phone':
         if (this.grievanceRaiserformGroup.get('phone')?.hasError('required')) {
           return 'Mobile number is required !!';
+        }
+        if (this.grievanceRaiserformGroup.get('phone')?.hasError('pattern')) {
+          return 'Mobile number should contain 10 digits only !!';
         }
         break;
       case 'userType':

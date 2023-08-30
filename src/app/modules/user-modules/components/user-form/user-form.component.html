@@ -22,8 +22,8 @@
                         <mat-form-field appearance="outline" class="text-class">
                             <mat-label>First name</mat-label>
                             <input matInput placeholder="Enter first name" formControlName="firstName" required>
-                            <mat-error *ngIf="firstName && firstName.invalid && firstName.touched">please enter first name</mat-error>
-
+                            <mat-error *ngIf="firstName && firstName.hasError('required') && firstName.touched">please enter first name</mat-error>
+                            <mat-error *ngIf="firstName && firstName.hasError('pattern')" >Name should contain characters within a-z/A-Z only</mat-error>
                           </mat-form-field>
                     </div>
                     <div class="first-container">
@@ -31,7 +31,8 @@
                         <mat-form-field appearance="outline" class="text-class">
                             <mat-label>Last name</mat-label>
                             <input matInput placeholder="Enter last name" formControlName="lastName" required>
-                            <mat-error *ngIf="lastName && lastName.invalid && lastName.touched">please enter last name</mat-error>
+                            <mat-error *ngIf="lastName && lastName.hasError('required') && lastName.touched">please enter last name</mat-error>
+                            <mat-error *ngIf="lastName && lastName.hasError('pattern')" >Name should contain characters within a-z/A-Z only</mat-error>
 
                           </mat-form-field>
                     </div>
@@ -52,8 +53,8 @@
                         <mat-form-field appearance="outline" class="text-class">
                             <mat-label>Phone number</mat-label>
                             <input type="number" matInput placeholder="Enter Phone number" formControlName="phone" required>
-                            <mat-error *ngIf="phone && phone.invalid && phone.touched">please Enter phone number</mat-error>
-
+                            <mat-error *ngIf="phone && phone.hasError('required') && phone.touched">please Enter phone number</mat-error>
+                            <mat-error *ngIf="phone && phone.hasError('pattern')" >Phone number should contain 10 digits</mat-error>
                           </mat-form-field>
                     </div>
 
@@ -64,25 +65,23 @@
                         <h4>Role</h4>
                         <mat-form-field appearance="outline" class="text-class">
                             <mat-label>Role</mat-label>
-                            <mat-select formControlName="role">
+                            <mat-select formControlName="role" (selectionChange)="getRoleChange($event)">
                               <mat-option *ngFor="let item of roleList" [value]="item.name" >{{getUserRole(item.name)}}</mat-option>
                             </mat-select>
                             <mat-error *ngIf="role && role.invalid && role.touched">please select role</mat-error>
 
                           </mat-form-field>
                     </div>
-                    <!-- <div class="first-container">
+                    <div class="first-container" *ngIf="userForm.get('role')?.value === 'NODALOFFICER'">
                         <h4>Department</h4>
                         <mat-form-field appearance="outline" class="text-class">
                             <mat-label>Department</mat-label>
                             <mat-select formControlName="department">
-                              <mat-option *ngFor="let item of grievanceTypes" [value]="item.name">{{item.name}}</mat-option>
+                              <mat-option *ngFor="let item of grievanceTypes" [value]="item.id">{{item.name}}</mat-option>
                             </mat-select>
-                            <mat-error *ngIf="role && role.invalid && role.touched">please select role</mat-error> 
-
-                          </mat-form-field> -->
-                    <!-- </div>  -->
-
+                            <mat-error *ngIf="role && role.invalid && role.touched">please select Department Name</mat-error>
+                          </mat-form-field> 
+                    </div> 
                 </div>
 
 

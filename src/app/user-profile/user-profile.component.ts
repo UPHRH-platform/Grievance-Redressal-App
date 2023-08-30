@@ -128,7 +128,7 @@ export class UserProfileComponent {
         // getUserDetails(this.userId);
       },
       error: (err) => {
-        this.toastrService.showToastr(err, 'Error', 'error', '');
+        // this.toastrService.showToastr(err, 'Error', 'error', '');
       }
     })
   }

@@ -63,6 +63,7 @@ export class GrievanceManagementComponent  {
     this.grievancesTypes = this.configService.dropDownConfig.GRIEVANCE_TYPES;
     this.userRole = this.authService.getUserRoles()[0];
     this.userId = this.authService.getUserData().userRepresentation.id;
+    // this.grievanceType = this.authService.getUserData().userRepresentation.
     this.route.queryParams.subscribe((param) => {
       console.log("param ====>", param);
       if(!!param){
@@ -131,7 +132,7 @@ export class GrievanceManagementComponent  {
         columnDef: 'assignedToId',
         header: 'Raiser Type',
         isSortable: true,
-        cell: (element: Record<string, any>) => `${element['assignedTo']}`
+        cell: (element: Record<string, any>) => `${element['assignedTo']}` !== 'undefined'? `${element['assignedTo']}`: '-'
       },
       {
         columnDef: 'createdDateTS',
@@ -226,7 +227,7 @@ export class GrievanceManagementComponent  {
           ...this.getGrievancesRequest,
           filter:{
             status:['OPEN'],
-            cc: this.userRole === 'Nodal Officer' ? this.userId : this.grievanceType ? this.grievanceType: null
+            cc: this.grievanceType ? this.grievanceType: null
           }
         }
         break;
@@ -235,7 +236,7 @@ export class GrievanceManagementComponent  {
         ...this.getGrievancesRequest,
         filter:{
           status:['CLOSED'],
-          cc: this.userRole === 'Nodal Officer' ? this.userId: this.grievanceType ? this.grievanceType: null,
+          cc: this.grievanceType ? this.grievanceType: null,
         }
       }
       break;
@@ -245,7 +246,7 @@ export class GrievanceManagementComponent  {
         ...this.getGrievancesRequest,
         filter:{
           status:['OPEN'],
-          cc: this.userRole === 'Nodal Officer' ? this.userId: this.grievanceType ? this.grievanceType: null,
+          cc: this.grievanceType ? this.grievanceType: null,
         },
         priority: "HIGH"
       }
