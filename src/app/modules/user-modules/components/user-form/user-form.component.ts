@@ -190,7 +190,7 @@ export class UserFormComponent implements OnInit {
     ],
     attributes: {
       module: 'grievance',
-      departmentName: role === 'NODALOFFICER' ? department: role === 'GRIEVANCEADMIN' || role === 'ADMIN' ? -1 : null,
+      departmentName: role === 'NODALOFFICER' ? department: role === 'GRIEVANCEADMIN' || role === 'ADMIN' ? -1 : [],
       phoneNumber: phone,
       Role: role
   },
