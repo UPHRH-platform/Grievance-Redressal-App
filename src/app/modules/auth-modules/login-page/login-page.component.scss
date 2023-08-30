@@ -1,6 +1,6 @@
 .login-page-container {
     width: 100%;
-    // height: 100% !important;
+    height: 100% !important;
     background-color: #F0F3F4;
 }
 .mid-container{
@@ -14,7 +14,7 @@
     flex-direction: row;
 }
 .login-main-container {
-    width: 36rem;
+    width: 40rem;
     background-color: white;
     height: 35rem;
     margin: 2%;
@@ -58,16 +58,3 @@
     color: royalblue;
     cursor: pointer;
 }
-
-h4 {
-    opacity: 1;
-    color: rgba(0,0,0,0.87);
-    font-family:'Lato', sans-serif;;
-    font-size: 14px;
-    font-weight: 700;
-    font-style: normal;
-    letter-spacing: 0.25px;
-    text-align: left;
-    line-height: 20px;
-    margin: 0 0 8px !important;
-  }

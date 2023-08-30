@@ -8,7 +8,6 @@ import { BreadcrumbItem } from 'src/app/shared';
 import { UserService } from '../../services/user.service';
 import { getRole } from 'src/app/shared';
 import { ToastrServiceService } from 'src/app/shared/services/toastr/toastr.service';
-import { PageEvent } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-manage-user',
@@ -23,10 +22,6 @@ export class ManageUserComponent implements OnInit {
     { label: 'Grievance Management', url: '/home' },
     { label: 'User List', url: '/user-manage' },
   ];
-  pageSize: number = 10;
-  pageIndex: number = 0;
-  length: number = 0;
-  listLength: number = 0;
 
   constructor(
     private router: Router,
@@ -43,12 +38,8 @@ export class ManageUserComponent implements OnInit {
   }
 
   goToUserDetail(userDetail?:any){
-    console.log(userDetail);
     if(userDetail){
-      console.log(userDetail);
-      // const id = userDetail?.id;
-      // keycloak id
-      this.router.navigate(['/user-manage/userform'],{ queryParams: {id: userDetail.keycloakId}})
+      this.router.navigate(['/user-manage/userform'],{ queryParams: userDetail})
     }
     else {
       this.router.navigate(['/user-manage/userform'])
@@ -58,6 +49,7 @@ export class ManageUserComponent implements OnInit {
 
   
   toggleUserStatus(event:any) {
+    console.log("Event receieved", event);
     const status = event.isActive ? 'deactivate' : 'activate';
    const dialogRef = this.dialog.open(ConfirmationPopupComponent, {
     data: { title: `Are you sure you want to ${status} ?`},
@@ -72,12 +64,7 @@ export class ManageUserComponent implements OnInit {
    dialogRef.afterClosed().subscribe(isConfirmed=>{
      if(isConfirmed) {
       updatedUserData.isActive = !event.isActive;
-      const request = {
-        request: {
-          userName: event.id
-      }
-      }
-      this.userService.deactivateUser(request).subscribe({
+      this.userService.createOrUpdateUser(updatedUserData).subscribe({
         next: (res) => {
           this.users.splice(userIndex,1,updatedUserData);
        },
@@ -88,7 +75,6 @@ export class ManageUserComponent implements OnInit {
      }
      this.users.splice(userIndex,1,event);
      this.initializeColumns();
-     this.getAllUsers();
    })
   }
 
@@ -147,39 +133,14 @@ export class ManageUserComponent implements OnInit {
 
   getAllUsers() {
     this.isDataLoading = true;
-    const request = {
-      page: this.pageIndex,// need to check once code is deployed.
-      size: this.pageSize
-      }
-      console.log(request);
-    this.userService.getAllUsers(request).subscribe({
+    this.userService.getAllUsers().subscribe({
       next: (res) => {
         this.isDataLoading = false;
-        this.users = res.responseData.result.map((user:any) => {
-          console.log("Response =>", res.responseData.result);
-          this.length = res.responseData.count;
-          const { username, firstName, lastName, enabled, email, attributes, id, keycloakId} = user;
-          let name = '';
-          let isActive = '';
-          let role = '';
-          let phone = '';
-          if(firstName && lastName !== undefined) {
-          name = `${firstName} + ' ' + ${lastName}`;
-          }
-          if(enabled) {
-          isActive = enabled == true? 'Active': 'Inactive';
-          }
-          if(attributes !== undefined) {
-          if(attributes.hasOwnProperty('Role') && attributes.Role[0]) {
-          role = attributes.Role[0];
-          }
-          if(attributes.hasOwnProperty('phoneNumber') && attributes.phoneNumber[0]) {
-          phone = attributes.phoneNumber[0]
-          }
-        }
+        this.users = res.responseData.map((user:userTableData) => {
+          const { name, username,  phone, isActive, roles, id } = user;
+          const role= roles[0].name;
           return {
             id,
-            keycloakId,
             name,
             username,
             phone,
@@ -187,7 +148,6 @@ export class ManageUserComponent implements OnInit {
             role
           }
         })
-        this.listLength = this.users.length;
       },
       error: (err) => {
         this.isDataLoading = false;
@@ -197,11 +157,5 @@ export class ManageUserComponent implements OnInit {
     });
   }
 
-  handlePageChange(event: PageEvent) {
-    this.pageIndex = event.pageIndex; // cross verify this based on count returned
-    this.pageSize = event.pageSize;
-    this.length = event.length;
-    this.getAllUsers();
-}
 
 }

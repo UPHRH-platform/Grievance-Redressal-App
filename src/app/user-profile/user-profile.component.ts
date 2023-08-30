@@ -1,10 +1,6 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { UserService } from '../modules/user-modules/services/user.service';
-import { AuthService } from '../core';
-import { ToastrServiceService } from '../shared/services/toastr/toastr.service';
-import { getRole } from 'src/app/shared';
 
 @Component({
   selector: 'app-user-profile',
@@ -18,11 +14,10 @@ export class UserProfileComponent {
   roleList: any[] = ['Nodal Officer', 'Secreatory', 'Admin']
   editDataObject: any;
   isEditData:boolean = false;
-  userId: string;
-  userDetails: any = {};
+
 
   constructor(private router: Router,
-    private route: ActivatedRoute, private userService: UserService, private authService: AuthService, private toastrService: ToastrServiceService) {
+    private route: ActivatedRoute) {
     this.userForm = new FormGroup({
       firstName: new FormControl('', Validators.required),
       lastName: new FormControl('', Validators.required),
@@ -34,38 +29,17 @@ export class UserProfileComponent {
   }
 
   ngOnInit(): void {
-    const userData = this.authService.getUserData();
-    this.userId = userData.userRepresentation.id;
-    console.log(this.userId);
-    console.log(this.authService.getUserData());
-    if(this.userId) {
-      this.getUserDetails();
-    }
-    //Implement logic to fecth user deatils and bind them in UI
-  }
 
-  getUserDetails() {
-    this.userService.getUserDetails(this.userId).subscribe({
-      next: (res) => {
-        this.userDetails = res.responseData;
-        if(this.userDetails) {
-          this.setUserFormData();
-        }
-      },
-      error: (err)=> {
-        this.toastrService.showToastr(err, 'Error', 'error', '');
-      }
-    })
   }
 
   setUserFormData() {
     this.userForm.setValue({
-      firstName: this.userDetails?.firstName,
-      lastName: this.userDetails?.lastName,
-      emailId: this.userDetails?.email,
-      phoneNumber: this.userDetails?.attributes.phoneNumber[0],
-      // role: this.userDetails?.attributes.Role[0],
-      // activeStatus: this.userDetails?.enabled === true? 'Active' : 'Inactive'
+      firstName: this.editDataObject?.fullName,
+      lastName: this.editDataObject?.fullName,
+      emailId: this.editDataObject?.email,
+      phoneNumber: this.editDataObject?.phoneNumber,
+      role: this.editDataObject?.role,
+      activeStatus: this.editDataObject?.accountStatus
     })
   }
 
@@ -100,41 +74,8 @@ export class UserProfileComponent {
     this.isEditData = false;
   }
 
-  getUserRole(roleName: string) {
-    return getRole(roleName);
-   }
-
   onSubmit() {
-    const {firstName, lastName, phoneNumber, username} = this.userForm.value;
-    const {id, attributes, enabled } = this.userDetails;
-    const requestObj = {
-      userName: id,
-      request: {
-        firstName,
-        lastName,
-        enabled: enabled,
-        attributes: {
-          departmentName: attributes.departmentNAme[0],
-          phoneNumber: phoneNumber,
-          Role: attributes.Role[0]
-      },
-      }
-    }
-    this.userService.updateUser(requestObj).subscribe({
-      next:(res) => {
-        console.log(res);
-        this.toastrService.showToastr('User details updated successfully', 'Success', 'success', '');
-        // this.userDetails = res.responseData;
-        // getUserDetails(this.userId);
-      },
-      error: (err) => {
-        // this.toastrService.showToastr(err, 'Error', 'error', '');
-      }
-    })
-  }
-
-  goToHome() {
-    this.router.navigate(['/']);
+    console.log(this.userForm.value)
   }
 
 

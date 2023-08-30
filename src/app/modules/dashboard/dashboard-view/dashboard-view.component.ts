@@ -1,9 +1,6 @@
 import { Component } from '@angular/core';
 import { TableColumn, DashboardTableData, DashboardAnalytics } from '../../../interfaces/interfaces';
-import { BreadcrumbItem, ConfigService } from 'src/app/shared';
-import { DashboardService } from '../services/dashboard.service';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { ToastrServiceService } from 'src/app/shared/services/toastr/toastr.service';
+import { BreadcrumbItem } from 'src/app/shared';
 
 @Component({
   selector: 'app-dashboard-view',
@@ -12,269 +9,231 @@ import { ToastrServiceService } from 'src/app/shared/services/toastr/toastr.serv
 })
 export class DashboardViewComponent {
   isDataLoading : boolean = false;
-  dashboardData: any = {};
+  dashboardData: DashboardTableData[] = [];
+  dashboardDataColumns: TableColumn[] = [];
+  dashboardAnalyticsData: DashboardAnalytics[] = [];
+  dashboardAnalyticsColumns: TableColumn[] = [];
+  dashboardAnaytics1Columns: TableColumn[] = [];
+  dashboardAnalytics1Data: any[] = [];
+  dashboardAnaytics2Columns: TableColumn[] = [];
+  dashboardAnalytics2Data: any[] = [];
+  dashboardAnalytics3Columns: TableColumn[] = [];
+  dashboardAnalytics3Data: any[] = [];
   breadcrumbItems: BreadcrumbItem[] = [
     { label: 'Grievance Management', url: '/home' },
     { label: 'Dashboard', url: '/dashboard' },
   ];
-  assignmentMatrixColumns: any = [];
-  assignmentMatrixData: any = [];
-  performanceIndicatorData: any = {};
-  resolutionMatrixData: any = [];
-  resolutionMatrixColumns: any = [];
-  grievancesTypes:any[]=[];
-  startDate = new Date("2020/03/03").getTime();
-  endDate = new Date().getTime();
-  ccList: any = [];
-  filterForm: FormGroup;
-  filterDateRange = {startDate: '', endDate: ''};
-  public assignGrievanceTypeForm:FormGroup;
-  grievanceTypeNames: any = [];
 
-  constructor(private dashboardService: DashboardService, private configService: ConfigService, private formBuilder: FormBuilder, private toastrService: ToastrServiceService) {}
+  constructor() {}
 
   ngOnInit(): void {
-    this.filterForm = this.formBuilder.group({
-      grievanceType: new FormControl([]),
-      startDate: new FormControl(this.startDate),
-      endDate:new FormControl(this.endDate)
-    })
-    this.grievancesTypes = this.configService.dropDownConfig.GRIEVANCE_TYPES;
-    this.getDashboardObjectData(this.filterForm.value.startDate, this.filterForm.value.endDate);
-    // this.readFilterData();
-  }
-
-  // readFilterData() {
-  //   let ccList: any;
-  //   let dateRange: any;
-  //   let dateObject: any;
-  //   if(sessionStorage.getItem('departmentFilter') !== undefined) {
-  //      ccList = sessionStorage.getItem('departmentFilter');
-  //      if(ccList !== null) {
-  //         this.ccList = JSON.parse(ccList);
-  //          this.grievanceTypeNames = this.getGrievanceTypeNames(this.ccList);
-  //      }
-  //      this.filterForm.patchValue({
-  //       grievanceType: this.grievanceTypeNames
-  //      })
-  //      console.log(this.filterForm.value);
-  //   }
-  //   if(sessionStorage.getItem('dateRange') !== undefined) {
-  //     dateRange = sessionStorage.getItem('dateRange');
-  //       dateObject = JSON.parse(dateRange);
-  //       if(dateObject !== null) {
-  //       this.startDate = dateObject.startDate;
-  //       this.endDate = dateObject.endDate;
-  //       this.filterForm.patchValue({
-  //         startDate: this.startDate,
-  //         endDate: this.endDate
-  //        })
-  //       }
-  //   }
-  //   this.getDashboardObjectData(this.filterForm.value.startDate, this.filterForm.value.endDate);
-  // }
-
-  getGrievanceTypeNames(grievanceType: any) {
-    const grievanceNames: any = [];
-    grievanceType.map((obj: any, index: number) => {
-      this.grievancesTypes.map((type) => {
-        if(obj === type.id) {
-          grievanceNames.push(type.name); 
-        }
-      })
-    })
-    return grievanceNames;
+    this.initializeColumns();
+    this.getDashboardData();
   }
 
   initializeColumns(): void {
-    this.assignmentMatrixColumns = [
+    this.dashboardDataColumns = [
       {
         columnDef: 'id',
         header: '#',
-        isSortable: false,
-        isLink: false,
-        cell: (element: Record<string, any>) => `${element['id']}`
-},
-      {
-                columnDef: 'tag',
-                header: 'Tag',
-                isSortable: false,
-                isLink: false,
-                cell: (element: Record<string, any>) => `${element['tag']}`
-    },
-    {
-      columnDef: 'value',
-      header: 'Number of tickets',
-      isSortable: false,
-      isLink: false,
-      cell: (element: Record<string, any>) => `${element['value']}`
-},
-
-    ]
-    this.resolutionMatrixColumns = [
-      {
-        columnDef: 'id',
-        header: '#',
-        isSortable: false,
-        isLink: false,
-        cell: (element: Record<string, any>) => `${element['id']}`
-},
-      {
-        columnDef: 'departmentName',
-        header: 'Department',
         isSortable: true,
         isLink: false,
-        cell: (element: Record<string, any>) => `${element['departmentName']}`
-},
-{
-  columnDef: 'total',
-  header: 'Total Ticket',
-  isSortable: true,
-  isLink: false,
-  cell: (element: Record<string, any>) => `${element['total']}`
-},
-{
-  columnDef: 'isJunk',
-  header: 'Junk Ticket',
-  isSortable: true,
-  isLink: false,
-  cell: (element: Record<string, any>) => `${element['isJunk']}`
-},
-{
-  columnDef: 'isClosed',
-  header: 'Resolved Ticket',
-  isSortable: true,
-  isLink: false,
-  cell: (element: Record<string, any>) => `${element['isClosed']}`
-},
-
-{
-  columnDef: 'isEscalated',
-  header: 'Escalated',
-  isSortable: true,
-  isLink: false,
-  cell: (element: Record<string, any>) => `${element['isEscalated']}`
-},
-
-{
-  columnDef: 'isOpen',
-  header: 'Pending Ticket',
-  isSortable: true,
-  isLink: false,
-  cell: (element: Record<string, any>) => `${element['isOpen']}`
-},
-{
-  columnDef: 'openTicketGte15',
-  header: 'Open Ticket',
-  isSortable: true,
-  isLink: false,
-  cell: (element: Record<string, any>) => `${element['openTicketGte15']}`
-},
-{
-  columnDef: 'unassigned',
-  header: 'Unassigned',
-  isSortable: true,
-  isLink: false,
-  cell: (element: Record<string, any>) => `${element['unassigned']}`
-},
+        cell: (element: Record<string, any>) => `${element['id']}`
+      },
+      {
+        columnDef: 'bucket',
+        header: 'Bucket',
+        isSortable: true,
+        isLink: false,
+        cell: (element: Record<string, any>) => `${element['bucket']}`
+      },
+      {
+        columnDef: 'responsibleOfficer',
+        header: 'Responsible Officer',
+        isSortable: true,
+        isLink: false,
+        cell: (element: Record<string, any>) => `${element['responsibleOfficer']}`
+      },
+      {
+        columnDef: 'number',
+        header: 'Number',
+        isSortable: true,
+        isLink: false,
+        cell: (element: Record<string, any>) => `${element['number']}`
+      },
+      {
+        columnDef: 'pending',
+        header: 'Pending',
+        isSortable: true,
+        isLink: false,
+        cell: (element: Record<string, any>) => `${element['pending']}`
+      },
+      {
+        columnDef: 'In-Process',
+        header: 'inProcess',
+        isSortable: true,
+        isLink: false,
+        cell: (element: Record<string, any>) => `${element['inProcess']}`
+      },
+      {
+        columnDef: 'resolved',
+        header: 'Resolved',
+        isSortable: true,
+        isLink: false,
+        cell: (element: Record<string, any>) => `${element['resolved']}`
+      },
+      {
+        columnDef: 'responseNotNeeded',
+        header: 'Response not needed',
+        isSortable: true,
+        isLink: false,
+        cell: (element: Record<string, any>) => `${element['responseNotNeeded']}`
+      },
+      {
+        columnDef: 'duplicate',
+        header: 'Duplicate',
+        isSortable: true,
+        isLink: false,
+        cell: (element: Record<string, any>) => `${element['duplicate']}`
+      }
+    ];
+    this.dashboardAnalyticsColumns = [
+      {
+        columnDef: 'status',
+        header: 'Status',
+        cell: (element: Record<string, any>) => `Status`
+      },
+      {
+        columnDef: 'pending',
+        header: 'Pending',
+        cell: (element: Record<string, any>) => `${element['pending']}`
+      },
+      {
+        columnDef: 'inProcess',
+        header: 'In-Process',
+        cell: (element: Record<string, any>) => `${element['inProcess']}`
+      },
+      {
+        columnDef: 'Resolved',
+        header: 'Resolved',
+        cell: (element: Record<string, any>) => `${element['resolved']}`
+      },
+      {
+        columnDef: 'responseNotNeeded',
+        header: 'Response not needed',
+        cell: (element: Record<string, any>) => `${element['responseNotNeeded']}`
+      },
+      {
+        columnDef: 'duplicate',
+        header: 'Duplicate',
+        cell: (element: Record<string,any>) => `${element['duplicate']}`
+      }
+    ]
+    this.dashboardAnaytics1Columns = [
+      {
+        columnDef: 'noOfIssuesResolved',
+        header: '# of issues resolved',
+        cell: (element: Record<string, any>) => `${element['noOfIssuesResolved']}`
+      },
+      {
+        columnDef: 'statusNotUpdated',
+        header: 'Status not updated',
+        cell: (element: Record<string, any>) => `${element['statusNotUpdated']}`
+      }
+    ];
+    this.dashboardAnaytics2Columns = [
+      {
+        columnDef: 'turnAroundTime',
+        header: 'Turn around time',
+        cell: (element: Record<string, any>) => `${element['turnAroundTime']}`
+      }, 
+      {
+        columnDef: 'noOfGrievances',
+        header: '# of Grievances',
+        cell: (element: Record<string, any>) => `${element['noOfGrievances']}`
+      }, 
+    ]
+    this.dashboardAnalytics3Columns = [
+      {
+        columnDef: 'avgDaysToResolve',
+        header: 'Avg Days to resolve',
+        cell: (element: Record<string, any>) => `${element['avgDaysToResolve']}`
+      }
     ]
   }
 
-  getDashboardObjectData(startDate:any, endDate: any) {
-    this.dashboardData = [];
-    const tag:any = [];
-    const value:any = [];
-    const resolutionMatrix: any = [];
-    this.assignmentMatrixData = [];
-    this.resolutionMatrixData = [];
+  getDashboardData() {
       this.isDataLoading = true;
-      const request = {
-        date: {
-          to: endDate,
-          from: startDate
-        },
-        filter: {
-          ccList: this.ccList
-        }
-      }
       setTimeout(() => {
         this.isDataLoading = false;
       }, 2000);
-      this.dashboardService.getDashboardData(request).subscribe({
-        next: (res) => {
-          this.dashboardData = res.responseData;
-          this.initializeColumns();
-          if(this.dashboardData){
-            // assignmentMatrix
-            for(const key in this.dashboardData.assignmentMatrix) {
-                tag.push(this.camelCaseToWords(key));
-                value.push(this.dashboardData.assignmentMatrix[key])
-            }
-            tag.map((obj:any, index:number) => {
-              this.assignmentMatrixData.push({
-                id: index + 1,
-                tag: obj,
-                value: value[index]
-              })
-            })
-            // resolutionMatrix
-            resolutionMatrix.push(this.dashboardData.resolutionMatrix);
-            this.dashboardData.resolutionMatrixArray = resolutionMatrix;
-            console.log(this.dashboardData.resolutionMatrixArray);
-        this.dashboardData.resolutionMatrixArray.map((obj: any, index: number) => {
-        let i = index;
-        for(const key in obj) {
-          i = i + 1;
-          this.resolutionMatrixData.push({id: i, departmentName: this.camelCaseToWords(key), ...obj[key]});
-        }
-      })
-          }
+      this.dashboardData = [
+        {
+          id: "1",
+          bucket: 'Affiliation',
+          responsibleOfficer: 'Art of living',
+          number: '3 (2%)',
+          pending: '0 (0%)',
+          inProcess: '0 (0%)',
+          resolved: '3 (100%)',
+          responseNotNeeded: '0 (0%)',
+          duplicate: '0 (0%)'
+
         },
-        error: (err) => {
-          this.toastrService.showToastr(err, 'Error', 'error', '');
-          // Handle the error here in case of login failure
+        {
+          id: "2",
+          bucket: 'Biometric Attendance',
+          responsibleOfficer: 'Microsoft',
+          number: '102 (55%)',
+          pending: '1 (1%)',
+          inProcess: '0 (0%)',
+          resolved: '60 (59%)',
+          responseNotNeeded: '2 (2%)',
+          duplicate: '10 (10%)'
+        },
+        {
+          id: "3",
+          bucket: 'Enrollment',
+          responsibleOfficer: 'ISTM',
+          number: '25 (14%)',
+          pending: '0 (0%)',
+          inProcess: '1 (4%)',
+          resolved: '24 (96%)',
+          responseNotNeeded: '0 (0%)',
+          duplicate: '0 (0%)'
+        },        
+      ];
+      this.dashboardAnalyticsData = [
+        {
+          status: '',
+          pending: '0 (0%)',
+          inProcess: '0 (0%)',
+          resolved: '3 (100%)',
+          responseNotNeeded: '0 (0%)',
+          duplicate: '0 (0%)'
+        },
+      ];
+      this.dashboardAnalytics1Data = [
+        {
+          noOfIssuesResolved: 184,
+          statusNotUpdated: 29
         }
-      })
-      //assignmentmatrix data
-     
+      ];
+      this.dashboardAnalytics3Data = [
+        {
+          avgDaysToResolve: 49
+        }
+      ],
+      this.dashboardAnalytics2Data = [
+        {
+          turnAroundTime: '<=7days',
+          noOfGrievances: '56'
+        },
+        {
+          turnAroundTime: '>7days',
+          noOfGrievances: '39'
+        }
+      ]
       
     }
-
-    camelCaseToWords(s: string) {
-      const result = s.replace(/([a-zA-Z])([A-Z])([a-z])/g, '$1 $2$3');
-      return result.charAt(0).toUpperCase() + result.slice(1);
-    }
-
-    grievanceSelected(grievance: any) {
-      this.ccList = grievance.value;
-    }
-
-    changeEvent(type: string, event: any) {
-      if(type == 'startDate') {
-        this.startDate = event.value.getTime();
-        this.filterDateRange.startDate = event.value;
-       this.filterForm.patchValue({
-         startDate: event.value.getTime()
-       })
-      }
-      if(type === 'endDate') {
-        this.filterDateRange.endDate = event.value;
-        this.endDate = event.value.getTime();
-        this.filterForm.patchValue({
-          endDate: event.value.getTime()
-        })
-      }
-    }
-
-    applyFilter() {
-      // sessionStorage.setItem('departmentFilter', JSON.stringify(this.ccList));
-      // sessionStorage.setItem('dateRange', JSON.stringify(this.filterDateRange));
-      this.getDashboardObjectData(this.filterForm.value.startDate, this.filterForm.value.endDate);
-    }
-
-    ngDestroy() {
-      sessionStorage.removeItem('departmentFilter');
-      sessionStorage.removeItem('dateRange');
-    }
 }
-

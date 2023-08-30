@@ -4,13 +4,13 @@ export const getRole = (roleName: string) : string => {
     let role = "";
     switch(roleName) {
         case 'SUPERADMIN':
-          role= Roles.SUPERADMIN;
+          role= Roles.SECRETARY;
           break;
         case 'NODALOFFICER':
-          role= Roles.NODALOFFICER;
+          role= Roles.NODAL_OFFICER;
           break;
         case 'GRIEVANCEADMIN':
-          role= Roles.GRIEVANCEADMIN;
+          role= Roles.GRIEVANCE_NODAL;
           break;
         case 'ADMIN':
           role= Roles.ADMIN;
@@ -20,7 +20,7 @@ export const getRole = (roleName: string) : string => {
 }
 
 export const getAllRoles = () => {
-    const roles = localStorage.getItem('all_roles') ? localStorage.getItem('all_roles') : "[]";
+    const roles = sessionStorage.getItem('all_roles') ? sessionStorage.getItem('all_roles') : "[]";
     const allRoles: any[] = roles ? JSON.parse(roles) : [];
     return allRoles;
 }

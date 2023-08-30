@@ -55,23 +55,18 @@ export class SharedTableComponent implements AfterViewInit {
   //dataSource: MatTableDataSource<[any]> = new MatTableDataSource();
   public dataSource = new MatTableDataSource([]);
  // dataSource = new MatTableDataSource([])
-  // @ViewChild(MatPaginator, {read: true}) paginator: MatPaginator;
   @ViewChild(MatPaginator) paginator: MatPaginator;
-  @ViewChild(MatPaginator, {read: true}) customPaginator: MatPaginator;
-  @ViewChild(MatSort) sort: MatSort;
+  @ViewChild(MatSort) sort: MatSort ;
 
   @Input() isPageable = true;
   @Input() tableColumns: TableColumn[] ;
   @Input() set tableData(data: any[]) {
     this.setTableDataSource(data);
   }
-  @Input() length: number;
+  @Input() pageLength: number;
   @Input() pageSize: number;
   @Input() pageIndex: number;
-  @Input() isServerSidePagination: boolean = false;
-  @Input() showFirstLastButtons: boolean = true;
-  @Input() showPageSizeOptions: boolean = true;
-  @Input() hidePageSize: boolean = false;
+  @Input() isServerSidePagination: boolean;
 
   @Output() rowAction: EventEmitter<any> = new EventEmitter<any>();
   @Output() editData: EventEmitter<any>= new EventEmitter<any>();
@@ -79,17 +74,15 @@ export class SharedTableComponent implements AfterViewInit {
   @Output() toggleData: EventEmitter<any>= new EventEmitter<any>();
   @Output() pageChange: EventEmitter<any> = new EventEmitter<any>();
   @Output() searchParmas: EventEmitter<any> = new EventEmitter<any>();
-  @Output() filteredvalue: EventEmitter<any> = new EventEmitter<any>();
   pageEvent: PageEvent;
   private timeoutId: any;
-  @Output() sortChange: EventEmitter<any> = new EventEmitter<any>();
-  @Input() isServerSideSorting: boolean = false;
+
 
   constructor( private configService: ConfigService,
     private authService: AuthService) {
     this.grievancesTypes = this.configService.dropDownConfig.GRIEVANCE_TYPES;
     this.filterForm = new FormGroup({
-      grievanceType: new FormControl('', Validators.required),
+      grievanceType: new FormControl('',Validators.required),
       startDate: new FormControl(''),
       endDate:new FormControl('')
     })
@@ -98,9 +91,6 @@ export class SharedTableComponent implements AfterViewInit {
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
-    if(this.isServerSidePagination) {
-      this.dataSource.paginator = this.customPaginator;
-    }
   }
 
   ngOnInit(): void {
@@ -136,10 +126,6 @@ export class SharedTableComponent implements AfterViewInit {
       console.log(e);
     }
 
-    resetFilter(){
-      this.filterForm.reset();
-    }
-
     setTableDataSource(data : any) {
      
       this.dataSource = new MatTableDataSource(data);
@@ -173,14 +159,6 @@ export class SharedTableComponent implements AfterViewInit {
      grievanceSelected(e:any){
      }
      ApplyFilter(value:any){
-      console.log('filtered value',value)
-      this.filteredvalue.emit(value)
-
-     }
-
-     onSortChange(e: any) {
-      if(this.isServerSideSorting) {
-      this.sortChange.emit(e);
-      }
+      console.log(value)
      }
 }

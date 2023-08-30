@@ -23,8 +23,3 @@ export interface StatusInfo {
     statusMessage: string;
     errorMessage?: any;
 }
-
-export interface UserManagementResponse {
-    responseData: any;
-    errorMessage?: any;
-}

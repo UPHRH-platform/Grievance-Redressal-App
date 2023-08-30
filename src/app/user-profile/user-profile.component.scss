@@ -1,3 +1,7 @@
+.container-full {
+    background-color: #F0F3F4;
+}
+
 .breadcrumb {
     height: 48px;
     background-color: white;
@@ -53,6 +57,10 @@
 .form-container {
     background-color: white;
     height: 41rem;
+}
+
+.form-internal-wrapper {
+    padding: 3%;
 }
 
 .wrapper-form {

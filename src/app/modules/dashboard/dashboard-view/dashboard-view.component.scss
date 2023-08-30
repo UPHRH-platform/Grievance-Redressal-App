@@ -1,4 +1,5 @@
 .inner-content {
+
     .table1, .table2 {
         width: -moz-available; 
         width: -webkit-fill-available;
@@ -6,17 +7,5 @@
     }
     .custom-margin {
         margin-top: 50px;
-    }
-    .desc {
-        color: rgba(0,0,0,0.6);
-        font-family: 'Lato' sans-serif;
-        font-size: 14px;
-    }
-    .title {
-        font-size: 16px;
-        font-weight: 600px;
-    }
-    .custom-align {
-        align-items: baseline;
     }
 }
