@@ -38,7 +38,6 @@ export class UserFormComponent implements OnInit {
     private toastrService: ToastrServiceService,
     private configService: ConfigService, 
     ){
-    this.grievanceTypes = this.configService.dropDownConfig.GRIEVANCE_TYPES;
     this.userForm = new FormGroup({
       firstName: new FormControl('', [Validators.required, Validators.pattern("^[a-zA-Z]+$")]),
       lastName: new FormControl('', [Validators.required, Validators.pattern("^[a-zA-Z]+$")]),
@@ -51,6 +50,8 @@ export class UserFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.grievanceTypes = this.configService.dropDownConfig.GRIEVANCE_TYPES;
+    this.grievanceTypes = this.grievanceTypes.filter((item: any) => item.name !== 'Others');
     this.loggedInUserData = this.authService.getUserData();
     this.userForm.patchValue({
       departmentName: null
@@ -179,7 +180,6 @@ export class UserFormComponent implements OnInit {
     this.isProcessing = true;
     this.userService.updateUser(requestObj).subscribe({
       next: (res) => {
-        console.log("ress ===>", res);
         this.userDetails = res.responseData;
         this.toastrService.showToastr("User updated successfully!", 'Success', 'success', '');
         this.isProcessing = false;
