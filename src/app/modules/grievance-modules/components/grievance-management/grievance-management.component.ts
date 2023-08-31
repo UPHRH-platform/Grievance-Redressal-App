@@ -232,7 +232,7 @@ export class GrievanceManagementComponent  {
       "size": this.pageSize, // does not work currently
       "sort":{
            [this.sortHeader]: this.direction
-      }
+      },
     }
     switch(this.selectedTab.name) {
       case 'Pending': 
@@ -241,7 +241,8 @@ export class GrievanceManagementComponent  {
           filter:{
             status:['OPEN'],
             cc: this.grievanceType ? this.grievanceType: null
-          }
+          },
+          isJunk: false
         }
         break;
       case 'Resolved': 
@@ -250,7 +251,8 @@ export class GrievanceManagementComponent  {
         filter:{
           status:['CLOSED'],
           cc: this.grievanceType ? this.grievanceType: null,
-        }
+        },
+        isJunk: false
       }
       break;
       // this is failing
@@ -261,7 +263,8 @@ export class GrievanceManagementComponent  {
           status:['OPEN'],
           cc: this.grievanceType ? this.grievanceType: null,
         },
-        priority: "HIGH"
+        priority: "HIGH",
+        isJunk: false
       }
       break;
       case 'Escalated to me': 
@@ -272,7 +275,8 @@ export class GrievanceManagementComponent  {
           cc: this.grievanceType ? this.grievanceType: null,
         },
         isEscalated: true,
-        priority: "MEDIUM"
+        priority: "MEDIUM",
+        isJunk: false
       }
       break;
       case 'Not Assigned':
@@ -282,6 +286,7 @@ export class GrievanceManagementComponent  {
             status:['OPEN'],
             cc: this.grievanceType ? this.grievanceType: null,
           },
+          isJunk: false
         }
       break;
       case 'Junk': 

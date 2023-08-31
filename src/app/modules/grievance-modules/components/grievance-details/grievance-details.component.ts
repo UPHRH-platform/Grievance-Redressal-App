@@ -169,7 +169,7 @@ export class GrievanceDetailsComponent {
     return forkJoin(uploadFileRequests);
   }
 
-  submitResolution(value: any) {
+  submitResolution() {
     this.uploadFiles().pipe(
       switchMap((uploadResponses) => {
         // Extract attachmentUrls from uploadResponses
@@ -201,7 +201,7 @@ export class GrievanceDetailsComponent {
         //console.log(res.responseData);
         this.ticketDetails = res.responseData;
           this.configService.dropDownConfig.GRIEVANCE_TYPES.map((grievance: any) => {
-            if(this.ticketDetails.assignedToId === grievance.id) {
+            if(this.ticketDetails.assignedToId == grievance.id) {
               this.ticketDetails.assignedToName = grievance.name;
             }
           })
@@ -280,7 +280,7 @@ export class GrievanceDetailsComponent {
       break;
     }
     if(params === 'resolved') {
-      this.uploadFiles();
+      this.submitResolution();
     }
     else {
       this.updateTicketDetails();
