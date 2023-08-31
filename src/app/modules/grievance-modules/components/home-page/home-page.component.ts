@@ -46,7 +46,7 @@ export class HomePageComponent implements OnInit {
   }
 
   navigateto(item: any) {
-    console.log(item);
+    //console.log(item);
     switch (item.type) {
       case 'grievances':
         this.router.navigate(['grievance/manage-tickets']);

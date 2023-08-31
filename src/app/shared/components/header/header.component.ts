@@ -21,7 +21,7 @@ export class HeaderComponent {
   if(token) {
     this.showProfileNavBar = true;
     this.userData = this.authService.getUserData();
-    console.log(this.userData);
+    //console.log(this.userData);
     this.generateUserName();
   }
  }

@@ -1,6 +1,6 @@
 <app-breadcrumb [breadcrumbItems]="breadcrumbItems"></app-breadcrumb>
 <div class="content">
-    <h3>Grievance List</h3>
+    <h3>Ticket Management</h3>
     <mat-tab-group (selectedTabChange)="onTabChange($event)" mat-align-tabs="start" [selectedIndex]="activeTabIndex">
         <mat-tab *ngFor="let tab of tabs">
             <ng-template mat-tab-label>{{ tab.name }}</ng-template>
@@ -22,7 +22,7 @@
               </form>
               
             </div>
-            <app-common-filter *ngIf="!isDataLoading" (filteredvalue)="onClickApplyFilter($event)" (resetFilterValue)="resetFilterValueData($event)"></app-common-filter>
+            <app-common-filter *ngIf="!isDataLoading && userRole === 'Secretary'" (filteredvalue)="onClickApplyFilter($event)" (resetFilterValue)="resetFilterValueData($event)"></app-common-filter>
               </div>
             <app-shared-table *ngIf="!isDataLoading" [tableColumns]="grievancesTableColumns" [tableData]="grievances" [isPageable]="true"
             [length]="length" [pageSize]="pageSize" [hidePageSize]="false" [showPageSizeOptions]="true" [showFirstLastButtons]="true" [pageIndex]="pageIndex" 
