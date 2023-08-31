@@ -19,13 +19,13 @@
                         </mat-form-field>
                         <p class="small-font">Enter the 6 digit OTP sent to your email address.</p>
                
-                        <mat-form-field appearance="outline" class="mt2">
+                        <!-- <mat-form-field appearance="outline" class="mt2">
                             <mat-label>Enter mobile OTP</mat-label>
                             <input matInput placeholder="0 - 0 - 0 - 0 - 0 - 0" formControlName="mobileOTP">
                             <mat-error *ngIf="grievanceRaiserOtpformGroup.controls['mobileOTP'].invalid">
                             </mat-error>
-                        </mat-form-field>
-                        <p class="small-font">Enter the 6 digit OTP sent to your mobile number.</p>
+                        </mat-form-field> -->
+                        <!-- <p class="small-font">Enter the 6 digit OTP sent to your mobile number.</p> -->
 
                         <button [disabled]="!grievanceRaiserOtpformGroup.valid" mat-raised-button color="primary" (click)="onSubmit()" class="fit mt2">Submit</button>
                         <button mat-button color="primary" (click)="onNoClick()" class="mt1">Go back, re-enter the details</button>
