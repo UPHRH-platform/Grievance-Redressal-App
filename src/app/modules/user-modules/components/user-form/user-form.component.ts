@@ -78,6 +78,7 @@ export class UserFormComponent implements OnInit {
       next: (res) => {
         this.userDetails = res.responseData;
         this.setUserFormData();
+        localStorage.setItem('userDetails', JSON.stringify(res.responseData));
       }
     })
   }
@@ -141,30 +142,62 @@ export class UserFormComponent implements OnInit {
     const {firstName, lastName, phone, role, status, username} = this.userForm.value;
     const {id } = this.userDetails;
     const requestObj = {
-      userName: id,
-      request: {
-        firstName,
-        lastName,
-        enabled: status === 'Active'? true: false,
+      id: this.userDetails.id,
+      keycloakId: this.userDetails.keycloakId,
+      firstName: firstName,
+      lastName: lastName,
+      email: username,
+      enabled: status === 'Active'? true: false,
+      emailVerified: true,
+      credentials: [
+        {
+            "type": "password",
+            "value": "ka09eF$299",
+            "temporary": "false"
+        }
+    ],
+    attributes: {
+      module: "grievance",
+      departmentName: this.userDetails.attributes.departmentName[0],
+      phoneNumber: phone,
+      role: role
+  }
+      // userName: id,
+      // request: {
+      //   firstName,
+      //   lastName,
+      //   enabled: status === 'Active'? true: false,
         
-        attributes: {
-          departmentName: 'grievances',
-          phoneNumber: phone,
-          Role: role
-      },
-      }
+      //   attributes: {
+      //     module: 'grievances',
+      //     departmentName: this.userDetails.attributes.departmentName[0],
+      //     phoneNumber: phone,
+      //     Role: role
+      // },
+      // }
     }
     this.isProcessing = true;
     this.userService.updateUser(requestObj).subscribe({
       next: (res) => {
+        console.log("ress ===>", res);
         this.userDetails = res.responseData;
         this.toastrService.showToastr("User updated successfully!", 'Success', 'success', '');
-        this.isProcessing= false;
+        this.isProcessing = false;
         this.navigateToHome();
      },
      error: (err) => {
-      // this.toastrService.showToastr(err, 'Error', 'error', '');
-      this.isProcessing= false;
+      // success response
+      if(err.status === 200) {
+        this.toastrService.showToastr("User updated successfully!", 'Success', 'success', '');
+        this.isProcessing = false;
+        this.getUserDetails();
+        this.navigateToHome();
+      }
+      else {
+        this.isProcessing = false;
+        this.toastrService.showToastr('Something went wrong. Please try again', 'Error', 'error', '');
+      }
+      
        // Handle the error here in case of login failure
      }}
     );
@@ -190,7 +223,7 @@ export class UserFormComponent implements OnInit {
     ],
     attributes: {
       module: 'grievance',
-      departmentName: role === 'NODALOFFICER' ? department: role === 'GRIEVANCEADMIN' || role === 'ADMIN' ? -1 : [],
+      departmentName: role === 'NODALOFFICER' ? department: role === 'GRIEVANCEADMIN' || role === 'ADMIN' ? -1 : null,
       phoneNumber: phone,
       Role: role
   },
