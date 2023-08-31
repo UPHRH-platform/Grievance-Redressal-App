@@ -112,6 +112,7 @@ export class GrievanceManagementComponent  {
   }
 
   initializeColumns(): void {
+    console.log("Hie");
     this.grievancesTableColumns = [
       {
         columnDef: 'ticketId',
@@ -284,7 +285,7 @@ export class GrievanceManagementComponent  {
           ...this.getGrievancesRequest,
           filter:{
             status:['OPEN'],
-            cc: this.grievanceType ? this.grievanceType: null,
+            cc: this.userRole == 'Secretary'? -1 : this.grievanceType ? this.grievanceType: null,
           },
           isJunk: false
         }
@@ -342,10 +343,8 @@ export class GrievanceManagementComponent  {
   }
 
   handleSortChange(e: any) {
-    //console.log(e);
     this.sortHeader = e.active;
     this.direction = e.direction;
-    //console.log(this.sortHeader);
     this.getTicketsRequestObject();
   }
 
