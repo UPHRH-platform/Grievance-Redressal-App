@@ -115,9 +115,11 @@ export class GrievanceRaiserFormComponent {
 
 
   handleFileUpload(event: any) {
+    //console.log("event =>", event);
     this.fileUploadError = '';
     for (let i = 0; i <= event.target.files.length - 1; i++) {
       let selectedFile = event.target.files[i];
+      //console.log(event.target.files);
       const extension = selectedFile.name.split('.').pop();
       const fileSize = selectedFile.size;
       const allowedExtensions = ['pdf', 'jpeg', 'jpg', 'png', 'docx'];
@@ -139,8 +141,8 @@ export class GrievanceRaiserFormComponent {
         this.fileUploadError = `Please upload ${allowedExtensions.join(', ')} files`;
       }
     }
-    console.log("Files info", this.listOfFiles);
-    console.log("Files info", this.files);
+    //console.log("Files info", this.listOfFiles);
+    //console.log("Files info", this.files);
 
   }
 
@@ -180,7 +182,7 @@ export class GrievanceRaiserFormComponent {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed', result);
+      //console.log('The dialog was closed', result);
       if(!!result) {
         if(result === 'close_success')  {
           this.onReset();
@@ -192,7 +194,7 @@ export class GrievanceRaiserFormComponent {
   }
 
   onSubmit(value: any) {
-    console.log(value)
+    //console.log(value)
     const {name, email, phone, grievanceType, userType, description } =  value;
     const firstName= name.split(" ")[0];
     const lastName= name.split(" ")[1];
@@ -217,7 +219,7 @@ export class GrievanceRaiserFormComponent {
     }
     let uploadFileRequests :Observable<ServerResponse>[] =[];
     this.files.forEach((file) => {
-      const formData: FormData = new FormData();
+      const formData = new FormData();
       formData.append('file', file); 
       uploadFileRequests.push(this.uploadService.uploadFile(formData));
     });
