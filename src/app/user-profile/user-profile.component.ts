@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from '../modules/user-modules/services/user.service';
 import { AuthService } from '../core';
 import { ToastrServiceService } from '../shared/services/toastr/toastr.service';
-import { getRole } from 'src/app/shared';
+import { BreadcrumbItem, getRole } from 'src/app/shared';
 
 @Component({
   selector: 'app-user-profile',
@@ -20,6 +20,10 @@ export class UserProfileComponent {
   isEditData:boolean = false;
   userId: string;
   userDetails: any = {};
+  breadcrumbItems: BreadcrumbItem[] = [
+    { label: 'Home', url: '/home' },
+    {label: 'Profile', url: '/user-profile'},
+  ];
 
   constructor(private router: Router,
     private route: ActivatedRoute, private userService: UserService, private authService: AuthService, private toastrService: ToastrServiceService) {
@@ -36,8 +40,8 @@ export class UserProfileComponent {
   ngOnInit(): void {
     const userData = this.authService.getUserData();
     this.userId = userData.userRepresentation.id;
-    console.log(this.userId);
-    console.log(this.authService.getUserData());
+    //console.log(this.userId);
+    //console.log(this.authService.getUserData());
     if(this.userId) {
       this.getUserDetails();
     }
@@ -145,12 +149,18 @@ export class UserProfileComponent {
 }
     this.userService.updateUser(requestObj).subscribe({
       next:(res) => {
-        console.log(res);
+        //console.log(res);
         this.toastrService.showToastr('User details updated successfully', 'Success', 'success', '');
         // this.userDetails = res.responseData;
         // getUserDetails(this.userId);
       },
       error: (err) => {
+        if(err.status === 200) {
+          this.toastrService.showToastr("User updated successfully!", 'Success', 'success', '');
+        }
+        else {
+          this.toastrService.showToastr('Something went wrong. Please try again', 'Error', 'error', '');
+        }
         // this.toastrService.showToastr(err, 'Error', 'error', '');
       }
     })

@@ -29,7 +29,7 @@ export class SharedDialogOverlayComponent {
 
 
   ongrievanceRaiserotpformSubmit(value: any) {
-    console.log(value)
+    //console.log(value)
   }
 
   ngOnInit() {
@@ -50,7 +50,7 @@ export class SharedDialogOverlayComponent {
     }
     this.otpService.generateOtp(otpRequestData).subscribe({
       next: (res) => {
-        console.log(res);
+        //console.log(res);
       },
       // error: (error) => {
       //   this.toastrService.showToastr(error, 'Error', 'error', '');

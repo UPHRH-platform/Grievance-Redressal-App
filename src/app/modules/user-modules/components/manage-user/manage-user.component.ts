@@ -43,9 +43,9 @@ export class ManageUserComponent implements OnInit {
   }
 
   goToUserDetail(userDetail?:any){
-    console.log(userDetail);
+    //console.log(userDetail);
     if(userDetail){
-      console.log(userDetail);
+      //console.log(userDetail);
       // const id = userDetail?.id;
       // keycloak id
       this.router.navigate(['/user-manage/userform'],{ queryParams: {id: userDetail.keycloakId}})
@@ -151,12 +151,12 @@ export class ManageUserComponent implements OnInit {
       page: this.pageIndex,// need to check once code is deployed.
       size: this.pageSize
       }
-      console.log(request);
+      //console.log(request);
     this.userService.getAllUsers(request).subscribe({
       next: (res) => {
         this.isDataLoading = false;
         this.users = res.responseData.result.map((user:any) => {
-          console.log("Response =>", res.responseData.result);
+          //console.log("Response =>", res.responseData.result);
           this.length = res.responseData.count;
           const { username, firstName, lastName, enabled, email, attributes, id, keycloakId} = user;
           let name = '';

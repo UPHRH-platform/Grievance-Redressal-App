@@ -68,7 +68,7 @@ export class GrievanceDetailsComponent {
     if(this.userRole === 'Grievance Nodal') {
     this.grievancesTypes = this.grievancesTypes.filter(item=> item.name !== 'Others')
     }
-    console.log(this.userRole)
+    //console.log(this.userRole)
     this.userId = this.authService.getUserData().userRepresentation.id;
     this.createForm();
     this.createAssignForm();
@@ -90,7 +90,7 @@ export class GrievanceDetailsComponent {
   }
 
   grievanceSelected(grievance: Event) {
-    console.log(grievance)
+    //console.log(grievance)
   }
 
   createAssignForm(){
@@ -125,7 +125,7 @@ export class GrievanceDetailsComponent {
               selectedFile.name.concat(this.formatBytes(selectedFile.size))
             );
           } else {
-            console.log('file already exists');
+            //console.log('file already exists');
           }
         } else {
           this.fileUploadError = 'Please upload files with size less than 2MB';
@@ -178,7 +178,7 @@ export class GrievanceDetailsComponent {
           ...this.ticketUpdateRequest,
           assigneeTicketAttachment: attachmentUrls
         }
-        console.log(request);
+        //console.log(request);
         // Call the createTicket API with updated ticketDetails
         return this.grievanceServiceService.updateTicket(request);
       })
@@ -198,7 +198,7 @@ export class GrievanceDetailsComponent {
     this.ticketDetails = {};
     this.grievanceServiceService.getTicketsById(this.id).subscribe({
       next: (res) => {
-        console.log(res.responseData);
+        //console.log(res.responseData);
         this.ticketDetails = res.responseData;
           this.configService.dropDownConfig.GRIEVANCE_TYPES.map((grievance: any) => {
             if(this.ticketDetails.assignedToId === grievance.id) {
@@ -214,7 +214,7 @@ export class GrievanceDetailsComponent {
   }
 
   handleClick(params:any, data?:any) {
-    console.log('data.value',data)
+    //console.log('data.value',data)
   // const {attachments, description} = value
     this.ticketUpdateRequest = {
       requestedBy: this.userId,
@@ -288,10 +288,10 @@ export class GrievanceDetailsComponent {
   }
 
   updateTicketDetails() {
-    console.log('this.ticketUpdateRequest',this.ticketUpdateRequest)
+    //console.log('this.ticketUpdateRequest',this.ticketUpdateRequest)
     this.grievanceServiceService.updateTicket(this.ticketUpdateRequest).subscribe({
       next: (res) =>{
-        console.log(res)
+        //console.log(res)
         this.getTicketById();
         this.toastrService.showToastr("Ticket updated successfully!", 'Success', 'success', '');
       },error: (err) =>{

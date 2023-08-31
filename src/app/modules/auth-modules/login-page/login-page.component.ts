@@ -67,14 +67,14 @@ isOtpForm:boolean = false;
      this.isOtpForm = true
      this.authService.generateOTP(this.loginForm.value.emailId).subscribe({
       next: (res) => {
-        console.log(res);
+        //console.log(res);
       }
      })
     }
     else{
       alert('please enter emailId')
     }
-    console.log('getOtp',this.loginForm)
+    //console.log('getOtp',this.loginForm)
   }
 
   signInWithOtp(){
