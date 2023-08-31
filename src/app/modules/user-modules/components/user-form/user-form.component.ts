@@ -249,7 +249,9 @@ export class UserFormComponent implements OnInit {
         this.navigateToHome();
      },
      error: (err) => {
-      this.toastrService.showToastr(err, 'Error', 'error', '');
+      if(err.status !== 200) {
+      this.toastrService.showToastr('Something went wrong. Please try again', 'Error', 'error', '');
+      }
       this.isProcessing= false;
        // Handle the error here in case of login failure
      }}
