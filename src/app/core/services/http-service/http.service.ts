@@ -44,7 +44,7 @@ export class HttpService {
    * for making post api calls
    * @param {RequestParam} requestParam interface
   */
- uploadFilepost(requestParam: RequestParam): Observable<ServerResponse> {
+ uploadFilepost(requestParam: RequestParam): Observable<any> {
   const httpOptions: HttpOptions = {
     headers: requestParam.header,
     params: requestParam.param

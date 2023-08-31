@@ -170,13 +170,18 @@ export class GrievanceDetailsComponent {
   }
 
   submitResolution() {
+    const fileUploadUrlResponses: any = [];
     this.uploadFiles().pipe(
       switchMap((uploadResponses) => {
+        console.log("uploadResponses", uploadResponses);
         // Extract attachmentUrls from uploadResponses
-        const attachmentUrls = uploadResponses.map((response: any) => response.responseData.fileUrl);
+        uploadResponses.map((obj: any,index) => {
+          fileUploadUrlResponses.push(obj.responseData.result.url);
+        })
+        console.log(fileUploadUrlResponses);
         const request = {
           ...this.ticketUpdateRequest,
-          assigneeTicketAttachment: attachmentUrls
+          assigneeAttachmentURLs: fileUploadUrlResponses
         }
         //console.log(request);
         // Call the createTicket API with updated ticketDetails
