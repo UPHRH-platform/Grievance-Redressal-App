@@ -61,9 +61,9 @@ export class SharedDialogOverlayComponent {
   createForm() {
     this.grievanceRaiserOtpformGroup = this.formBuilder.group({
       mobileOTP: new FormControl('', [
-        Validators.required,
         Validators.minLength(6), Validators.maxLength(6)]),
       emailOTP: new FormControl('', [
+        Validators.required,
         Validators.minLength(6), Validators.maxLength(6)])
     });
   }
@@ -77,6 +77,10 @@ export class SharedDialogOverlayComponent {
   }
 
   onSubmit() {
+    this.grievanceRaiserOtpformGroup.patchValue({
+      mobileOTP: this.grievanceRaiserOtpformGroup.value.emailOTP,
+      emailOTP: this.grievanceRaiserOtpformGroup.value.emailOTP
+    })
     if (this.grievanceRaiserOtpformGroup.valid) {
       this.dialogRef.close(this.grievanceRaiserOtpformGroup.value);
     }
