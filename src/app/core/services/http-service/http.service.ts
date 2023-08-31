@@ -40,6 +40,30 @@ export class HttpService {
     }));
 }
 
+ /**
+   * for making post api calls
+   * @param {RequestParam} requestParam interface
+  */
+ uploadFilepost(requestParam: RequestParam): Observable<ServerResponse> {
+  const httpOptions: HttpOptions = {
+    headers: requestParam.header,
+    params: requestParam.param
+  };
+  return this.http.post<Response>(requestParam.url, requestParam.data, httpOptions).pipe(
+    mergeMap((data: Response) => {
+      if (data.status && data.status !== 200) {
+        return throwError(() => new Error(data.error));
+      }
+      const serverRes: ServerResponse ={
+        statusInfo: {statusCode: 200, statusMessage: "success"},
+        responseData: data.body? data.body : data
+      }
+      return observableOf(serverRes);
+    }));
+}
+
+
+
    /**
    * for making post api calls
    * @param {RequestParam} requestParam interface
@@ -148,4 +172,5 @@ export class HttpService {
         return { ...default_headers };
       }
     }
+
 }
