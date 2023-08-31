@@ -69,11 +69,13 @@ export class GrievanceManagementComponent  {
     if(userData !== undefined) {
       grievanceTypeName = JSON.parse(userData).attributes?.departmentName[0];
     }
+    if(grievanceTypeName !== undefined) {
     this.grievancesTypes.map((obj, index) => {
       if(grievanceTypeName.toLowerCase() === obj.name.toLowerCase()) {
         this.grievanceType = obj.id;
       }
     })
+  }
     // this.grievanceType = this.authService.getUserData().userRepresentation.
     this.route.queryParams.subscribe((param) => {
       if(!!param){
@@ -310,7 +312,7 @@ export class GrievanceManagementComponent  {
         if(this.grievances.length > 0) {
         this.grievances.map((obj: any) => {
           this.grievancesTypes.map((grievanceType, index) => {
-            if(obj.assignedToId === grievanceType.id) {
+            if(obj.assignedToId == grievanceType.id) {
               obj.assignedTo = grievanceType.name;
             }
           })

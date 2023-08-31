@@ -6,7 +6,7 @@
             <ng-template mat-tab-label>{{ tab.name }}</ng-template>
             <app-shared-skeleton-loading [isLoading]="isDataLoading">
             </app-shared-skeleton-loading>
-            <div style="display: flex; flex-direction: row;">
+            <div style="display: flex; flex-direction: row;" *ngIf="!isDataLoading">
                 <div>
                 <form [formGroup]="searchForm">
                 <mat-form-field>
@@ -22,7 +22,7 @@
               </form>
               
             </div>
-            <app-common-filter (filteredvalue)="onClickApplyFilter($event)" (resetFilterValue)="resetFilterValueData($event)"></app-common-filter>
+            <app-common-filter *ngIf="!isDataLoading" (filteredvalue)="onClickApplyFilter($event)" (resetFilterValue)="resetFilterValueData($event)"></app-common-filter>
               </div>
             <app-shared-table *ngIf="!isDataLoading" [tableColumns]="grievancesTableColumns" [tableData]="grievances" [isPageable]="true"
             [length]="length" [pageSize]="pageSize" [hidePageSize]="false" [showPageSizeOptions]="true" [showFirstLastButtons]="true" [pageIndex]="pageIndex" 
