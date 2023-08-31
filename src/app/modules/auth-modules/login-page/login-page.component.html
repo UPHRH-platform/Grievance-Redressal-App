@@ -66,7 +66,7 @@
                             <h4>OTP</h4>
                             <mat-form-field appearance="outline" class="text-class">
                                 <mat-label>OTP</mat-label>
-                                <input  matInput placeholder="0 - 0 - 0 - 0 - 0 - 0" formControlName="otp">
+                                <input type="text" maxlength="6" matInput placeholder="0 - 0 - 0 - 0 - 0 - 0" formControlName="otp" (keyup)="getOTPLength()">
                                 <mat-hint style="color: gray;">Enter the 6 digit OTP sent to your email address</mat-hint>
                             </mat-form-field>
                         </div>

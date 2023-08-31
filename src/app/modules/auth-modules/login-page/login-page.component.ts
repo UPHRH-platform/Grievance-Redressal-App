@@ -28,6 +28,8 @@ isOtpForm:boolean = false;
     })
   }
 
+ 
+
   ngOnInit() {
     // Check if the user is already logged in
     if (this.authService.isLoggedIn()) {
@@ -49,6 +51,13 @@ isOtpForm:boolean = false;
         // Handle the error here in case of login failure
       }
     });
+  }
+
+  getOTPLength() {
+    console.log(this.otpForm.value);
+    if(this.otpForm.value) {
+      
+    }
   }
 
   getAllRoles(){
@@ -83,6 +92,7 @@ isOtpForm:boolean = false;
 
   navigateBackToEmail(){
     this.isOtpForm = false;
+    this.otpForm.reset();
   }
 
   navigateBackToLoginEmailPassword(){
@@ -96,6 +106,11 @@ isOtpForm:boolean = false;
       this.getAllRoles();
       this.getUserDetails();
        this.router.navigate(['home']);
+    },
+    error: (err) => {
+      if(err.status !== 200) {
+        this.toastrService.showToastr('Something went wrong. Please try again', 'Error', 'error', '');
+      }
     }
    })
   }
