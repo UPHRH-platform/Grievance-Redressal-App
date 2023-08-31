@@ -110,27 +110,14 @@ export class UserProfileComponent {
    }
 
   onSubmit() {
-    const {firstName, lastName, phoneNumber, username} = this.userForm.value;
+    const {firstName, lastName, phoneNumber, emailId} = this.userForm.value;
     const {id, attributes, enabled } = this.userDetails;
-    // const requestObj = {
-    //   userName: id,
-    //   request: {
-    //     firstName,
-    //     lastName,
-    //     enabled: enabled,
-    //     attributes: {
-    //       departmentName: attributes.departmentNAme[0],
-    //       phoneNumber: phoneNumber,
-    //       Role: attributes.Role[0]
-    //   },
-    //   }
-    // }
     const requestObj = {
       id: this.userDetails.id,
       keycloakId: this.userDetails.keycloakId,
       firstName: firstName,
       lastName: lastName,
-      email: username,
+      email: emailId,
       enabled: this.userDetails.enabled,
       emailVerified: true,
       credentials: [
