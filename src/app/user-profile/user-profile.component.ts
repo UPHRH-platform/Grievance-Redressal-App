@@ -118,6 +118,7 @@ export class UserProfileComponent {
       firstName: firstName,
       lastName: lastName,
       email: emailId,
+      username: emailId,
       enabled: this.userDetails.enabled,
       emailVerified: true,
       credentials: [
@@ -130,7 +131,7 @@ export class UserProfileComponent {
     attributes: {
       module: "grievance",
       departmentName: this.userDetails.attributes.departmentName[0],
-      phoneNumber: this.userDetails.attributes.phoneNumber[0],
+      phoneNumber: phoneNumber,
       role: this.userDetails.attributes.Role[0]
   }
 }
