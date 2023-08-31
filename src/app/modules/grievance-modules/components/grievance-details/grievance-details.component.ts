@@ -85,7 +85,7 @@ export class GrievanceDetailsComponent {
   createForm() {
     this.grievanceResolutionForm = this.formBuilder.group({
       description: new FormControl('', [Validators.required]),
-      attachments: new FormControl([], [Validators.required])
+      attachments: new FormControl([])
     })
   }
 
