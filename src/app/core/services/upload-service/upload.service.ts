@@ -26,6 +26,6 @@ export class UploadService extends HttpService {
         'Accept': '*/*',
       }
     }
-   return this.post(reqParam);
+   return this.uploadFilepost(reqParam);
   }
 }
