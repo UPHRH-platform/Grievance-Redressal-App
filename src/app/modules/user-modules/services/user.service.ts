@@ -30,13 +30,13 @@ export class UserService extends HttpService{
 
   updateUser(userDetails: any): Observable<ServerResponse>  {
     const  reqParam: RequestParam = { 
-      url: this.userManagementbaseURL + this.configService.urlConFig.URLS.USER.UPDATE_USER,
-      header: {
-        'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJSR3RkMkZzeG1EMnJER3I4dkJHZ0N6MVhyalhZUzBSSyJ9.kMLn6177rvY53i0RAN3SPD5m3ctwaLb32pMYQ65nBdA',
-      },
+      url: this.baseUrl + this.configService.urlConFig.URLS.USER.UPDATE_USER,
+      // header: {
+      //   'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJSR3RkMkZzeG1EMnJER3I4dkJHZ0N6MVhyalhZUzBSSyJ9.kMLn6177rvY53i0RAN3SPD5m3ctwaLb32pMYQ65nBdA',
+      // },
       data: userDetails
     }
-    return this.put(reqParam);
+    return this.post(reqParam);
   }
 
   getUserDetails(id: string): Observable<ServerResponse> {

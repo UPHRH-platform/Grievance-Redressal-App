@@ -50,6 +50,7 @@ export class UserProfileComponent {
         this.userDetails = res.responseData;
         if(this.userDetails) {
           this.setUserFormData();
+          localStorage.setItem('userDetails', JSON.stringify(res.responseData));
         }
       },
       error: (err)=> {
@@ -107,19 +108,41 @@ export class UserProfileComponent {
   onSubmit() {
     const {firstName, lastName, phoneNumber, username} = this.userForm.value;
     const {id, attributes, enabled } = this.userDetails;
+    // const requestObj = {
+    //   userName: id,
+    //   request: {
+    //     firstName,
+    //     lastName,
+    //     enabled: enabled,
+    //     attributes: {
+    //       departmentName: attributes.departmentNAme[0],
+    //       phoneNumber: phoneNumber,
+    //       Role: attributes.Role[0]
+    //   },
+    //   }
+    // }
     const requestObj = {
-      userName: id,
-      request: {
-        firstName,
-        lastName,
-        enabled: enabled,
-        attributes: {
-          departmentName: attributes.departmentNAme[0],
-          phoneNumber: phoneNumber,
-          Role: attributes.Role[0]
-      },
-      }
-    }
+      id: this.userDetails.id,
+      keycloakId: this.userDetails.keycloakId,
+      firstName: firstName,
+      lastName: lastName,
+      email: username,
+      enabled: this.userDetails.enabled,
+      emailVerified: true,
+      credentials: [
+        {
+            "type": "password",
+            "value": "ka09eF$299",
+            "temporary": "false"
+        }
+    ],
+    attributes: {
+      module: "grievance",
+      departmentName: this.userDetails.attributes.departmentName[0],
+      phoneNumber: this.userDetails.attributes.phoneNumber[0],
+      role: this.userDetails.attributes.Role[0]
+  }
+}
     this.userService.updateUser(requestObj).subscribe({
       next:(res) => {
         console.log(res);
