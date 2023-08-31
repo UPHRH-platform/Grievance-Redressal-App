@@ -60,17 +60,22 @@ export class GrievanceManagementComponent  {
   activeTabIndex: number;
 
   ngOnInit(): void {
-    let userData: any;
-    userData = localStorage.getItem('userDetails');
-    if(userData !== undefined) {
-      this.grievanceType = JSON.parse(userData).attributes?.departmentName[0];
-    }
     this.grievancesTypes = this.configService.dropDownConfig.GRIEVANCE_TYPES;
     this.userRole = this.authService.getUserRoles()[0];
     this.userId = this.authService.getUserData().userRepresentation.id;
+    let userData: any;
+    userData = localStorage.getItem('userDetails');
+    let grievanceTypeName: any;
+    if(userData !== undefined) {
+      grievanceTypeName = JSON.parse(userData).attributes?.departmentName[0];
+    }
+    this.grievancesTypes.map((obj, index) => {
+      if(grievanceTypeName.toLowerCase() === obj.name.toLowerCase()) {
+        this.grievanceType = obj.id;
+      }
+    })
     // this.grievanceType = this.authService.getUserData().userRepresentation.
     this.route.queryParams.subscribe((param) => {
-      console.log("param ====>", param);
       if(!!param){
         this.selectedTabName = param['tabName'];
         console.log("tabNameeeeee", this.selectedTabName);
