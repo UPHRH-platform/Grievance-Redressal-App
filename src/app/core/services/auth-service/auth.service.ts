@@ -78,7 +78,7 @@ export class AuthService extends HttpService{
     let role = '';
     if (token) {
       const userData= this.getUserData();
-      const userRole = userData.userRepresentation.attributes.Role[0];
+      const userRole = userData.userRepresentation.attributes.role[0];
       switch(userRole) {
         case 'SUPERADMIN':
           role= this.configService.rolesConfig.ROLES.SUPERADMIN;
