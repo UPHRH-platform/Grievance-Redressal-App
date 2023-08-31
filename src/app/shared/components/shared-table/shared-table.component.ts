@@ -111,7 +111,7 @@ export class SharedTableComponent implements AfterViewInit {
     applyFilter(filterValue: string) {
       if(this.isClient){
         this.dataSource.filter = filterValue.trim().toLowerCase();
-        console.log(this.dataSource.filter);
+        //console.log(this.dataSource.filter);
         if (this.dataSource.paginator) {
           this.dataSource.paginator.firstPage();
         }
@@ -133,7 +133,7 @@ export class SharedTableComponent implements AfterViewInit {
     }
 
     onRowClick(e: Event){
-      console.log(e);
+      //console.log(e);
     }
 
     resetFilter(){
@@ -173,7 +173,7 @@ export class SharedTableComponent implements AfterViewInit {
      grievanceSelected(e:any){
      }
      ApplyFilter(value:any){
-      console.log('filtered value',value)
+      //console.log('filtered value',value)
       this.filteredvalue.emit(value)
 
      }

@@ -56,11 +56,11 @@ export class UserFormComponent implements OnInit {
     this.userForm.patchValue({
       departmentName: null
     })
-    console.log(this.route);
+    //console.log(this.route);
     this.route.queryParams.subscribe((param)=>{
-      console.log(param['id']);
+      //console.log(param['id']);
       this.userId = param['id'];
-      console.log(this.userId);
+      //console.log(this.userId);
       if(this.userId !== undefined) {
         this.isEditUser = true;
         this.getUserDetails();
@@ -86,21 +86,33 @@ export class UserFormComponent implements OnInit {
 
   setUserFormData(){
     let firstName = '', lastName = '';
-    console.log(this.userDetails);
+    //console.log(this.userDetails);
     if((this.userDetails.firstName && this.userDetails.firstName !== "") && (this.userDetails.lastName && this.userDetails.lastName !== "")) {
       firstName = this.userDetails.firstName,
       lastName = this.userDetails.lastName
     };
-    this.userForm.setValue({
+    this.getDepartmentId();
+    this.userForm.patchValue({
       firstName: firstName,
       lastName: lastName,
       username: this.userDetails?.username,
-      phone:this.userDetails?.attributes.phoneNumber,
+      phone:this.userDetails?.attributes.phoneNumber[0],
       role:this.userDetails?.attributes.Role[0],
       status: this.userDetails?.enabled === true? 'Active' : 'Inactive',
-      department: this.userDetails?.attributes?.departmentName[0] ? this.userDetails?.attributes.departmentName[0] : null
+      // department: this.userDetails?.attributes?.departmentName[0] ? this.userDetails?.attributes.departmentName[0] : null
     })
-    console.log(this.userForm.value);
+  }
+
+  getDepartmentId() {
+    this.grievanceTypes.map((obj:any) => {
+      if(this.userDetails?.attributes?.departmentName[0]) {
+      if(this.userDetails?.attributes?.departmentName[0].toLowerCase() == obj.name.toLowerCase()) {
+        this.userForm.patchValue({
+          department: obj.id
+        })
+      }
+      }
+    })
   }
 
   get firstName(){
@@ -131,7 +143,7 @@ export class UserFormComponent implements OnInit {
   }
 
   onSubmit(){
-    console.log("user details",  this.userForm.value);
+    //console.log("user details",  this.userForm.value);
     if( this.isEditUser) {
       this.updateUser();
     } else {
@@ -140,7 +152,7 @@ export class UserFormComponent implements OnInit {
   }
   
   updateUser() {
-    const {firstName, lastName, phone, role, status, username} = this.userForm.value;
+    const {firstName, lastName, phone, role, status, username, department} = this.userForm.value;
     const {id } = this.userDetails;
     const requestObj = {
       id: this.userDetails.id,
@@ -159,7 +171,7 @@ export class UserFormComponent implements OnInit {
     ],
     attributes: {
       module: "grievance",
-      departmentName: this.userDetails.attributes.departmentName[0],
+      departmentName: department,
       phoneNumber: phone,
       role: role
   }
@@ -205,7 +217,7 @@ export class UserFormComponent implements OnInit {
 
   addUser() {
     const {firstName, lastName, phone, role, status, username, department} = this.userForm.value;
-    console.log(this.userForm.value);
+    //console.log(this.userForm.value);
     const enabled = status === 'Active'? true : false;
     const requestObj = {
       firstName,
@@ -245,7 +257,7 @@ export class UserFormComponent implements OnInit {
   }
 
   getRoleChange(event: any) {
-    console.log(event.value);
+    //console.log(event.value);
     if(event.value === 'NODALOFFICER') {
       this.userForm.get('department')?.addValidators(Validators.required);
     }

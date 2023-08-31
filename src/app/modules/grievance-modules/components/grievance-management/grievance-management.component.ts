@@ -58,38 +58,25 @@ export class GrievanceManagementComponent  {
   direction: string = 'desc';
   userId: string;
   activeTabIndex: number;
+  grievanceTypeName: any;
 
   ngOnInit(): void {
     this.grievancesTypes = this.configService.dropDownConfig.GRIEVANCE_TYPES;
     this.userRole = this.authService.getUserRoles()[0];
     this.userId = this.authService.getUserData().userRepresentation.id;
-    let userData: any;
-    userData = localStorage.getItem('userDetails');
-    let grievanceTypeName: any;
-    if(userData !== undefined) {
-      grievanceTypeName = JSON.parse(userData).attributes?.departmentName[0];
-    }
-    if(grievanceTypeName !== undefined) {
-    this.grievancesTypes.map((obj, index) => {
-      if(grievanceTypeName.toLowerCase() === obj.name.toLowerCase()) {
-        this.grievanceType = obj.id;
-      }
-    })
-  }
-    // this.grievanceType = this.authService.getUserData().userRepresentation.
     this.route.queryParams.subscribe((param) => {
       if(!!param){
         this.selectedTabName = param['tabName'];
-        console.log("tabNameeeeee", this.selectedTabName);
         if(this.tabs.length) {
           if(!!this.selectedTabName) {
             this.selectedTab = this.tabs.find(tab => tab.name === this.selectedTabName);
-            console.log("inside onInit",this.selectedTab);
+            //console.log("inside onInit",this.selectedTab);
             this.activeTabIndex= this.tabs.findIndex(tab => tab.name === this.selectedTabName);
           }
         } 
       }
     });
+    //console.log("line 107", this.grievanceType);
     this.initializeTabs();
   }
 
@@ -108,16 +95,20 @@ export class GrievanceManagementComponent  {
     }
     if(!!this.selectedTabName) {
       this.selectedTab = this.tabs.find(tab => tab.name === this.selectedTabName);
-      console.log("inside initializeTabs", this.selectedTab);
+      //console.log("inside initializeTabs", this.selectedTab);
       this.activeTabIndex= this.tabs.findIndex(tab => tab.name === this.selectedTabName);
     } else {
+      //console.log("Entered here");
       this.selectedTab =this.tabs[0];
       this.activeTabIndex=0;
     }
     //Initialize column as per user Role
+    //console.log("line 134", this.grievanceType);
     this.initializeColumns();
     //Fetch grievances as per user  role
     this.getTicketsRequestObject();
+    //console.log("line 138", this.grievanceType);
+  
   }
 
   initializeColumns(): void {
@@ -178,7 +169,7 @@ export class GrievanceManagementComponent  {
     this.resetFields = true;
     // debugger;
     this.grievanceService.resetFilterValue.next(this.resetFields);
-    this.resetFilterValueData('');
+    this.resetFilterValueData('');  
     // Here  we  have userrole and tab index with these 2 we know we need to fetch data for which tab of which user role so we pass relevant payload in get grievance service
 
     // this.getgrievances();
@@ -215,13 +206,23 @@ export class GrievanceManagementComponent  {
   onClickItem(e: any) {
     e.tabName= this.selectedTab.name
     let id = parseInt(e?.ticketId)
+    //console.log("Line 251", this.grievanceType);
     this.router.navigate(['/grievance/manage-tickets/'+ id],{ queryParams: {tabName:this.selectedTab.name}});
-    // this.router.navigate(['/grievance',  2 ]);
-   // this.router.navigate(['/grievance', e.id]);
   }
 
   getTicketsRequestObject() {
-    console.log(this.selectedTab);
+    let userData: any;
+    userData = localStorage.getItem('userDetails');
+    if(userData !== undefined) {
+      this.grievanceTypeName = JSON.parse(userData).attributes?.departmentName[0];
+    }
+    if(this.grievanceTypeName !== undefined) {
+    this.grievancesTypes.map((obj, index) => {
+      if(this.grievanceTypeName.toLowerCase() === obj.name.toLowerCase()) {
+        this.grievanceType = obj.id;
+      }
+    })
+  }
     this.getGrievancesRequest = {
       searchKeyword: this.searchParams,
        filter: {
@@ -305,7 +306,7 @@ export class GrievanceManagementComponent  {
     this.isDataLoading = true;
     this.grievanceService.getAllTickets(this.getGrievancesRequest).subscribe({
       next: (res) => {
-        console.log(res);
+        //console.log(res);
         this.isDataLoading = false;
         this.length = res.responseData.count;
         this.grievances = res.responseData.results;
@@ -336,10 +337,10 @@ export class GrievanceManagementComponent  {
   }
 
   handleSortChange(e: any) {
-    console.log(e);
+    //console.log(e);
     this.sortHeader = e.active;
     this.direction = e.direction;
-    console.log(this.sortHeader);
+    //console.log(this.sortHeader);
     this.getTicketsRequestObject();
   }
 
