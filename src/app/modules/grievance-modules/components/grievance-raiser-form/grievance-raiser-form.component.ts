@@ -217,7 +217,7 @@ export class GrievanceRaiserFormComponent {
       // Return an observable that emits an empty array
       return of([]);
     }
-    let uploadFileRequests :Observable<ServerResponse>[] =[];
+    let uploadFileRequests :Observable<any>[] =[];
     this.files.forEach((file) => {
       const formData = new FormData();
       formData.append('file', file); 
@@ -247,15 +247,18 @@ export class GrievanceRaiserFormComponent {
 
   createTicket(otpDetails: any) {
     this.submitted = true;
+    const fileUploadUrlResponses: any = [];
     const ticketDetails = { ...this.ticketDetails, otp: otpDetails?.mobileOTP };
     delete ticketDetails.name;
   
     // Call uploadFiles to upload attachments
     this.uploadFiles().pipe(
       switchMap((uploadResponses) => {
+        uploadResponses.map((obj: any,index) => {
+          fileUploadUrlResponses.push(obj.responseData.result.url);
+        })
         // Extract attachmentUrls from uploadResponses
-        const attachmentUrls = uploadResponses.map((response: any) => response.responseData.fileUrl);
-  
+        const attachmentUrls = fileUploadUrlResponses;
         // Add attachmentUrls to ticketDetails
         ticketDetails.attachmentUrls = attachmentUrls;
   
