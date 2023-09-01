@@ -117,7 +117,7 @@ export class UserProfileComponent {
       keycloakId: this.userDetails.keycloakId,
       firstName: firstName,
       lastName: lastName,
-      email: emailId,
+      email: this.userDetails.username,
       username: this.userDetails.username,
       enabled: this.userDetails.enabled,
       emailVerified: true,
