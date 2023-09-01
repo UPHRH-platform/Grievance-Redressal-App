@@ -118,7 +118,7 @@ export class UserProfileComponent {
       firstName: firstName,
       lastName: lastName,
       email: emailId,
-      username: emailId,
+      username: this.userDetails.username,
       enabled: this.userDetails.enabled,
       emailVerified: true,
       credentials: [
