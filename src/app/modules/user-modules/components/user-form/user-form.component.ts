@@ -91,29 +91,29 @@ export class UserFormComponent implements OnInit {
       firstName = this.userDetails.firstName,
       lastName = this.userDetails.lastName
     };
-    this.getDepartmentId();
-    this.userForm.patchValue({
+    // this.getDepartmentId();
+    this.userForm.setValue({
       firstName: firstName,
       lastName: lastName,
       username: this.userDetails?.username,
       phone:this.userDetails?.attributes.phoneNumber[0],
       role:this.userDetails?.attributes.Role[0],
       status: this.userDetails?.enabled === true? 'Active' : 'Inactive',
-      // department: this.userDetails?.attributes?.departmentName[0] ? this.userDetails?.attributes.departmentName[0] : null
+      department: this.userDetails?.attributes?.departmentName[0] ? this.userDetails?.attributes.departmentName[0] : null
     })
   }
 
-  getDepartmentId() {
-    this.grievanceTypes.map((obj:any) => {
-      if(this.userDetails?.attributes?.departmentName[0]) {
-      if(this.userDetails?.attributes?.departmentName[0].toLowerCase() == obj.name.toLowerCase()) {
-        this.userForm.patchValue({
-          department: obj.id
-        })
-      }
-      }
-    })
-  }
+  // getDepartmentId() {
+  //   this.grievanceTypes.map((obj:any) => {
+  //     if(this.userDetails?.attributes?.departmentName[0]) {
+  //     if(this.userDetails?.attributes?.departmentName[0].toLowerCase() == obj.name.toLowerCase()) {
+  //       this.userForm.patchValue({
+  //         department: obj.id
+  //       })
+  //     }
+  //     }
+  //   })
+  // }
 
   get firstName(){
     return this.userForm.get('firstName')
