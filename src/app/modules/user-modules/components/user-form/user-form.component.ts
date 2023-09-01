@@ -160,6 +160,7 @@ export class UserFormComponent implements OnInit {
       firstName: firstName,
       lastName: lastName,
       email: username,
+      username: username,
       enabled: status === 'Active'? true: false,
       emailVerified: true,
       credentials: [

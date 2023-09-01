@@ -30,7 +30,7 @@
                         <h4>Last Name</h4>
                         <mat-form-field appearance="outline" class="text-class">
                             <mat-label>Last name</mat-label>
-                            <input matInput placeholder="Enter last name" formControlName="lastName" required>
+                            <input matInput placeholder="Enter last name" formControlName="lastName">
                             <mat-error *ngIf="lastName && lastName.hasError('required') && lastName.touched">please enter last name</mat-error>
                             <mat-error *ngIf="lastName && lastName.hasError('pattern')" >Name should contain characters within a-z/A-Z only</mat-error>
 
@@ -43,9 +43,8 @@
                         <h4>Email Id</h4>
                         <mat-form-field appearance="outline" class="text-class">
                             <mat-label>Email id</mat-label>
-                            <input matInput placeholder="pat@example.com" formControlName="username" required>
+                            <input matInput placeholder="pat@example.com" [readonly]="isEditUser? true: false" formControlName="username" required>
                             <mat-error *ngIf="username && username.invalid && username.touched">please Enter email Id</mat-error>
-
                           </mat-form-field>
                     </div>
                     <div class="first-container">
