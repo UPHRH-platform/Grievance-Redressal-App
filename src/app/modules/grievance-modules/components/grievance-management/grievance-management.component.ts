@@ -167,6 +167,8 @@ export class GrievanceManagementComponent  {
     this.router.navigate(['/grievance/manage-tickets/'],{ queryParams: {tabName: this.selectedTab.name}});
     this.searchParams = "";
     this.resetFields = true;
+    this.sortHeader =  'createdDateTS';
+    this.direction = 'desc';
     // debugger;
     this.grievanceService.resetFilterValue.next(this.resetFields);
     this.resetFilterValueData('');  
