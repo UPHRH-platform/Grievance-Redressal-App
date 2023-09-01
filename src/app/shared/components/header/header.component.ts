@@ -44,4 +44,8 @@ export class HeaderComponent {
   this.router.navigate(['/']);
  }
 
+ navigateToResetPasswordPage() {
+  this.router.navigate(['/reset-password']);
+ }
+
 }

@@ -42,22 +42,23 @@ isOtpForm:boolean = false;
     const {emailId, password} = this.loginForm.value;
     this.authService.login(emailId, password).subscribe({
       next: (res) => {
-       this.authService.saveUserData(res.responseData);
-       this.getAllRoles();
-       this.router.navigate(['home']);
+        console.log("res =>", res);
+        this.authService.saveUserData(res.responseData);
+        this.getAllRoles();
+       this.router.navigate(['home'])
       },
       error: (err) => {
+        if(err.status === 200) {
+       this.getAllRoles();
+       this.router.navigate(['home']);
+        }
+        else {
+
+        }
         this.toastrService.showToastr(err, 'Error', 'error', '');
         // Handle the error here in case of login failure
       }
     });
-  }
-
-  getOTPLength() {
-    console.log(this.otpForm.value);
-    if(this.otpForm.value) {
-      
-    }
   }
 
   getAllRoles(){
@@ -127,6 +128,5 @@ isOtpForm:boolean = false;
 
   navigateToGrievanceRaiserPage() {
     this.router.navigate(['/new-ticket']);
-  }
-
+ }
 }
