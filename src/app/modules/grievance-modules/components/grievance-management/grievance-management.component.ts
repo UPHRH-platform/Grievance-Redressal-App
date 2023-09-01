@@ -112,7 +112,6 @@ export class GrievanceManagementComponent  {
   }
 
   initializeColumns(): void {
-    console.log("Hie");
     this.grievancesTableColumns = [
       {
         columnDef: 'ticketId',
@@ -241,7 +240,7 @@ export class GrievanceManagementComponent  {
           ...this.getGrievancesRequest,
           filter:{
             status:['OPEN'],
-            cc: this.grievanceType ? this.grievanceType: null
+            cc: this.userRole == 'Secretary'? 0 : this.grievanceType ? this.grievanceType: null
           },
           isJunk: false
         }
@@ -251,7 +250,7 @@ export class GrievanceManagementComponent  {
         ...this.getGrievancesRequest,
         filter:{
           status:['CLOSED'],
-          cc: this.grievanceType ? this.grievanceType: null,
+          cc: this.userRole == 'Secretary'? 0: this.grievanceType ? this.grievanceType: null,
         },
         isJunk: false
       }
@@ -328,7 +327,8 @@ export class GrievanceManagementComponent  {
       },
       error: (err) => {
         // Handle the error here in case of Api failure
-        this.toastrService.showToastr(err, 'Error', 'error', '');
+        this.toastrService.showToastr('Something went wrong. Please try again', 'Error', 'error', '');
+        this.isDataLoading = false;
       }
     })
     
@@ -338,7 +338,7 @@ export class GrievanceManagementComponent  {
       this.pageIndex = event.pageIndex;
       this.pageSize = event.pageSize;
       this.length = event.length;
-      // this.getTicketsRequestObject();
+      this.getTicketsRequestObject();
       // call API here
   }
 
