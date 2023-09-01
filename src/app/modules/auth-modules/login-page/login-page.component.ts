@@ -42,7 +42,6 @@ isOtpForm:boolean = false;
     const {emailId, password} = this.loginForm.value;
     this.authService.login(emailId, password).subscribe({
       next: (res) => {
-        console.log("res =>", res);
         this.authService.saveUserData(res.responseData);
         this.getAllRoles();
        this.router.navigate(['home'])
