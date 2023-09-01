@@ -240,7 +240,7 @@ export class GrievanceManagementComponent  {
           ...this.getGrievancesRequest,
           filter:{
             status:['OPEN'],
-            cc: this.userRole == 'Secretary'? 0 : this.grievanceType ? this.grievanceType: null
+            cc: (this.userRole == 'Secretary' || this.userRole === 'Grievance Nodal')? 0 : this.grievanceType ? this.grievanceType: null
           },
           isJunk: false
         }
@@ -250,7 +250,7 @@ export class GrievanceManagementComponent  {
         ...this.getGrievancesRequest,
         filter:{
           status:['CLOSED'],
-          cc: this.userRole == 'Secretary'? 0: this.grievanceType ? this.grievanceType: null,
+          cc: (this.userRole == 'Secretary' || this.userRole === 'Grievance Nodal')? 0: this.grievanceType ? this.grievanceType: null,
         },
         isJunk: false
       }
@@ -284,7 +284,7 @@ export class GrievanceManagementComponent  {
           ...this.getGrievancesRequest,
           filter:{
             status:['OPEN'],
-            cc: this.userRole == 'Secretary'? -1 : this.grievanceType ? this.grievanceType: null,
+            cc: (this.userRole == 'Secretary' || this.userRole === 'Grievance Nodal')? -1 : this.grievanceType ? this.grievanceType: null,
           },
           isJunk: false
         }
