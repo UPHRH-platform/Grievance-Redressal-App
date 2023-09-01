@@ -17,6 +17,7 @@
                             <mat-error *ngIf="grievanceRaiserOtpformGroup.controls['emailOTP'].invalid">
                             </mat-error>
                         </mat-form-field>
+                        <span class="resendOTP-class" (click)="generateOtps()">Re-send</span>
                         <p class="small-font">Enter the 6 digit OTP sent to your email address.</p>
                
                         <!-- <mat-form-field appearance="outline" class="mt2">

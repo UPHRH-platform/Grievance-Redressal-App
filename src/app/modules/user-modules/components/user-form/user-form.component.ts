@@ -227,13 +227,13 @@ export class UserFormComponent implements OnInit {
       username: username,
       enabled: enabled,
       emailVerified: true,
-      credentials: [
-        {
-            type: "password",
-            value: "ka09eF$299",
-            temporary: "false"
-        }
-    ],
+    //   credentials: [
+    //     {
+    //         type: "password",
+    //         value: "ka09eF$299",
+    //         temporary: "false"
+    //     }
+    // ],
     attributes: {
       module: 'grievance',
       departmentName: role === 'NODALOFFICER' ? department: role === 'GRIEVANCEADMIN' || role === 'ADMIN' ? -1 : null,

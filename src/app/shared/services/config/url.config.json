@@ -1,6 +1,6 @@
 {
     "URLS": {
-        "LOGIN": "/user/login",
+        "LOGIN": "/api/v1/user/keycloak/usrlogin",
         "LOGIN_GENERATE_OTP": "/api/v1/user/keycloak/otp",
         "OTP_LOGIN": "/api/v1/user/keycloak/login",
         "GET_ALL_ROLES": "/roles/getAllRoles?orgId=1",

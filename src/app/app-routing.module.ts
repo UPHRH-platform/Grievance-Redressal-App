@@ -7,6 +7,7 @@ import { Roles } from './shared/config/roles.config';
 import { UserProfileComponent } from './user-profile/user-profile.component';
 import { CommonLayoutComponent } from './shared/components/common-layout/common-layout.component';
 import { GrievanceRaiserFormComponent } from './modules/grievance-modules/components/grievance-raiser-form/grievance-raiser-form.component';
+import { ResetPasswordComponent } from './reset-password/reset-password.component';
 
 const routes: Routes = [
   {
@@ -66,6 +67,10 @@ const routes: Routes = [
       },
       {
         path: 'feedback', loadChildren :()=> import('../app/modules/feedback/feedback.module').then(m=>m.FeedbackModule)
+      },
+      {
+        path: 'reset-password', component: ResetPasswordComponent, pathMatch: 'full',
+        canActivate: [AuthGuard]
       },
       {
         path: "**",

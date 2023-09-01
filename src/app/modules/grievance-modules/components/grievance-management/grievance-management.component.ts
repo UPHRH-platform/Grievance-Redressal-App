@@ -117,47 +117,59 @@ export class GrievanceManagementComponent  {
         columnDef: 'ticketId',
         header: 'ID',
         isSortable: true,
+        isLink: false,
         cell: (element: Record<string, any>) => `${element['ticketId']}`
       },
       {
         columnDef: 'firstName',
         header: 'Grievance Raiser',
         isSortable: true,
+        isLink: false,
         cell: (element: Record<string, any>) => `${element['firstName'] + ' ' + element['lastName']}`
       },
       {
         columnDef: 'requesterType',
         header: 'User Type',
         isSortable: true,
+        isLink: false,
         cell: (element: Record<string, any>) => `${element['requesterType']}`
       },
       {
         columnDef: 'assignedToId',
         header: 'Raiser Type',
         isSortable: true,
+        isLink: false,
         cell: (element: Record<string, any>) => `${element['assignedTo']}` !== 'undefined'? `${element['assignedTo']}`: '-'
       },
       {
         columnDef: 'createdDateTS',
         header: 'Creation Time',
         isSortable: true,
+        isLink: false,
         cell: (element: Record<string, any>) => `${element['createdDate']}`
       },
       {
         columnDef: 'escalatedDateTS',
         header: 'Escalation time',
         isSortable: true,
+        isLink: false,
         cell: (element: Record<string, any>) => 
           `${element['escalatedDate']}` !== "null" ? `${element['escalatedDate']}` : '-'
       },
+      // {
+      //   columnDef: 'rating',
+      //   header: 'Rating',
+      //   isSortable: false,
+      //   isLink: true,
+      //   cell: (element: Record<string, any>) => `${element['rating']}`
+      // },
       {
         columnDef: 'isLink',
         header: '',
         isSortable: false,
         isLink: true,
         cell: (element: Record<string, any>) => `View Ticket`
-      }
-
+      },
     ];
   }
 
