@@ -1,73 +1,86 @@
 .login-page-container {
-    width: 100%;
-    // height: 100% !important;
-    background-color: #F0F3F4;
+  width: 100%;
+  // height: 100% !important;
+  background-color: #f0f3f4;
 }
-.mid-container{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 5%;
+.mid-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 5%;
 }
-.image-cls{
-    display: flex;
-    flex-direction: row;
+.image-cls {
+  display: flex;
+  flex-direction: row;
 }
 .login-main-container {
-    width: 36rem;
-    background-color: white;
-    height: 35rem;
-    margin: 2%;
+  width: 36rem;
+  background-color: white;
+  height: 35rem;
+  margin: 2%;
 }
 .login-content {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
-.login-text{
-    display: flex;
-    justify-content: center;
-    font-size: 23px;
-    font-weight: 500;
-    font-family: system-ui;
-    margin-top: 7%;
+.login-text {
+  display: flex;
+  justify-content: center;
+  font-size: 23px;
+  font-weight: 500;
+  font-family: system-ui;
+  margin-top: 7%;
 }
 .login-inputs {
-    /* align-items: center; */
-    /* margin-top: 5%; */
+  /* align-items: center; */
+  /* margin-top: 5%; */
 }
 .first-container {
-    width: 72%;
-    position: relative;
-    margin-top: 1%;
+  width: 72%;
+  position: relative;
+  margin-top: 1%;
 }
 .text-class {
-    width: 100%;
+  width: 100%;
 }
 .action-btns {
-    height: 48px;
+  height: 48px;
 }
 .form-section {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 .hint-msg {
-    font-size: 14px;
-    margin-top: 12px;
-    text-align: center;
-    color: royalblue;
-    cursor: pointer;
+  font-size: 14px;
+  margin-top: 12px;
+  text-align: center;
+  color: royalblue;
+  cursor: pointer;
 }
 
 h4 {
-    opacity: 1;
-    color: rgba(0,0,0,0.87);
-    font-family:'Lato', sans-serif;;
-    font-size: 14px;
-    font-weight: 700;
-    font-style: normal;
-    letter-spacing: 0.25px;
-    text-align: left;
-    line-height: 20px;
-    margin: 0 0 8px !important;
-  }
+  opacity: 1;
+  color: rgba(0, 0, 0, 0.87);
+  font-family: "Lato", sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  font-style: normal;
+  letter-spacing: 0.25px;
+  text-align: left;
+  line-height: 20px;
+  margin: 0 0 8px !important;
+}
+
+.resendOTP-class {
+  // display: block;
+  // width: 100%;
+  text-align: end;
+  color: rgb(0, 116, 182);
+  font-family: "Lato", sans-serif;
+  font-weight: 700;
+  position: absolute;
+  top: 50px;
+  right: 10px;
+  cursor: pointer;
+}

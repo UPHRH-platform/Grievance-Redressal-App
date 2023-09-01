@@ -23,11 +23,12 @@ export class AuthService extends HttpService{
   login(username: string, password: string): Observable<ServerResponse> {
     // Implement your login API call and get the JWT token
     const reqParam: RequestParam = {
-      url: this.baseUrl + this.configService.urlConFig.URLS.LOGIN,
+      url: this.userManagementbaseURL + this.configService.urlConFig.URLS.LOGIN,
       data: {username,password},
       header: {
         'Content-Type': 'application/json',
-        'Accept': 'application/json'
+        'Accept': 'application/json',
+        'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJSR3RkMkZzeG1EMnJER3I4dkJHZ0N6MVhyalhZUzBSSyJ9.kMLn6177rvY53i0RAN3SPD5m3ctwaLb32pMYQ65nBdA',
       }
     }
     return this.post(reqParam);

@@ -12,3 +12,16 @@ mat-icon.big-icon {
 .mdc-button.fit{
     width: 100%;
 }
+
+.resendOTP-class {
+    /* display: block;
+    width: 100%; */
+    text-align: end;
+    color: rgb(0, 116, 182);
+    font-family: "Lato", sans-serif;
+    font-weight: 700;
+    position: absolute;
+    top: 50px;
+    right: 15px;
+    cursor: pointer;
+  }

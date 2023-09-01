@@ -48,9 +48,10 @@ export class FeedbackComponent {
   }
 
   onSubmit() {
-    console.log(this.feedbackForm.value);
+    //console.log(this.feedbackForm.value);
     const { rating, comment } = this.feedbackForm.value;
     const feedbackDetails = {
+      ticketId: this.ticketId,
       firstName: this.guestName.split(" ")[0],
       lastName: this.guestName.split(" ")[1] || 'lastName',
       email: this.emailId,
