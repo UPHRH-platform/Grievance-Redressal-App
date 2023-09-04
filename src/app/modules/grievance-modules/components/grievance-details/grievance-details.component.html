@@ -255,7 +255,7 @@
                     <mat-label class="attachment-label left">Attach file (s)</mat-label>
                     <mat-label class="attachment-label right" (click)="fileupload.click()">+ Add attachments</mat-label>
                     <input hidden id="fileUpload" #fileupload formControlName="attachments" type="file"
-                      (change)="handleFileUpload($event)" multiple accept=".pdf, .jpeg, .png, .docx, .jpg" />
+                      (change)="handleFileUpload($event)" multiple accept=".pdf, .jpeg, .png, .jpg" />
                   </mat-grid-tile>
                 </mat-grid-list>
                 <mat-grid-list cols="6" rowHeight="8rem" [gutterSize]="'100px'">
@@ -263,7 +263,7 @@
                     <mat-card class="attachment-view">
                       <!-- if no files are available -->
                       <mat-card-content class="empty-content-class" *ngIf="files.length == 0">Supports only PDF, JPEG,
-                        JPG, PNG, DOC with maximum
+                        JPG, PNG
                         size of 2MB.</mat-card-content>
                       <mat-card-content class="view-files" *ngIf="files.length > 0">
                         <div *ngFor="let file of files; let i = index" class="preview">

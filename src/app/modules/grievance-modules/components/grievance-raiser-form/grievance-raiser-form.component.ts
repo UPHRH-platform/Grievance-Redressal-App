@@ -122,7 +122,7 @@ export class GrievanceRaiserFormComponent {
       //console.log(event.target.files);
       const extension = selectedFile.name.split('.').pop();
       const fileSize = selectedFile.size;
-      const allowedExtensions = ['pdf', 'jpeg', 'jpg', 'png', 'docx'];
+      const allowedExtensions = ['pdf', 'jpeg', 'jpg', 'png'];
       if (allowedExtensions.includes(extension)) {
         // validate file size to be less than 2mb if the file has a valid extension
         if (fileSize < 2000000) {
