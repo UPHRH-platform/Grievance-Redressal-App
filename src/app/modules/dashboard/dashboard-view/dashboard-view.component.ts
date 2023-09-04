@@ -23,67 +23,28 @@ export class DashboardViewComponent {
   resolutionMatrixData: any = [];
   resolutionMatrixColumns: any = [];
   grievancesTypes:any[]=[];
-  startDate = new Date("2020/03/03").getTime();
-  endDate = new Date().getTime();
+  startDate = new Date("2020/03/03");
+  endDate = new Date();
   ccList: any = [];
   filterForm: FormGroup;
   filterDateRange = {startDate: '', endDate: ''};
   public assignGrievanceTypeForm:FormGroup;
   grievanceTypeNames: any = [];
-
-  constructor(private dashboardService: DashboardService, private configService: ConfigService, private formBuilder: FormBuilder, private toastrService: ToastrServiceService) {}
+  constructor(private dashboardService: DashboardService, private configService: ConfigService, private formBuilder: FormBuilder, private toastrService: ToastrServiceService) {
+  }
 
   ngOnInit(): void {
+    this.grievancesTypes = this.configService.dropDownConfig.GRIEVANCE_TYPES;
     this.filterForm = this.formBuilder.group({
-      grievanceType: new FormControl([]),
+      grievanceType: new FormControl(),
       startDate: new FormControl(this.startDate),
       endDate:new FormControl(this.endDate)
     })
-    this.grievancesTypes = this.configService.dropDownConfig.GRIEVANCE_TYPES;
     this.getDashboardObjectData(this.filterForm.value.startDate, this.filterForm.value.endDate);
-    // this.readFilterData();
   }
 
-  // readFilterData() {
-  //   let ccList: any;
-  //   let dateRange: any;
-  //   let dateObject: any;
-  //   if(sessionStorage.getItem('departmentFilter') !== undefined) {
-  //      ccList = sessionStorage.getItem('departmentFilter');
-  //      if(ccList !== null) {
-  //         this.ccList = JSON.parse(ccList);
-  //          this.grievanceTypeNames = this.getGrievanceTypeNames(this.ccList);
-  //      }
-  //      this.filterForm.patchValue({
-  //       grievanceType: this.grievanceTypeNames
-  //      })
-  //      console.log(this.filterForm.value);
-  //   }
-  //   if(sessionStorage.getItem('dateRange') !== undefined) {
-  //     dateRange = sessionStorage.getItem('dateRange');
-  //       dateObject = JSON.parse(dateRange);
-  //       if(dateObject !== null) {
-  //       this.startDate = dateObject.startDate;
-  //       this.endDate = dateObject.endDate;
-  //       this.filterForm.patchValue({
-  //         startDate: this.startDate,
-  //         endDate: this.endDate
-  //        })
-  //       }
-  //   }
-  //   this.getDashboardObjectData(this.filterForm.value.startDate, this.filterForm.value.endDate);
-  // }
-
-  getGrievanceTypeNames(grievanceType: any) {
-    const grievanceNames: any = [];
-    grievanceType.map((obj: any, index: number) => {
-      this.grievancesTypes.map((type) => {
-        if(obj === type.id) {
-          grievanceNames.push(type.name); 
-        }
-      })
-    })
-    return grievanceNames;
+  compareFn(cmp1: any,cmp2: any){
+    return cmp1 && cmp2 ? cmp1.id === cmp2.id : cmp1 == cmp2;
   }
 
   initializeColumns(): void {
@@ -190,8 +151,8 @@ export class DashboardViewComponent {
       this.isDataLoading = true;
       const request = {
         date: {
-          to: endDate,
-          from: startDate
+          to: endDate.getTime(),
+          from: startDate.getTime()
         },
         filter: {
           ccList: this.ccList
@@ -202,6 +163,8 @@ export class DashboardViewComponent {
       }, 2000);
       this.dashboardService.getDashboardData(request).subscribe({
         next: (res) => {
+          localStorage.setItem('filters', JSON.stringify(request));
+          //  this.saveFilter();
           this.dashboardData = res.responseData;
           this.initializeColumns();
           if(this.dashboardData){
@@ -220,7 +183,7 @@ export class DashboardViewComponent {
             // resolutionMatrix
             resolutionMatrix.push(this.dashboardData.resolutionMatrix);
             this.dashboardData.resolutionMatrixArray = resolutionMatrix;
-            console.log(this.dashboardData.resolutionMatrixArray);
+            //console.log(this.dashboardData.resolutionMatrixArray);
         this.dashboardData.resolutionMatrixArray.map((obj: any, index: number) => {
         let i = index;
         for(const key in obj) {
@@ -251,30 +214,27 @@ export class DashboardViewComponent {
 
     changeEvent(type: string, event: any) {
       if(type == 'startDate') {
-        this.startDate = event.value.getTime();
-        this.filterDateRange.startDate = event.value;
        this.filterForm.patchValue({
-         startDate: event.value.getTime()
+         startDate: event.value
        })
       }
       if(type === 'endDate') {
-        this.filterDateRange.endDate = event.value;
-        this.endDate = event.value.getTime();
         this.filterForm.patchValue({
-          endDate: event.value.getTime()
+          endDate: event.value
         })
       }
     }
 
     applyFilter() {
-      // sessionStorage.setItem('departmentFilter', JSON.stringify(this.ccList));
-      // sessionStorage.setItem('dateRange', JSON.stringify(this.filterDateRange));
       this.getDashboardObjectData(this.filterForm.value.startDate, this.filterForm.value.endDate);
     }
 
-    ngDestroy() {
-      sessionStorage.removeItem('departmentFilter');
-      sessionStorage.removeItem('dateRange');
+    resetFilter() {
+      this.filterForm.reset();
+      this.filterForm.patchValue({
+        startDate: this.startDate,
+        endDate: this.endDate
+      })
     }
 }
 

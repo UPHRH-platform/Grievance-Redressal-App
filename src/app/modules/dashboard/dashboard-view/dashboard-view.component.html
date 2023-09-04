@@ -9,7 +9,7 @@
             <div class="flex flex-wrap justify-end custom-align">
                 <div class="pr2">
                     <mat-form-field appearance="outline">
-                        <mat-select multiple formControlName="grievanceType" placeholder="Department" (selectionChange)="grievanceSelected($event)">
+                        <mat-select [compareWith]="compareFn" [(value)]="grievanceType" multiple formControlName="grievanceType" placeholder="Department" (selectionChange)="grievanceSelected($event)">
                           <span *ngFor='let grievance of grievancesTypes;let i = index'>
                             <mat-option [value]="grievance.id">{{grievance.name}}</mat-option>
                           </span>
@@ -19,8 +19,8 @@
                 <div class="pr2">
                     <mat-form-field appearance="outline">
                         <mat-date-range-input [rangePicker]="picker">
-                          <input matStartDate placeholder="Start date" (dateInput)="changeEvent('startDate', $event)" (dateChange)="changeEvent('endDate', $event)">
-                          <input matEndDate placeholder="End date" (dateInput)="changeEvent('endDate', $event)" (dateChange)="changeEvent('endDate', $event)">
+                          <input matStartDate placeholder="Start date" formControlName="startDate" [value]="startDate" (dateInput)="changeEvent('startDate', $event)" (dateChange)="changeEvent('endDate', $event)">
+                          <input matEndDate placeholder="End date" formControlName="endDate" [value]="endDate" (dateInput)="changeEvent('endDate', $event)" (dateChange)="changeEvent('endDate', $event)">
                         </mat-date-range-input>
                         <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
                         <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
