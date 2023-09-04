@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../core/services/auth-service/auth.service';
 import { Router } from '@angular/router';
 import { UserService } from '../modules/user-modules/services/user.service';
@@ -14,7 +14,7 @@ export class ResetPasswordComponent {
   resetPasswordForm: FormGroup;
   userDetails: any = [];
   isProcessing = false;
-  constructor(private authService: AuthService, private router:Router, private userService: UserService, private toastrService: ToastrServiceService) {
+  constructor(private authService: AuthService, private router:Router, private userService: UserService, private toastrService: ToastrServiceService, private formBuilder: FormBuilder) {
 
   }
 
@@ -24,7 +24,7 @@ export class ResetPasswordComponent {
   }
 
   createForm() {
-    this.resetPasswordForm = new FormGroup({
+    this.resetPasswordForm = this.formBuilder.group({
       newPassword: new FormControl('', Validators.required),
       confirmPassword: new FormControl('',Validators.required)
     })
@@ -42,7 +42,7 @@ export class ResetPasswordComponent {
 
   resetPassword() {
     if(this.resetPasswordForm.valid) {
-    this.updateUser();
+        this.updateUser();
     }
   }
 

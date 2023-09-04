@@ -64,7 +64,7 @@ export class SharedDialogOverlayComponent {
         Validators.minLength(6), Validators.maxLength(6)]),
       emailOTP: new FormControl('', [
         Validators.required,
-        Validators.minLength(6), Validators.maxLength(6)])
+        Validators.pattern(`^[0-9]*$`)])
     });
   }
 

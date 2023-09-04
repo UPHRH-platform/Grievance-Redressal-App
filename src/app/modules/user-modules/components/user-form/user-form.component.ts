@@ -172,23 +172,10 @@ export class UserFormComponent implements OnInit {
     ],
     attributes: {
       module: "grievance",
-      departmentName: department,
+      departmentName:  role === 'NODALOFFICER' ? department: role === 'GRIEVANCEADMIN' || role === 'ADMIN' ? -1 : null,
       phoneNumber: phone,
       role: role
-  }
-      // userName: id,
-      // request: {
-      //   firstName,
-      //   lastName,
-      //   enabled: status === 'Active'? true: false,
-        
-      //   attributes: {
-      //     module: 'grievances',
-      //     departmentName: this.userDetails.attributes.departmentName[0],
-      //     phoneNumber: phone,
-      //     Role: role
-      // },
-      // }
+    }
     }
     this.isProcessing = true;
     this.userService.updateUser(requestObj).subscribe({
