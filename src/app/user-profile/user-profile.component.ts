@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from '../modules/user-modules/services/user.service';
 import { AuthService } from '../core';
 import { ToastrServiceService } from '../shared/services/toastr/toastr.service';
-import { BreadcrumbItem, getRole } from 'src/app/shared';
+import { BreadcrumbItem, ConfigService, getRole } from 'src/app/shared';
 
 @Component({
   selector: 'app-user-profile',
@@ -20,13 +20,14 @@ export class UserProfileComponent {
   isEditData:boolean = false;
   userId: string;
   userDetails: any = {};
+  grievanceTypes: any = [];
   breadcrumbItems: BreadcrumbItem[] = [
     { label: 'Home', url: '/home' },
     {label: 'Profile', url: '/user-profile'},
   ];
 
   constructor(private router: Router,
-    private route: ActivatedRoute, private userService: UserService, private authService: AuthService, private toastrService: ToastrServiceService) {
+    private route: ActivatedRoute, private userService: UserService, private authService: AuthService, private toastrService: ToastrServiceService, private configService: ConfigService) {
     this.userForm = new FormGroup({
       firstName: new FormControl('', Validators.required),
       lastName: new FormControl('', Validators.required),
@@ -38,6 +39,7 @@ export class UserProfileComponent {
   }
 
   ngOnInit(): void {
+    this.grievanceTypes = this.configService.dropDownConfig.GRIEVANCE_TYPES;
     const userData = this.authService.getUserData();
     this.userId = userData.userRepresentation.id;
     //console.log(this.userId);
@@ -110,6 +112,12 @@ export class UserProfileComponent {
    }
 
   onSubmit() {
+    let departmentId: any;
+    this.grievanceTypes.map((obj: any) => {
+      if(this.userDetails?.attributes.departmentName[0].toLowerCase() === obj.name.toLowerCase()) {
+        departmentId = obj.id;   
+      }
+    })
     const {firstName, lastName, phoneNumber, emailId} = this.userForm.value;
     const {id, attributes, enabled } = this.userDetails;
     const requestObj = {
@@ -130,9 +138,9 @@ export class UserProfileComponent {
     ],
     attributes: {
       module: "grievance",
-      departmentName: this.userDetails.attributes.departmentName[0],
+      departmentName: departmentId,
       phoneNumber: phoneNumber,
-      role: this.userDetails.attributes.Role[0]
+      Role: this.userDetails.attributes.Role[0]
   }
 }
     this.userService.updateUser(requestObj).subscribe({

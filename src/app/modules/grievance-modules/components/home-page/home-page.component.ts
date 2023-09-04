@@ -12,21 +12,21 @@ export class HomePageComponent implements OnInit {
   cardList: any[] = [
     {
       title: 'Ticket Management',
-      description:
-        'Lorem Ipsum is simply dummy text of the printing and typesetting industry. ',
+      description: '',
+        // 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. ',
       type: 'grievances',
     },
     {
       title: 'Dashboard',
-      description:
-        'Lorem Ipsum is simply dummy text of the printing and typesetting industry. ',
+      description: '',
+        // 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. ',
       type: 'dashboard',
     },
 
     {
       title: 'User Management',
-      description:
-        'Lorem Ipsum is simply dummy text of the printing and typesetting industry. ',
+      description: '',
+        // 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. ',
       type: 'users',
     },
   ];
