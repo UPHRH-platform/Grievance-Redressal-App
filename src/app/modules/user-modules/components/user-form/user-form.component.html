@@ -51,9 +51,9 @@
                         <h4>Phone Number</h4>
                         <mat-form-field appearance="outline" class="text-class">
                             <mat-label>Phone number</mat-label>
-                            <input type="number" matInput placeholder="Enter Phone number" formControlName="phone" required>
+                            <input type="text" maxlength="10" matInput placeholder="Enter Phone number" formControlName="phone" required>
                             <mat-error *ngIf="phone && phone.hasError('required') && phone.touched">please Enter phone number</mat-error>
-                            <mat-error *ngIf="phone && phone.hasError('pattern')" >Phone number should contain 10 digits</mat-error>
+                            <mat-error *ngIf="phone && phone.hasError('pattern')" >Phone number should contain digits only</mat-error>
                           </mat-form-field>
                     </div>
 

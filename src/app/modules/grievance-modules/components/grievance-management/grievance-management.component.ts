@@ -32,7 +32,7 @@ export class GrievanceManagementComponent  {
   private timeoutId: any;
   breadcrumbItems: BreadcrumbItem[] = [
     { label: 'Grievance Management', url: '/home' },
-    { label: 'Grievance List', url: 'grievance/manage-tickets' },
+    { label: 'Ticket Management', url: 'grievance/manage-tickets' },
   ];
   grievancesTypes:any[] = [];
   getGrievancesRequest: any;

@@ -66,7 +66,18 @@ export class UserService extends HttpService{
 
   deactivateUser(request: any): Observable<ServerResponse>  {
     const  reqParam: RequestParam = { 
-      url: this.userManagementbaseURL + this.configService.urlConFig.URLS.USER.DELETE_USER,
+      url: this.baseUrl + this.configService.urlConFig.URLS.USER.DEACTIVATE_USER,
+      header: {
+        'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJSR3RkMkZzeG1EMnJER3I4dkJHZ0N6MVhyalhZUzBSSyJ9.kMLn6177rvY53i0RAN3SPD5m3ctwaLb32pMYQ65nBdA',
+      },
+      data: request
+    }
+    return this.post(reqParam);
+  }
+
+  activateUser(request: any): Observable<ServerResponse>  {
+    const  reqParam: RequestParam = { 
+      url: this.baseUrl + this.configService.urlConFig.URLS.USER.ACTIVATE_USER,
       header: {
         'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJSR3RkMkZzeG1EMnJER3I4dkJHZ0N6MVhyalhZUzBSSyJ9.kMLn6177rvY53i0RAN3SPD5m3ctwaLb32pMYQ65nBdA',
       },

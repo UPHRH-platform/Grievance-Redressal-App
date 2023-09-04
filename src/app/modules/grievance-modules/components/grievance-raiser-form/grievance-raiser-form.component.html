@@ -45,10 +45,13 @@
                                     <h4>Phone Number</h4>
                                     <mat-form-field appearance="outline" class="text-class">
                                         <mat-label>Phone number</mat-label>
-                                        <input type="number" matInput placeholder="Type here"
+                                        <input type="text" maxlength="10" matInput placeholder="Type here"
                                             formControlName="phone" required>
-                                        <mat-error *ngIf="grievanceRaiserformGroup.controls['phone'].invalid">
+                                        <!-- <mat-error *ngIf="grievanceRaiserformGroup.controls['phone'].invalid">
                                             {{getError('phone')}}
+                                        </mat-error> -->
+                                        <mat-error *ngIf="grievanceRaiserformGroup.controls['phone'].hasError('pattern') && (grievanceRaiserformGroup.controls['phone'].dirty || grievanceRaiserformGroup.controls['phone'].touched)">
+                                            Phone number should contain 10 digits only
                                         </mat-error>
                                     </mat-form-field>
                                 </div>
