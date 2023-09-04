@@ -154,6 +154,12 @@ export class UserFormComponent implements OnInit {
   updateUser() {
     const {firstName, lastName, phone, role, status, username, department} = this.userForm.value;
     const {id } = this.userDetails;
+    let deptId: any;
+    this.grievanceTypes.map((obj: any) => {
+      if(department.toLowerCase() === obj.name.toLowerCase()) {
+        deptId = obj.id;   
+      }
+    })
     const requestObj = {
       id: this.userDetails.id,
       keycloakId: this.userDetails.keycloakId,
@@ -172,9 +178,9 @@ export class UserFormComponent implements OnInit {
     ],
     attributes: {
       module: "grievance",
-      departmentName:  role === 'NODALOFFICER' ? department: role === 'GRIEVANCEADMIN' || role === 'ADMIN' ? -1 : null,
+      departmentName:  role === 'NODALOFFICER' ? deptId: role === 'GRIEVANCEADMIN' || role === 'ADMIN' ? -1 : null,
       phoneNumber: phone,
-      role: role
+      Role: role
     }
     }
     this.isProcessing = true;

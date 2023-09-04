@@ -21,7 +21,7 @@ export class ManageUserComponent implements OnInit {
   usersTableColumns: TableColumn[] = [];
   breadcrumbItems: BreadcrumbItem[] = [
     { label: 'Grievance Management', url: '/home' },
-    { label: 'User List', url: '/user-manage' },
+    { label: 'MANAGE USERS', url: '/user-manage' },
   ];
   pageSize: number = 10;
   pageIndex: number = 0;
@@ -73,22 +73,36 @@ export class ManageUserComponent implements OnInit {
      if(isConfirmed) {
       updatedUserData.isActive = !event.isActive;
       const request = {
-        request: {
-          userName: event.id
+          id: event.id
       }
+      if(status == 'activate') {
+        this.userService.activateUser(request).subscribe({
+          next: (res) => {
+            this.getAllUsers();
+          },
+          error: (err) => {
+            console.log(err);
+          }
+        })
       }
-      this.userService.deactivateUser(request).subscribe({
-        next: (res) => {
-          this.users.splice(userIndex,1,updatedUserData);
-       },
-       error: (err) => {  
-          this.users.splice(userIndex,1,event);
-         // Handle the error here in case of login failure
-       }});
+      else {
+        this.userService.deactivateUser(request).subscribe({
+          next: (res) => {
+            this.users.splice(userIndex,1,updatedUserData);
+            this.getAllUsers();
+         },
+         error: (err) => {  
+          console.log(err);
+            this.users.splice(userIndex,1,event);
+           // Handle the error here in case of login failure
+         }});
+        }
+        this.users.splice(userIndex,1,event);
+        this.initializeColumns();
+        this.getAllUsers();
+    
      }
-     this.users.splice(userIndex,1,event);
-     this.initializeColumns();
-     this.getAllUsers();
+     
    })
   }
 
@@ -164,7 +178,7 @@ export class ManageUserComponent implements OnInit {
           let role = '';
           let phone = '';
           if(firstName && lastName !== undefined) {
-          name = `${firstName} + ' ' + ${lastName}`;
+          name = `${firstName} ${' '} ${lastName}`;
           }
           if(enabled) {
           isActive = enabled == true? 'Active': 'Inactive';

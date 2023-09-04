@@ -15,7 +15,9 @@
             "UPDATE_USER": "/user/update-user",
             "DELETE_USER": "/api/v1/user/deactivate",
             "GET_USERDETAILS_BY_ID": "/user/info/",
-            "GET_ALL_USERS": "/user/users"
+            "GET_ALL_USERS": "/user/users",
+            "ACTIVATE_USER": "/user/activate",
+            "DEACTIVATE_USER": "/user/deactivate"
         },
         "OTP":{
             "GENERATE_OTP": "/otp/generate-otp"
