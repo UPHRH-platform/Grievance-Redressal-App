@@ -4,6 +4,7 @@ import { AuthService } from '../core/services/auth-service/auth.service';
 import { Router } from '@angular/router';
 import { UserService } from '../modules/user-modules/services/user.service';
 import { ToastrServiceService } from '../shared/services/toastr/toastr.service';
+import { ConfigService } from '../shared';
 
 @Component({
   selector: 'app-reset-password',
@@ -14,11 +15,13 @@ export class ResetPasswordComponent {
   resetPasswordForm: FormGroup;
   userDetails: any = [];
   isProcessing = false;
-  constructor(private authService: AuthService, private router:Router, private userService: UserService, private toastrService: ToastrServiceService, private formBuilder: FormBuilder) {
+  grievanceTypes: any = []
+  constructor(private authService: AuthService, private router:Router, private userService: UserService, private toastrService: ToastrServiceService, private formBuilder: FormBuilder, private configService: ConfigService) {
 
   }
 
   ngOnInit() {
+    this.grievanceTypes = this.configService.dropDownConfig.GRIEVANCE_TYPES;
     this.createForm();
     this.getUserDetails();
   }
@@ -47,6 +50,12 @@ export class ResetPasswordComponent {
   }
 
   updateUser() {
+    let departmentId: any;
+    this.grievanceTypes.map((obj: any) => {
+      if(this.userDetails?.attributes.departmentName[0].toLowerCase() === obj.name.toLowerCase()) {
+        departmentId = obj.id;   
+      }
+    })
     const requestObj = {
       id: this.userDetails?.id,
       keycloakId: this.userDetails?.keycloakId,
@@ -64,9 +73,9 @@ export class ResetPasswordComponent {
     ],
     attributes: {
       module: "grievance",
-      departmentName: this.userDetails?.attributes.departmentName[0],
+      departmentName: departmentId,
       phoneNumber: this.userDetails?.attributes.phoneNumber[0],
-      role: this.userDetails?.attributes.Role[0]
+      Role: this.userDetails?.attributes.Role[0]
   }
     }
     this.isProcessing = true;
