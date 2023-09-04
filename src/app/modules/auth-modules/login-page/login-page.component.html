@@ -66,10 +66,13 @@
                             <h4>OTP</h4>
                             <mat-form-field appearance="outline" class="text-class">
                                 <mat-label>OTP</mat-label>
-                                <input matInput placeholder="0 - 0 - 0 - 0 - 0 - 0" formControlName="otp">
+                                <input matInput type="text" maxlength="6" placeholder="0 - 0 - 0 - 0 - 0 - 0" formControlName="otp">
                                 <mat-hint style="color: gray;">Enter the 6 digit OTP sent to your email address</mat-hint>
                             </mat-form-field>
                             <span class="resendOTP-class" (click)="getOTP()">Re-send</span>
+                            <mat-error *ngIf="otpForm.controls['otp'].hasError('pattern') && (otpForm.controls['otp'].dirty || otpForm.controls['otp'].touched)">
+                                OTP should contain digits only
+                            </mat-error>
                         </div>
 
                         <div class="first-container" style="margin-top:6%;">

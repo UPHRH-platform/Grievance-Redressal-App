@@ -156,13 +156,13 @@ export class GrievanceManagementComponent  {
         cell: (element: Record<string, any>) => 
           `${element['escalatedDate']}` !== "null" ? `${element['escalatedDate']}` : '-'
       },
-      // {
-      //   columnDef: 'rating',
-      //   header: 'Rating',
-      //   isSortable: false,
-      //   isLink: true,
-      //   cell: (element: Record<string, any>) => `${element['rating']}`
-      // },
+      {
+        columnDef: 'rating',
+        header: 'Rating',
+        isSortable: true,
+        isLink: false,
+        cell: (element: Record<string, any>) => `${element['rating']}`
+      },
       {
         columnDef: 'isLink',
         header: '',

@@ -12,13 +12,16 @@
                     <div class="flex flex-column ">
                         <mat-form-field appearance="outline">
                             <mat-label>Enter email OTP</mat-label>
-                            <input matInput placeholder="0 - 0 - 0 - 0 - 0 - 0"  formControlName="emailOTP">
+                            <input matInput type="text" maxlength="6" placeholder="0 - 0 - 0 - 0 - 0 - 0"  formControlName="emailOTP">
                             
-                            <mat-error *ngIf="grievanceRaiserOtpformGroup.controls['emailOTP'].invalid">
-                            </mat-error>
+                            <!-- <mat-error *ngIf="grievanceRaiserOtpformGroup.controls['emailOTP'].invalid">
+                            </mat-error> -->
                         </mat-form-field>
                         <span class="resendOTP-class" (click)="generateOtps()">Re-send</span>
                         <p class="small-font">Enter the 6 digit OTP sent to your email address.</p>
+                        <mat-error *ngIf="grievanceRaiserOtpformGroup.controls['emailOTP'].hasError('pattern') && (otpForm.controls['emailOTP'].dirty || otpForm.controls['emailOTP'].touched)">
+                            OTP should contain digits only
+                            </mat-error>
                
                         <!-- <mat-form-field appearance="outline" class="mt2">
                             <mat-label>Enter mobile OTP</mat-label>

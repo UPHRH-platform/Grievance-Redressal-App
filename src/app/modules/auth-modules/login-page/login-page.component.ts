@@ -24,7 +24,7 @@ isOtpForm:boolean = false;
     })
 
     this.otpForm = new FormGroup({
-      otp:new FormControl('', [Validators.required, Validators.minLength(6), Validators.maxLength(6)])
+      otp:new FormControl('', [Validators.required, Validators.pattern(`^[0-9]*$`)])
     })
   }
 
