@@ -273,7 +273,7 @@ export class GrievanceRaiserFormComponent {
         this.openSharedDialog(true);
       },
       error: (err) => {
-        this.toastrService.showToastr(err, 'Error', 'error', '');
+        this.toastrService.showToastr(err.statusText, 'Error', 'error', '');
         this.submitted = false;
         // Handle the error here in case of file upload or ticket creation failure
       }
