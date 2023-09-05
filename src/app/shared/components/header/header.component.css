@@ -8,6 +8,13 @@
     box-shadow: 0px 0px 0px 2px #dedede;
 }
 
+@media all and (max-width: 678px) {
+    .header-class {
+    margin-left: 3rem;
+    margin-right: 3rem;
+    }
+}
+
 .action-btn{
     background-color: forestgreen;
     border-radius: 8px;

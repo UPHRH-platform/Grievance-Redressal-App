@@ -96,6 +96,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     padding-left: 8px;
     padding-right: 16px;
     border-radius: 4px;
+    margin-bottom: 20px;
     }
 }
 
@@ -110,6 +111,21 @@ height: 100%;
 
 .mat-mdc-radio-button .mdc-radio .mdc-radio__native-control:enabled+.mdc-radio__background .mdc-radio__inner-circle {
     border-color: rgb(4, 93, 173) !important;
+}
+
+@media all and (max-width: 768px) {
+.cdk-overlay-pane {
+    width: 80% !important;
+}
+}
+
+@media all and (min-width: 768px) and (max-width: 1200px) {
+    .cdk-overlay-pane {
+        width: 70% !important;
+    }
+}
+.cdk-overlay-pane {
+    width: 40%,
 }
 
 

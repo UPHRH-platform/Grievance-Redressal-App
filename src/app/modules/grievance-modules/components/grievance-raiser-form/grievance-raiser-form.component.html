@@ -1,23 +1,33 @@
-<div class="content">
-    <div>
-        <!-- create User form UI -->
-        <div class="user-form-container">
-            <form [formGroup]="grievanceRaiserformGroup"
-                (ngSubmit)="onSubmit(grievanceRaiserformGroup.value)">
-                <div class="user-container">
-                    <h2 class="user-text-heading">{{'Grievance Registration Page'}}</h2>
-                    <div class="action-btns">
-                        <button mat-stroked-button style="margin-right: 15px;"
-                            (click)="onReset()">Reset</button>
-                        <button type="submit" mat-raised-button color="primary" [disabled]="!grievanceRaiserformGroup.valid || submitted">Submit</button>
+<div class="clearfix" style="background-color: #F0F3F4;">
+   <div class="col-10 px2 mx-auto">
+    <div class="user-form-container">
+        <form [formGroup]="grievanceRaiserformGroup"
+            (ngSubmit)="onSubmit(grievanceRaiserformGroup.value)">
+            <div class="user-container">
+                <div class="clearfix mxn2">
+                    <div class="sm-col sm-col-12 md-col-8 lg-col-9 px2">
+                        <h2 class="user-text-heading">{{'Grievance Registration Page'}}</h2>
+                    </div>
+                    <div class="sm-col sm-col-12 md-col-4 lg-col-3 px2" style="text-align: end;">
+                        <div class="action-btns">
+                            <button mat-stroked-button style="margin-right: 10px;"
+                                (click)="onReset()">Reset</button>
+                            <button type="submit" mat-raised-button color="primary" [disabled]="!grievanceRaiserformGroup.valid || submitted">Submit</button>
+                        </div> 
                     </div>
                 </div>
-                <div class="form-container">
-                    <div class="form-internal-wrapper">
-                        <!-- <h1>{{'Raiser Details'}}</h1> -->
-                        <div class="wrapper-form">
-                            <div class="first-row-container" style="margin-top: 1%;">
-                                <div class="first-container">
+                <!-- <h2 class="user-text-heading">{{'Grievance Registration Page'}}</h2>
+                <div class="action-btns">
+                    <button mat-stroked-button style="margin-right: 15px;"
+                        (click)="onReset()">Reset</button>
+                    <button type="submit" mat-raised-button color="primary" [disabled]="!grievanceRaiserformGroup.valid || submitted">Submit</button>
+                </div> -->
+            </div>
+            <div class="form-container">
+                <div class="form-internal-wrapper">
+                    <div class="wrapper-form">
+                            <div class="clearfix mxn2">
+                                <div class="sm-col sm-col-12 md-col-4 lg-col-4 px2">
                                     <h4>Name</h4>
                                     <mat-form-field appearance="outline" class="text-class">
                                         <mat-label>Name</mat-label>
@@ -26,8 +36,9 @@
                                             {{getError('name')}}
                                         </mat-error>
                                     </mat-form-field>
-                                </div>
-                                <div class="first-container">
+                                <!-- </div> -->
+                            </div>
+                              <div class="sm-col sm-col-12 md-col-4 lg-col-4 px2">
                                     <h4>Email Id</h4>
                                     <mat-form-field appearance="outline" class="text-class">
                                         <mat-label>Email id</mat-label>
@@ -37,76 +48,66 @@
                                             {{getError('email')}}
                                         </mat-error>
                                     </mat-form-field>
-                                </div>
+                              </div>
                             </div>
-
-                            <div class="first-row-container" style="margin-top: 1%;">
-                                <div class="first-container">
-                                    <h4>Phone Number</h4>
-                                    <mat-form-field appearance="outline" class="text-class">
-                                        <mat-label>Phone number</mat-label>
-                                        <input type="text" maxlength="10" matInput placeholder="Type here"
-                                            formControlName="phone" required>
-                                        <!-- <mat-error *ngIf="grievanceRaiserformGroup.controls['phone'].invalid">
-                                            {{getError('phone')}}
-                                        </mat-error> -->
-                                        <mat-error *ngIf="grievanceRaiserformGroup.controls['phone'].hasError('pattern') && (grievanceRaiserformGroup.controls['phone'].dirty || grievanceRaiserformGroup.controls['phone'].touched)">
-                                            Phone number should contain 10 digits only
-                                        </mat-error>
-                                    </mat-form-field>
-                                </div>
-                                <div class="first-container">
-                                    <h4>Type of grievance</h4>
-                                    <mat-form-field appearance="outline" style="width: 100%;">
-                                        <mat-label>Type of Grievance</mat-label>
-                                        <mat-select
-                                            formControlName="grievanceType">
-                                            <span *ngFor='let grievance of grievancesTypes;let i = index'>
-                                                <mat-option [value]="grievance.id">{{grievance.name}}</mat-option>
-                                            </span>
-                                        </mat-select>
-                                        <mat-error *ngIf="grievanceRaiserformGroup.controls['grievanceType'].invalid">
-                                            {{getError('grievanceType')}}
-                                        </mat-error>
-                                    </mat-form-field>
-                                </div>
-
-                            </div>
-
-                            <div class="first-row-container" style="margin-top: 1%;">
-                                <div class="">
-                                    <h4>User Type</h4>
-                                    <mat-radio-group color="primary" name="answer" aria-label="User Type"
-                                        formControlName="userType" class="form-control">
-                                        <span *ngFor='let userType of userTypesArray;let i = index' class="raiser-radio-btn">
-                                            <mat-radio-button [value]="userType" class="mr2"
-                                                >{{userType}}</mat-radio-button>
-                                        </span>
-
-                                    </mat-radio-group>
-                                    <mat-error
-                                        *ngIf="submitted && grievanceRaiserformGroup.controls['userType'].errors?.['required']">
-                                        {{getError('userType')}}
+                         <div class="clearfix mxn2 mt1">
+                            <div class="sm-col sm-col-12 md-col-4 lg-col-4 px2">
+                                <h4>Phone Number</h4>
+                                <mat-form-field appearance="outline" class="text-class">
+                                    <mat-label>Phone number</mat-label>
+                                    <input type="text" maxlength="10" matInput placeholder="Type here"
+                                        formControlName="phone" required>
+                                    <mat-error *ngIf="grievanceRaiserformGroup.controls['phone'].hasError('pattern') && (grievanceRaiserformGroup.controls['phone'].dirty || grievanceRaiserformGroup.controls['phone'].touched)">
+                                        Phone number should contain 10 digits only
                                     </mat-error>
-                                </div>
-
+                                </mat-form-field>
                             </div>
-
-                            <div class="first-row-container mt3">
-                                <div class="first-container resolution-class" style="width: 67%;">
-                                    <h4>Description</h4>
-                                    <!-- <mat-form-field style="width: 100%;">
-                                        <textarea matInput placeholder="Leave a comment" formControlName="description"></textarea>
-                                    </mat-form-field> -->
-                                    <mat-form-field class="resolution-form" style="width:100%">
-                                        <mat-label>Type here</mat-label>
-                                        <textarea formControlName="description" matInput cdkTextareaAutosize
-                                          #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="4" cdkAutosizeMaxRows="4"></textarea>
-                                      </mat-form-field>
-                                </div>
-
+                            <div class="sm col sm-col-12 md-col-4 lg-col-4 px2">
+                                <h4>Type of grievance</h4>
+                                <mat-form-field appearance="outline" style="width: 100%;">
+                                    <mat-label>Type of Grievance</mat-label>
+                                    <mat-select
+                                        formControlName="grievanceType">
+                                        <span *ngFor='let grievance of grievancesTypes;let i = index'>
+                                            <mat-option [value]="grievance.id">{{grievance.name}}</mat-option>
+                                        </span>
+                                    </mat-select>
+                                    <mat-error *ngIf="grievanceRaiserformGroup.controls['grievanceType'].invalid">
+                                        {{getError('grievanceType')}}
+                                    </mat-error>
+                                </mat-form-field>
                             </div>
-                            <div class="resolution-class mt2" style="width: 67%;">
+                         </div>
+                         <div class="clearfix mxn2 mt1">
+                            <div class="sm-col sm-col-12 md-col-8 lg-col-8 px2">
+                                <h4>User Type</h4>
+                                <mat-radio-group color="primary" name="answer" aria-label="User Type"
+                                    formControlName="userType" class="form-control">
+                                    <span *ngFor='let userType of userTypesArray;let i = index' class="raiser-radio-btn">
+                                        <mat-radio-button [value]="userType" class="mr2 raiser-radio-group"
+                                            >{{userType}}</mat-radio-button>
+                                    </span>
+
+                                </mat-radio-group>
+                                <mat-error
+                                    *ngIf="submitted && grievanceRaiserformGroup.controls['userType'].errors?.['required']">
+                                    {{getError('userType')}}
+                                </mat-error>
+                            </div>
+                         </div>
+                         <div class="clearfix mxn2 mt3">
+                            <div class="sm-col sm-col-12 md-col-8 lg-col-8 px2">
+                                <h4>Description</h4>
+                                <mat-form-field class="resolution-form" style="width:100%">
+                                    <mat-label>Type here</mat-label>
+                                    <textarea formControlName="description" matInput cdkTextareaAutosize
+                                      #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="4" cdkAutosizeMaxRows="4"></textarea>
+                                  </mat-form-field>
+                            </div>
+                         </div>
+                         <div class="clearfix mxn2 mt3">
+                            <div class="sm-col sm-col-12 md-col-8 lg-col-8 px2">
+                            <div class="resolution-class">
                                 <mat-grid-list cols="6" rowHeight="26px" [gutterSize]="'100px'">
                                     <mat-grid-tile colspan="6" rowspan="1" style="width: 100% !important">
                                         <mat-label class="attachment-label left" (click)="fileupload.click()">Attach
@@ -142,14 +143,15 @@
                                     </mat-grid-tile>
                                 </mat-grid-list>
                                 <span class="error">{{fileUploadError}}</span>
-
                             </div>
-                        </div>
+                            </div>
+                         </div>
+                       
                     </div>
                 </div>
-            </form>
+            </div>
+        </form>
 
-        </div>
     </div>
-
-</div>
+   </div>
+  </div>

@@ -13,6 +13,18 @@ mat-icon.big-icon {
     width: 100%;
 }
 
+
+@media all and (max-width: 1400px) {
+    .resendOTP-class {
+     text-align: end;
+    color: rgb(0, 116, 182);
+    font-family: "Lato", sans-serif;
+    font-weight: 700;
+    position: initial !important;
+    margin-top: -16px !important;
+    margin-bottom: 10px !important;
+    }
+}
 .resendOTP-class {
     /* display: block;
     width: 100%; */
@@ -33,6 +45,8 @@ mat-icon.big-icon {
     bottom: 14pm;
     right: 8rem;
     cursor: pointer;
+    /* position: initial;
+    margin-top: -16px; */
   }
 
 
