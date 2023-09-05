@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, HostListener, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 
 import { SharedDialogOverlayComponent } from '../../../../shared/components/shared-dialog-overlay/shared-dialog-overlay.component';
@@ -27,9 +27,16 @@ export class GrievanceRaiserFormComponent {
   fileUploadError: string;
   ticketDetails: any = {};
   grievancesTypes: any[] = [];
+  innerHeight: any;
+  innerWidth: any;
   userTypesArray = [
     'Candidate', 'Institute', 'Faculty', 'Others'
   ];
+  dialogSettings = {
+    maxHeight: '100vh',
+    height: 'auto',
+    disableClose: true
+  }
   public grievanceRaiserformGroup: FormGroup;
   constructor(
     private formBuilder: FormBuilder,
@@ -39,12 +46,16 @@ export class GrievanceRaiserFormComponent {
     private toastrService: ToastrServiceService,
     private uploadService: UploadService,
     ) { 
+      
       this.grievancesTypes = this.configService.dropDownConfig.GRIEVANCE_TYPES;
     }
+    
 
   ngOnInit() {
     this.createForm();
   }
+
+  
 
   createForm() {
 
@@ -174,11 +185,7 @@ export class GrievanceRaiserFormComponent {
     }
     const dialogRef = this.dialog.open(SharedDialogOverlayComponent, {
       data: dialogData,
-      maxWidth: '400vw',
-      maxHeight: '100vh',
-      height: 'auto',
-      width: '40%',
-      disableClose: true
+      ...this.dialogSettings
     });
 
     dialogRef.afterClosed().subscribe(result => {
