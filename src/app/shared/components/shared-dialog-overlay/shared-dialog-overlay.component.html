@@ -1,12 +1,10 @@
 <div mat-dialog-content>
-  
     <div *ngIf="!otpSubitted">
         <form [formGroup]="grievanceRaiserOtpformGroup"
             (ngSubmit)="ongrievanceRaiserotpformSubmit(grievanceRaiserOtpformGroup.value)">
             <div class="flex flex-column flex justify-between items-center mt3">
                 <h2>Enter O T P</h2>
             </div>
-    
             <div class="flex flex-column flex justify-between items-center">
                 <div class="flex flex-row  justify-between items-center">
                     <div class="flex flex-column ">
@@ -39,7 +37,6 @@
             </div>
         </form>
     </div>
-
     <div *ngIf="otpSubitted">
         <div class="mt0 flex flex-column flex justify-center items-center">
             
