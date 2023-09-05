@@ -116,7 +116,7 @@
                                         <input hidden id="fileUpload" #fileupload type="file"
                                         formControlName="attachmentUrls"
                                             (change)="handleFileUpload($event)" multiple
-                                            accept=".pdf, .jpeg, .png, .docx" />
+                                            accept=".pdf, .jpeg, .png, .jpg" />
                                     </mat-grid-tile>
                                 </mat-grid-list>
                                 <mat-grid-list cols="6" rowHeight="8rem" [gutterSize]="'100px'">
@@ -124,7 +124,7 @@
                                         <mat-card class="attachment-view">
                                             <!-- if no files are available -->
                                             <mat-card-content class="empty-content-class"
-                                                *ngIf="files.length == 0">Supports only PDF, JPEG, PNG, DOC with maximum
+                                                *ngIf="files.length == 0">Supports only PDF, JPEG, PNG with maximum
                                                 size of
                                                 2MB.</mat-card-content>
                                             <mat-card-content *ngIf="files.length > 0" class="file-list-container">

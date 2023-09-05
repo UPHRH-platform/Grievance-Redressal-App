@@ -122,7 +122,7 @@ export class GrievanceRaiserFormComponent {
       //console.log(event.target.files);
       const extension = selectedFile.name.split('.').pop();
       const fileSize = selectedFile.size;
-      const allowedExtensions = ['pdf', 'jpeg', 'jpg', 'png', 'docx'];
+      const allowedExtensions = ['pdf', 'jpeg', 'jpg', 'png'];
       if (allowedExtensions.includes(extension)) {
         // validate file size to be less than 2mb if the file has a valid extension
         if (fileSize < 2000000) {
@@ -273,7 +273,7 @@ export class GrievanceRaiserFormComponent {
         this.openSharedDialog(true);
       },
       error: (err) => {
-        this.toastrService.showToastr(err, 'Error', 'error', '');
+        this.toastrService.showToastr(err.statusText, 'Error', 'error', '');
         this.submitted = false;
         // Handle the error here in case of file upload or ticket creation failure
       }
