@@ -44,6 +44,7 @@ isOtpForm:boolean = false;
       next: (res) => {
         this.authService.saveUserData(res.responseData);
         this.getAllRoles();
+        this.getUserDetails();
        this.router.navigate(['home'])
       },
       error: (err) => {
