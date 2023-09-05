@@ -67,7 +67,7 @@ export class GrievanceRaiserFormComponent {
         Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")]),
       phone: new FormControl('', [
         Validators.required,
-        Validators.pattern("^(0|91)?[6-9][0-9]{9}$")]),
+        Validators.pattern(`^[0-9]*$`)]),
       grievanceType: new FormControl('', [
         Validators.required]),
       userType: new FormControl('', [
