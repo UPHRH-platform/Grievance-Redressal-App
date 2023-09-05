@@ -114,17 +114,17 @@ height: 100%;
 }
 
 @media all and (max-width: 768px) {
-.cdk-overlay-pane {
+#cdk-overlay-1.cdk-overlay-pane {
     width: 80% !important;
 }
 }
 
 @media all and (min-width: 768px) and (max-width: 1200px) {
-    .cdk-overlay-pane {
+    #cdk-overlay-1.cdk-overlay-pane {
         width: 70% !important;
     }
 }
-.cdk-overlay-pane {
+#cdk-overlay-1.cdk-overlay-pane {
     width: 40%,
 }
 

@@ -191,6 +191,7 @@ export class GrievanceDetailsComponent {
       next: (res) => {
         this.toastrService.showToastr("Ticket marked as resolved", 'Success', 'success', '');
         this.getTicketById();
+        this.router.navigate(['/grievance/manage-tickets/'],{ queryParams: {tabName: this.currentTabName}});
       },
       error: (err) => {
         this.toastrService.showToastr(err, 'Error', 'error', '');
@@ -296,9 +297,9 @@ export class GrievanceDetailsComponent {
     //console.log('this.ticketUpdateRequest',this.ticketUpdateRequest)
     this.grievanceServiceService.updateTicket(this.ticketUpdateRequest).subscribe({
       next: (res) =>{
-        //console.log(res)
         this.getTicketById();
         this.toastrService.showToastr("Ticket updated successfully!", 'Success', 'success', '');
+        this.router.navigate(['/grievance/manage-tickets/'],{ queryParams: {tabName: this.currentTabName}});
       },error: (err) =>{
         this.toastrService.showToastr(err, 'Error', 'error', '');
       }

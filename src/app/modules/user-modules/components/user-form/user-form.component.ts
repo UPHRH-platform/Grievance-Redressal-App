@@ -42,7 +42,7 @@ export class UserFormComponent implements OnInit {
       firstName: new FormControl('', [Validators.required, Validators.pattern("^[a-zA-Z]+$")]),
       lastName: new FormControl('', [Validators.required, Validators.pattern("^[a-zA-Z]+$")]),
       username: new FormControl('',[Validators.required, Validators.email]),
-      phone:  new FormControl('', [Validators.required, Validators.pattern("^(0|91)?[6-9][0-9]{9}$")]),
+      phone:  new FormControl('', [Validators.required, Validators.pattern(`^[0-9]*$`)]),
       role: new FormControl('', Validators.required),
       status: new FormControl('', Validators.required),
       department: new FormControl(''),
