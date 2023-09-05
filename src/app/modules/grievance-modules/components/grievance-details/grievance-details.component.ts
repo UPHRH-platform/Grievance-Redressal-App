@@ -117,8 +117,8 @@ export class GrievanceDetailsComponent {
       const fileSize = selectedFile.size;
       const allowedExtensions = ['pdf', 'jpeg', 'jpg', 'png'];
       if (allowedExtensions.includes(extension)) {
-        // validate file size to be less than 2mb if the file has a valid extension
-        if (fileSize < 2000000) {
+        // validate file size to be less than 5mb if the file has a valid extension
+        if (fileSize < 5000000) {
           if (this.listOfFiles.indexOf(selectedFile?.name) === -1) {
             this.files.push(selectedFile);
             this.listOfFiles.push(
@@ -128,7 +128,7 @@ export class GrievanceDetailsComponent {
             //console.log('file already exists');
           }
         } else {
-          this.fileUploadError = 'Please upload files with size less than 2MB';
+          this.fileUploadError = 'Please upload files with size less than 5MB';
         }
       } else {
         this.fileUploadError = `Please upload ${allowedExtensions.join(', ')} files`;
