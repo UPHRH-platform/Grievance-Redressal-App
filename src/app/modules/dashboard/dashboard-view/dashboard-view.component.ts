@@ -230,11 +230,13 @@ export class DashboardViewComponent {
     }
 
     resetFilter() {
-      this.filterForm.reset();
-      this.filterForm.patchValue({
+      this.filterForm.reset(this.filterForm.value);
+      this.filterForm.setValue({
         startDate: this.startDate,
-        endDate: this.endDate
+        endDate: this.endDate,
+        grievanceType: ''
       })
+      this.getDashboardObjectData(this.filterForm.value.startDate, this.filterForm.value.endDate);
     }
 }
 

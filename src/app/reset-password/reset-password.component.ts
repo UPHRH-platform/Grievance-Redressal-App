@@ -52,9 +52,11 @@ export class ResetPasswordComponent {
   updateUser() {
     let departmentId: any;
     this.grievanceTypes.map((obj: any) => {
+      if(this.userDetails.attributes.Role[0] !== 'SUPERADMIN') {
       if(this.userDetails?.attributes.departmentName[0].toLowerCase() === obj.name.toLowerCase()) {
         departmentId = obj.id;   
       }
+    }
     })
     const requestObj = {
       id: this.userDetails?.id,
