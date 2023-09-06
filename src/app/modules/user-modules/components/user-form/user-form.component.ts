@@ -156,9 +156,11 @@ export class UserFormComponent implements OnInit {
     const {id } = this.userDetails;
     let deptId: any;
     this.grievanceTypes.map((obj: any) => {
+      if(this.userDetails.attributes.Role[0] !== 'SUPERADMIN') { 
       if(department.toLowerCase() === obj.name.toLowerCase()) {
         deptId = obj.id;   
       }
+    }
     })
     const requestObj = {
       id: this.userDetails.id,
@@ -210,8 +212,14 @@ export class UserFormComponent implements OnInit {
   }
 
   addUser() {
+    let deptId: any;
     const {firstName, lastName, phone, role, status, username, department} = this.userForm.value;
     //console.log(this.userForm.value);
+    this.grievanceTypes.map((obj: any) => {
+      if(department.toLowerCase() === obj.name.toLowerCase()) {
+        deptId = obj.id;   
+      }
+    })
     const enabled = status === 'Active'? true : false;
     const requestObj = {
       firstName,
@@ -229,7 +237,7 @@ export class UserFormComponent implements OnInit {
     // ],
     attributes: {
       module: 'grievance',
-      departmentName: role === 'NODALOFFICER' ? department: role === 'GRIEVANCEADMIN' || role === 'ADMIN' ? -1 : null,
+      departmentName: role === 'NODALOFFICER' ? deptId: role === 'GRIEVANCEADMIN' || role === 'ADMIN' ? -1 : null,
       phoneNumber: phone,
       Role: role
   },

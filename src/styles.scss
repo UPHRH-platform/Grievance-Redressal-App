@@ -113,19 +113,4 @@ height: 100%;
     border-color: rgb(4, 93, 173) !important;
 }
 
-@media all and (max-width: 768px) {
-#cdk-overlay-1.cdk-overlay-pane {
-    width: 80% !important;
-}
-}
-
-@media all and (min-width: 768px) and (max-width: 1200px) {
-    #cdk-overlay-1.cdk-overlay-pane {
-        width: 70% !important;
-    }
-}
-#cdk-overlay-1.cdk-overlay-pane {
-    width: 40%,
-}
-
 

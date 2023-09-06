@@ -114,9 +114,11 @@ export class UserProfileComponent {
   onSubmit() {
     let departmentId: any;
     this.grievanceTypes.map((obj: any) => {
+      if(this.userDetails.attributes.Role[0] !== 'SUPERADMIN') {
       if(this.userDetails?.attributes.departmentName[0].toLowerCase() === obj.name.toLowerCase()) {
         departmentId = obj.id;   
       }
+    }
     })
     const {firstName, lastName, phoneNumber, emailId} = this.userForm.value;
     const {id, attributes, enabled } = this.userDetails;
@@ -147,12 +149,12 @@ export class UserProfileComponent {
       next:(res) => {
         //console.log(res);
         this.toastrService.showToastr('User details updated successfully', 'Success', 'success', '');
-        // this.userDetails = res.responseData;
-        // getUserDetails(this.userId);
       },
       error: (err) => {
         if(err.status === 200) {
           this.toastrService.showToastr("User updated successfully!", 'Success', 'success', '');
+          this.isEditData = false;
+          this.getUserDetails();
         }
         else {
           this.toastrService.showToastr('Something went wrong. Please try again', 'Error', 'error', '');
