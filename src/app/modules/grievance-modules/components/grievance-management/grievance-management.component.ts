@@ -313,6 +313,16 @@ export class GrievanceManagementComponent  {
         isJunk: true
       }
       break;
+      case 'Nudged': 
+      this.getGrievancesRequest = {
+        ...this.getGrievancesRequest,
+        filter:{
+          status:['OPEN']
+        },
+        priority: "HIGH",
+        isJunk: false
+      }
+      break;
       default: 
       this.getGrievancesRequest
       break;
