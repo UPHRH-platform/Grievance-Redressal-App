@@ -1,4 +1,8 @@
 import { Component } from '@angular/core';
+import { BnNgIdleService } from 'bn-ng-idle';
+import { AuthService } from './core';
+import { Router } from '@angular/router';
+import { ToastrServiceService } from './shared/services/toastr/toastr.service';
 
 @Component({
   selector: 'app-root',
@@ -7,4 +11,22 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'grievance-app';
+
+  constructor(private bnIdle: BnNgIdleService,
+    private authService: AuthService,
+    private router: Router,
+    private toastrService: ToastrServiceService){
+    this.bnIdle.startWatching(600).subscribe((res)=>{
+      if(res){
+        this.logout();
+      }
+    })
+
+  }
+
+  logout(){
+    this.authService.logout();
+    this.router.navigate(['/']);
+    this.toastrService.showToastr("Session got expired", 'Error', 'error', '')
+   }
 }
