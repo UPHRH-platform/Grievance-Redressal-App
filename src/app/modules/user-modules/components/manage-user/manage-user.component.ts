@@ -41,7 +41,9 @@ export class ManageUserComponent implements OnInit {
     this.getAllUsers();
     this.initializeColumns();
   }
-
+  navigateToHome(){
+    this.router.navigate(['/home'])
+  }
   goToUserDetail(userDetail?:any){
     //console.log(userDetail);
     if(userDetail){
