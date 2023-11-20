@@ -80,6 +80,10 @@ export class GrievanceManagementComponent  {
     this.initializeTabs();
   }
 
+  navigateToHome(){
+    this.router.navigate(['/home'])
+  }
+
   initializeTabs(): void {
     const Roles = this.configService.rolesConfig.ROLES;
     switch(this.userRole ){

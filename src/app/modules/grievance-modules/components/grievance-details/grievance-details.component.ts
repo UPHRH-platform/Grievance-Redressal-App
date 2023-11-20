@@ -82,6 +82,10 @@ export class GrievanceDetailsComponent {
     })
   }
 
+  navigateToHome(){
+    this.router.navigate(['/grievance/manage-tickets'], {queryParams:  {tabName: this.currentTabName}})
+  }
+
   createForm() {
     this.grievanceResolutionForm = this.formBuilder.group({
       description: new FormControl('', [Validators.required]),

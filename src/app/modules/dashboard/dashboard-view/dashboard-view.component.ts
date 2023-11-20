@@ -4,6 +4,7 @@ import { BreadcrumbItem, ConfigService } from 'src/app/shared';
 import { DashboardService } from '../services/dashboard.service';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ToastrServiceService } from 'src/app/shared/services/toastr/toastr.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-dashboard-view',
@@ -30,7 +31,8 @@ export class DashboardViewComponent {
   filterDateRange = {startDate: '', endDate: ''};
   public assignGrievanceTypeForm:FormGroup;
   grievanceTypeNames: any = [];
-  constructor(private dashboardService: DashboardService, private configService: ConfigService, private formBuilder: FormBuilder, private toastrService: ToastrServiceService) {
+  constructor(private dashboardService: DashboardService, private configService: ConfigService, private formBuilder: FormBuilder, private toastrService: ToastrServiceService,
+    private router: Router) {
   }
 
   ngOnInit(): void {
@@ -41,6 +43,10 @@ export class DashboardViewComponent {
       endDate:new FormControl(this.endDate)
     })
     this.getDashboardObjectData(this.filterForm.value.startDate, this.filterForm.value.endDate);
+  }
+
+  navigateToHome(){
+    this.router.navigate(['/home'])
   }
 
   compareFn(cmp1: any,cmp2: any){

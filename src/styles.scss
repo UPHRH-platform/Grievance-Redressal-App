@@ -112,5 +112,7 @@ height: 100%;
 .mat-mdc-radio-button .mdc-radio .mdc-radio__native-control:enabled+.mdc-radio__background .mdc-radio__inner-circle {
     border-color: rgb(4, 93, 173) !important;
 }
-
+.back-btn {
+    cursor: pointer;
+  }
 
