@@ -14,6 +14,7 @@ import { ToastrModule } from 'ngx-toastr';
 import { MaterialModule } from 'src/material/material.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
+import { BnNgIdleService } from 'bn-ng-idle';
 
 
 
@@ -38,7 +39,7 @@ import { ResetPasswordComponent } from './reset-password/reset-password.componen
     GrievanceModulesModule,
     ToastrModule.forRoot()
   ],
-  providers: [],
+  providers: [BnNgIdleService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
