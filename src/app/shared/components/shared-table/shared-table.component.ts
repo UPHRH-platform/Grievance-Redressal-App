@@ -83,6 +83,7 @@ export class SharedTableComponent implements AfterViewInit {
   pageEvent: PageEvent;
   private timeoutId: any;
   @Output() sortChange: EventEmitter<any> = new EventEmitter<any>();
+  @Output() cellClickAction: EventEmitter<any> = new EventEmitter<any>();
   @Input() isServerSideSorting: boolean = false;
 
   constructor( private configService: ConfigService,
@@ -149,6 +150,14 @@ export class SharedTableComponent implements AfterViewInit {
 
     emitRowAction(row: any) {
       this.rowAction.emit(row);
+    }
+
+    emitCellClickAction(row: any, columnDef?: string) {
+      const data = {
+        row: row,
+        columnDef: columnDef
+      }
+      this.cellClickAction.emit(data);
     }
 
     onClickEdit(row:any){

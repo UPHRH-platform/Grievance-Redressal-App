@@ -34,17 +34,22 @@
         (click)="emitRowAction(element)"
       >
         <span *ngIf="!disCol.isAction; else action">
-          <a mat-button>{{ disCol.cell(element) }}</a>
+          <a >{{ disCol.cell(element) }}</a>
         </span>
 
         <ng-template #action>
-          <button
-            mat-button
-            [id]="rowActionIcon"
-            (click)="emitRowAction(element)"
-          >
-            <mat-icon>delete</mat-icon>
-          </button>
+          <ng-container *ngIf="!disCol.isDeleteButton; else deleteButton">
+            <a mat-button (click)="emitCellClickAction(element, disCol?.columnDef)">{{ disCol.cell(element) }}</a>
+          </ng-container>
+          <ng-template #deleteButton>
+            <button
+              mat-button
+              [id]="rowActionIcon"
+              (click)="emitCellClickAction(element, disCol?.columnDef)"
+            >
+              <mat-icon>delete</mat-icon>
+            </button>
+          </ng-template>
         </ng-template>
         <span *ngIf="disCol.isMenuOption">
           <button
