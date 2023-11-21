@@ -16,7 +16,7 @@ export class AppComponent {
     private authService: AuthService,
     private router: Router,
     private toastrService: ToastrServiceService){
-    this.bnIdle.startWatching(600).subscribe((res)=>{
+    this.bnIdle.startWatching(900).subscribe((res)=>{
       if(res){
         this.logout();
       }
