@@ -29,7 +29,7 @@
             <ng-container *ngIf="!isDataLoading && grievancesTableColumns.length > 0">
               <app-shared-table [tableColumns]="grievancesTableColumns" [tableData]="grievances" [isPageable]="true"
               [length]="length" [pageSize]="pageSize" [hidePageSize]="false" [showPageSizeOptions]="true" [showFirstLastButtons]="true" [pageIndex]="pageIndex" 
-                  (rowAction)="onClickItem($event)" [isServerSideSorting]="true" [isServerSidePagination]="true" (pageChange)="handlePageChange($event)" (searchParmas)="getSearchParams($event)">
+                  (cellClickAction)="onClickItem($event)" [isServerSideSorting]="true" [isServerSidePagination]="true" (pageChange)="handlePageChange($event)" (searchParmas)="getSearchParams($event)">
               </app-shared-table>
             </ng-container>
         </mat-tab>

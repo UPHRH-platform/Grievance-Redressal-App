@@ -155,7 +155,7 @@ export class GrievanceManagementComponent  {
         },
         {
           columnDef: 'escalatedDateTS',
-          header: 'Escalation time',
+          header: 'Escalation Time',
           isSortable: true,
           isLink: false,
           cell: (element: Record<string, any>) => 
@@ -173,6 +173,7 @@ export class GrievanceManagementComponent  {
           header: '',
           isSortable: false,
           isLink: true,
+          isAction: true,
           cell: (element: Record<string, any>) => `View Ticket`
         },
       ];
@@ -215,7 +216,7 @@ export class GrievanceManagementComponent  {
         },
         {
           columnDef: 'escalatedDateTS',
-          header: 'Escalation time',
+          header: 'Escalation Time',
           isSortable: true,
           isLink: false,
           cell: (element: Record<string, any>) => 
@@ -223,7 +224,7 @@ export class GrievanceManagementComponent  {
         },
         {
           columnDef: 'updatedDate',
-          header: 'Juncked time',
+          header: 'Marked Junk',
           isSortable: true,
           isLink: false,
           cell: (element: Record<string, any>) => 
@@ -241,6 +242,7 @@ export class GrievanceManagementComponent  {
           header: '',
           isSortable: false,
           isLink: true,
+          isAction: true,
           cell: (element: Record<string, any>) => `View Ticket`
         },
       ];
@@ -297,7 +299,7 @@ export class GrievanceManagementComponent  {
 
   onClickItem(e: any) {
     e.tabName= this.selectedTab.name
-    let id = parseInt(e?.ticketId)
+    let id = parseInt(e?.row.ticketId)
     //console.log("Line 251", this.grievanceType);
     this.router.navigate(['/grievance/manage-tickets/'+ id],{ queryParams: {tabName:this.selectedTab.name}});
   }
