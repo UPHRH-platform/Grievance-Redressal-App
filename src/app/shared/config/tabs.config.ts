@@ -55,6 +55,10 @@ export const Tabs = {
         {
             name: "Junk",
             id: 'junk'
+        },
+        {
+            name: "Nudged",
+            id: 'nudged'
         }
     ]
 }
