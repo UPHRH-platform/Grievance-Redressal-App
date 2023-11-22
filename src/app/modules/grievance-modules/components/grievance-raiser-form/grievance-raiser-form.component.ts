@@ -255,7 +255,7 @@ export class GrievanceRaiserFormComponent {
   createTicket(otpDetails: any) {
     this.submitted = true;
     const fileUploadUrlResponses: any = [];
-    const ticketDetails = { ...this.ticketDetails, otp: otpDetails?.mobileOTP };
+    const ticketDetails = { ...this.ticketDetails, otp: otpDetails?.emailOTP,mobileOtp: otpDetails?.mobileOTP};
     delete ticketDetails.name;
   
     // Call uploadFiles to upload attachments

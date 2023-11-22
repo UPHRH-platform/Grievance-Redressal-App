@@ -24,6 +24,15 @@ mat-icon.big-icon {
     margin-top: -16px !important;
     margin-bottom: 10px !important;
     }
+    .resendphOTP-class {
+        text-align: end;
+        color: rgb(0, 116, 182);
+        font-family: "Lato", sans-serif;
+        font-weight: 700;
+        position: initial !important;
+        margin-top: -16px !important;
+        margin-bottom: 10px !important;
+    }
 }
 .resendOTP-class {
     /* display: block;
@@ -48,6 +57,16 @@ mat-icon.big-icon {
     /* position: initial;
     margin-top: -16px; */
   }
-
+ .resendphOTP-class {
+    text-align: end;
+    color: rgb(0, 116, 182);
+    font-family: "Lato", sans-serif;
+    font-weight: 700;
+    position: absolute;
+    top: 14.4rem;
+    bottom: 14rem;
+    right: 127px;
+    cursor: pointer;
+ }
 
   
