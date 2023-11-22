@@ -17,16 +17,23 @@
                         </mat-form-field>
                         <span class="resendOTP-class" (click)="generateOtps()">Re-send</span>
                         <p class="small-font">Enter the 6 digit OTP sent to your email address.</p>
-                        <mat-error *ngIf="grievanceRaiserOtpformGroup.controls['emailOTP'].hasError('pattern') && (otpForm.controls['emailOTP'].dirty || otpForm.controls['emailOTP'].touched)">
+                        <mat-error *ngIf="grievanceRaiserOtpformGroup.controls['emailOTP'].hasError('pattern') && (grievanceRaiserOtpformGroup.controls['emailOTP'].dirty || grievanceRaiserOtpformGroup.controls['emailOTP'].touched)">
                             OTP should contain digits only
                             </mat-error>
                
-                        <!-- <mat-form-field appearance="outline" class="mt2">
+                        <mat-form-field appearance="outline" class="mt2">
                             <mat-label>Enter mobile OTP</mat-label>
                             <input matInput placeholder="0 - 0 - 0 - 0 - 0 - 0" formControlName="mobileOTP">
+                            <!-- <span class="" (click)="generateMobileOtp()">Re-send</span>
                             <mat-error *ngIf="grievanceRaiserOtpformGroup.controls['mobileOTP'].invalid">
+                            </mat-error> -->
+                        </mat-form-field>
+                        <span class="resendphOTP-class" (click)="generateMobileOtp()">Re-send</span>
+                        <p class="small-font">Enter the 6 digit OTP sent to your mobile number.</p>
+                        <mat-error *ngIf="grievanceRaiserOtpformGroup.controls['mobileOTP'].invalid">
+                            OTP should contain digits only
                             </mat-error>
-                        </mat-form-field> -->
+                        
                         <!-- <p class="small-font">Enter the 6 digit OTP sent to your mobile number.</p> -->
 
                         <button [disabled]="!grievanceRaiserOtpformGroup.valid" mat-raised-button color="primary" (click)="onSubmit()" class="fit mt2">Submit</button>

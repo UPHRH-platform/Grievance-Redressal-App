@@ -20,7 +20,8 @@
             "DEACTIVATE_USER": "/user/deactivate"
         },
         "OTP":{
-            "GENERATE_OTP": "/otp/generate-otp"
+            "GENERATE_OTP": "/otp/generate-otp",
+            "GENERATE_MOBILE_OTP":"/otp/generate-mobile-otp"
         },
         "FILE": {
             "UPLOAD": "/ticket/file/upload"
