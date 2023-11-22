@@ -171,6 +171,7 @@ export class SharedTableComponent implements AfterViewInit {
     onToggleChange(e:any){
       this.toggleData.emit(e);
     }
+
     getUserRole(roleName: string) {
       return getRole(roleName);
      }

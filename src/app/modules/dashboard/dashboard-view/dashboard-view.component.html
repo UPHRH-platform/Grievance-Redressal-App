@@ -10,9 +10,9 @@
             <div class="flex flex-wrap justify-end custom-align">
                 <div class="pr2">
                     <mat-form-field appearance="outline">
-                        <mat-select [compareWith]="compareFn" [(value)]="grievanceType" multiple formControlName="grievanceType" placeholder="Department" (selectionChange)="grievanceSelected($event)">
+                        <mat-select  multiple formControlName="grievanceType" placeholder="Department" (selectionChange)="grievanceSelected($event)">
                           <span *ngFor='let grievance of grievancesTypes;let i = index'>
-                            <mat-option [value]="grievance.id">{{grievance.name}}</mat-option>
+                            <mat-option [(value)]="grievance.id">{{grievance.name}}</mat-option>
                           </span>
                         </mat-select>
                       </mat-form-field>
@@ -20,7 +20,7 @@
                 <div class="pr2">
                     <mat-form-field appearance="outline">
                         <mat-date-range-input [rangePicker]="picker">
-                          <input matStartDate placeholder="Start date" formControlName="startDate" [value]="startDate" (dateInput)="changeEvent('startDate', $event)" (dateChange)="changeEvent('endDate', $event)">
+                          <input matStartDate placeholder="Start date" formControlName="startDate" [value]="startDate" (dateInput)="changeEvent('startDate', $event)" (dateChange)="changeEvent('startDate', $event)">
                           <input matEndDate placeholder="End date" formControlName="endDate" [value]="endDate" (dateInput)="changeEvent('endDate', $event)" (dateChange)="changeEvent('endDate', $event)">
                         </mat-date-range-input>
                         <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
@@ -38,7 +38,7 @@
                   </button>
               </div>
             </div>
-            </form>
+          </form>
         </div>
         <div *ngIf="!isDataLoading" class="clearfix mxn1 mt2">
             <div class="flex flex-wrap">

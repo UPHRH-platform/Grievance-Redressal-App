@@ -4,6 +4,7 @@ import { DashboardRoutingModule } from './dashboard-routing.module';
 import { DashboardViewComponent } from './dashboard-view/dashboard-view.component';
 import { SharedModule } from '../../shared/shared.module';
 import { MaterialModule } from 'src/material/material.module';
+import { ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -14,7 +15,8 @@ import { MaterialModule } from 'src/material/material.module';
     CommonModule,
     DashboardRoutingModule,
     SharedModule,
-    MaterialModule
-  ]
+    MaterialModule,
+    ReactiveFormsModule
+  ],
 })
 export class DashboardModule { }

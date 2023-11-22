@@ -28,7 +28,7 @@ export class DashboardViewComponent {
   endDate = new Date();
   ccList: any = [];
   filterForm: FormGroup;
-  filterDateRange = {startDate: '', endDate: ''};
+  // filterDateRange = {startDate: '', endDate: ''};
   public assignGrievanceTypeForm:FormGroup;
   grievanceTypeNames: any = [];
   constructor(private dashboardService: DashboardService, private configService: ConfigService, private formBuilder: FormBuilder, private toastrService: ToastrServiceService,
@@ -43,6 +43,7 @@ export class DashboardViewComponent {
       endDate:new FormControl(this.endDate)
     })
     this.getDashboardObjectData(this.filterForm.value.startDate, this.filterForm.value.endDate);
+    this.initializeColumns();
   }
 
   navigateToHome(){
@@ -172,7 +173,7 @@ export class DashboardViewComponent {
           localStorage.setItem('filters', JSON.stringify(request));
           //  this.saveFilter();
           this.dashboardData = res.responseData;
-          this.initializeColumns();
+          // this.initializeColumns();
           if(this.dashboardData){
             // assignmentMatrix
             for(const key in this.dashboardData.assignmentMatrix) {
@@ -236,12 +237,13 @@ export class DashboardViewComponent {
     }
 
     resetFilter() {
-      this.filterForm.reset(this.filterForm.value);
+      // this.filterForm.reset(this.filterForm.value);
       this.filterForm.setValue({
         startDate: this.startDate,
         endDate: this.endDate,
         grievanceType: ''
       })
+      this.ccList = []
       this.getDashboardObjectData(this.filterForm.value.startDate, this.filterForm.value.endDate);
     }
 }
