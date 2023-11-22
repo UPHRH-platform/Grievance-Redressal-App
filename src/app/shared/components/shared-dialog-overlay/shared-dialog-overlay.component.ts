@@ -37,6 +37,7 @@ export class SharedDialogOverlayComponent {
     this.ticketId = this.data?.ticketId ? this.data?.ticketId : null;
     if(!this.otpSubitted){
       this.generateOtps();
+      this.generateMobileOtp();
       this.createForm();
     }
   }
@@ -55,6 +56,19 @@ export class SharedDialogOverlayComponent {
       // error: (error) => {
       //   this.toastrService.showToastr(error, 'Error', 'error', '');
       // }
+    })
+  }
+
+  generateMobileOtp(){
+    const {name,phone} =  this.data
+    const otpMobileRequest = {
+      name,
+      phone
+    }
+    this.otpService.generateMobileOtp(otpMobileRequest).subscribe({
+      next:(res)=>{
+
+      }
     })
   }
 
@@ -78,7 +92,7 @@ export class SharedDialogOverlayComponent {
 
   onSubmit() {
     this.grievanceRaiserOtpformGroup.patchValue({
-      mobileOTP: this.grievanceRaiserOtpformGroup.value.emailOTP,
+      mobileOTP: this.grievanceRaiserOtpformGroup.value.mobileOTP,
       emailOTP: this.grievanceRaiserOtpformGroup.value.emailOTP
     })
     if (this.grievanceRaiserOtpformGroup.valid) {

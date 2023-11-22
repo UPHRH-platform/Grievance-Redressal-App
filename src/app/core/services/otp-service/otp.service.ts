@@ -23,5 +23,14 @@ export class OtpService extends HttpService {
    return this.post(reqParam);
   }
 
+  generateMobileOtp(mobOtp:any):Observable<ServerResponse> {
+    const reqParam: RequestParam = {
+      url: this.baseUrl + this.configService.urlConFig.URLS.OTP.GENERATE_MOBILE_OTP,
+      data: mobOtp,
+    }
+   return this.post(reqParam);
+
+  }
+
 
 }
