@@ -203,7 +203,7 @@ export class UserFormComponent implements OnInit {
       }
       else {
         this.isProcessing = false;
-        this.toastrService.showToastr('Something went wrong. Please try again', 'Error', 'error', '');
+        this.toastrService.showToastr(err?.error.error_message, 'Error', 'error', '');
       }
       
        // Handle the error here in case of login failure
@@ -252,7 +252,7 @@ export class UserFormComponent implements OnInit {
      },
      error: (err) => {
       if(err.status !== 200) {
-      this.toastrService.showToastr('Something went wrong. Please try again', 'Error', 'error', '');
+      this.toastrService.showToastr(err?.error.error_message, 'Error', 'error', '');
       }
       this.isProcessing= false;
        // Handle the error here in case of login failure
