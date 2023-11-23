@@ -74,7 +74,7 @@ export class SharedDialogOverlayComponent {
 
   createForm() {
     this.grievanceRaiserOtpformGroup = this.formBuilder.group({
-      mobileOTP: new FormControl('', [
+      mobileOTP: new FormControl('', [Validators.required,
         Validators.minLength(6), Validators.maxLength(6)]),
       emailOTP: new FormControl('', [
         Validators.required,
