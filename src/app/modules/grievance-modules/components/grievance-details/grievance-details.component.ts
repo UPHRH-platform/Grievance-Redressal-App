@@ -240,6 +240,7 @@ export class GrievanceDetailsComponent {
           ...this.ticketUpdateRequest,
           isJunk:true,
           status:'CLOSED'
+          // status:'INVALID',
           
         }
         break;
