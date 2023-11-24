@@ -103,6 +103,10 @@ isOtpForm:boolean = false;
   SubmitOTP(){
    this.authService.loginWithOTP(this.loginForm.value.emailId, this.otpForm.value.otp).subscribe({
     next: (res) => {
+      if(res?.responseData.error){
+        this.toastrService.showToastr(res?.responseData.error, 'Error', 'error', '');
+        return;
+      }
       this.authService.saveUserData(res.responseData);
       this.getAllRoles();
       this.getUserDetails();
