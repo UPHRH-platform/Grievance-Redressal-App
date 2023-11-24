@@ -59,27 +59,6 @@
               ],
               "outputHashing": "all"
             },
-            "uat": {
-              "budgets": [
-                {
-                  "type": "initial",
-                  "maximumWarning": "500kb",
-                  "maximumError": "2mb"
-                },
-                {
-                  "type": "anyComponentStyle",
-                  "maximumWarning": "2kb",
-                  "maximumError": "4kb"
-                }
-              ],
-              "fileReplacements": [
-                {
-                  "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.uat.ts"
-                }
-              ],
-              "outputHashing": "all"
-            },
             "development": {
               "buildOptimizer": false,
               "optimization": false,
@@ -99,9 +78,6 @@
             },
             "development": {
               "browserTarget": "grievance-app:build:development"
-            },
-            "uat": {
-              "browserTarget": "grievance-app:build:uat"
             }
           },
           "defaultConfiguration": "development"
