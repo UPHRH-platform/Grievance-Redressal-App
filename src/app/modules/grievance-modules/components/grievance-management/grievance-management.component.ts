@@ -231,6 +231,14 @@ export class GrievanceManagementComponent  {
             `${element['updatedDate']}` !== "null" ? `${element['updatedDate']}` : '-'
         },
         {
+          columnDef: 'junkedBy',
+          header: 'Juncked By',
+          isSortable: true,
+          isLink: false,
+          cell: (element: Record<string, any>) => 
+            `${element['junkedBy']}` !== "null" ? `${element['junkedBy']}` : '-'
+        },
+        {
           columnDef: 'rating',
           header: 'Rating',
           isSortable: true,
@@ -269,7 +277,6 @@ export class GrievanceManagementComponent  {
     // this.getgrievances();
   }
 
-
   applyFilter(searchterms:any){
    clearTimeout(this.timeoutId) 
     this.searchParams  = searchterms
@@ -295,7 +302,6 @@ export class GrievanceManagementComponent  {
     }
     this.getTicketsRequestObject();
   }
-
 
   onClickItem(e: any) {
     e.tabName= this.selectedTab.name
@@ -390,7 +396,8 @@ export class GrievanceManagementComponent  {
       this.getGrievancesRequest = {
         ...this.getGrievancesRequest,
         filter:{
-          status:['CLOSED'],
+          status:['INVALID'],
+          // status:['CLOSED'],
           cc: this.grievanceType ? this.grievanceType: null,
         },
         isJunk: true
