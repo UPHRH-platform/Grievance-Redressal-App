@@ -9,6 +9,7 @@ import { UserService } from '../../services/user.service';
 import { getRole } from 'src/app/shared';
 import { ToastrServiceService } from 'src/app/shared/services/toastr/toastr.service';
 import { PageEvent } from '@angular/material/paginator';
+import { FormControl, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-manage-user',
@@ -27,6 +28,9 @@ export class ManageUserComponent implements OnInit {
   pageIndex: number = 0;
   length: number = 0;
   listLength: number = 0;
+  searchForm:FormGroup;
+  searchParams:string = '';
+  private timeoutId: any;
 
   constructor(
     private router: Router,
@@ -34,13 +38,25 @@ export class ManageUserComponent implements OnInit {
     private userService: UserService,
     private toastrService: ToastrServiceService 
   ){
-
+    this.searchForm =  new FormGroup({
+      searchData:  new FormControl('')
+    })
+  
   }
 
   ngOnInit(): void {
     this.getAllUsers();
     this.initializeColumns();
   }
+
+  applyFilter(searchterms:any){
+    clearTimeout(this.timeoutId) 
+     this.searchParams  = searchterms
+      this.timeoutId= setTimeout(()=>{
+      this.getAllUsers()
+     },1000
+     ) 
+   }
   navigateToHome(){
     this.router.navigate(['/home'])
   }
@@ -165,7 +181,8 @@ export class ManageUserComponent implements OnInit {
     this.isDataLoading = true;
     const request = {
       page: this.pageIndex,// need to check once code is deployed.
-      size: this.pageSize
+      size: this.pageSize,
+      searchKeyword:this.searchParams
       }
       //console.log(request);
     this.userService.getAllUsers(request).subscribe({

@@ -12,6 +12,21 @@
      <div class="user-table-wrapper">
         <app-shared-skeleton-loading [isLoading]="isDataLoading">
         </app-shared-skeleton-loading>
+        <div *ngIf="!isDataLoading">
+          <form [formGroup]="searchForm">
+          <mat-form-field>
+            <input
+              matInput
+              formControlName="searchData"
+              appearance="standard"
+              (keyup)="applyFilter($event.target.value)"
+              placeholder="Search"
+            />
+          </mat-form-field>
+          
+        </form>
+        
+      </div>
         <!-- <app-shared-table *ngIf="!isDataLoading" [tableColumns]="usersTableColumns" [tableData]="users" [isPageable]="true"
           [length]="length" [pageSize]="pageSize" [isServerSidePagination]="true" > -->
          <app-shared-table *ngIf="!isDataLoading" [tableColumns]="usersTableColumns" [tableData]="users" [isPageable]="true"
