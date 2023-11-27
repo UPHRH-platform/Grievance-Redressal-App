@@ -396,8 +396,8 @@ export class GrievanceManagementComponent  {
       this.getGrievancesRequest = {
         ...this.getGrievancesRequest,
         filter:{
-          // status:['INVALID'],
-          status:['CLOSED'],
+          status:['INVALID'],
+          // status:['CLOSED'],
           cc: this.grievanceType ? this.grievanceType: null,
         },
         isJunk: true

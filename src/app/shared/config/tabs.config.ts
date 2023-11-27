@@ -37,7 +37,11 @@ export const Tabs = {
         {
             name: "Priority",
             id: 'priority'
-        }
+        },
+        {
+            name: "Junk",
+            id: 'junk'
+        },
     ],
     'Grievance Nodal': [
         {
