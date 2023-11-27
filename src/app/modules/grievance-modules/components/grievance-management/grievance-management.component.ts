@@ -168,6 +168,7 @@ export class GrievanceManagementComponent  {
           isLink: false,
           cell: (element: Record<string, any>) => `${element['rating']}`
         },
+        
         {
           columnDef: 'isLink',
           header: '',
@@ -232,7 +233,7 @@ export class GrievanceManagementComponent  {
         },
         {
           columnDef: 'junkedBy',
-          header: 'Juncked By',
+          header: 'Junked By',
           isSortable: true,
           isLink: false,
           cell: (element: Record<string, any>) => 
@@ -398,7 +399,7 @@ export class GrievanceManagementComponent  {
         filter:{
           status:['INVALID'],
           // status:['CLOSED'],
-          cc: this.grievanceType ? this.grievanceType: null,
+          cc: (this.userRole === 'Grievance Nodal')? null : this.grievanceType ? this.grievanceType: null,
         },
         isJunk: true
       }
@@ -411,6 +412,17 @@ export class GrievanceManagementComponent  {
         },
         priority: "HIGH",
         isJunk: false
+      }
+      break;
+      case 'Juncked By': 
+      this.getGrievancesRequest = {
+        ...this.getGrievancesRequest,
+        filter:{
+          status:['INVALID'],
+          // status:['CLOSED'],
+          cc: (this.userRole === 'Grievance Nodal')? null : this.grievanceType ? this.grievanceType: null,
+        },
+        isJunk: true
       }
       break;
       default: 
