@@ -24,7 +24,8 @@
                             <h4 >Password</h4>
                             <mat-form-field appearance="outline" class="text-class">
                                 <mat-label>password</mat-label>
-                                <input type="password" matInput placeholder="Enter password" formControlName="password" >
+                                <input type="password" matInput placeholder="Enter password" [type]="show ?'text':'password'" formControlName="password" >
+                                <mat-icon matSuffix (click)="show = !show">{{show ?'visibility':'visibility_off'}}</mat-icon>
                                 <!-- <mat-error *ngIf="firstName && firstName.invalid && firstName.touched">please enter first name</mat-error> -->
 
                             </mat-form-field>
