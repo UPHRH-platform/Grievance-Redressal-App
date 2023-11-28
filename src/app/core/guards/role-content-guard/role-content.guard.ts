@@ -9,7 +9,7 @@ export const roleContentMapping: { [role: string]: string[] } = {
   'Admin': ['dashboard', 'users',],
   'Grievance Nodal': ['grievances'],
   'Nodal Officer': ['grievances'],
-  'Secretary': ['grievances'],
+  'Secretary': ['dashboard', 'grievances'],
 };
 
 // role-content.guard.ts

@@ -48,7 +48,7 @@ const routes: Routes = [
         loadChildren: () => import('./modules/dashboard/dashboard.module').then(m => m.DashboardModule),
         canActivate: [AuthGuard, RoleContentGuard],
         data: {
-          allowedRoles: [Roles.ADMIN],
+          allowedRoles: [Roles.SUPERADMIN, Roles.ADMIN],
         },
       },
       {
