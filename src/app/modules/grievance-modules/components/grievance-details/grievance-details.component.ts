@@ -229,7 +229,6 @@ export class GrievanceDetailsComponent {
     this.ticketUpdateRequest = {
       requestedBy: this.userId,
       cc: this.ticketDetails.assignedToId,
-      isJunk: this.ticketDetails.junk,
       status: this.ticketDetails.status,
       priority: this.ticketDetails.priority,
       id:this.id
@@ -254,13 +253,15 @@ export class GrievanceDetailsComponent {
       case 'nudge': 
       this.ticketUpdateRequest = {
         ...this.ticketUpdateRequest,
-        priority: "HIGH"
+        priority: "HIGH",
+        isNudged: true,
       }
       break;
       case 'markothers': 
       this.ticketUpdateRequest = {
         ...this.ticketUpdateRequest,
         "cc":-1,
+        isJunk: this.ticketDetails.junk,
       }
       break;
       case 'unjunk': 
@@ -274,18 +275,21 @@ export class GrievanceDetailsComponent {
       this.ticketUpdateRequest = {
         ...this.ticketUpdateRequest,
         comment: data.description,
-        status:"CLOSED"
+        status:"CLOSED",
+        isJunk: this.ticketDetails.junk,
       }
       break;
       case 'assign': 
       this.ticketUpdateRequest = {
         ...this.ticketUpdateRequest,
-       cc: data.grievanceType
+       cc: data.grievanceType,
+       isJunk: this.ticketDetails.junk,
       }
       break;
       default: 
       this.ticketUpdateRequest = {
         ...this.ticketUpdateRequest,
+        isJunk: this.ticketDetails.junk,
       }
       break;
     }
