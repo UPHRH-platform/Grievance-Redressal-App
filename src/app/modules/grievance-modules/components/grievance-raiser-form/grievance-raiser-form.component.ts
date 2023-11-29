@@ -30,7 +30,7 @@ export class GrievanceRaiserFormComponent {
   innerHeight: any;
   innerWidth: any;
   userTypesArray = [
-    'Candidate', 'Institute', 'Faculty', 'Others'
+    'Candidate', 'Institute', 'Faculty', 'Public', 'Others'
   ];
   dialogSettings = {
     maxHeight: '100vh',
