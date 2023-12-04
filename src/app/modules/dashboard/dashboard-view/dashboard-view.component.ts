@@ -1,10 +1,24 @@
 import { Component } from '@angular/core';
-import { TableColumn, DashboardTableData, DashboardAnalytics } from '../../../interfaces/interfaces';
 import { BreadcrumbItem, ConfigService } from 'src/app/shared';
 import { DashboardService } from '../services/dashboard.service';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { ToastrServiceService } from 'src/app/shared/services/toastr/toastr.service';
 import { Router } from '@angular/router';
+
+import { utils, writeFile } from 'xlsx';
+export const exportToExcel = async (downloadObjects: any) => {
+  if (downloadObjects && downloadObjects.objectsList) {
+    const workbook = utils.book_new();
+    downloadObjects.objectsList.forEach((element: any) => {
+      const sheetName = element.sheetName ? element.sheetName : `Sheet ${workbook.SheetNames.length + 1}`
+      const worksheet = utils.json_to_sheet([]);
+      utils.sheet_add_aoa(worksheet, [element.headers])
+      utils.book_append_sheet(workbook, worksheet, sheetName);
+      utils.sheet_add_json(worksheet, element.downloadObject, { origin: 'A2', skipHeader: true });
+    });
+    writeFile(workbook, downloadObjects.fileName ? downloadObjects.fileName : 'data.xlsx');
+  }
+}
 
 @Component({
   selector: 'app-dashboard-view',
@@ -32,7 +46,9 @@ export class DashboardViewComponent {
   public assignGrievanceTypeForm:FormGroup;
   grievanceTypeNames: any = [];
   constructor(private dashboardService: DashboardService, private configService: ConfigService, private formBuilder: FormBuilder, private toastrService: ToastrServiceService,
-    private router: Router) {
+    private router: Router,
+    // private papa: Papa
+    ) {
   }
 
   ngOnInit(): void {
@@ -246,5 +262,101 @@ export class DashboardViewComponent {
       this.ccList = []
       this.getDashboardObjectData(this.filterForm.value.startDate, this.filterForm.value.endDate);
     }
+
+  downloadDetails() {
+    const assignmentMatrix = {
+      sheetName: 'Ticket assignment matrix',
+      downloadObject: {},
+      headers: ['Tag', 'Number of tickets'],
+    }
+    const performanceIndicators = {
+      sheetName: 'Key performance indicators',
+      downloadObject: {},
+      headers: ['Item', 'Percentage'],
+    }
+    const resolutionMatrix = {
+      sheetName: 'Ticket resolution matrix',
+      downloadObject: {},
+      headers: ['Department', 'Total Ticket', 'Junk Ticket', 'Resolved Ticket', 'Escalated', 'Pending Ticket', 'Open Ticket', 'Unassigned'],
+    }
+
+    if(this.dashboardData) {
+      if(this.dashboardData.assignmentMatrix) {
+        const assignmentDetails = this.dashboardData.assignmentMatrix;
+        assignmentMatrix.downloadObject = [
+          {
+            tag: 'Total',
+            ticketCount: assignmentDetails.total,
+          },
+          {
+            tag: 'Is Open',
+            ticketCount: assignmentDetails.isOpen,
+          },
+          {
+            tag: 'Is Closed',
+            ticketCount: assignmentDetails.isClosed,
+          },
+          {
+            tag: 'Is Junk',
+            ticketCount: assignmentDetails.isJunk,
+          },
+          {
+            tag: 'Is Escalated',
+            ticketCount: assignmentDetails.isEscalated,
+          },
+          {
+            tag: 'Unassigned',
+            ticketCount: assignmentDetails.unassigned,
+          },
+        ]
+      }
+      if(this.dashboardData.performanceIndicators) {
+        const performanceperformance = this.dashboardData.performanceIndicators;
+        performanceIndicators.downloadObject = [
+          {
+            item: 'Escalation Percentage',
+            value: performanceperformance.escalationPercentage,
+          },
+          {
+            item: 'Nudge Ticket Percentage',
+            value: performanceperformance.nudgeTicketPercentage,
+          },
+          {
+            item: 'Open Ticket Gte21',
+            value: performanceperformance.openTicketGte21,
+          },
+          {
+            item: 'Turn Around Time',
+            value: performanceperformance.turnAroundTime,
+          },
+        ]
+      }
+      if(this.dashboardData.resolutionMatrix) {
+        const resolutionDetails = this.dashboardData.resolutionMatrix;
+        const keys = Object.keys(resolutionDetails);
+        const downloadObject: any = [];
+        keys.forEach((key) => {
+          const resolution = {
+            department: key,
+            totalticket: resolutionDetails[key].total,
+            junkticket: resolutionDetails[key].isJunk,
+            resolvedticket: resolutionDetails[key].isClosed,
+            escalated: resolutionDetails[key].isEscalated,
+            pendingticket: resolutionDetails[key].isOpen,
+            openticket: resolutionDetails[key].openTicketGte15,
+            unassigned: resolutionDetails[key].unassigned
+          }
+          downloadObject.push(resolution);
+        })
+        resolutionMatrix.downloadObject = downloadObject;
+      }
+    }
+
+    const downloadObjects = {
+      fileName: 'dashboard.xlsx',
+      objectsList: [assignmentMatrix, performanceIndicators, resolutionMatrix]
+    }
+    exportToExcel(downloadObjects);
+  }
 }
 
