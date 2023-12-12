@@ -66,3 +66,22 @@ export const Tabs = {
         }
     ]
 }
+
+export const ConfigurationTabs = [
+    {
+        name: 'Council',
+        id: 'council'
+    },
+    {
+        name: 'User Type',
+        id: 'user_type'
+    },
+    {
+        name: 'Department',
+        id: 'department'
+    },
+    {
+        name: 'Escalation Time',
+        id: 'escalation_time'
+    },
+]

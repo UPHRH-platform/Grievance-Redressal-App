@@ -6,7 +6,7 @@ import { SharedTableComponent } from './components/shared-table/shared-table.com
 import {MaterialModule} from '../../material/material.module';
 import { SharedSkeletonLoadingComponent } from './components/shared-skeleton-loading/shared-skeleton-loading.component';
 import { SharedDialogOverlayComponent } from './components/shared-dialog-overlay/shared-dialog-overlay.component';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ConfirmationPopupComponent } from './components/confirmation-popup/confirmation-popup.component';
 import { CommonLayoutComponent } from './components/common-layout/common-layout.component';
 import { BreadcrumbComponent } from './components/breadcrumb/breadcrumb.component';
@@ -29,6 +29,7 @@ import { CommonFilterComponent } from './components/common-filter/common-filter.
     MaterialModule,
     ReactiveFormsModule,
     RouterModule,
+    FormsModule,
   ],
   exports :
   [

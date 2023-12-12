@@ -1,0 +1,24 @@
+<app-breadcrumb [breadcrumbItems]="breadcrumbItems"></app-breadcrumb>
+<div class="content">
+    <div>
+        <div class="main-wrapper-usertable">
+            <img src="assets/images/back-button.png" title="back" class="back-btn" (click)="navigateToHome()" width="30"
+                height="30">
+            <mat-tab-group (selectedTabChange)="onTabChange($event)" mat-align-tabs="start">
+                <mat-tab *ngFor="let tab of tabs">
+                    <ng-template mat-tab-label>{{ tab.name }}</ng-template>
+                    <app-shared-skeleton-loading [isLoading]="isDataLoading">
+                    </app-shared-skeleton-loading>
+
+                    <div class="user-table-wrapper" *ngIf="!isDataLoading" >
+                        <app-shared-table [tableColumns]="tableColumns" 
+                        [tableData]="userTypes" [isPageable]="true" [length]="length" [pageSize]="10" [pageIndex]="0"
+                        (editCell)="updateRecord($event)">
+                        </app-shared-table>
+                    </div>
+                </mat-tab>
+            </mat-tab-group>
+        </div>
+    </div>
+
+</div>

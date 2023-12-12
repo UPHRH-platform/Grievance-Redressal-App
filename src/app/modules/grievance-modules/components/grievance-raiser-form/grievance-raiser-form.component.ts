@@ -55,8 +55,6 @@ export class GrievanceRaiserFormComponent {
     this.createForm();
   }
 
-  
-
   createForm() {
 
     this.grievanceRaiserformGroup = this.formBuilder.group({

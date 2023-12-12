@@ -6,7 +6,7 @@ import { RoleContentService } from '../../services/role-content-service/role-con
 
 // content-mapping.ts
 export const roleContentMapping: { [role: string]: string[] } = {
-  'Admin': ['dashboard', 'users',],
+  'Admin': ['dashboard', 'users', 'configuration'],
   'Grievance Nodal': ['grievances'],
   'Nodal Officer': ['grievances'],
   'Secretary': ['dashboard', 'grievances'],

@@ -16,39 +16,74 @@
     >
       <!-- if sortable column header -->
       <ng-container *ngIf="disCol.isSortable; else notSortable">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header [ngStyle]="disCol?.cellStyle">
           {{ disCol.header }}
         </th>
       </ng-container>
       <!-- else not sortable -->
       <ng-template #notSortable>
-        <th mat-header-cell *matHeaderCellDef>
+        <th mat-header-cell *matHeaderCellDef [ngStyle]="disCol?.cellStyle">
           {{ disCol.header }}
         </th>
       </ng-template>
 
       <td
         mat-cell
-        *matCellDef="let element"
+        *matCellDef="let element; let rowIndex = index;"
         [id]="rowAction"
         (click)="emitRowAction(element)"
       >
         <span *ngIf="!disCol.isAction; else action">
-          <a >{{ disCol.cell(element) }}</a>
+          <a *ngIf="disCol.colType !== 'SerNo'; else serNo">{{ disCol.cell(element) }}</a>
+          <ng-template #serNo>
+            {{rowIndex + 1}}
+          </ng-template>
         </span>
 
         <ng-template #action>
-          <ng-container *ngIf="!disCol.isDeleteButton; else deleteButton">
+          <ng-container *ngIf="!disCol.isButton; else buttons">
             <a mat-button (click)="emitCellClickAction(element, disCol?.columnDef)">{{ disCol.cell(element) }}</a>
           </ng-container>
-          <ng-template #deleteButton>
-            <button
-              mat-button
-              [id]="rowActionIcon"
-              (click)="emitCellClickAction(element, disCol?.columnDef)"
-            >
-              <mat-icon>delete</mat-icon>
-            </button>
+          <ng-template #buttons>
+            <ng-container [ngSwitch]="disCol.buttonType">
+              <ng-container *ngSwitchCase="'delete'">
+                <button mat-button [id]="rowActionIcon" (click)="emitCellClickAction(element, 'delete')">
+                  <mat-icon class="deleteClass">delete</mat-icon>
+                </button>
+              </ng-container>
+              <ng-container *ngSwitchCase="'edit'">
+                <button mat-button [id]="rowActionIcon" (click)="emitCellClickAction(element, 'edit')">
+                  <mat-icon class="editClass">edit</mat-icon>
+                </button>
+              </ng-container>
+              <ng-container *ngSwitchCase="'editCell'">
+                <ng-container *ngIf="!element.isEdit; else editCell">
+                  <a>{{ disCol.cell(element) }}</a>
+                  <button mat-button [id]="rowActionIcon" (click)="element.isEdit = true">
+                    <mat-icon class="editClass">edit</mat-icon>
+                  </button>
+                </ng-container>
+                <ng-template #editCell>
+                  <div class="flex editCell">
+                    <mat-form-field appearance="outline" class="eiditableText">
+                      <input matInput required type="text" [(ngModel)]="element[disCol.columnDef]" />
+                    </mat-form-field>
+                    <button mat-raised-button color="primary" class="doneBtn" (click)="editRow(element)">
+                      Done
+                    </button>
+                  </div>
+                </ng-template>
+              </ng-container>
+              <ng-container *ngSwitchCase="'slideToggle'">
+                <mat-slide-toggle class="slideToggle" [checked]="element[disCol.columnDef]" (change)="editRow(element)">
+                </mat-slide-toggle>
+              </ng-container>
+              <ng-container *ngSwitchDefault>
+                <button mat-button [id]="rowActionIcon" (click)="emitCellClickAction(element, 'default')">
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </ng-container>
+            </ng-container>
           </ng-template>
         </ng-template>
         <span *ngIf="disCol.isMenuOption">

@@ -52,6 +52,14 @@ const routes: Routes = [
         },
       },
       {
+        path: 'configuration', 
+        loadChildren: () => import('./modules/configuration/configuration.module').then(m => m.ConfigurationModule),
+        canActivate: [AuthGuard, RoleContentGuard],
+        data: {
+          allowedRoles: [Roles.ADMIN],
+        },
+      },
+      {
         path: 'user-profile', 
         component: UserProfileComponent, 
         canActivate: [AuthGuard],
