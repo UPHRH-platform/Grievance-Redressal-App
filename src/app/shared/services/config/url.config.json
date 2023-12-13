@@ -48,9 +48,10 @@
             "UPDATE_DEPARTMENT": "/admin/ticket/department/update",
             "UPDATE_DEPARTMENT_STATUS": "/admin/ticket/department/updateActivation",
 
-            "SEARCH_ESCALATIONTIME": "",
-            "UPDATE_ESCALATIONTIME": "",
-            "UPDATE_ESCALATIONTIME_STATUS": ""
+            "SEARCH_ESCALATIONTIME": "/config/mail/all",
+            "SAVE_ESCALATIONTIME": "/config/mail/save",
+            "UPDATE_ESCALATIONTIME": "/config/mail/update",
+            "UPDATE_ESCALATIONTIME_STATUS": "/config/mail/status/update?"
         }
     }
 }

@@ -207,7 +207,7 @@ export class ConfigurationService extends HttpService {
 
   updateEscalationTimeStatus(payload: any) {
     const reqParam: RequestParam = {
-      url: this.baseUrl + `${this.configService.urlConFig.URLS.CNFIGURATION.UPDATE_ESCALATIONTIME_STATUS}`,
+      url: this.baseUrl + `${this.configService.urlConFig.URLS.CNFIGURATION.UPDATE_ESCALATIONTIME_STATUS}userId=${payload.userId}&id=${payload.id}&active=${payload.active}`,
       data: payload,
     }
     return this.post(reqParam);

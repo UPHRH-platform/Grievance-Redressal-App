@@ -28,6 +28,7 @@ export class ConfigurationComponent implements OnInit {
   councilControlsList = [];
   newOptionControl = new FormControl();
   councilControl = new FormControl();
+  userData: any;
 
   tableColumns: TableColumn[] = [];
   tableData: any = [];
@@ -35,11 +36,13 @@ export class ConfigurationComponent implements OnInit {
   constructor(
     private router: Router,
     private configurationSvc: ConfigurationService,
-    private toastrService: ToastrServiceService 
+    private toastrService: ToastrServiceService,
   ) {}
 
   ngOnInit(): void {
     this.initializeTabs();
+    const userDetails = localStorage.getItem('userDetails');
+    this.userData = JSON.parse(userDetails ? userDetails : '');
   }
 
   initializeTabs() {
@@ -186,7 +189,7 @@ export class ConfigurationComponent implements OnInit {
       },
       error: (error) => {
         this.isDataLoading = false;
-        this.toastrService.showToastr(error, 'Error', 'error');
+        this.toastrService.showToastr(error.error.error, 'Error', 'error');
       }
     });
   }
@@ -208,7 +211,7 @@ export class ConfigurationComponent implements OnInit {
           }
         },
         error: (error: HttpErrorResponse) => {
-          this.toastrService.showToastr(error, 'Error', 'error');
+          this.toastrService.showToastr(error.error.error, 'Error', 'error');
           this.getCouncils();
         }
       })
@@ -229,7 +232,7 @@ export class ConfigurationComponent implements OnInit {
           }
         },
         error: (error: HttpErrorResponse) => {
-          this.toastrService.showToastr(error, 'Error', 'error')
+          this.toastrService.showToastr(error.error.error, 'Error', 'error')
           this.getCouncils();
         }
       });
@@ -245,7 +248,7 @@ export class ConfigurationComponent implements OnInit {
           }
         },
         error: (error: HttpErrorResponse) => {
-          this.toastrService.showToastr(error, 'Error', 'error')
+          this.toastrService.showToastr(error.error.error, 'Error', 'error')
           this.getCouncils();
         }
       });
@@ -309,7 +312,7 @@ export class ConfigurationComponent implements OnInit {
       },
       error: (error) => {
         this.isDataLoading = false;
-        this.toastrService.showToastr(error, 'Error', 'error');
+        this.toastrService.showToastr(error.error.error, 'Error', 'error');
       }
     });
   }
@@ -330,7 +333,7 @@ export class ConfigurationComponent implements OnInit {
           }
         },
         error: (error: HttpErrorResponse) => {
-          this.toastrService.showToastr(error, 'Error', 'error');
+          this.toastrService.showToastr(error.error.error, 'Error', 'error');
           this.getUserTypes();
         }
       })
@@ -351,7 +354,7 @@ export class ConfigurationComponent implements OnInit {
           }
         },
         error: (error: HttpErrorResponse) => {
-          this.toastrService.showToastr(error, 'Error', 'error')
+          this.toastrService.showToastr(error.error.error, 'Error', 'error')
           this.getUserTypes();
         }
       });
@@ -367,7 +370,7 @@ export class ConfigurationComponent implements OnInit {
           }
         },
         error: (error: HttpErrorResponse) => {
-          this.toastrService.showToastr(error, 'Error', 'error')
+          this.toastrService.showToastr(error.error.error, 'Error', 'error')
           this.getUserTypes();
         }
       });
@@ -432,7 +435,7 @@ export class ConfigurationComponent implements OnInit {
         this.councilControlsList = response;
       },
       error: (error: HttpErrorResponse) => {
-        this.toastrService.showToastr(error, 'Error', 'error');
+        this.toastrService.showToastr(error.error.error, 'Error', 'error');
       }
     })
   }
@@ -474,7 +477,7 @@ export class ConfigurationComponent implements OnInit {
       },
       error: (error) => {
         this.isDataLoading = false;
-        this.toastrService.showToastr(error, 'Error', 'error');
+        this.toastrService.showToastr(error.error.error, 'Error', 'error');
       }
     });
   }
@@ -497,7 +500,7 @@ export class ConfigurationComponent implements OnInit {
           }
         },
         error: (error: HttpErrorResponse) => {
-          this.toastrService.showToastr(error, 'Error', 'error');
+          this.toastrService.showToastr(error.error.error, 'Error', 'error');
           this.getDepartments();
         }
       })
@@ -518,7 +521,7 @@ export class ConfigurationComponent implements OnInit {
           }
         },
         error: (error: HttpErrorResponse) => {
-          this.toastrService.showToastr(error, 'Error', 'error')
+          this.toastrService.showToastr(error.error.error, 'Error', 'error')
           this.getDepartments();
         }
       });
@@ -535,7 +538,7 @@ export class ConfigurationComponent implements OnInit {
           }
         },
         error: (error: HttpErrorResponse) => {
-          this.toastrService.showToastr(error, 'Error', 'error')
+          this.toastrService.showToastr(error.error.error, 'Error', 'error')
           this.getDepartments();
         }
       });
@@ -557,31 +560,31 @@ export class ConfigurationComponent implements OnInit {
         }
       },
       {
-        columnDef: 'authority',
+        columnDef: 'authorityTitle',
         header: 'Authority',
         isSortable: true,
         isAction: false,
-        cell: (element: Record<string, any>) => `${element['authority']}`
+        cell: (element: Record<string, any>) => `${element['authorityTitle']}`
       },
       {
         columnDef: 'Email ID',
         header: 'email',
         isSortable: true,
         isAction: false,
-        cell: (element: Record<string, any>) => `${element['email']}`
+        cell: (element: Record<string, any>) => `${element['authorityEmails'].join(', ')}`
       },
       {
-        columnDef: 'escalationTime',
+        columnDef: 'configValue',
         header: 'Escalation days',
         isSortable: true,
         isAction: true,
         isButton: true,
         buttonType: 'editCell',
         isEdit: false,
-        cell: (element: Record<string, any>) => `${element['escalationTime']}`
+        cell: (element: Record<string, any>) => `${element['configValue']}`
       },
       {
-        columnDef: 'isActive',
+        columnDef: 'active',
         header: 'Action',
         isSortable: true,
         isAction: true,
@@ -602,7 +605,7 @@ export class ConfigurationComponent implements OnInit {
     this.configurationSvc.getEscalationTimes()
     .pipe((mergeMap((response) => {
       return of (response.responseData.sort((a: any,b: any) => {
-        const result = a.ticketDepartmentId - b.ticketDepartmentId;
+        const result = a.id - b.id;
         return result * -1;
       }))
     })))
@@ -613,25 +616,49 @@ export class ConfigurationComponent implements OnInit {
       },
       error: (error) => {
         this.isDataLoading = false;
-        this.toastrService.showToastr(error, 'Error', 'error');
+        this.toastrService.showToastr(error.error.error, 'Error', 'error');
       }
     });
   }
 
   updateEscalationTime(updatedRecord: any) {
     this.isDataLoading = true;
-    const formBody = {}
-    this.configurationSvc.updateEscalationTime(formBody).subscribe({
-      next: (response: any) => {
-        if (response) {
+    if (updatedRecord.columnDef !== 'active') {
+      const formBody = {
+        id: updatedRecord.row.id,
+        configValue: updatedRecord.row.configValue,
+        updatedBy: this.userData.id,
+        active: updatedRecord.row.active
+      }
+      this.configurationSvc.updateEscalationTime(formBody).subscribe({
+        next: (response: any) => {
+          if (response) {
+            this.getEscalationTime();
+          }
+        },
+        error: (error: HttpErrorResponse) => {
+          this.toastrService.showToastr(error.error.error, 'Error', 'error')
           this.getEscalationTime();
         }
-      },
-      error: (error: HttpErrorResponse) => {
-        this.toastrService.showToastr(error, 'Error', 'error')
-        this.getEscalationTime();
+      });
+    } else {
+      const formBody = {
+        id: updatedRecord.row.id,
+        userId: this.userData.id,
+        active: updatedRecord.row.active
       }
-    });
+      this.configurationSvc.updateEscalationTimeStatus(formBody).subscribe({
+        next: (response: any) => {
+          if (response) {
+            this.getEscalationTime();
+          }
+        },
+        error: (error: HttpErrorResponse) => {
+          this.toastrService.showToastr(error.error.error, 'Error', 'error')
+          this.getEscalationTime();
+        }
+      });
+    }
   }
   //#endregion
 
