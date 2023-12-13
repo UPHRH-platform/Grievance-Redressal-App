@@ -33,6 +33,11 @@ export interface GrievancesTableData {
     url?: string;
     isSortable?: boolean;
     isMenuOption?:boolean;
+    isButton?: boolean;
+    buttonType?: string;
+    cellStyle?: any
+    isEdit?: boolean;
+    colType?: string;
 
   }
 

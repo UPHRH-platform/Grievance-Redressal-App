@@ -29,6 +29,11 @@ export class HomePageComponent implements OnInit {
         // 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. ',
       type: 'users',
     },
+    {
+      title: 'Configuration Management',
+      description: '',
+      type: 'configuration',
+    },
   ];
 
   constructor(private router:Router, private roleContentService: RoleContentService,){
@@ -57,6 +62,9 @@ export class HomePageComponent implements OnInit {
         break;
       case 'users':
         this.router.navigate(['user-manage']);
+        break;
+      case 'configuration': 
+        this.router.navigate(['configuration']);
         break;
 
       default:

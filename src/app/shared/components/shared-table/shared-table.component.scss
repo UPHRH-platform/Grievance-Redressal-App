@@ -1,0 +1,35 @@
+.deleteClass {
+    color: #f13636;
+}
+
+.editClass {
+    color: #3f51b5;
+}
+
+.eiditableText {
+    max-width: calc(100% - 80px);
+    width: calc(100% - 80px);
+    margin-bottom: -1em;
+    margin-top: 0.35em;
+    margin-right: 5px;
+}
+
+.doneBtn {
+    color: var(--mdc-protected-button-label-text-color, inherit) !important;
+}
+
+::ng-deep .slideToggle.mat-mdc-slide-toggle.mat-accent {
+    --mdc-switch-selected-handle-color: #20d81e;
+    --mdc-switch-selected-focus-state-layer-color: #20d81e;
+    --mdc-switch-selected-hover-state-layer-color: #20d81e;
+    --mdc-switch-selected-pressed-state-layer-color: #20d81e;
+
+    --mdc-switch-selected-focus-handle-color: #0c800b;
+    --mdc-switch-selected-hover-handle-color: #0c800b;
+    --mdc-switch-selected-pressed-handle-color: #0c800b;
+
+    --mdc-switch-selected-focus-track-color: #61ee60;
+    --mdc-switch-selected-hover-track-color: #61ee60;
+    --mdc-switch-selected-pressed-track-color: #61ee60;
+    --mdc-switch-selected-track-color: #61ee60;
+}

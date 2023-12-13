@@ -1,0 +1,52 @@
+<app-breadcrumb [breadcrumbItems]="breadcrumbItems"></app-breadcrumb>
+<div class="content">
+    <div>
+        <div class="main-wrapper-usertable">
+            <img src="assets/images/back-button.png" title="back" class="back-btn" (click)="navigateToHome()" width="30"
+                height="30">
+            <h3>Grievance Management - Configuration - {{selectedTab?.pageHeader}}</h3>
+            <mat-tab-group (selectedTabChange)="onTabChange($event)" mat-align-tabs="start">
+                <mat-tab *ngFor="let tab of tabs">
+                    <ng-template mat-tab-label>{{ tab.name }}</ng-template>
+                    <app-shared-skeleton-loading [isLoading]="isDataLoading">
+                    </app-shared-skeleton-loading>
+
+                    <ng-container *ngIf="selectedTab.id !== 'escalation_time'">
+                        <div class="flex justify-between items-center mt2 mb3">
+                            <div class="flex items-center">
+                                <h4>{{descriptionOfControl}}</h4>
+                                <ng-container *ngIf="selectedTab.id === 'department'">
+                                    <mat-form-field class="configuration-controls ml2" appearance="outline">
+                                        <mat-label>Council</mat-label>
+                                        <mat-select [formControl]="councilControl">
+                                            <ng-container *ngFor="let councilControl of councilControlsList">
+                                                <mat-option [value]="councilControl.councileId">{{councilControl.councileName}}</mat-option>
+                                            </ng-container>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </ng-container>
+                                <mat-form-field appearance="outline" class="configuration-controls ml2" >
+                                    <mat-label>{{lableOfControl}}</mat-label>
+                                    <input matInput placeholder="Type hear" type="text" [formControl]="newOptionControl"/>
+                                </mat-form-field>
+                            </div>
+                            <div>
+                                <button mat-raised-button color="primary" (click)="submit()">
+                                    Submit
+                                </button>
+                            </div>
+                        </div>
+                    </ng-container>
+
+                    <div class="user-table-wrapper" *ngIf="!isDataLoading" >
+                        <app-shared-table [tableColumns]="tableColumns" 
+                        [tableData]="tableData" [isPageable]="true" [length]="length" [pageSize]="10" [pageIndex]="0"
+                        (editCell)="updateRecord($event)">
+                        </app-shared-table>
+                    </div>
+                </mat-tab>
+            </mat-tab-group>
+        </div>
+    </div>
+
+</div>

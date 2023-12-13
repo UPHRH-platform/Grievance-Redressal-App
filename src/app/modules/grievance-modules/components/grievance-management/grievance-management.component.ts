@@ -271,7 +271,6 @@ export class GrievanceManagementComponent  {
     this.resetFields = true;
     this.sortHeader =  'createdDateTS';
     this.direction = 'desc';
-    // debugger;
     this.grievanceService.resetFilterValue.next(this.resetFields);
     this.resetFilterValueData('');  
     // Here  we  have userrole and tab index with these 2 we know we need to fetch data for which tab of which user role so we pass relevant payload in get grievance service
@@ -316,9 +315,9 @@ export class GrievanceManagementComponent  {
     let userData: any;
     userData = localStorage.getItem('userDetails');
     if(userData !== undefined) {
-      this.grievanceTypeName = JSON.parse(userData).attributes?.departmentName[0];
+      this.grievanceTypeName = JSON.parse(userData).attributes?.departmentName;
     }
-    if(this.grievanceTypeName !== undefined) {
+    if(this.grievanceTypeName !== undefined && this.grievanceTypeName !== null) {
     this.grievancesTypes.map((obj, index) => {
       if(this.grievanceTypeName.toLowerCase() === obj.name.toLowerCase()) {
         this.grievanceType = obj.id;
