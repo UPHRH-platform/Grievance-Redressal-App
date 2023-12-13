@@ -105,6 +105,7 @@ export class GrievanceManagementComponent  {
       //console.log("Entered here");
       this.selectedTab =this.tabs[0];
       this.activeTabIndex=0;
+      this.selectedTabName = this.tabs[0].name;
     }
     //Initialize column as per user Role
     //console.log("line 134", this.grievanceType);
@@ -435,6 +436,7 @@ export class GrievanceManagementComponent  {
   /** integration */
   getAllTickets() {
     this.isDataLoading = true;
+    this.length = 0;
     this.grievanceService.getAllTickets(this.getGrievancesRequest).subscribe({
       next: (res) => {
         //console.log(res);
