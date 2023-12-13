@@ -70,18 +70,22 @@ export const Tabs = {
 export const ConfigurationTabs = [
     {
         name: 'Council',
-        id: 'council'
+        id: 'council',
+        pageHeader: 'Council'
     },
     {
         name: 'User Type',
-        id: 'user_type'
+        id: 'user_type',
+        pageHeader: 'User Type '
     },
     {
         name: 'Department',
-        id: 'department'
+        id: 'department',
+        pageHeader: 'Department'
     },
     {
         name: 'Escalation Time',
-        id: 'escalation_time'
+        id: 'escalation_time',
+        pageHeader: 'Email Config. for escalation'
     },
 ]

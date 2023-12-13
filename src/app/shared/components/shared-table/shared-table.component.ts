@@ -195,8 +195,22 @@ export class SharedTableComponent implements AfterViewInit {
       }
      }
 
-  editRow(element: any) {
-    this.editCell.emit(element);
-    element.isEdit = false;
+  editRow(row: any, columnDef: string) {
+    const data = {
+      row: row,
+      columnDef: columnDef
+    }
+    this.editCell.emit(data);
+    row.isEdit = false;
+  }
+
+  editToggle(row: any, columnDef: string) {
+    row[columnDef] = !row[columnDef];
+    const data = {
+      row: row,
+      columnDef: columnDef
+    }
+    this.editCell.emit(data);
+    row.isEdit = false;
   }
 }

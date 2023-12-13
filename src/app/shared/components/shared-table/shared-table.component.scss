@@ -7,14 +7,11 @@
 }
 
 .eiditableText {
+    max-width: calc(100% - 80px);
     width: calc(100% - 80px);
     margin-bottom: -1em;
     margin-top: 0.35em;
     margin-right: 5px;
-}
-
-.editCell {
-    align-items: center;
 }
 
 .doneBtn {

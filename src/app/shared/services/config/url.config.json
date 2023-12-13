@@ -31,6 +31,26 @@
         },
         "DASHBOARD": {
             "GET_DASHBOARD_DATA": "/search/dashboardReport"
+        },
+        "CNFIGURATION" : {
+            "SEARCH_COUNCIL": "/admin/ticket/council/searchAll",
+            "SAVE_COUNCIL": "/admin/ticket/council/save",
+            "UPDATE_COUNCIL": "/admin/ticket/council/update",
+            "UPDATE_COUNCIL_STATUS": "/admin/ticket/council/updateActivation",
+
+            "SEARCH_USER_TYPES": "/admin/ticket/userType/searchAll",
+            "SAVE_USER_TYPES": "/admin/ticket/userType/save",
+            "UPDATE_USER_TYPES": "/admin/ticket/userType/update",
+            "UPDATE_USER_TYPES_STATUS": "/admin/ticket/userType/updateActivation",
+
+            "SEARCH_DEPARTMENT": "/admin/ticket/department/searchAll",
+            "SAVE_DEPARTMENT": "/admin/ticket/department/save",
+            "UPDATE_DEPARTMENT": "/admin/ticket/department/update",
+            "UPDATE_DEPARTMENT_STATUS": "/admin/ticket/department/updateActivation",
+
+            "SEARCH_ESCALATIONTIME": "",
+            "UPDATE_ESCALATIONTIME": "",
+            "UPDATE_ESCALATIONTIME_STATUS": ""
         }
     }
 }

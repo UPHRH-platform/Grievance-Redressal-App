@@ -58,24 +58,26 @@
               </ng-container>
               <ng-container *ngSwitchCase="'editCell'">
                 <ng-container *ngIf="!element.isEdit; else editCell">
-                  <a>{{ disCol.cell(element) }}</a>
-                  <button mat-button [id]="rowActionIcon" (click)="element.isEdit = true">
-                    <mat-icon class="editClass">edit</mat-icon>
-                  </button>
+                  <div class="flex justify-between items-center">
+                    <a>{{ disCol.cell(element) }}</a>
+                    <button mat-button [id]="rowActionIcon" (click)="element.isEdit = true">
+                      <mat-icon class="editClass">edit</mat-icon>
+                    </button>
+                  </div>
                 </ng-container>
                 <ng-template #editCell>
-                  <div class="flex editCell">
+                  <div class="flex items-center">
                     <mat-form-field appearance="outline" class="eiditableText">
                       <input matInput required type="text" [(ngModel)]="element[disCol.columnDef]" />
                     </mat-form-field>
-                    <button mat-raised-button color="primary" class="doneBtn" (click)="editRow(element)">
+                    <button mat-raised-button color="primary" class="doneBtn" (click)="editRow(element, disCol?.columnDef)">
                       Done
                     </button>
                   </div>
                 </ng-template>
               </ng-container>
               <ng-container *ngSwitchCase="'slideToggle'">
-                <mat-slide-toggle class="slideToggle" [checked]="element[disCol.columnDef]" (change)="editRow(element)">
+                <mat-slide-toggle class="slideToggle" [checked]="element[disCol.columnDef]" (change)="editToggle(element, disCol?.columnDef)">
                 </mat-slide-toggle>
               </ng-container>
               <ng-container *ngSwitchDefault>
