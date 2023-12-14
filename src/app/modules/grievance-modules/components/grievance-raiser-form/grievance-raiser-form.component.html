@@ -63,23 +63,52 @@
                                 </mat-form-field>
                             </div>
                             <div class="sm col sm-col-12 md-col-4 lg-col-4 px2">
-                                <h4>Type of grievance</h4>
+                                <h4>User Type</h4>
                                 <mat-form-field appearance="outline" style="width: 100%;">
-                                    <mat-label>Type of Grievance</mat-label>
+                                    <mat-label>User Type</mat-label>
                                     <mat-select
-                                        formControlName="grievanceType">
-                                        <span *ngFor='let grievance of grievancesTypes;let i = index'>
-                                            <mat-option [value]="grievance.id">{{grievance.name}}</mat-option>
+                                        formControlName="userType">
+                                        <span *ngFor='let userType of userTypesArray'>
+                                            <mat-option [value]="userType.userTypeId">{{userType.userTypeName}}</mat-option>
                                         </span>
                                     </mat-select>
-                                    <mat-error *ngIf="grievanceRaiserformGroup.controls['grievanceType'].invalid">
-                                        {{getError('grievanceType')}}
+                                    <mat-error *ngIf="grievanceRaiserformGroup.controls['userType'].invalid">
+                                        {{getError('userType')}}
                                     </mat-error>
                                 </mat-form-field>
                             </div>
                          </div>
                          <div class="clearfix mxn2 mt1">
-                            <div class="sm-col sm-col-12 md-col-8 lg-col-8 px2">
+                            <div class="sm col sm-col-12 md-col-4 lg-col-4 px2">
+                                <h4>Council</h4>
+                                <mat-form-field appearance="outline" style="width: 100%;">
+                                    <mat-label>Council</mat-label>
+                                    <mat-select formControlName="council" (selectionChange)="getDeparmentsList($event.value)">
+                                        <span *ngFor='let council of councilsList;let i = index'>
+                                            <mat-option [value]="council.ticketCouncilId">{{council.ticketCouncilName}}</mat-option>
+                                        </span>
+                                    </mat-select>
+                                    <mat-error *ngIf="grievanceRaiserformGroup.controls['council'].invalid">
+                                        {{getError('council')}}
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                            <div class="sm col sm-col-12 md-col-4 lg-col-4 px2">
+                                <h4>Department</h4>
+                                <mat-form-field appearance="outline" style="width: 100%;">
+                                    <mat-label>Department</mat-label>
+                                    <mat-select
+                                        formControlName="department">
+                                        <span *ngFor='let department of departmentsList;let i = index'>
+                                            <mat-option [value]="department.ticketDepartmentId">{{department.ticketDepartmentName}}</mat-option>
+                                        </span>
+                                    </mat-select>
+                                    <mat-error *ngIf="grievanceRaiserformGroup.controls['department'].invalid">
+                                        {{getError('department')}}
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                            <!-- <div class="sm-col sm-col-12 md-col-8 lg-col-8 px2">
                                 <h4>User Type</h4>
                                 <mat-radio-group color="primary" name="answer" aria-label="User Type"
                                     formControlName="userType" class="form-control">
@@ -93,7 +122,7 @@
                                     *ngIf="submitted && grievanceRaiserformGroup.controls['userType'].errors?.['required']">
                                     {{getError('userType')}}
                                 </mat-error>
-                            </div>
+                            </div> -->
                          </div>
                          <div class="clearfix mxn2 mt3">
                             <div class="sm-col sm-col-12 md-col-8 lg-col-8 px2">

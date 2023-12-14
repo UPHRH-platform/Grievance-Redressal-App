@@ -1,6 +1,5 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { of } from 'rxjs';
 import { HttpService } from 'src/app/core';
 import { ConfigService, RequestParam } from 'src/app/shared';
 import { environment } from 'src/environments/environment';
@@ -11,69 +10,6 @@ import { environment } from 'src/environments/environment';
 export class ConfigurationService extends HttpService {
   override baseUrl: string;
 
-  councils = [
-    {
-      id: 1,
-      councilName: 'UPSMF',
-      isActive: true,
-    },
-    {
-      id: 2,
-      councilName: 'UPDC',
-      isActive: false,
-    }
-  ];
-
-  userTypes = [
-    {
-      userType: 'public',
-      isActive: true,
-      id: 1,
-    },
-    {
-      userType: 'other',
-      isActive: false,
-      id: 2,
-    },
-    {
-      userType: 'student',
-      isActive: true,
-      id: 3,
-    },
-  ];
-
-  Departments = [
-    {
-      id: 1,
-      councilName: 'UPSMF',
-      department: 'Billing',
-      isActive: true,
-    },
-    {
-      id: 2,
-      councilName: 'UPDC',
-      department: 'Exams',
-      isActive: false,
-    }
-  ];
-
-  EscalationTime = [
-    {
-      id: 1,
-      authority: 'UPSMF security',
-      email: 'nodal@yopmail.com',
-      escalationTime: '3',
-      isActive: true,
-    },
-    {
-      id: 2,
-      authority: 'UPSMF security',
-      email: 'secratory@yopmail.com',
-      escalationTime: '7',
-      isActive: false,
-    }
-  ];
-
   constructor(
     http: HttpClient, 
     private configService: ConfigService
@@ -83,14 +19,6 @@ export class ConfigurationService extends HttpService {
   }
 
   //#region (Councils)
-  getCouncils() {
-    const reqParam: RequestParam = {
-      url: this.baseUrl + `${this.configService.urlConFig.URLS.CNFIGURATION.SEARCH_COUNCIL}`,
-      data: {}
-    }
-    return this.get(reqParam);
-    // return of(this.councils);
-  }
 
   saveCouncil(payload: any) {
     const reqParam: RequestParam = {
@@ -118,15 +46,6 @@ export class ConfigurationService extends HttpService {
   //#endregion
 
   //#region (User Types)
-  getUserTypes() {
-    const reqParam: RequestParam = {
-      url: this.baseUrl + `${this.configService.urlConFig.URLS.CNFIGURATION.SEARCH_USER_TYPES}`,
-      data: {}
-    }
-    return this.get(reqParam);
-    // return of(this.userTypes);
-  }
-
   saveUserType(payload: any) {
     const reqParam: RequestParam = {
       url: this.baseUrl + `${this.configService.urlConFig.URLS.CNFIGURATION.SAVE_USER_TYPES}`,
@@ -153,15 +72,6 @@ export class ConfigurationService extends HttpService {
   //#endregion
 
   //#region (Department)
-  getDepartments() {
-    const reqParam: RequestParam = {
-      url: this.baseUrl + `${this.configService.urlConFig.URLS.CNFIGURATION.SEARCH_DEPARTMENT}`,
-      data: {}
-    }
-    return this.get(reqParam);
-    // return of(this.Departments);
-  }
-
   saveDepartment(payload: any) {
     const reqParam: RequestParam = {
       url: this.baseUrl + `${this.configService.urlConFig.URLS.CNFIGURATION.SAVE_DEPARTMENT}`,

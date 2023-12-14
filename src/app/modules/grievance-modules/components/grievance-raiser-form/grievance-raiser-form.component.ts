@@ -7,7 +7,8 @@ import { GrievanceServiceService } from '../../services/grievance-service.servic
 import { ConfigService, ServerResponse } from 'src/app/shared';
 import { ToastrServiceService } from 'src/app/shared/services/toastr/toastr.service';
 import { UploadService } from 'src/app/core/services/upload-service/upload.service';
-import { Observable, forkJoin, of, switchMap } from 'rxjs';
+import { Observable, forkJoin, mergeMap, of, switchMap } from 'rxjs';
+import { SharedService } from 'src/app/shared/services/shared.service';
 
 @Component({
   selector: 'app-grievance-raiser-form',
@@ -26,12 +27,11 @@ export class GrievanceRaiserFormComponent {
   files: File[] = [];
   fileUploadError: string;
   ticketDetails: any = {};
-  grievancesTypes: any[] = [];
   innerHeight: any;
   innerWidth: any;
-  userTypesArray = [
-    'Candidate', 'Institute', 'Faculty', 'Public', 'Others'
-  ];
+  userTypesArray = [];
+  councilsList = [];
+  departmentsList = [];
   dialogSettings = {
     maxHeight: '100vh',
     height: 'auto',
@@ -42,21 +42,65 @@ export class GrievanceRaiserFormComponent {
     private formBuilder: FormBuilder,
     public dialog: MatDialog,
     private grievanceService: GrievanceServiceService,
-    private configService: ConfigService,
     private toastrService: ToastrServiceService,
     private uploadService: UploadService,
+    private sharedService: SharedService,
     ) { 
-      
-      this.grievancesTypes = this.configService.dropDownConfig.GRIEVANCE_TYPES;
     }
     
 
   ngOnInit() {
     this.createForm();
+    this.getDropDownsList();
+  }
+
+  getDropDownsList() {
+    this.getUserTypes();
+    this.getCouncils();
+  }
+
+  getUserTypes() {
+    this.sharedService.getUserTypes()
+    .pipe((mergeMap((response) => {
+      const userTypes = response.responseData.filter((userType: any) => userType.status);
+      return of(userTypes);
+    })))
+    .subscribe({
+      next: (response) => {
+        this.userTypesArray = response;
+      },
+      error: (error) => {
+        this.toastrService.showToastr(error.error.error, 'Error', 'error');
+      }
+    });
+  }
+
+  getCouncils() {
+    this.sharedService.getCouncils()
+    .pipe((mergeMap((response) => {
+      const counciles = response.responseData.filter((council: any) => council.status);
+      return of(counciles)
+    })))
+    .subscribe({
+      next: (response) => {
+        this.councilsList = response
+      },
+      error: (error) => {
+        this.toastrService.showToastr(error.error.error, 'Error', 'error');
+      }
+    });
+  }
+
+  getDeparmentsList(ticketCouncilId: any) {
+    this.departmentsList = [];
+    this.grievanceRaiserformGroup.get('department')?.reset();
+    const conucil: any = this.councilsList.find((council: any) => council.ticketCouncilId === ticketCouncilId);
+    if (conucil && conucil.ticketDepartmentDtoList) {
+      this.departmentsList = conucil.ticketDepartmentDtoList.filter((department: any) => department.status);
+    }
   }
 
   createForm() {
-
     this.grievanceRaiserformGroup = this.formBuilder.group({
       name: new FormControl('', [
         Validators.required, Validators.pattern("^[a-zA-Z_ ]*$")]),
@@ -66,10 +110,10 @@ export class GrievanceRaiserFormComponent {
       phone: new FormControl('', [
         Validators.required,
         Validators.pattern(`^[0-9]*$`)]),
-      grievanceType: new FormControl('', [
-        Validators.required]),
       userType: new FormControl('', [
         Validators.required]),
+      council: new FormControl(''),
+      department: new FormControl('', ),
       attachmentUrls: new FormControl('', ),
       description: new FormControl('', [Validators.required]),
 
@@ -119,9 +163,8 @@ export class GrievanceRaiserFormComponent {
     this.listOfFiles = [];
     this.files= [];
     this.ticketDetails= {};
+    this.departmentsList = [];
   }
-
-
 
   handleFileUpload(event: any) {
     //console.log("event =>", event);
@@ -169,7 +212,6 @@ export class GrievanceRaiserFormComponent {
     this.files.splice(index, 1);
   }
 
-
   openSharedDialog(otpSubmitted: boolean): void {
     const {name, email, phone, id} = this.ticketDetails;
     let dialogData: any = {
@@ -200,7 +242,7 @@ export class GrievanceRaiserFormComponent {
 
   onSubmit(value: any) {
     //console.log(value)
-    const {name, email, phone, grievanceType, userType, description } =  value;
+    const {name, email, phone, userType, council, department, description } =  value;
     const firstName= name.split(" ")[0];
     const lastName= name.split(" ")[1];
     this.ticketDetails = {
@@ -209,8 +251,9 @@ export class GrievanceRaiserFormComponent {
       lastName: !!lastName  ? lastName : "",
       email,
       phone,
-      cc: grievanceType,
-      userType: userType?.toUpperCase(),
+      ticketUserTypeId: userType,
+      ticketCouncilId: council,
+      ticketDepartmentId: department,
       description,
       attachmentUrls: []
     }
