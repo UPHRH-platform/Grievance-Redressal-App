@@ -8,6 +8,7 @@ import { MatTabChangeEvent } from '@angular/material/tabs';
 import { FormControl } from '@angular/forms';
 import { HttpErrorResponse } from '@angular/common/http';
 import { mergeMap, of } from 'rxjs';
+import { SharedService } from 'src/app/shared/services/shared.service';
 
 @Component({
   selector: 'app-configuration',
@@ -26,7 +27,7 @@ export class ConfigurationComponent implements OnInit {
   descriptionOfControl = 'Add Council';
   lableOfControl = 'Council Name';
   councilControlsList = [];
-  newOptionControl = new FormControl();
+  configControl = new FormControl();
   councilControl = new FormControl();
   userData: any;
 
@@ -37,6 +38,7 @@ export class ConfigurationComponent implements OnInit {
     private router: Router,
     private configurationSvc: ConfigurationService,
     private toastrService: ToastrServiceService,
+    private sharedService: SharedService
   ) {}
 
   ngOnInit(): void {
@@ -54,7 +56,7 @@ export class ConfigurationComponent implements OnInit {
   onTabChange(event: MatTabChangeEvent): void {
     this.isDataLoading = true;
     this.selectedTab = this.tabs[event.index];
-    this.newOptionControl.reset();
+    this.configControl.reset();
     this.getTableColumns();
   }
 
@@ -175,7 +177,7 @@ export class ConfigurationComponent implements OnInit {
   getCouncils() {
     this.isDataLoading = true; 
     this.tableData = [];
-    this.configurationSvc.getCouncils()
+    this.sharedService.getCouncils()
     .pipe((mergeMap((response) => {
       return of (response.responseData.sort((a: any,b: any) => {
         const result = a.ticketCouncilId - b.ticketCouncilId;
@@ -196,15 +198,15 @@ export class ConfigurationComponent implements OnInit {
 
   addNewCouncils() {
     this.isDataLoading = false;
-    if (this.newOptionControl.value) {
+    if (this.configControl.value) {
       this.isDataLoading = true;
       const formBody = {
-        ticketCouncilName: this.newOptionControl.value
+        ticketCouncilName: this.configControl.value
       }
       this.configurationSvc.saveCouncil(formBody).subscribe({
         next: (response: any) => {
           if (response) {
-            this.newOptionControl.reset();
+            this.configControl.reset();
             this.getCouncils();
           } else {
             this.isDataLoading = false;
@@ -298,7 +300,7 @@ export class ConfigurationComponent implements OnInit {
   getUserTypes() {
     this.isDataLoading = true; 
     this.tableData = [];
-    this.configurationSvc.getUserTypes()
+    this.sharedService.getUserTypes()
     .pipe((mergeMap((response) => {
       return of (response.responseData.sort((a: any,b: any) => {
         const result = a.userTypeId - b.userTypeId;
@@ -318,15 +320,15 @@ export class ConfigurationComponent implements OnInit {
   }
 
   addNewUserType() {
-    if (this.newOptionControl.value) {
+    if (this.configControl.value) {
       this.isDataLoading = true;
       const formBody = {
-        userTypeName: this.newOptionControl.value
+        userTypeName: this.configControl.value
       }
       this.configurationSvc.saveUserType(formBody).subscribe({
         next: (response: any) => {
           if (response) {
-            this.newOptionControl.reset();
+            this.configControl.reset();
             this.getUserTypes();
           } else {
             this.isDataLoading = false;
@@ -426,7 +428,7 @@ export class ConfigurationComponent implements OnInit {
   }
 
   getCouncilsList() {
-    this.configurationSvc.getCouncils()
+    this.sharedService.getCouncils()
     .pipe((mergeMap((response) => {
       return this.formateCouncilsList(response.responseData);
     })))
@@ -463,7 +465,7 @@ export class ConfigurationComponent implements OnInit {
   getDepartments() {
     this.isDataLoading = true; 
     this.tableData = [];
-    this.configurationSvc.getDepartments()
+    this.sharedService.getDepartments()
     .pipe((mergeMap((response) => {
       return of (response.responseData.sort((a: any,b: any) => {
         const result = a.ticketDepartmentId - b.ticketDepartmentId;
@@ -483,17 +485,17 @@ export class ConfigurationComponent implements OnInit {
   }
 
   addNewDepartment() {
-    if (this.newOptionControl.value) {
+    if (this.configControl.value) {
       this.isDataLoading = true;
       const formBody = {
-        ticketDepartmentName: this.newOptionControl.value,
+        ticketDepartmentName: this.configControl.value,
         ticketCouncilId: this.councilControl.value
       }
       this.configurationSvc.saveDepartment(formBody).subscribe({
         next: (response: any) => {
           if (response) {
             this.getDepartments();
-            this.newOptionControl.reset();
+            this.configControl.reset();
             this.councilControl.reset();
           } else {
             this.isDataLoading = false;
