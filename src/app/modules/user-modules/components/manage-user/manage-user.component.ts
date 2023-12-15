@@ -72,8 +72,6 @@ export class ManageUserComponent implements OnInit {
       this.router.navigate(['/user-manage/userform'])
     }
   }
-
-
   
   toggleUserStatus(event:any) {
     const status = event.isActive ? 'deactivate' : 'activate';
@@ -197,19 +195,21 @@ export class ManageUserComponent implements OnInit {
           let role = '';
           let phone = '';
           if(firstName && lastName !== undefined) {
-          name = `${firstName} ${' '} ${lastName}`;
+            name = `${firstName} ${' '} ${lastName}`;
           }
           if(enabled) {
-          isActive = enabled == true? 'Active': 'Inactive';
+            isActive = enabled == true? 'Active': 'Inactive';
           }
           if(attributes !== undefined) {
-          if(attributes.hasOwnProperty('Role') && attributes.Role[0]) {
-          role = attributes.Role[0];
+            if(attributes.hasOwnProperty('Role') && attributes.Role[0]) {
+              role = attributes.Role[0];
+            } else if (attributes.role && attributes.role[0]) {
+              role = attributes.role[0];
+            }
+            if(attributes.hasOwnProperty('phoneNumber') && attributes.phoneNumber[0]) {
+              phone = attributes.phoneNumber[0]
+            }
           }
-          if(attributes.hasOwnProperty('phoneNumber') && attributes.phoneNumber[0]) {
-          phone = attributes.phoneNumber[0]
-          }
-        }
           return {
             id,
             keycloakId,

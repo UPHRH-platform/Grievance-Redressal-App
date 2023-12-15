@@ -10,8 +10,11 @@ import { AuthService } from 'src/app/core';
 import { BreadcrumbItem, ConfigService, ServerResponse } from 'src/app/shared';
 import { GrievanceServiceService } from '../../services/grievance-service.service';
 import { ToastrServiceService } from 'src/app/shared/services/toastr/toastr.service';
-import { Observable, forkJoin, of, switchMap } from 'rxjs';
+import { Observable, forkJoin, mergeMap, of, switchMap } from 'rxjs';
 import { UploadService } from 'src/app/core/services/upload-service/upload.service';
+import { MatDialog } from '@angular/material/dialog';
+import { SharedDescriptionDialogComponent } from 'src/app/shared/components/shared-description-dialog/shared-description-dialog.component';
+import { SharedService } from 'src/app/shared/services/shared.service';
 
 @Component({
   selector: 'app-grievance-details',
@@ -47,12 +50,13 @@ export class GrievanceDetailsComponent {
   ticketDetails: any = {};
   ticketIdNo: any;
   ticketUpdateRequest:any;
-  grievancesTypes:any[]=[]
+  councilsList = [];
+  departmentsList = [];
 
   constructor(private router: Router, private formBuilder: FormBuilder, private authService: AuthService,
     private grievanceServiceService: GrievanceServiceService, private route: ActivatedRoute,
-    private toastrService: ToastrServiceService, private configService:ConfigService, private uploadService: UploadService) {
-    this.grievancesTypes = this.configService.dropDownConfig.GRIEVANCE_TYPES;
+    private toastrService: ToastrServiceService, private configService:ConfigService, private uploadService: UploadService,
+    private dialog: MatDialog, private sharedService: SharedService) {
     this.route.params.subscribe((param) => {
       this.id = param['id'];
     })
@@ -66,7 +70,6 @@ export class GrievanceDetailsComponent {
     //assign user role
     this.userRole = this.authService.getUserRoles()[0];
     if(this.userRole === 'Grievance Nodal') {
-    this.grievancesTypes = this.grievancesTypes.filter(item=> item.name !== 'Others')
     }
     //console.log(this.userRole)
     this.userId = this.authService.getUserData().userRepresentation.id;
@@ -80,6 +83,33 @@ export class GrievanceDetailsComponent {
         { label: 'Grievance Details', url: '' },
       ];
     })
+    this.getCouncils()
+  }
+
+  getCouncils() {
+    this.sharedService.getCouncils()
+    .pipe((mergeMap((response) => {
+      const counciles = response.responseData
+      .filter((council: any) => council.status && !council.ticketCouncilName.toLowerCase().includes('other'));
+      return of(counciles)
+    })))
+    .subscribe({
+      next: (response) => {
+        this.councilsList = response
+      },
+      error: (error) => {
+        this.toastrService.showToastr(error.error.error, 'Error', 'error');
+      }
+    });
+  }
+
+  getDeparmentsList(ticketCouncilId: any) {
+    this.departmentsList = [];
+    this.assignGrievanceTypeForm.get('department')?.reset();
+    const conucil: any = this.councilsList.find((council: any) => council.ticketCouncilId === ticketCouncilId);
+    if (conucil && conucil.ticketDepartmentDtoList) {
+      this.departmentsList = conucil.ticketDepartmentDtoList.filter((department: any) => department.status);
+    }
   }
 
   navigateToHome(){
@@ -99,7 +129,8 @@ export class GrievanceDetailsComponent {
 
   createAssignForm(){
     this.assignGrievanceTypeForm = this.formBuilder.group({
-      grievanceType: new FormControl('', Validators.required)
+      council: new FormControl('', Validators.required),
+      department: new FormControl('', Validators.required)
     })
   }
 
@@ -239,9 +270,36 @@ export class GrievanceDetailsComponent {
           ...this.ticketUpdateRequest,
           isJunk:true,
           status:'INVALID',
-          
         }
-        break;
+        const junkDialogData = {
+          header: 'Describe reason to mark Junk',
+          params: params,
+          controls: [{
+              controlLable: 'Enter reason',
+              controlName: 'reason',
+              controlType: 'textArea',
+              placeholder: 'Type here',
+              value: '',
+              validators: ['required']
+            },
+          ],
+          buttons: [
+            {
+              btnText: 'Submit',
+              positionClass: 'right',
+              btnClass: '',
+              type: 'submit'
+            },
+            {
+              btnText: 'Cancel',
+              positionClass: 'right',
+              btnClass: 'mr2',
+              type: 'close'
+            },
+          ],
+        }
+        this.openDescriptionPopup(junkDialogData);
+        return ;
       case 'reopen': 
       this.ticketUpdateRequest = {
         ...this.ticketUpdateRequest,
@@ -263,7 +321,35 @@ export class GrievanceDetailsComponent {
         "cc":-1,
         isJunk: this.ticketDetails.junk,
       }
-      break;
+      const otherDialogData = {
+        header: 'Describe reason to mark Other',
+        params: params,
+        controls: [{
+            controlLable: 'Enter reason',
+            controlName: 'reason',
+            controlType: 'textArea',
+            placeholder: 'Type here',
+            value: '',
+            validators: ['required']
+          },
+        ],
+        buttons: [
+          {
+            btnText: 'Submit',
+            positionClass: 'right',
+            btnClass: '',
+            type: 'submit'
+          },
+          {
+            btnText: 'Cancel',
+            positionClass: 'right',
+            btnClass: 'mr2',
+            type: 'close'
+          },
+        ],
+      }
+      this.openDescriptionPopup(otherDialogData);
+      return ;
       case 'unjunk': 
       this.ticketUpdateRequest = {
         ...this.ticketUpdateRequest,
@@ -282,7 +368,9 @@ export class GrievanceDetailsComponent {
       case 'assign': 
       this.ticketUpdateRequest = {
         ...this.ticketUpdateRequest,
-       cc: data.grievanceType,
+       cc: this.userRole === 'Grievance Nodal' ? -1 : null,
+      ticketCouncilId: this.assignGrievanceTypeForm.get('council')?.value,
+      ticketDepartmentId: this.assignGrievanceTypeForm.get('department')?.value,
        isJunk: this.ticketDetails.junk,
       }
       break;
@@ -301,6 +389,33 @@ export class GrievanceDetailsComponent {
     }
   }
 
+  openDescriptionPopup(dialogDetails: any) {
+    const dialogRef = this.dialog.open(SharedDescriptionDialogComponent, {
+      data: dialogDetails,
+      width: '700px',
+      maxWidth: '90vw',
+      maxHeight: '90vh',
+      disableClose: true
+    })
+    dialogRef.afterClosed().subscribe((response: any) => {
+      if (response) {
+        if(dialogDetails.params === 'markjunk') {
+          this.ticketUpdateRequest['junkByReason'] = response.form.reason;
+          this.ticketUpdateRequest['isJunk'] = true;
+        } else if(dialogDetails.params === 'markothers') {
+          this.ticketUpdateRequest['otherByReason'] = response.form.reason;
+          this.ticketUpdateRequest['isOther'] = true;
+        }
+        if(dialogDetails.params === 'resolved') {
+          this.submitResolution();
+        }
+        else {
+          this.updateTicketDetails();
+        }
+      }
+    })
+  }
+
   updateTicketDetails() {
     //console.log('this.ticketUpdateRequest',this.ticketUpdateRequest)
     this.grievanceServiceService.updateTicket(this.ticketUpdateRequest).subscribe({
@@ -311,6 +426,6 @@ export class GrievanceDetailsComponent {
       },error: (err) =>{
         this.toastrService.showToastr(err, 'Error', 'error', '');
       }
-    })
+    });
   }
 }

@@ -12,6 +12,7 @@ import { CommonLayoutComponent } from './components/common-layout/common-layout.
 import { BreadcrumbComponent } from './components/breadcrumb/breadcrumb.component';
 import { ConfigService } from './services/config/config.service';
 import { CommonFilterComponent } from './components/common-filter/common-filter.component';
+import { SharedDescriptionDialogComponent } from './components/shared-description-dialog/shared-description-dialog.component';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { CommonFilterComponent } from './components/common-filter/common-filter.
     CommonLayoutComponent,
     BreadcrumbComponent,
     CommonFilterComponent,
+    SharedDescriptionDialogComponent,
   ],
   imports: [
     CommonModule,
