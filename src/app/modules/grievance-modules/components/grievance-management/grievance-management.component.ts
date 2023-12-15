@@ -76,7 +76,6 @@ export class GrievanceManagementComponent  {
         } 
       }
     });
-    //console.log("line 107", this.grievanceType);
     this.initializeTabs();
   }
 
@@ -117,145 +116,217 @@ export class GrievanceManagementComponent  {
   }
 
   initializeColumns(): void {
-    if (this.selectedTab.name !== 'Junk') {
-      this.grievancesTableColumns = [
-        {
-          columnDef: 'ticketId',
-          header: 'ID',
-          isSortable: true,
-          isLink: false,
-          cell: (element: Record<string, any>) => `${element['ticketId']}`
-        },
-        {
-          columnDef: 'firstName',
-          header: 'Grievance Raiser',
-          isSortable: true,
-          isLink: false,
-          cell: (element: Record<string, any>) => `${element['firstName'] + ' ' + element['lastName']}`
-        },
-        {
-          columnDef: 'requesterType',
-          header: 'User Type',
-          isSortable: true,
-          isLink: false,
-          cell: (element: Record<string, any>) => `${element['requesterType']}`
-        },
-        {
-          columnDef: 'assignedToId',
-          header: 'Raiser Type',
-          isSortable: true,
-          isLink: false,
-          cell: (element: Record<string, any>) => `${element['assignedTo']}` !== 'undefined'? `${element['assignedTo']}`: '-'
-        },
-        {
-          columnDef: 'createdDateTS',
-          header: 'Creation Time',
-          isSortable: true,
-          isLink: false,
-          cell: (element: Record<string, any>) => `${element['createdDate']}`
-        },
-        {
-          columnDef: 'escalatedDateTS',
-          header: 'Escalation Time',
-          isSortable: true,
-          isLink: false,
-          cell: (element: Record<string, any>) => 
-            `${element['escalatedDate']}` !== "null" ? `${element['escalatedDate']}` : '-'
-        },
-        {
-          columnDef: 'rating',
-          header: 'Rating',
-          isSortable: true,
-          isLink: false,
-          cell: (element: Record<string, any>) => `${element['rating']}`
-        },
-        
-        {
-          columnDef: 'isLink',
-          header: '',
-          isSortable: false,
-          isLink: true,
-          isAction: true,
-          cell: (element: Record<string, any>) => `View Ticket`
-        },
-      ];
-    } else {
-      this.grievancesTableColumns = [
-        {
-          columnDef: 'ticketId',
-          header: 'ID',
-          isSortable: true,
-          isLink: false,
-          cell: (element: Record<string, any>) => `${element['ticketId']}`
-        },
-        {
-          columnDef: 'firstName',
-          header: 'Grievance Raiser',
-          isSortable: true,
-          isLink: false,
-          cell: (element: Record<string, any>) => `${element['firstName'] + ' ' + element['lastName']}`
-        },
-        {
-          columnDef: 'requesterType',
-          header: 'User Type',
-          isSortable: true,
-          isLink: false,
-          cell: (element: Record<string, any>) => `${element['requesterType']}`
-        },
-        {
-          columnDef: 'assignedToId',
-          header: 'Raiser Type',
-          isSortable: true,
-          isLink: false,
-          cell: (element: Record<string, any>) => `${element['assignedTo']}` !== 'undefined'? `${element['assignedTo']}`: '-'
-        },
-        {
-          columnDef: 'createdDateTS',
-          header: 'Creation Time',
-          isSortable: true,
-          isLink: false,
-          cell: (element: Record<string, any>) => `${element['createdDate']}`
-        },
-        {
-          columnDef: 'escalatedDateTS',
-          header: 'Escalation Time',
-          isSortable: true,
-          isLink: false,
-          cell: (element: Record<string, any>) => 
-            `${element['escalatedDate']}` !== "null" ? `${element['escalatedDate']}` : '-'
-        },
-        {
-          columnDef: 'updatedDate',
-          header: 'Marked Junk',
-          isSortable: true,
-          isLink: false,
-          cell: (element: Record<string, any>) => 
-            `${element['updatedDate']}` !== "null" ? `${element['updatedDate']}` : '-'
-        },
-        {
-          columnDef: 'junkedBy',
-          header: 'Junked By',
-          isSortable: true,
-          isLink: false,
-          cell: (element: Record<string, any>) => 
-            `${element['junkedBy']}` !== "null" ? `${element['junkedBy']}` : '-'
-        },
-        {
-          columnDef: 'rating',
-          header: 'Rating',
-          isSortable: true,
-          isLink: false,
-          cell: (element: Record<string, any>) => `${element['rating']}`
-        },
-        {
-          columnDef: 'isLink',
-          header: '',
-          isSortable: false,
-          isLink: true,
-          isAction: true,
-          cell: (element: Record<string, any>) => `View Ticket`
-        },
-      ];
+    switch (this.selectedTab.name) {
+      case 'Junk':
+        this.grievancesTableColumns = [
+          {
+            columnDef: 'ticketId',
+            header: 'ID',
+            isSortable: true,
+            isLink: false,
+            cell: (element: Record<string, any>) => `${element['ticketId']}`
+          },
+          {
+            columnDef: 'firstName',
+            header: 'Grievance Raiser',
+            isSortable: true,
+            isLink: false,
+            cell: (element: Record<string, any>) => `${element['firstName'] + ' ' + element['lastName']}`
+          },
+          {
+            columnDef: 'ticketUserTypeName',
+            header: 'User Type',
+            isSortable: true,
+            isLink: false,
+            cell: (element: Record<string, any>) => `${element['ticketUserTypeName']}`
+          },
+          {
+            columnDef: 'ticketDepartmentName',
+            header: 'Raiser Type',
+            isSortable: true,
+            isLink: false,
+            cell: (element: Record<string, any>) => `${element['ticketDepartmentName']}` ? `${element['ticketDepartmentName']}`: '-'
+          },
+          {
+            columnDef: 'createdDateTS',
+            header: 'Creation Time',
+            isSortable: true,
+            isLink: false,
+            cell: (element: Record<string, any>) => `${element['createdDate']}`
+          },
+          {
+            columnDef: 'escalatedDateTS',
+            header: 'Escalation Time',
+            isSortable: true,
+            isLink: false,
+            cell: (element: Record<string, any>) => 
+              `${element['escalatedDate']}` !== "null" ? `${element['escalatedDate']}` : '-'
+          },
+          {
+            columnDef: 'updatedDate',
+            header: 'Marked Junk',
+            isSortable: true,
+            isLink: false,
+            cell: (element: Record<string, any>) => 
+              `${element['updatedDate']}` !== "null" ? `${element['updatedDate']}` : '-'
+          },
+          {
+            columnDef: 'junkedByName',
+            header: 'Junked By',
+            isSortable: true,
+            isLink: false,
+            cell: (element: Record<string, any>) => 
+              `${element['junkedByName']}` !== "null" ? `${element['junkedByName']}` : '-'
+          },
+          {
+            columnDef: 'rating',
+            header: 'Rating',
+            isSortable: true,
+            isLink: false,
+            cell: (element: Record<string, any>) => `${element['rating']}`
+          },
+          {
+            columnDef: 'isLink',
+            header: '',
+            isSortable: false,
+            isLink: true,
+            isAction: true,
+            cell: (element: Record<string, any>) => `View Ticket`
+          },
+        ];
+        break;
+      case 'Nudged':
+        this.grievancesTableColumns = [
+          {
+            columnDef: 'ticketId',
+            header: 'ID',
+            isSortable: true,
+            isLink: false,
+            cell: (element: Record<string, any>) => `${element['ticketId']}`
+          },
+          {
+            columnDef: 'firstName',
+            header: 'Grievance Raiser',
+            isSortable: true,
+            isLink: false,
+            cell: (element: Record<string, any>) => `${element['firstName'] + ' ' + element['lastName']}`
+          },
+          {
+            columnDef: 'ticketUserTypeName',
+            header: 'User Type',
+            isSortable: true,
+            isLink: false,
+            cell: (element: Record<string, any>) => `${element['ticketUserTypeName']}`
+          },
+          {
+            columnDef: 'ticketDepartmentName',
+            header: 'Raiser Type',
+            isSortable: true,
+            isLink: false,
+            cell: (element: Record<string, any>) => `${element['ticketDepartmentName']}` ? `${element['ticketDepartmentName']}`: '-'
+          },
+          {
+            columnDef: 'createdDateTS',
+            header: 'Creation Time',
+            isSortable: true,
+            isLink: false,
+            cell: (element: Record<string, any>) => `${element['createdDate']}`
+          },
+          {
+            columnDef: 'escalatedDateTS',
+            header: 'Escalation Time',
+            isSortable: true,
+            isLink: false,
+            cell: (element: Record<string, any>) => 
+              `${element['escalatedDate']}` !== "null" ? `${element['escalatedDate']}` : '-'
+          },
+          {
+            columnDef: 'rating',
+            header: 'Rating',
+            isSortable: true,
+            isLink: false,
+            cell: (element: Record<string, any>) => `${element['rating']}`
+          },
+          {
+            columnDef: 'reminderCounter',
+            header: 'Reminder',
+            isSortable: true,
+            isLink: false,
+            cell: (element: Record<string, any>) => `${element['reminderCounter']}`
+          },          
+          {
+            columnDef: 'isLink',
+            header: '',
+            isSortable: false,
+            isLink: true,
+            isAction: true,
+            cell: (element: Record<string, any>) => `View Ticket`
+          },
+        ];
+        break;
+      default:
+        this.grievancesTableColumns = [
+          {
+            columnDef: 'ticketId',
+            header: 'ID',
+            isSortable: true,
+            isLink: false,
+            cell: (element: Record<string, any>) => `${element['ticketId']}`
+          },
+          {
+            columnDef: 'firstName',
+            header: 'Grievance Raiser',
+            isSortable: true,
+            isLink: false,
+            cell: (element: Record<string, any>) => `${element['firstName'] + ' ' + element['lastName']}`
+          },
+          {
+            columnDef: 'ticketUserTypeName',
+            header: 'User Type',
+            isSortable: true,
+            isLink: false,
+            cell: (element: Record<string, any>) => `${element['ticketUserTypeName']}`
+          },
+          {
+            columnDef: 'ticketDepartmentName',
+            header: 'Raiser Type',
+            isSortable: true,
+            isLink: false,
+            cell: (element: Record<string, any>) => `${element['ticketDepartmentName']}` ? `${element['ticketDepartmentName']}`: '-'
+          },
+          {
+            columnDef: 'createdDateTS',
+            header: 'Creation Time',
+            isSortable: true,
+            isLink: false,
+            cell: (element: Record<string, any>) => `${element['createdDate']}`
+          },
+          {
+            columnDef: 'escalatedDateTS',
+            header: 'Escalation Time',
+            isSortable: true,
+            isLink: false,
+            cell: (element: Record<string, any>) => 
+              `${element['escalatedDate']}` !== "null" ? `${element['escalatedDate']}` : '-'
+          },
+          {
+            columnDef: 'rating',
+            header: 'Rating',
+            isSortable: true,
+            isLink: false,
+            cell: (element: Record<string, any>) => `${element['rating']}`
+          },
+          
+          {
+            columnDef: 'isLink',
+            header: '',
+            isSortable: false,
+            isLink: true,
+            isAction: true,
+            cell: (element: Record<string, any>) => `View Ticket`
+          },
+        ];
+        break;
     }
   }
 
@@ -315,15 +386,17 @@ export class GrievanceManagementComponent  {
     let userData: any;
     userData = localStorage.getItem('userDetails');
     if(userData !== undefined) {
-      this.grievanceTypeName = JSON.parse(userData).attributes?.departmentName;
+      const userDetails = JSON.parse(userData);
+      this.grievanceTypeName = userDetails.attributes?.departmentName;
+      this.grievanceType = this.grievanceTypeName ? userDetails.id : null;
     }
-    if(this.grievanceTypeName !== undefined && this.grievanceTypeName !== null) {
-    this.grievancesTypes.map((obj, index) => {
-      if(this.grievanceTypeName.toLowerCase() === obj.name.toLowerCase()) {
-        this.grievanceType = obj.id;
-      }
-    })
-  }
+    // if(this.grievanceTypeName !== undefined && this.grievanceTypeName !== null) {
+    // this.grievancesTypes.map((obj, index) => {
+    //   if(this.grievanceTypeName.toLowerCase() === obj.name.toLowerCase()) {
+    //     this.grievanceType = obj.id;
+    //   }
+    // })
+  // }
     this.getGrievancesRequest = {
       searchKeyword: this.searchParams,
        filter: {
@@ -438,19 +511,18 @@ export class GrievanceManagementComponent  {
     this.length = 0;
     this.grievanceService.getAllTickets(this.getGrievancesRequest).subscribe({
       next: (res) => {
-        //console.log(res);
         this.isDataLoading = false;
         this.length = res.responseData.count;
         this.grievances = res.responseData.results;
-        if(this.grievances.length > 0) {
-        this.grievances.map((obj: any) => {
-          this.grievancesTypes.map((grievanceType, index) => {
-            if(obj.assignedToId == grievanceType.id) {
-              obj.assignedTo = grievanceType.name;
-            }
-          })
-        })
-      }
+        // if(this.grievances.length > 0) {
+        //   this.grievances.map((obj: any) => {
+        //     this.grievancesTypes.map((grievanceType, index) => {
+        //       if(obj.assignedToId == grievanceType.id) {
+        //         obj.assignedTo = grievanceType.name;
+        //       }
+        //     })
+        //   })
+        // }
       },
       error: (err) => {
         // Handle the error here in case of Api failure
