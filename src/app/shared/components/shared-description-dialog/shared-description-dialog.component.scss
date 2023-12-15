@@ -1,0 +1,18 @@
+.dialog-container {
+    overflow-y: auto;
+    height: 100%;
+}
+.dialog-body {
+    height: calc(100% - 135px);
+    min-height: fit-content;
+
+    .lable {
+        font-weight: 600;
+        margin-bottom: 10px;
+    }
+}
+
+.controller-class {
+    width: 100%;
+}
+

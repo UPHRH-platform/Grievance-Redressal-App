@@ -319,20 +319,38 @@
             <div class="mt2" *ngIf="userRole === 'Grievance Nodal' && currentTabName === 'Not Assigned'">
               <h4>Assign To</h4>
               <form [formGroup]="assignGrievanceTypeForm">
-                <div>
-              <mat-form-field appearance="outline">
-                <mat-label>Type of Grievance</mat-label>
-                <mat-select (selectionChange)="grievanceSelected($event)" formControlName="grievanceType">
-                  <span *ngFor='let grievance of grievancesTypes;let i = index'>
-                    <mat-option [value]="grievance.id">{{grievance.name}}</mat-option>
-                  </span>
-                </mat-select>
-                <!-- <mat-error *ngIf="assignGrievanceTypeForm.controls['grievanceType'].invalid">
-                  {{getError('grievanceType')}}
-                </mat-error> -->
-              </mat-form-field>
-            </div>
-            </form>
+                <div class="clearfix mxn2 mt1">
+                  <div class="sm col sm-col-12 md-col-4 lg-col-4 px2">
+                      <h4>Council</h4>
+                      <mat-form-field appearance="outline" style="width: 100%;">
+                          <mat-label>Council</mat-label>
+                          <mat-select formControlName="council" (selectionChange)="getDeparmentsList($event.value)">
+                              <ng-container *ngFor='let council of councilsList'>
+                                  <mat-option [value]="council.ticketCouncilId">{{council.ticketCouncilName}}</mat-option>
+                              </ng-container>
+                          </mat-select>
+                          <mat-error *ngIf="grievanceResolutionForm.get('council')?.invalid">
+                            Council is required !!
+                          </mat-error>
+                      </mat-form-field>
+                  </div>
+                  <div class="sm col sm-col-12 md-col-4 lg-col-4 px2">
+                      <h4>Department</h4>
+                      <mat-form-field appearance="outline" style="width: 100%;">
+                          <mat-label>Department</mat-label>
+                          <mat-select
+                              formControlName="department">
+                              <ng-container *ngFor='let department of departmentsList'>
+                                  <mat-option [value]="department.ticketDepartmentId">{{department.ticketDepartmentName}}</mat-option>
+                              </ng-container>
+                          </mat-select>
+                          <mat-error *ngIf="grievanceResolutionForm.get('department')?.invalid">
+                            Department is required !!
+                          </mat-error>
+                      </mat-form-field>
+                  </div>
+               </div>
+              </form>
             </div>
           </div>
         </div>
