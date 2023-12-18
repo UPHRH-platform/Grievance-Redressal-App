@@ -206,8 +206,8 @@ export class ManageUserComponent implements OnInit {
             } else if (attributes.role && attributes.role[0]) {
               role = attributes.role[0];
             }
-            if(attributes.hasOwnProperty('phoneNumber') && attributes.phoneNumber[0]) {
-              phone = attributes.phoneNumber[0]
+            if(attributes.hasOwnProperty('phoneNumber') && attributes.phoneNumber) {
+              phone = attributes.phoneNumber
             }
           }
           return {

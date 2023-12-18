@@ -219,13 +219,22 @@
 
             <div class="first-row-container mt2">
               <div class="first-container">
-                <mat-label class="label-text">Grievance Type</mat-label>
-                <h3 class="textData">{{ticketDetails?.assignedToName}}</h3>
-              </div>
-              <div class="first-container">
                 <mat-label class="label-text">User Type</mat-label>
                 <div class="first-container">
-                  <h3 class="textData">{{ ticketDetails?.requesterType }}</h3>
+                  <h3 class="textData">{{ ticketDetails?.ticketUserType?.userTypeName }}</h3>
+                </div>
+              </div>
+            </div>
+
+            <div class="first-row-container mt2">
+              <div class="first-container">
+                <mat-label class="label-text">Council</mat-label>
+                <h3 class="textData">{{ticketDetails?.ticketCouncil?.ticketCouncilName}}</h3>
+              </div>
+              <div class="first-container">
+                <mat-label class="label-text">Department</mat-label>
+                <div class="first-container">
+                  <h3 class="textData">{{ticketDetails?.ticketDepartment?.ticketDepartmentName}}</h3>
                 </div>
               </div>
             </div>
