@@ -265,7 +265,7 @@ export class UserFormComponent implements OnInit {
 
   addUser() {
     let deptId: any;
-    const {firstName, lastName, phone, role, status, username, department} = this.userForm.value;
+    const {firstName, lastName, phone, role, status, username, department, council} = this.userForm.value;
     //console.log(this.userForm.value);
     // this.grievanceTypes.map((obj: any) => {
     //   if(department.toLowerCase() === obj.name.toLowerCase()) {
@@ -279,19 +279,21 @@ export class UserFormComponent implements OnInit {
       email: username,
       username: username,
       enabled: enabled,
-      emailVerified: true,
-    //   credentials: [
-    //     {
-    //         type: "password",
-    //         value: "ka09eF$299",
-    //         temporary: "false"
-    //     }
-    // ],
+      emailVerified: false,
+      credentials: [
+        {
+            type: "password",
+            value: "Admin@123",
+            temporary: "false"
+        }
+    ],
     attributes: {
       module: 'grievance',
       departmentName: role === 'NODALOFFICER' ? deptId: role === 'GRIEVANCEADMIN' || role === 'ADMIN' ? -1 : null,
       phoneNumber: phone,
-      Role: role
+      Role: role,
+      councilId: council,
+      departmentId: department
   },
     }
     this.isProcessing= true;
