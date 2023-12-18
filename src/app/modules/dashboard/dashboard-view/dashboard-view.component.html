@@ -7,38 +7,53 @@
           <img src="assets/images/back-button.png" title="back"  class="back-btn" (click)="navigateToHome()"  width="30" height="30">
         <div *ngIf="!isDataLoading" class="clearfix custom-margin mxn1">
           <form [formGroup]="filterForm">
-            <div class="flex flex-wrap justify-end custom-align">
-                <div class="pr2">
-                    <mat-form-field appearance="outline">
-                        <mat-select  multiple formControlName="grievanceType" placeholder="Department" (selectionChange)="grievanceSelected($event)">
-                          <span *ngFor='let grievance of grievancesTypes;let i = index'>
-                            <mat-option [(value)]="grievance.id">{{grievance.name}}</mat-option>
-                          </span>
-                        </mat-select>
-                      </mat-form-field>
-                </div>
-                <div class="pr2">
-                    <mat-form-field appearance="outline">
-                        <mat-date-range-input [rangePicker]="picker">
-                          <input matStartDate placeholder="Start date" formControlName="startDate" [value]="startDate" (dateInput)="changeEvent('startDate', $event)" (dateChange)="changeEvent('startDate', $event)">
-                          <input matEndDate placeholder="End date" formControlName="endDate" [value]="endDate" (dateInput)="changeEvent('endDate', $event)" (dateChange)="changeEvent('endDate', $event)">
-                        </mat-date-range-input>
-                        <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
-                        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-                        <mat-date-range-picker #picker></mat-date-range-picker>
-                      </mat-form-field>
-                </div>
-                <div class="action-btns">
-                  <button type="reset" mat-raised-button class="mr1" (click)="resetFilter()">
-                      Reset
-                  </button>
 
-                  <button type="button" mat-raised-button color="primary" (click)="applyFilter()">
-                      Apply
-                  </button>
-                  <button type="button" mat-raised-button color="primary" class="ml1 mr1" (click)="downloadDetails()">
-                    Download
-                  </button>
+            <div class="flex controls-gap mb2">
+              <mat-form-field class="w-100" appearance="outline">
+                <mat-select formControlName="council" placeholder="Council" (selectionChange)="getDeparmentsList($event.value)">
+                  <ng-container *ngFor="let council of councilsList">
+                    <mat-option [value]="council.ticketCouncilId">{{council.ticketCouncilName}}</mat-option>
+                  </ng-container>
+                </mat-select>
+              </mat-form-field>
+              <mat-form-field class="w-100" appearance="outline">
+                <mat-select formControlName="department" placeholder="Department" (selectionChange)="getUsers($event.value)">
+                  <ng-container *ngFor='let department of departmentsList'>
+                    <mat-option [value]="department.ticketDepartmentId">{{department.ticketDepartmentName}}</mat-option>
+                  </ng-container>
+                </mat-select>
+              </mat-form-field>
+              <mat-form-field class="w-100" appearance="outline">
+                <mat-select formControlName="user" placeholder="Users">
+                  <span *ngFor='let user of usersList;let i = index'>
+                    <mat-option [value]="user.id">{{user.firstName}} {{user.lastName}}</mat-option>
+                  </span>
+                </mat-select>
+              </mat-form-field>
+              <mat-form-field class="w-100" appearance="outline">
+                <mat-date-range-input [rangePicker]="picker">
+                  <input matStartDate placeholder="Start date" formControlName="startDate" [value]="startDate"
+                    (dateInput)="changeEvent('startDate', $event)" (dateChange)="changeEvent('startDate', $event)">
+                  <input matEndDate placeholder="End date" formControlName="endDate" [value]="endDate"
+                    (dateInput)="changeEvent('endDate', $event)" (dateChange)="changeEvent('endDate', $event)">
+                </mat-date-range-input>
+                <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
+                <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-date-range-picker #picker></mat-date-range-picker>
+              </mat-form-field>
+            </div>  
+            <div class="flex flex-wrap justify-end custom-align mb3">
+              <div class="action-btns">
+                <button type="reset" mat-raised-button class="mr1" (click)="resetFilter()">
+                    Reset
+                </button>
+
+                <button type="button" mat-raised-button color="primary" (click)="applyFilter()">
+                    Apply
+                </button>
+                <button type="button" mat-raised-button color="primary" class="ml1 mr1" (click)="downloadDetails()">
+                  Download
+                </button>
               </div>
             </div>
           </form>

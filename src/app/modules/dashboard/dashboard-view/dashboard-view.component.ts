@@ -6,6 +6,9 @@ import { ToastrServiceService } from 'src/app/shared/services/toastr/toastr.serv
 import { Router } from '@angular/router';
 
 import { utils, writeFile } from 'xlsx';
+import { SharedService } from 'src/app/shared/services/shared.service';
+import { mergeMap, of } from 'rxjs';
+import { HttpErrorResponse } from '@angular/common/http';
 export const exportToExcel = async (downloadObjects: any) => {
   if (downloadObjects && downloadObjects.objectsList) {
     const workbook = utils.book_new();
@@ -42,11 +45,14 @@ export class DashboardViewComponent {
   endDate = new Date();
   ccList: any = [];
   filterForm: FormGroup;
+  councilsList: any[] = [];
+  departmentsList: any[] = [];
+  usersList: any[] = [];
   // filterDateRange = {startDate: '', endDate: ''};
   public assignGrievanceTypeForm:FormGroup;
   grievanceTypeNames: any = [];
   constructor(private dashboardService: DashboardService, private configService: ConfigService, private formBuilder: FormBuilder, private toastrService: ToastrServiceService,
-    private router: Router,
+    private router: Router, private sharedService: SharedService
     // private papa: Papa
     ) {
   }
@@ -56,10 +62,14 @@ export class DashboardViewComponent {
     this.filterForm = this.formBuilder.group({
       grievanceType: new FormControl(),
       startDate: new FormControl(this.startDate),
-      endDate:new FormControl(this.endDate)
+      endDate:new FormControl(this.endDate),
+      council: new FormControl(),
+      department: new FormControl(),
+      user: new FormControl()
     })
     this.getDashboardObjectData(this.filterForm.value.startDate, this.filterForm.value.endDate);
     this.initializeColumns();
+    this.getCouncils();
   }
 
   navigateToHome(){
@@ -178,7 +188,10 @@ export class DashboardViewComponent {
           from: startDate.getTime()
         },
         filter: {
-          ccList: this.ccList
+          // ccList: this.ccList
+          councilId: this.filterForm.get('council')?.value,
+          departmentId: this.filterForm.get('department')?.value,
+          userId: this.filterForm.get('user')?.value
         }
       }
       setTimeout(() => {
@@ -235,6 +248,50 @@ export class DashboardViewComponent {
       this.ccList = grievance.value;
     }
 
+  getCouncils() {
+    this.sharedService.getCouncils()
+      .pipe((mergeMap((response) => {
+        const counciles = response.responseData.filter((council: any) => council.status);
+        return of(counciles);
+      })))
+      .subscribe({
+        next: (response) => {
+          if (response) {
+            this.councilsList = response;
+          }
+        },
+        error: (error) => {
+          this.toastrService.showToastr(error.error.error, 'Error', 'error');
+        }
+      });
+  }
+
+  getDeparmentsList(ticketCouncilId: any) {
+    this.departmentsList = [];
+    this.filterForm.get('department')?.reset();
+    const conucil: any = this.councilsList.find((council: any) => council.ticketCouncilId === ticketCouncilId);
+    if (conucil && conucil.ticketDepartmentDtoList) {
+      this.departmentsList = conucil.ticketDepartmentDtoList.filter((department: any) => department.status);
+    }
+  }
+
+  getUsers() {
+    if (this.filterForm.get('council')?.value && this.filterForm.get('department')?.value) {
+      this.dashboardService.getUsersByCouncilDetapartmen(this.filterForm.get('council')?.value, this.filterForm.get('department')?.value)
+      .subscribe({
+        next: (response: any) => {
+          if (response && response.responseData) {
+            this.usersList = response.responseData;
+          }
+        },
+        error: (error: HttpErrorResponse) => {
+          const errMessage = error.error.errMessage ? error.error.errMessage : error.error.error;
+          this.toastrService.showToastr(errMessage, 'Error', 'error');
+        }
+      })
+    }
+  }
+
     changeEvent(type: string, event: any) {
       if(type == 'startDate') {
        this.filterForm.patchValue({
@@ -257,8 +314,13 @@ export class DashboardViewComponent {
       this.filterForm.setValue({
         startDate: this.startDate,
         endDate: this.endDate,
-        grievanceType: ''
-      })
+        grievanceType: '',
+        council: null,
+        department: null,
+        user: null
+      });
+      this.departmentsList = [];
+      this.usersList = [];
       this.ccList = []
       this.getDashboardObjectData(this.filterForm.value.startDate, this.filterForm.value.endDate);
     }

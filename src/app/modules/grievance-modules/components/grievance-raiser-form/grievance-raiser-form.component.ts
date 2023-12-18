@@ -112,8 +112,8 @@ export class GrievanceRaiserFormComponent {
         Validators.pattern(`^[0-9]*$`)]),
       userType: new FormControl('', [
         Validators.required]),
-      council: new FormControl(''),
-      department: new FormControl('', ),
+      council: new FormControl('', [Validators.required]),
+      department: new FormControl('', [Validators.required]),
       attachmentUrls: new FormControl('', ),
       description: new FormControl('', [Validators.required]),
 

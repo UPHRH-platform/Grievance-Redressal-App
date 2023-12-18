@@ -80,8 +80,20 @@
 
                             <div class="first-row-container mt1">
                                 <div class="first-container">
+                                    <mat-label class="label-text">Council</mat-label>
+                                    <h3>{{userDetails?.attributes?.councilName}}</h3>
+                                </div>
+                                <div class="first-container">
+                                    <mat-label class="label-text">Department</mat-label>
+                                    <h3>{{userDetails?.attributes?.departmentName}}</h3>
+                                </div>
+
+                            </div>
+
+                            <div class="first-row-container mt1">
+                                <div class="first-container">
                                     <mat-label class="label-text">Role</mat-label>
-                                    <h3>{{getUserRole(userDetails?.attributes?.Role[0])}}</h3>
+                                    <h3>{{userDetails?.attributes?.role[0]}}</h3>
                                 </div>
                                 <div class="first-container">
                                     <mat-label class="label-text">Active Status</mat-label>
@@ -127,15 +139,27 @@
                             </div>
                             <div class="first-container">
                                 <mat-label class="label-text">Phone Number</mat-label>
-                                <h3 class="textData">{{userDetails?.attributes?.phoneNumber[0]}}</h3>
+                                <h3 class="textData">{{userDetails?.attributes?.phoneNumber}}</h3>
                         </div>
+
+                            </div>
+
+                            <div class="first-row-container mt1">
+                                <div class="first-container">
+                                    <mat-label class="label-text">Council</mat-label>
+                                    <h3>{{userDetails?.attributes?.councilName}}</h3>
+                                </div>
+                                <div class="first-container">
+                                    <mat-label class="label-text">Department</mat-label>
+                                    <h3>{{userDetails?.attributes?.departmentName}}</h3>
+                                </div>
 
                             </div>
 
                             <div class="first-row-container mt3">
                                 <div class="first-container">
                                     <mat-label class="label-text">Role</mat-label>
-                                    <h3 class="textData">{{getUserRole(userDetails?.attributes?.Role[0])}}</h3>
+                                    <h3 class="textData">{{userDetails?.attributes?.role[0]}}</h3>
                                 </div>
                                 <div class="first-container">
                                     <mat-label class="label-text">Active Status</mat-label>

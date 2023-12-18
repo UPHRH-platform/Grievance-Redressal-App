@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from '../modules/user-modules/services/user.service';
 import { AuthService } from '../core';
 import { ToastrServiceService } from '../shared/services/toastr/toastr.service';
-import { BreadcrumbItem, ConfigService, getRole } from 'src/app/shared';
+import { BreadcrumbItem, ConfigService } from 'src/app/shared';
 
 @Component({
   selector: 'app-user-profile',
@@ -70,7 +70,7 @@ export class UserProfileComponent {
       firstName: this.userDetails?.firstName,
       lastName: this.userDetails?.lastName,
       emailId: this.userDetails?.email,
-      phoneNumber: this.userDetails?.attributes.phoneNumber[0],
+      phoneNumber: this.userDetails?.attributes.phoneNumber,
       // role: this.userDetails?.attributes.Role[0],
       // activeStatus: this.userDetails?.enabled === true? 'Active' : 'Inactive'
     })
@@ -107,19 +107,15 @@ export class UserProfileComponent {
     this.isEditData = false;
   }
 
-  getUserRole(roleName: string) {
-    return getRole(roleName);
-   }
-
   onSubmit() {
-    let departmentId: any;
-    this.grievanceTypes.map((obj: any) => {
-      if(this.userDetails.attributes.Role[0] !== 'SUPERADMIN') {
-      if(this.userDetails?.attributes.departmentName[0].toLowerCase() === obj.name.toLowerCase()) {
-        departmentId = obj.id;   
-      }
-    }
-    })
+    // let departmentId: any;
+    // this.grievanceTypes.map((obj: any) => {
+    //   if(this.userDetails.attributes.role[0] !== 'SUPERADMIN') {
+    //   if(this.userDetails?.attributes.departmentName[0].toLowerCase() === obj.name.toLowerCase()) {
+    //     departmentId = obj.id;   
+    //   }
+    // }
+    // })
     const {firstName, lastName, phoneNumber, emailId} = this.userForm.value;
     const {id, attributes, enabled } = this.userDetails;
     const requestObj = {
@@ -140,9 +136,10 @@ export class UserProfileComponent {
     ],
     attributes: {
       module: "grievance",
-      departmentName: departmentId,
       phoneNumber: phoneNumber,
-      Role: this.userDetails.attributes.Role[0]
+      Role: this.userDetails.attributes.role[0],
+      councilId: this.userDetails?.attributes.councilId,
+      departmentId: this.userDetails?.attributes.departmentId
   }
 }
     this.userService.updateUser(requestObj).subscribe({

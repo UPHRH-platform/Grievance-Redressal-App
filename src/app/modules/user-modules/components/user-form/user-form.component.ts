@@ -67,10 +67,6 @@ export class UserFormComponent implements OnInit {
       //console.log(param['id']);
       this.userId = param['id'];
       //console.log(this.userId);
-      if(this.userId !== undefined) {
-        this.isEditUser = true;
-        this.getUserDetails();
-      }
       // this.userDetails = data;
       // if(Object.keys(this.userDetails).length){
       //   this.isEditUser = true;
@@ -81,11 +77,41 @@ export class UserFormComponent implements OnInit {
 
   }
 
+  getCouncils() {
+    this.sharedService.getCouncils()
+    .subscribe({
+      next: (response) => {
+        if(this.userId !== undefined) {
+          this.isEditUser = true;
+          this.getUserDetails();
+        }
+        if (response && response.responseData) {
+          response.responseData.forEach((council: any) => {
+            if (council.status) {
+              if (council.ticketCouncilName.toLowerCase().includes('other')) {
+                this.otherCouncilsList.push(council);
+              } else {
+                this.councilsList.push(council)
+              }
+            }
+          })
+        }
+      },
+      error: (error) => {
+        this.toastrService.showToastr(error.error.error, 'Error', 'error');
+      }
+    });
+  }
+
   getUserDetails() {
     this.userService.getUserDetails(this.userId).subscribe({
       next: (res) => {
         this.userDetails = res.responseData;
         this.setUserFormData();
+        if(this.userDetails?.attributes?.role[0] === 'NODALOFFICER') {
+          this.getDeparmentsList(this.userDetails?.attributes?.councilId, false);
+          this.showCouncil = true
+        }
         localStorage.setItem('userDetails', JSON.stringify(res.responseData));
       }
     })
@@ -103,10 +129,11 @@ export class UserFormComponent implements OnInit {
       firstName: firstName,
       lastName: lastName,
       username: this.userDetails?.username,
-      phone:this.userDetails?.attributes.phoneNumber[0],
-      role:this.userDetails?.attributes.Role[0],
+      phone:this.userDetails?.attributes.phoneNumber,
+      role:this.userDetails?.attributes.role[0],
       status: this.userDetails?.enabled === true? 'Active' : 'Inactive',
-      department: this.userDetails?.attributes?.departmentName[0] ? this.userDetails?.attributes.departmentName[0] : null
+      council: this.userDetails?.attributes?.councilId,
+      department: this.userDetails?.attributes?.departmentId ? this.userDetails?.attributes.departmentId : null
     })
   }
 
@@ -157,38 +184,15 @@ export class UserFormComponent implements OnInit {
    return getRole(roleName);
   }
 
-  getCouncils() {
-    this.sharedService.getCouncils()
-    // .pipe((mergeMap((response) => {
-    //   const counciles = response.responseData.filter((council: any) => council.status);
-    //   return of(counciles)
-    // })))
-    .subscribe({
-      next: (response) => {
-        if (response && response.responseData) {
-          response.responseData.forEach((council: any) => {
-            if (council.status) {
-              if (council.ticketCouncilName.toLowerCase().includes('other')) {
-                this.otherCouncilsList.push(council);
-              } else {
-                this.councilsList.push(council)
-              }
-            }
-          })
-        }
-      },
-      error: (error) => {
-        this.toastrService.showToastr(error.error.error, 'Error', 'error');
-      }
-    });
-  }
-
-  getDeparmentsList(ticketCouncilId: any) {
+  getDeparmentsList(ticketCouncilId: any, resetDepartment = true) {
     this.departmentsList = [];
-    this.userForm.get('department')?.reset();
+    if (resetDepartment) {
+      this.userForm.get('department')?.reset();
+    }
     const conucil: any = this.councilsList.find((council: any) => council.ticketCouncilId === ticketCouncilId);
     if (conucil && conucil.ticketDepartmentDtoList) {
       this.departmentsList = conucil.ticketDepartmentDtoList.filter((department: any) => department.status);
+      this.userForm
     }
   }
 
@@ -203,15 +207,6 @@ export class UserFormComponent implements OnInit {
   
   updateUser() {
     const {firstName, lastName, phone, role, status, username, department, council} = this.userForm.value;
-    const {id } = this.userDetails;
-    let deptId: any;
-    // this.grievanceTypes.map((obj: any) => {
-    //   if(this.userDetails.attributes.Role[0] !== 'SUPERADMIN') { 
-    //   if(department.toLowerCase() === obj.name.toLowerCase()) {
-    //     deptId = obj.id;   
-    //   }
-    // }
-    // })
     const requestObj = {
       id: this.userDetails.id,
       keycloakId: this.userDetails.keycloakId,
@@ -230,7 +225,6 @@ export class UserFormComponent implements OnInit {
     ],
     attributes: {
       module: "grievance",
-      departmentName:  role === 'NODALOFFICER' ? deptId: role === 'GRIEVANCEADMIN' || role === 'ADMIN' ? -1 : null,
       phoneNumber: phone,
       Role: role,
       councilId: council,
@@ -264,14 +258,7 @@ export class UserFormComponent implements OnInit {
   }
 
   addUser() {
-    let deptId: any;
     const {firstName, lastName, phone, role, status, username, department, council} = this.userForm.value;
-    //console.log(this.userForm.value);
-    // this.grievanceTypes.map((obj: any) => {
-    //   if(department.toLowerCase() === obj.name.toLowerCase()) {
-    //     deptId = obj.id;   
-    //   }
-    // })
     const enabled = status === 'Active'? true : false;
     const requestObj = {
       firstName,
@@ -289,7 +276,6 @@ export class UserFormComponent implements OnInit {
     ],
     attributes: {
       module: 'grievance',
-      departmentName: role === 'NODALOFFICER' ? deptId: role === 'GRIEVANCEADMIN' || role === 'ADMIN' ? -1 : null,
       phoneNumber: phone,
       Role: role,
       councilId: council,
