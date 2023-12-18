@@ -30,7 +30,8 @@
             "SAVE": "/feedback/save"
         },
         "DASHBOARD": {
-            "GET_DASHBOARD_DATA": "/search/dashboardReport"
+            "GET_DASHBOARD_DATA": "/search/dashboardReport",
+            "GET_USERS_BY_COUNCIL_DEPARTMENT": "/user/usersByCouncilDetapartment?"
         },
         "CNFIGURATION" : {
             "SEARCH_COUNCIL": "/admin/ticket/council/searchAll",

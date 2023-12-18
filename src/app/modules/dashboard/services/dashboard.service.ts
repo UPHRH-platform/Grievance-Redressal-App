@@ -24,4 +24,12 @@ export class DashboardService  extends HttpService {
     }
     return this.post(reqParam);
   }
+
+  getUsersByCouncilDetapartmen(councilId: string, departmentId: string) {
+    const reqParam: RequestParam = {
+      url: this.baseUrl + `${this.configService.urlConFig.URLS.DASHBOARD.GET_USERS_BY_COUNCIL_DEPARTMENT}departmentId=${departmentId}&councilId=${councilId}`,
+      data: {}
+    }
+    return this.get(reqParam);
+  }
 }

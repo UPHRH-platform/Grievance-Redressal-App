@@ -191,7 +191,8 @@ export class ConfigurationComponent implements OnInit {
       },
       error: (error) => {
         this.isDataLoading = false;
-        this.toastrService.showToastr(error.error.error, 'Error', 'error');
+        const errorMessage = error.error.error_message ? error.error.error_message : error.error.error;
+        this.toastrService.showToastr(errorMessage, 'Error', 'error');
       }
     });
   }
@@ -213,7 +214,8 @@ export class ConfigurationComponent implements OnInit {
           }
         },
         error: (error: HttpErrorResponse) => {
-          this.toastrService.showToastr(error.error.error, 'Error', 'error');
+          const errorMessage = error.error.error_message ? error.error.error_message : error.error.error;
+          this.toastrService.showToastr(errorMessage, 'Error', 'error');
           this.getCouncils();
         }
       })
@@ -234,7 +236,8 @@ export class ConfigurationComponent implements OnInit {
           }
         },
         error: (error: HttpErrorResponse) => {
-          this.toastrService.showToastr(error.error.error, 'Error', 'error')
+          const errorMessage = error.error.error_message ? error.error.error_message : error.error.error;
+          this.toastrService.showToastr(errorMessage, 'Error', 'error');
           this.getCouncils();
         }
       });
@@ -250,7 +253,8 @@ export class ConfigurationComponent implements OnInit {
           }
         },
         error: (error: HttpErrorResponse) => {
-          this.toastrService.showToastr(error.error.error, 'Error', 'error')
+          const errorMessage = error.error.error_message ? error.error.error_message : error.error.error;
+          this.toastrService.showToastr(errorMessage, 'Error', 'error');
           this.getCouncils();
         }
       });
@@ -314,7 +318,8 @@ export class ConfigurationComponent implements OnInit {
       },
       error: (error) => {
         this.isDataLoading = false;
-        this.toastrService.showToastr(error.error.error, 'Error', 'error');
+          const errorMessage = error.error.error_message ? error.error.error_message : error.error.error;
+          this.toastrService.showToastr(errorMessage, 'Error', 'error');
       }
     });
   }
@@ -335,7 +340,8 @@ export class ConfigurationComponent implements OnInit {
           }
         },
         error: (error: HttpErrorResponse) => {
-          this.toastrService.showToastr(error.error.error, 'Error', 'error');
+          const errorMessage = error.error.error_message ? error.error.error_message : error.error.error;
+          this.toastrService.showToastr(errorMessage, 'Error', 'error');
           this.getUserTypes();
         }
       })
@@ -356,7 +362,8 @@ export class ConfigurationComponent implements OnInit {
           }
         },
         error: (error: HttpErrorResponse) => {
-          this.toastrService.showToastr(error.error.error, 'Error', 'error')
+          const errorMessage = error.error.error_message ? error.error.error_message : error.error.error;
+          this.toastrService.showToastr(errorMessage, 'Error', 'error');
           this.getUserTypes();
         }
       });
@@ -372,7 +379,8 @@ export class ConfigurationComponent implements OnInit {
           }
         },
         error: (error: HttpErrorResponse) => {
-          this.toastrService.showToastr(error.error.error, 'Error', 'error')
+          const errorMessage = error.error.error_message ? error.error.error_message : error.error.error;
+          this.toastrService.showToastr(errorMessage, 'Error', 'error');
           this.getUserTypes();
         }
       });
@@ -437,7 +445,8 @@ export class ConfigurationComponent implements OnInit {
         this.councilControlsList = response;
       },
       error: (error: HttpErrorResponse) => {
-        this.toastrService.showToastr(error.error.error, 'Error', 'error');
+          const errorMessage = error.error.error_message ? error.error.error_message : error.error.error;
+          this.toastrService.showToastr(errorMessage, 'Error', 'error');
       }
     })
   }
@@ -479,7 +488,8 @@ export class ConfigurationComponent implements OnInit {
       },
       error: (error) => {
         this.isDataLoading = false;
-        this.toastrService.showToastr(error.error.error, 'Error', 'error');
+          const errorMessage = error.error.error_message ? error.error.error_message : error.error.error;
+          this.toastrService.showToastr(errorMessage, 'Error', 'error');
       }
     });
   }
@@ -502,7 +512,8 @@ export class ConfigurationComponent implements OnInit {
           }
         },
         error: (error: HttpErrorResponse) => {
-          this.toastrService.showToastr(error.error.error, 'Error', 'error');
+          const errorMessage = error.error.error_message ? error.error.error_message : error.error.error;
+          this.toastrService.showToastr(errorMessage, 'Error', 'error');
           this.getDepartments();
         }
       })
@@ -523,7 +534,8 @@ export class ConfigurationComponent implements OnInit {
           }
         },
         error: (error: HttpErrorResponse) => {
-          this.toastrService.showToastr(error.error.error, 'Error', 'error')
+          const errorMessage = error.error.error_message ? error.error.error_message : error.error.error;
+          this.toastrService.showToastr(errorMessage, 'Error', 'error');
           this.getDepartments();
         }
       });
@@ -540,7 +552,8 @@ export class ConfigurationComponent implements OnInit {
           }
         },
         error: (error: HttpErrorResponse) => {
-          this.toastrService.showToastr(error.error.error, 'Error', 'error')
+          const errorMessage = error.error.error_message ? error.error.error_message : error.error.error;
+          this.toastrService.showToastr(errorMessage, 'Error', 'error');
           this.getDepartments();
         }
       });
@@ -618,7 +631,8 @@ export class ConfigurationComponent implements OnInit {
       },
       error: (error) => {
         this.isDataLoading = false;
-        this.toastrService.showToastr(error.error.error, 'Error', 'error');
+        const errorMessage = error.error.error_message ? error.error.error_message : error.error.error;
+        this.toastrService.showToastr(errorMessage, 'Error', 'error');
       }
     });
   }
@@ -639,7 +653,8 @@ export class ConfigurationComponent implements OnInit {
           }
         },
         error: (error: HttpErrorResponse) => {
-          this.toastrService.showToastr(error.error.error, 'Error', 'error')
+          const errorMessage = error.error.error_message ? error.error.error_message : error.error.error;
+          this.toastrService.showToastr(errorMessage, 'Error', 'error');
           this.getEscalationTime();
         }
       });
@@ -656,7 +671,8 @@ export class ConfigurationComponent implements OnInit {
           }
         },
         error: (error: HttpErrorResponse) => {
-          this.toastrService.showToastr(error.error.error, 'Error', 'error')
+          const errorMessage = error.error.error_message ? error.error.error_message : error.error.error;
+          this.toastrService.showToastr(errorMessage, 'Error', 'error');
           this.getEscalationTime();
         }
       });
