@@ -322,10 +322,12 @@ export class UserFormComponent implements OnInit {
       }
       default: {
         this.showCouncil = false;
-        this.userForm.get('council')?.removeValidators;
+        this.userForm.get('council')?.clearValidators();
         this.userForm.get('council')?.reset();
-        this.userForm.get('department')?.removeAsyncValidators;
+        this.userForm.get('council')?.updateValueAndValidity();
+        this.userForm.get('department')?.clearValidators();
         this.userForm.get('department')?.reset();
+        this.userForm.get('council')?.updateValueAndValidity();
       }
     }
   }
