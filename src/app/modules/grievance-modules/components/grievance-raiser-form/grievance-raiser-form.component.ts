@@ -146,13 +146,18 @@ export class GrievanceRaiserFormComponent {
           return 'Mobile number should contain 10 digits only !!';
         }
         break;
-      case 'council':
+      case 'userType':
         if (this.grievanceRaiserformGroup.get('userType')?.hasError('required')) {
+          return 'User type is required !!';
+        }
+        break;
+      case 'council':
+        if (this.grievanceRaiserformGroup.get('council')?.hasError('required')) {
           return 'Council is required !!';
         }
         break;
       case 'department':
-        if (this.grievanceRaiserformGroup.get('userType')?.hasError('required')) {
+        if (this.grievanceRaiserformGroup.get('department')?.hasError('required')) {
           return 'Department is required !!';
         }
         break;

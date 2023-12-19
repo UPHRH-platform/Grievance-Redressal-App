@@ -130,7 +130,7 @@ export class UserProfileComponent {
       credentials: [
         {
             "type": "password",
-            "value": "ka09eF$299",
+            "value": "Admin@123",
             "temporary": "false"
         }
     ],

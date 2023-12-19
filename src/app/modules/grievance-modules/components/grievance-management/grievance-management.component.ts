@@ -141,8 +141,15 @@ export class GrievanceManagementComponent  {
             cell: (element: Record<string, any>) => `${element['ticketUserTypeName']}`
           },
           {
+            columnDef: 'ticketCouncilName',
+            header: 'Council',
+            isSortable: true,
+            isLink: false,
+            cell: (element: Record<string, any>) => `${element['ticketCouncilName']}` ? `${element['ticketDepartmentName']}`: '-'
+          },
+          {
             columnDef: 'ticketDepartmentName',
-            header: 'Raiser Type',
+            header: 'Department',
             isSortable: true,
             isLink: false,
             cell: (element: Record<string, any>) => `${element['ticketDepartmentName']}` ? `${element['ticketDepartmentName']}`: '-'
@@ -219,8 +226,15 @@ export class GrievanceManagementComponent  {
             cell: (element: Record<string, any>) => `${element['ticketUserTypeName']}`
           },
           {
+            columnDef: 'ticketCouncilName',
+            header: 'Council',
+            isSortable: true,
+            isLink: false,
+            cell: (element: Record<string, any>) => `${element['ticketCouncilName']}` ? `${element['ticketDepartmentName']}`: '-'
+          },
+          {
             columnDef: 'ticketDepartmentName',
-            header: 'Raiser Type',
+            header: 'Department',
             isSortable: true,
             isLink: false,
             cell: (element: Record<string, any>) => `${element['ticketDepartmentName']}` ? `${element['ticketDepartmentName']}`: '-'
@@ -288,8 +302,15 @@ export class GrievanceManagementComponent  {
             cell: (element: Record<string, any>) => `${element['ticketUserTypeName']}`
           },
           {
+            columnDef: 'ticketCouncilName',
+            header: 'Council',
+            isSortable: true,
+            isLink: false,
+            cell: (element: Record<string, any>) => `${element['ticketCouncilName']}` ? `${element['ticketDepartmentName']}`: '-'
+          },
+          {
             columnDef: 'ticketDepartmentName',
-            header: 'Raiser Type',
+            header: 'Department',
             isSortable: true,
             isLink: false,
             cell: (element: Record<string, any>) => `${element['ticketDepartmentName']}` ? `${element['ticketDepartmentName']}`: '-'

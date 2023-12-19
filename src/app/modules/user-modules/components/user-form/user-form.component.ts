@@ -219,7 +219,7 @@ export class UserFormComponent implements OnInit {
       credentials: [
         {
             "type": "password",
-            "value": "ka09eF$299",
+            "value": "Admin@123",
             "temporary": "false"
         }
     ],
@@ -312,6 +312,8 @@ export class UserFormComponent implements OnInit {
       }
       case 'GRIEVANCEADMIN': {
         this.showCouncil = false;
+        this.userForm.get('council')?.addValidators(Validators.required);
+        this.userForm.get('department')?.addValidators(Validators.required);
         if (this.otherCouncilsList) {
           this.userForm.get('council')?.patchValue(this.otherCouncilsList[0].ticketCouncilId);
           this.userForm.get('department')?.patchValue(this.otherCouncilsList[0].ticketDepartmentDtoList[0].ticketDepartmentId);
