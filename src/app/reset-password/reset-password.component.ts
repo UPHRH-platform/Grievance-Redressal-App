@@ -52,7 +52,7 @@ export class ResetPasswordComponent {
   updateUser() {
     let departmentId: any;
     this.grievanceTypes.map((obj: any) => {
-      if(this.userDetails.attributes.Role[0] !== 'SUPERADMIN') {
+      if(this.userDetails.attributes.role[0] !== 'SUPERADMIN') {
       if(this.userDetails?.attributes.departmentName[0].toLowerCase() === obj.name.toLowerCase()) {
         departmentId = obj.id;   
       }
@@ -77,7 +77,7 @@ export class ResetPasswordComponent {
       module: "grievance",
       departmentName: departmentId,
       phoneNumber: this.userDetails?.attributes.phoneNumber[0],
-      Role: this.userDetails?.attributes.Role[0]
+      Role: this.userDetails?.attributes.role[0]
   }
     }
     this.isProcessing = true;

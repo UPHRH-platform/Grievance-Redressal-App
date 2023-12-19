@@ -170,7 +170,7 @@
             <button type="submit" mat-raised-button color="primary" *ngIf="currentTabName == 'Resolved'"
               (click)="handleClick('reopen')">Reopen</button>
             <button type="submit" mat-raised-button color="primary"
-              *ngIf="(currentTabName == 'Escalated to me' || currentTabName == 'Not Assigned' || currentTabName == 'Pending')"
+              *ngIf="(currentTabName == 'Escalated to me' || currentTabName == 'Not Assigned' || currentTabName == 'Pending' || currentTabName === 'Nudged')"
               (click)="handleClick('nudge')">Send Reminder</button>
           </span>
           <button type="submit" *ngIf="userRole === 'Nodal Officer' && currentTabName !== 'Resolved'"
