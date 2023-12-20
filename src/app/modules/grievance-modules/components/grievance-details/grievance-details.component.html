@@ -338,24 +338,37 @@
                                   <mat-option [value]="council.ticketCouncilId">{{council.ticketCouncilName}}</mat-option>
                               </ng-container>
                           </mat-select>
-                          <mat-error *ngIf="grievanceResolutionForm.get('council')?.invalid">
+                          <!-- <mat-error *ngIf="assignGrievanceTypeForm.get('council')?.invalid">
                             Council is required !!
-                          </mat-error>
+                          </mat-error> -->
                       </mat-form-field>
                   </div>
                   <div class="sm col sm-col-12 md-col-4 lg-col-4 px2">
                       <h4>Department</h4>
                       <mat-form-field appearance="outline" style="width: 100%;">
                           <mat-label>Department</mat-label>
-                          <mat-select
-                              formControlName="department">
+                          <mat-select formControlName="department" (selectionChange)="getUsers()">
                               <ng-container *ngFor='let department of departmentsList'>
                                   <mat-option [value]="department.ticketDepartmentId">{{department.ticketDepartmentName}}</mat-option>
                               </ng-container>
                           </mat-select>
-                          <mat-error *ngIf="grievanceResolutionForm.get('department')?.invalid">
+                          <!-- <mat-error *ngIf="assignGrievanceTypeForm.get('department')?.invalid">
                             Department is required !!
-                          </mat-error>
+                          </mat-error> -->
+                      </mat-form-field>
+                  </div>
+                  <div class="sm col sm-col-12 md-col-4 lg-col-4 px2">
+                      <h4>Assign to</h4>
+                      <mat-form-field appearance="outline" style="width: 100%;">
+                          <mat-label>Assign to</mat-label>
+                          <mat-select formControlName="user">
+                              <ng-container *ngFor='let user of usersList;let i = index'>
+                                <mat-option [value]="user.id">{{user.firstName}} {{user.lastName}}</mat-option>
+                              </ng-container>
+                          </mat-select>
+                          <!-- <mat-error *ngIf="assignGrievanceTypeForm.get('user')?.invalid">
+                            Assignment to officer is required !!
+                          </mat-error> -->
                       </mat-form-field>
                   </div>
                </div>

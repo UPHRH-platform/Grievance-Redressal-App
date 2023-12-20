@@ -10,22 +10,43 @@
             <div class="filter-internal-ui">
                 <form [formGroup]="filterForm" (ngSubmit)="ApplyFilter(filterForm.value)">
                     <div class="filter-inputs">
-                        <div class="first-container">
-                            <mat-form-field appearance="outline">
-                                <mat-label>Type of Grievance</mat-label>
+                        <ng-container *ngIf="!showUserType; else userType">
+                            <div class="first-container council-control">
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Council</mat-label>
+                                    <mat-select (selectionChange)="getDeparmentsList($event.value)"
+                                        formControlName="council">
+                                        <ng-container *ngFor="let council of councilsList">
+                                            <mat-option [value]="council.ticketCouncilId">{{council.ticketCouncilName}}</mat-option>
+                                        </ng-container>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                            <div class="first-container council-control">
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Department</mat-label>
+                                    <mat-select formControlName="department">
+                                        <ng-container *ngFor='let department of departmentsList'>
+                                            <mat-option [value]="department.ticketDepartmentId">{{department.ticketDepartmentName}}</mat-option>
+                                        </ng-container>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                        </ng-container>
+                        <ng-template #userType>
+                            <div class="first-container council-control">
+                                <mat-form-field appearance="outline">
+                                    <mat-label>UserType</mat-label>
+                                    <mat-select formControlName="userType" (selectionChange)="removeCouncilValidation()">
+                                        <ng-container *ngFor='let userType of userTypesList'>
+                                            <mat-option [value]="userType.userTypeId">{{userType.userTypeName}}</mat-option>
+                                        </ng-container>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                        </ng-template>
 
-                                <mat-select (selectionChange)="grievanceSelected($event)"
-                                    formControlName="grievanceType">
-                                    <span *ngFor="let grievance of grievancesTypes; let i = index">
-                                        <mat-option [value]="grievance.id">{{
-                                            grievance.name
-                                            }}</mat-option>
-                                    </span>
-                                </mat-select>
-                            </mat-form-field>
-                        </div>
-
-                        <div class="first-container">
+                        <div class="first-container date-class">
                             <mat-form-field>
                                 <mat-label>Enter a date range</mat-label>
 
@@ -44,7 +65,7 @@
                         </div>
                     </div>
 
-                    <div class="action-btns">
+                    <div class="action-btns mr2">
                         <button type="reset" mat-raised-button class="mr1" (click)="resetFilter()">
                             Reset
                         </button>

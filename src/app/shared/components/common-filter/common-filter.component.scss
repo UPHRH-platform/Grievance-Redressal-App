@@ -12,7 +12,7 @@
     // left: 3%;
 }
 .filter-ui-container {
-    width: 43vw;
+    width: fit-content;
     height: auto;
     z-index: 9999;
     left: 8%;
@@ -28,6 +28,7 @@
     flex-direction: row;
     flex-wrap: wrap;
     gap: 2%;
+    flex-flow: row;
 }
 
 // ::ng-deep mat-form-field {
@@ -48,4 +49,12 @@
     // width: 100vw;
     margin-top: 9px;
     position: relative;
+}
+
+.date-class {
+    width: 320px;
+}
+
+.council-control {
+    width: 225px;
 }

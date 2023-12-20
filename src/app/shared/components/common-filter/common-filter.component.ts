@@ -1,6 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { ConfigService } from '../../services/config/config.service';
 import { GrievanceServiceService } from 'src/app/modules/grievance-modules/services/grievance-service.service';
 import { Subscription } from 'rxjs';
 
@@ -11,23 +10,30 @@ import { Subscription } from 'rxjs';
 })
 export class CommonFilterComponent implements OnInit {
   isFilter:boolean = false;
-  grievancesTypes:any[]=[];
   filterForm:FormGroup;
   filterSubscription: Subscription;
+  @Input() showUserType: Boolean = true;
+  @Input() councilsList: any[] = [];
+  @Input() departmentsList: any[] = [];
+  @Input() userTypesList: any[] = [];
+  @Output() getDepearmentsOfCouncil: EventEmitter<string> = new EventEmitter<string>();
   @Output() filteredvalue: EventEmitter<any> = new EventEmitter<any>();
   @Output() resetFilterValue: EventEmitter<any> = new EventEmitter<any>();
 
 
 
-  constructor(private configService: ConfigService,
-    private grievanceService: GrievanceServiceService){
+  constructor(
+    private grievanceService: GrievanceServiceService,
+    ){
     // this.filterSubscription.unsubscribe();
-    this.grievancesTypes = this.configService.dropDownConfig.GRIEVANCE_TYPES;
     this.filterForm = new FormGroup({
-      grievanceType: new FormControl('', Validators.required),
+      // grievanceType: new FormControl('', Validators.required),
+      council: new FormControl('', Validators.required),
+      department: new FormControl(''),
+      userType: new FormControl('', Validators.required),
       startDate: new FormControl(''),
       endDate:new FormControl('')
-    })
+    });
 
   }
 
@@ -42,6 +48,19 @@ export class CommonFilterComponent implements OnInit {
       }
       //console.log("called");
   }
+
+  getDeparmentsList(ticketCouncilId: any) {
+    this.filterForm.get('userType')?.clearValidators();
+    this.filterForm.get('userType')?.updateValueAndValidity();
+    this.filterForm.get('department')?.reset();
+    this.getDepearmentsOfCouncil.emit(ticketCouncilId);
+  }
+
+  removeCouncilValidation() {
+    this.filterForm.get('council')?.clearValidators();
+    this.filterForm.get('council')?.updateValueAndValidity();
+  }
+
   toggleFilter(){
     this.isFilter = !this.isFilter
   }
@@ -50,10 +69,6 @@ export class CommonFilterComponent implements OnInit {
     this.filteredvalue.emit(value)
     this.isFilter = !this.isFilter;
    }
-
-  grievanceSelected(event:any){
-
-  }
 
   resetFilter(){
     this.filterForm.reset();

@@ -24,7 +24,15 @@
               </form>
               
             </div>
-            <app-common-filter *ngIf="!isDataLoading && userRole === 'Secretary'" (filteredvalue)="onClickApplyFilter($event)" (resetFilterValue)="resetFilterValueData($event)"></app-common-filter>
+            <app-common-filter *ngIf="!isDataLoading" 
+              [showUserType]="showUserType"
+              [councilsList]="councilsList"
+              [departmentsList]="departmentsList"
+              [userTypesList]="userTypesList"
+              (getDepearmentsOfCouncil)="getDeparmentsList($event)"
+              (filteredvalue)="onClickApplyFilter($event)" 
+              (resetFilterValue)="resetFilterValueData($event)"
+            ></app-common-filter>
               </div>
             <ng-container *ngIf="!isDataLoading && grievancesTableColumns.length > 0">
               <app-shared-table [tableColumns]="grievancesTableColumns" [tableData]="grievances" [isPageable]="true"
