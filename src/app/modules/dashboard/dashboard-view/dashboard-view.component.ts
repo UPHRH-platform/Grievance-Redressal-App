@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { BreadcrumbItem, ConfigService } from 'src/app/shared';
+import { BreadcrumbItem } from 'src/app/shared';
 import { DashboardService } from '../services/dashboard.service';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { ToastrServiceService } from 'src/app/shared/services/toastr/toastr.service';
@@ -40,7 +40,6 @@ export class DashboardViewComponent {
   performanceIndicatorData: any = {};
   resolutionMatrixData: any = [];
   resolutionMatrixColumns: any = [];
-  grievancesTypes:any[]=[];
   startDate = new Date("2020/03/03");
   endDate = new Date();
   ccList: any = [];
@@ -51,14 +50,13 @@ export class DashboardViewComponent {
   // filterDateRange = {startDate: '', endDate: ''};
   public assignGrievanceTypeForm:FormGroup;
   grievanceTypeNames: any = [];
-  constructor(private dashboardService: DashboardService, private configService: ConfigService, private formBuilder: FormBuilder, private toastrService: ToastrServiceService,
+  constructor(private dashboardService: DashboardService, private formBuilder: FormBuilder, private toastrService: ToastrServiceService,
     private router: Router, private sharedService: SharedService
     // private papa: Papa
     ) {
   }
 
   ngOnInit(): void {
-    this.grievancesTypes = this.configService.dropDownConfig.GRIEVANCE_TYPES;
     this.filterForm = this.formBuilder.group({
       grievanceType: new FormControl(),
       startDate: new FormControl(this.startDate),
@@ -277,7 +275,7 @@ export class DashboardViewComponent {
 
   getUsers() {
     if (this.filterForm.get('council')?.value && this.filterForm.get('department')?.value) {
-      this.dashboardService.getUsersByCouncilDetapartmen(this.filterForm.get('council')?.value, this.filterForm.get('department')?.value)
+      this.sharedService.getUsersByCouncilDetapartmen(this.filterForm.get('council')?.value, this.filterForm.get('department')?.value)
       .subscribe({
         next: (response: any) => {
           if (response && response.responseData) {

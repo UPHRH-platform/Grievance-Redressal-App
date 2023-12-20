@@ -20,14 +20,14 @@ export class SharedService extends HttpService {
 
   getCouncils() {
     const reqParam: RequestParam = {
-      url: this.baseUrl + `${this.configService.urlConFig.URLS.CNFIGURATION.SEARCH_COUNCIL}`,
+      url: this.baseUrl + `${this.configService.urlConFig.URLS.SHARED_URLS.SEARCH_COUNCIL}`,
       data: {}
     }
     return this.get(reqParam);
   }
   getUserTypes() {
     const reqParam: RequestParam = {
-      url: this.baseUrl + `${this.configService.urlConFig.URLS.CNFIGURATION.SEARCH_USER_TYPES}`,
+      url: this.baseUrl + `${this.configService.urlConFig.URLS.SHARED_URLS.SEARCH_USER_TYPES}`,
       data: {}
     }
     return this.get(reqParam);
@@ -35,7 +35,15 @@ export class SharedService extends HttpService {
 
   getDepartments() {
     const reqParam: RequestParam = {
-      url: this.baseUrl + `${this.configService.urlConFig.URLS.CNFIGURATION.SEARCH_DEPARTMENT}`,
+      url: this.baseUrl + `${this.configService.urlConFig.URLS.SHARED_URLS.SEARCH_DEPARTMENT}`,
+      data: {}
+    }
+    return this.get(reqParam);
+  }
+
+  getUsersByCouncilDetapartmen(councilId: string, departmentId: string) {
+    const reqParam: RequestParam = {
+      url: this.baseUrl + `${this.configService.urlConFig.URLS.SHARED_URLS.GET_USERS_BY_COUNCIL_DEPARTMENT}departmentId=${departmentId}&councilId=${councilId}`,
       data: {}
     }
     return this.get(reqParam);

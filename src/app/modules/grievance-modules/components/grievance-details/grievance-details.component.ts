@@ -15,6 +15,7 @@ import { UploadService } from 'src/app/core/services/upload-service/upload.servi
 import { MatDialog } from '@angular/material/dialog';
 import { SharedDescriptionDialogComponent } from 'src/app/shared/components/shared-description-dialog/shared-description-dialog.component';
 import { SharedService } from 'src/app/shared/services/shared.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-grievance-details',
@@ -52,6 +53,7 @@ export class GrievanceDetailsComponent {
   ticketUpdateRequest:any;
   councilsList = [];
   departmentsList = [];
+  usersList: any[] = [];
 
   constructor(private router: Router, private formBuilder: FormBuilder, private authService: AuthService,
     private grievanceServiceService: GrievanceServiceService, private route: ActivatedRoute,
@@ -112,6 +114,25 @@ export class GrievanceDetailsComponent {
     }
   }
 
+  getUsers() {
+    if (this.assignGrievanceTypeForm.get('council')?.value && this.assignGrievanceTypeForm.get('department')?.value) {
+      this.usersList = [];
+      this.assignGrievanceTypeForm.get('user')?.reset();
+      this.sharedService.getUsersByCouncilDetapartmen(this.assignGrievanceTypeForm.get('council')?.value, this.assignGrievanceTypeForm.get('department')?.value)
+      .subscribe({
+        next: (response: any) => {
+          if (response && response.responseData) {
+            this.usersList = response.responseData;
+          }
+        },
+        error: (error: HttpErrorResponse) => {
+          const errMessage = error.error.errMessage ? error.error.errMessage : error.error.error;
+          this.toastrService.showToastr(errMessage, 'Error', 'error');
+        }
+      })
+    }
+  }
+
   navigateToHome(){
     this.router.navigate(['/grievance/manage-tickets'], {queryParams:  {tabName: this.currentTabName}})
   }
@@ -130,7 +151,8 @@ export class GrievanceDetailsComponent {
   createAssignForm(){
     this.assignGrievanceTypeForm = this.formBuilder.group({
       council: new FormControl('', Validators.required),
-      department: new FormControl('', Validators.required)
+      department: new FormControl('', Validators.required),
+      user: new FormControl('', Validators.required)
     })
   }
 
@@ -368,7 +390,7 @@ export class GrievanceDetailsComponent {
       case 'assign': 
       this.ticketUpdateRequest = {
         ...this.ticketUpdateRequest,
-       cc: this.userRole === 'Grievance Nodal' ? -1 : null,
+       cc: this.assignGrievanceTypeForm.get('user')?.value,
       ticketCouncilId: this.assignGrievanceTypeForm.get('council')?.value,
       ticketDepartmentId: this.assignGrievanceTypeForm.get('department')?.value,
        isJunk: this.ticketDetails.junk,

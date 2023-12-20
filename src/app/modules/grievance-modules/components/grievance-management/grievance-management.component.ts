@@ -9,6 +9,7 @@ import { GrievanceServiceService } from '../../services/grievance-service.servic
 import { ToastrServiceService } from 'src/app/shared/services/toastr/toastr.service';
 import { PageEvent } from '@angular/material/paginator';
 import { FormControl, FormGroup } from '@angular/forms';
+import { SharedService } from 'src/app/shared/services/shared.service';
 
 
 @Component({
@@ -28,6 +29,9 @@ export class GrievanceManagementComponent  {
   startDate = new Date("2020/03/03").getTime();
   endDate = new Date().getTime();
   grievanceType:any;
+  councilId: string | undefined;
+  departmentId: string | undefined;
+  userTypeId: string | undefined;
   accumulatedSearchTerm:string = '';
   private timeoutId: any;
   breadcrumbItems: BreadcrumbItem[] = [
@@ -39,13 +43,18 @@ export class GrievanceManagementComponent  {
   selectedTabName: any;
   searchForm:FormGroup;
   resetFields:boolean =false;
+  councilsList: any[] = [];
+  departmentsList: any[] = [];
+  userTypesList: any[] = [];
+  showUserType: Boolean = true;
   constructor( 
     private router: Router,
     private route: ActivatedRoute,
     private authService: AuthService,
     private configService: ConfigService,
     private grievanceService: GrievanceServiceService,
-    private toastrService:ToastrServiceService ){
+    private toastrService:ToastrServiceService,
+    private sharedService: SharedService ){
       this.searchForm =  new FormGroup({
         searchData:  new FormControl('')
       })
@@ -63,6 +72,7 @@ export class GrievanceManagementComponent  {
   ngOnInit(): void {
     this.grievancesTypes = this.configService.dropDownConfig.GRIEVANCE_TYPES;
     this.userRole = this.authService.getUserRoles()[0];
+    this.showUserType = this.userRole === this.configService.rolesConfig.ROLES.NODALOFFICER ? true : false;
     this.userId = this.authService.getUserData().userRepresentation.id;
     this.route.queryParams.subscribe((param) => {
       if(!!param){
@@ -77,6 +87,46 @@ export class GrievanceManagementComponent  {
       }
     });
     this.initializeTabs();
+    if (this.showUserType) {
+      this.getUserTypes();
+    } else {
+      this.getCouncils();
+    }
+  }
+
+
+  getCouncils() {
+    this.sharedService.getCouncils()
+      .subscribe({
+        next: (response) => {
+          if (response) {
+            this.councilsList = response.responseData;
+          }
+        },
+        error: (error) => {
+          this.toastrService.showToastr(error.error.error, 'Error', 'error');
+        }
+      });
+  }
+
+  getDeparmentsList(ticketCouncilId: any) {
+    this.departmentsList = [];
+    const conucil: any = this.councilsList.find((council: any) => council.ticketCouncilId === ticketCouncilId);
+    if (conucil && conucil.ticketDepartmentDtoList) {
+      this.departmentsList = conucil.ticketDepartmentDtoList.filter((department: any) => department.status);
+    }
+  }
+
+  getUserTypes() {
+    this.sharedService.getUserTypes()
+    .subscribe({
+      next: (response) => {
+        this.userTypesList = response.responseData;
+      },
+      error: (error) => {
+        this.toastrService.showToastr(error.error.error, 'Error', 'error');
+      }
+    });
   }
 
   navigateToHome(){
@@ -145,7 +195,7 @@ export class GrievanceManagementComponent  {
             header: 'Council',
             isSortable: true,
             isLink: false,
-            cell: (element: Record<string, any>) => `${element['ticketCouncilName']}` ? `${element['ticketDepartmentName']}`: '-'
+            cell: (element: Record<string, any>) => `${element['ticketCouncilName']}` ? `${element['ticketCouncilName']}`: '-'
           },
           {
             columnDef: 'ticketDepartmentName',
@@ -230,7 +280,7 @@ export class GrievanceManagementComponent  {
             header: 'Council',
             isSortable: true,
             isLink: false,
-            cell: (element: Record<string, any>) => `${element['ticketCouncilName']}` ? `${element['ticketDepartmentName']}`: '-'
+            cell: (element: Record<string, any>) => `${element['ticketCouncilName']}` ? `${element['ticketCouncilName']}`: '-'
           },
           {
             columnDef: 'ticketDepartmentName',
@@ -306,7 +356,7 @@ export class GrievanceManagementComponent  {
             header: 'Council',
             isSortable: true,
             isLink: false,
-            cell: (element: Record<string, any>) => `${element['ticketCouncilName']}` ? `${element['ticketDepartmentName']}`: '-'
+            cell: (element: Record<string, any>) => `${element['ticketCouncilName']}` ? `${element['ticketCouncilName']}`: '-'
           },
           {
             columnDef: 'ticketDepartmentName',
@@ -383,12 +433,18 @@ export class GrievanceManagementComponent  {
     this.startDate = new Date("2020/03/03").getTime();
     this.endDate = new Date().getTime();
     this.grievanceType = null;
+    this.councilId = undefined;
+    this.departmentId = undefined;
+    this.userTypeId = undefined;
     this.searchForm.reset();
     this.getTicketsRequestObject();
   }
 
   onClickApplyFilter(event:any){
-    this.grievanceType = event.grievanceType
+    // this.grievanceType = event.grievanceType
+    this.councilId = event.council;
+    this.departmentId = event.department;
+    this.userTypeId = event.userType
     if(event.startDate && event.endDate){
       this.startDate =  new Date(event.startDate).getTime();
       this.endDate = new Date(event.endDate).getTime() + ((23*60*60 + 59*60+59) * 1000);
@@ -523,6 +579,10 @@ export class GrievanceManagementComponent  {
       this.getGrievancesRequest
       break;
     }
+
+    this.getGrievancesRequest.filter['ticketCouncilId'] = this.councilId ? this.councilId : undefined;
+    this.getGrievancesRequest.filter['ticketDepartmentId'] = this.departmentId ? this.departmentId : undefined;
+    this.getGrievancesRequest.filter['ticketUserTypeId'] = this.userTypeId ? this.userTypeId : undefined;
     this.getAllTickets();
   }
 
