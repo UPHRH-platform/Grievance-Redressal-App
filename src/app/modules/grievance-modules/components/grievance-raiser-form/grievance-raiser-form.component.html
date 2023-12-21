@@ -60,7 +60,7 @@
                                     <mat-error *ngIf="grievanceRaiserformGroup.controls['phone'].hasError('pattern') && (grievanceRaiserformGroup.controls['phone'].dirty || grievanceRaiserformGroup.controls['phone'].touched)">
                                         Phone number should contain 10 digits only
                                     </mat-error>
-                                    <mat-error *ngIf="grievanceRaiserformGroup.controls['phone'].hasError('required') && (grievanceRaiserformGroup.controls['phone'].dirty || grievanceRaiserformGroup.controls['phone'].touched)">
+                                    <mat-error *ngIf="grievanceRaiserformGroup.controls['phone'].hasError('required')">
                                         Phone number is required
                                     </mat-error>
                                 </mat-form-field>

@@ -23,14 +23,22 @@
                                 </mat-form-field>
                             </div>
                             <div class="first-container council-control">
-                                <mat-form-field appearance="outline">
-                                    <mat-label>Department</mat-label>
-                                    <mat-select formControlName="department">
-                                        <ng-container *ngFor='let department of departmentsList'>
-                                            <mat-option [value]="department.ticketDepartmentId">{{department.ticketDepartmentName}}</mat-option>
-                                        </ng-container>
-                                    </mat-select>
-                                </mat-form-field>
+                                <ng-container *ngIf="isDepartmentSelect; else departmentText">
+                                    <mat-form-field appearance="outline">
+                                        <mat-label>Department</mat-label>
+                                        <mat-select formControlName="department">
+                                            <ng-container *ngFor='let department of departmentsList'>
+                                                <mat-option [value]="department.ticketDepartmentId">{{department.ticketDepartmentName}}</mat-option>
+                                            </ng-container>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </ng-container>
+                                <ng-template #departmentText>
+                                    <mat-form-field class="search">
+                                        <mat-label>Department</mat-label>
+                                        <input matInput appearance="standard" formControlName="department" placeholder="Department" />
+                                    </mat-form-field>
+                                </ng-template>
                             </div>
                         </ng-container>
                         <ng-template #userType>
@@ -46,23 +54,25 @@
                             </div>
                         </ng-template>
 
-                        <div class="first-container date-class">
-                            <mat-form-field>
-                                <mat-label>Enter a date range</mat-label>
+                        <ng-container *ngIf="isDepartmentSelect">
+                            <div class="first-container date-class">
+                                <mat-form-field>
+                                    <mat-label>Enter a date range</mat-label>
 
-                                <mat-date-range-input [rangePicker]="picker">
-                                    <input matStartDate placeholder="Start date" formControlName="startDate" />
+                                    <mat-date-range-input [rangePicker]="picker">
+                                        <input matStartDate placeholder="Start date" formControlName="startDate" />
 
-                                    <input matEndDate placeholder="End date" formControlName="endDate" />
-                                </mat-date-range-input>
+                                        <input matEndDate placeholder="End date" formControlName="endDate" />
+                                    </mat-date-range-input>
 
-                                <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
+                                    <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
 
-                                <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                                    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
 
-                                <mat-date-range-picker #picker></mat-date-range-picker>
-                            </mat-form-field>
-                        </div>
+                                    <mat-date-range-picker #picker></mat-date-range-picker>
+                                </mat-form-field>
+                            </div>
+                        </ng-container>
                     </div>
 
                     <div class="action-btns mr2">

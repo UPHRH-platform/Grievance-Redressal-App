@@ -36,14 +36,17 @@
             "SAVE_COUNCIL": "/admin/ticket/council/save",
             "UPDATE_COUNCIL": "/admin/ticket/council/update",
             "UPDATE_COUNCIL_STATUS": "/admin/ticket/council/updateActivation",
+            "COUNCIL_BY_TEXT": "/admin/ticket/council/textSearch",
 
             "SAVE_USER_TYPES": "/admin/ticket/userType/save",
             "UPDATE_USER_TYPES": "/admin/ticket/userType/update",
             "UPDATE_USER_TYPES_STATUS": "/admin/ticket/userType/updateActivation",
+            "USER_TYPE_BY_TEXT": "/admin/ticket/userType/textSearch",
 
             "SAVE_DEPARTMENT": "/admin/ticket/department/save",
             "UPDATE_DEPARTMENT": "/admin/ticket/department/update",
             "UPDATE_DEPARTMENT_STATUS": "/admin/ticket/department/updateActivation",
+            "DEPARTMENT_BY_TEXT": "/admin/ticket/department/textSearch",
 
             "SEARCH_ESCALATIONTIME": "/config/mail/all",
             "SAVE_ESCALATIONTIME": "/config/mail/save",

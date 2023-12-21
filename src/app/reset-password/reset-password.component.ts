@@ -76,7 +76,7 @@ export class ResetPasswordComponent {
     attributes: {
       module: "grievance",
       departmentName: departmentId,
-      phoneNumber: this.userDetails?.attributes.phoneNumber[0],
+      phoneNumber: this.userDetails?.attributes.phoneNumber,
       Role: this.userDetails?.attributes.role[0]
   }
     }

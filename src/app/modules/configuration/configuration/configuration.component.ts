@@ -9,6 +9,7 @@ import { FormControl } from '@angular/forms';
 import { HttpErrorResponse } from '@angular/common/http';
 import { mergeMap, of } from 'rxjs';
 import { SharedService } from 'src/app/shared/services/shared.service';
+import { exportToExcel } from '../../dashboard/dashboard-view/dashboard-view.component';
 
 @Component({
   selector: 'app-configuration',
@@ -26,13 +27,18 @@ export class ConfigurationComponent implements OnInit {
   selectedTab: any;
   descriptionOfControl = 'Add Council';
   lableOfControl = 'Council Name';
-  councilControlsList = [];
+  councilControlsList: any = [];
   configControl = new FormControl();
   councilControl = new FormControl();
+  searchControl = new FormControl();
   userData: any;
 
   tableColumns: TableColumn[] = [];
   tableData: any = [];
+  private timeoutId: any;
+  councilsListForFilter: any = [];
+  departmentsListForFilter: any = [];
+  apiSubscribe: any;
 
   constructor(
     private router: Router,
@@ -61,6 +67,7 @@ export class ConfigurationComponent implements OnInit {
   }
 
   getTableColumns() {
+    this.tableData = [];
     switch(this.selectedTab.id) {
       case 'council': {
         this.tableColumns = this.getCouncilsTableColumns();
@@ -97,6 +104,61 @@ export class ConfigurationComponent implements OnInit {
     }, 100);
   }
 
+  applyFilter(searchterms:any){
+    switch(this.selectedTab.id) {
+      case 'council': {
+        if (searchterms) {
+          const formBody = {
+            "searchKeyword": searchterms
+          }
+          clearTimeout(this.timeoutId) 
+          this.timeoutId= setTimeout(() => {
+            this.getCouncilsBySearch(formBody)
+          },1000); 
+        } else {
+          clearTimeout(this.timeoutId) 
+          this.getCouncils();
+        }
+        break;
+      }
+      case 'user_type': {
+        if (searchterms) {
+          const formBody = {
+            "searchKeyword": searchterms
+          }
+          clearTimeout(this.timeoutId) 
+          this.timeoutId= setTimeout(() => {
+            this.getUserTypesBySearch(formBody)
+          },1000);  
+        } else {
+          clearTimeout(this.timeoutId) 
+          this.getUserTypes();
+        }
+        break;
+      }
+      case 'department': {
+        if (searchterms) {
+          const formBody = {
+            "searchKeyword": searchterms.department ? searchterms.department : '',
+            "councilId": searchterms.council
+          }
+          clearTimeout(this.timeoutId) 
+          this.getDepartmentsBySearch(formBody)
+        } else {
+          clearTimeout(this.timeoutId) 
+          this.getDepartments();
+        }
+        break;
+      }
+    }
+  }
+
+  resetFilterValueData(event:any){
+    this.tableData = [];
+    clearTimeout(this.timeoutId) 
+    this.getDepartments();
+  }
+
   submit() {
     switch(this.selectedTab.id) {
       case 'council': {
@@ -112,6 +174,82 @@ export class ConfigurationComponent implements OnInit {
         break;
       }
     }
+  }
+
+  downloadDetails() {
+  let fileName = '.xlsx';
+  const report: any = {};
+    switch(this.selectedTab.id) {
+      case 'council': {
+        fileName = 'councilReport' + fileName;
+        report['sheetName'] = 'Counciles report';
+        report['headers'] = ['S.No', 'Council Name', 'Status'];
+        report['downloadObject'] = [];
+        this.tableData.forEach((element: any, index: number) => {
+          const reportDetails = {
+            sno: index+1,
+            CouncilName: element.ticketCouncilName,
+            status: element.status ? 'Active' : 'Inactive'
+          };
+          report['downloadObject'].push(reportDetails);
+        }) 
+        break;
+      }
+      case 'user_type': {
+        fileName = 'userTypesReport' + fileName;
+        report['sheetName'] = 'User types';
+        report['headers'] = ['S.No', 'User Type', 'Status'];
+        report['downloadObject'] = [];
+        this.tableData.forEach((element: any, index: number) => {
+          const reportDetails = {
+            sno: index+1,
+            userType: element.userTypeName,
+            status: element.status ? 'Active' : 'Inactive'
+          };
+          report['downloadObject'].push(reportDetails);
+        }) 
+        break;
+      }
+      case 'department': {
+        fileName = 'deparmentsReport' + fileName;
+        report['sheetName'] = 'Departments Report';
+        report['headers'] = ['S.No', 'Council', 'Department', 'Status'];
+        report['downloadObject'] = [];
+        this.tableData.forEach((element: any, index: number) => {
+          const reportDetails = {
+            sno: index+1,
+            CouncilName: element.ticketCouncilName,
+            DepartmentName: element.ticketDepartmentName,
+            status: element.status ? 'Active' : 'Inactive'
+          };
+          report['downloadObject'].push(reportDetails);
+        }) 
+        break;
+      }
+      case 'escalation_time': {
+        fileName = 'escalationTimeReport' + fileName;
+        report['sheetName'] = 'escalation Time';
+        report['headers'] = ['S.No', 'Authority', 'Email', 'Days', 'Status'];
+        report['downloadObject'] = [];
+        this.tableData.forEach((element: any, index: number) => {
+          const reportDetails = {
+            sno: index+1,
+            authority: element.authorityTitle,
+            email: element.authorityEmails.join(', '),
+            days: element.configValue,
+            status: element.status ? 'Active' : 'Inactive'
+          };
+          report['downloadObject'].push(reportDetails);
+        }) 
+        break;
+      }
+    }
+
+    const downloadObjects = {
+      fileName: fileName,
+      objectsList: [report]
+    }
+    exportToExcel(downloadObjects);
   }
 
   updateRecord(event: any) {
@@ -177,7 +315,10 @@ export class ConfigurationComponent implements OnInit {
   getCouncils() {
     this.isDataLoading = true; 
     this.tableData = [];
-    this.sharedService.getCouncils()
+    if (this.apiSubscribe) {
+      this.apiSubscribe.unsubscribe();
+    }
+    this.apiSubscribe = this.sharedService.getCouncils()
     .pipe((mergeMap((response) => {
       return of (response.responseData.sort((a: any,b: any) => {
         const result = a.ticketCouncilId - b.ticketCouncilId;
@@ -260,6 +401,26 @@ export class ConfigurationComponent implements OnInit {
       });
     }
   }
+
+  getCouncilsBySearch(formBody: any) {
+    this.isDataLoading = true
+    this.tableData = [];
+    if (this.apiSubscribe) {
+      this.apiSubscribe.unsubscribe();
+    }
+    this.apiSubscribe = this.configurationSvc.getCouncilsByText(formBody)
+    .subscribe({
+      next: (response) => {
+        this.isDataLoading = false;
+        this.tableData = response.responseData;
+      },
+      error: (error) => {
+        this.isDataLoading = false;
+        const errorMessage = error.error.error_message ? error.error.error_message : error.error.error;
+        this.toastrService.showToastr(errorMessage, 'Error', 'error');
+      }
+    })
+  }
   //#endregion
 
   //#region (User Types)
@@ -304,7 +465,10 @@ export class ConfigurationComponent implements OnInit {
   getUserTypes() {
     this.isDataLoading = true; 
     this.tableData = [];
-    this.sharedService.getUserTypes()
+    if (this.apiSubscribe) {
+      this.apiSubscribe.unsubscribe();
+    }
+    this.apiSubscribe = this.sharedService.getUserTypes()
     .pipe((mergeMap((response) => {
       return of (response.responseData.sort((a: any,b: any) => {
         const result = a.userTypeId - b.userTypeId;
@@ -387,6 +551,26 @@ export class ConfigurationComponent implements OnInit {
     }
   }
 
+  getUserTypesBySearch(formBody: any) {
+    if (this.apiSubscribe) {
+      this.apiSubscribe.unsubscribe();
+    }
+    this.tableData = [];
+    this.isDataLoading = true;
+    this.apiSubscribe = this.configurationSvc.getUserTypesByText(formBody)
+    .subscribe({
+      next: (response) => {
+        this.isDataLoading = false;
+        this.tableData = response.responseData;
+      },
+      error: (error) => {
+        this.isDataLoading = false;
+        const errorMessage = error.error.error_message ? error.error.error_message : error.error.error;
+        this.toastrService.showToastr(errorMessage, 'Error', 'error');
+      }
+    })
+  }
+
   //#endregion
 
   //#region (Department)
@@ -437,12 +621,13 @@ export class ConfigurationComponent implements OnInit {
 
   getCouncilsList() {
     this.sharedService.getCouncils()
-    .pipe((mergeMap((response) => {
-      return this.formateCouncilsList(response.responseData);
-    })))
+    // .pipe((mergeMap((response) => {
+    //   return this.formateCouncilsList(response.responseData);
+    // })))
     .subscribe({
       next: (response: any) => {
-        this.councilControlsList = response;
+        this.councilsListForFilter = response.responseData;
+        this.councilControlsList = this.formateCouncilsList(response.responseData);
       },
       error: (error: HttpErrorResponse) => {
           const errorMessage = error.error.error_message ? error.error.error_message : error.error.error;
@@ -468,13 +653,24 @@ export class ConfigurationComponent implements OnInit {
         }
       });
     }
-    return of(formatedCouncilsList);
+    return formatedCouncilsList;
+  }
+
+  getDeparmentsList(ticketCouncilId: any) {
+    this.departmentsListForFilter = [];
+    const conucil: any = this.councilsListForFilter.find((council: any) => council.ticketCouncilId === ticketCouncilId);
+    if (conucil && conucil.ticketDepartmentDtoList) {
+      this.departmentsListForFilter = conucil.ticketDepartmentDtoList.filter((department: any) => department.status);
+    }
   }
 
   getDepartments() {
     this.isDataLoading = true; 
     this.tableData = [];
-    this.sharedService.getDepartments()
+    if (this.apiSubscribe) {
+      this.apiSubscribe.unsubscribe();
+    }
+    this.apiSubscribe = this.sharedService.getDepartments()
     .pipe((mergeMap((response) => {
       return of (response.responseData.sort((a: any,b: any) => {
         const result = a.ticketDepartmentId - b.ticketDepartmentId;
@@ -559,6 +755,26 @@ export class ConfigurationComponent implements OnInit {
       });
     }
   }
+
+  getDepartmentsBySearch(formBody: any) {
+    if (this.apiSubscribe) {
+      this.apiSubscribe.unsubscribe();
+    }
+    this.tableData = [];
+    this.isDataLoading = true;
+    this.apiSubscribe = this.configurationSvc.getDepartmentsByText(formBody)
+    .subscribe({
+      next: (response) => {
+        this.isDataLoading = false;
+        this.tableData = response.responseData;
+      },
+      error: (error) => {
+        this.isDataLoading = false;
+        const errorMessage = error.error.error_message ? error.error.error_message : error.error.error;
+        this.toastrService.showToastr(errorMessage, 'Error', 'error');
+      }
+    })
+  }
   //#endregion
 
   //#region (Escalation)
@@ -582,8 +798,8 @@ export class ConfigurationComponent implements OnInit {
         cell: (element: Record<string, any>) => `${element['authorityTitle']}`
       },
       {
-        columnDef: 'Email ID',
-        header: 'email',
+        columnDef: 'authorityEmails',
+        header: 'Email',
         isSortable: true,
         isAction: false,
         cell: (element: Record<string, any>) => `${element['authorityEmails'].join(', ')}`
@@ -617,7 +833,10 @@ export class ConfigurationComponent implements OnInit {
   getEscalationTime() {
     this.isDataLoading = true; 
     this.tableData = [];
-    this.configurationSvc.getEscalationTimes()
+    if (this.apiSubscribe) {
+      this.apiSubscribe.unsubscribe();
+    }
+    this.apiSubscribe = this.configurationSvc.getEscalationTimes()
     .pipe((mergeMap((response) => {
       return of (response.responseData.sort((a: any,b: any) => {
         const result = a.id - b.id;
