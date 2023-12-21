@@ -43,6 +43,14 @@ export class ConfigurationService extends HttpService {
     }
     return this.post(reqParam);
   }
+
+  getCouncilsByText(formBody: any) {
+    const reqParam: RequestParam = {
+      url: this.baseUrl + `${this.configService.urlConFig.URLS.CNFIGURATION.COUNCIL_BY_TEXT}`,
+      data: formBody
+    }
+    return this.post(reqParam);
+  }
   //#endregion
 
   //#region (User Types)
@@ -66,6 +74,14 @@ export class ConfigurationService extends HttpService {
     const reqParam: RequestParam = {
       url: this.baseUrl + `${this.configService.urlConFig.URLS.CNFIGURATION.UPDATE_USER_TYPES_STATUS}`,
       data: payload,
+    }
+    return this.post(reqParam);
+  }
+
+  getUserTypesByText(formBody: any) {
+    const reqParam: RequestParam = {
+      url: this.baseUrl + `${this.configService.urlConFig.URLS.CNFIGURATION.USER_TYPE_BY_TEXT}`,
+      data: formBody
     }
     return this.post(reqParam);
   }
@@ -95,6 +111,14 @@ export class ConfigurationService extends HttpService {
     }
     return this.post(reqParam);
   }
+
+  getDepartmentsByText(formBody: any) {
+    const reqParam: RequestParam = {
+      url: this.baseUrl + `${this.configService.urlConFig.URLS.CNFIGURATION.DEPARTMENT_BY_TEXT}`,
+      data: formBody
+    }
+    return this.post(reqParam);
+  }
   //#endregion
 
   //#region (Escalation)
@@ -104,7 +128,6 @@ export class ConfigurationService extends HttpService {
       data: {}
     }
     return this.get(reqParam);
-    // return of(this.EscalationTime);
   }
 
   updateEscalationTime(payload: any) {
