@@ -20,7 +20,7 @@ export class ConfigurationComponent implements OnInit {
 
   breadcrumbItems: BreadcrumbItem[] = [
     { label: 'Grievance Management', url: '/home' },
-    { label: 'MANAGE USERS', url: '/user-manage' },
+    { label: 'Configuration Management', url: '/configuration' },
   ];
   isDataLoading = true;
   tabs: any[] = [];
