@@ -57,7 +57,8 @@
             "SEARCH_USER_TYPES": "/admin/ticket/userType/searchAll",
             "SEARCH_COUNCIL": "/admin/ticket/council/searchAll",
             "SEARCH_DEPARTMENT": "/admin/ticket/department/searchAll",
-            "GET_USERS_BY_COUNCIL_DEPARTMENT": "/user/usersByCouncilDetapartment?"
+            "GET_USERS_BY_COUNCIL_DEPARTMENT": "/user/usersByCouncilDetapartment?",
+            "GET_ASSIGNED_DEPARTMENT": "/admin/ticket/department/getAssignedDepartment?councilId="
         }
     }
 }

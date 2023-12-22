@@ -25,6 +25,7 @@ export class SharedService extends HttpService {
     }
     return this.get(reqParam);
   }
+
   getUserTypes() {
     const reqParam: RequestParam = {
       url: this.baseUrl + `${this.configService.urlConFig.URLS.SHARED_URLS.SEARCH_USER_TYPES}`,
@@ -44,6 +45,14 @@ export class SharedService extends HttpService {
   getUsersByCouncilDetapartmen(councilId: string, departmentId: string) {
     const reqParam: RequestParam = {
       url: this.baseUrl + `${this.configService.urlConFig.URLS.SHARED_URLS.GET_USERS_BY_COUNCIL_DEPARTMENT}departmentId=${departmentId}&councilId=${councilId}`,
+      data: {}
+    }
+    return this.get(reqParam);
+  }
+
+  getUserAssignedDepartment(councilId: string) {
+    const reqParam: RequestParam = {
+      url: this.baseUrl + `${this.configService.urlConFig.URLS.SHARED_URLS.GET_ASSIGNED_DEPARTMENT}${councilId}`,
       data: {}
     }
     return this.get(reqParam);

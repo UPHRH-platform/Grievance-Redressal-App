@@ -9,6 +9,7 @@ import { ToastrServiceService } from 'src/app/shared/services/toastr/toastr.serv
 import { UploadService } from 'src/app/core/services/upload-service/upload.service';
 import { Observable, forkJoin, mergeMap, of, switchMap } from 'rxjs';
 import { SharedService } from 'src/app/shared/services/shared.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-grievance-raiser-form',
@@ -94,10 +95,16 @@ export class GrievanceRaiserFormComponent {
   getDeparmentsList(ticketCouncilId: any) {
     this.departmentsList = [];
     this.grievanceRaiserformGroup.get('department')?.reset();
-    const conucil: any = this.councilsList.find((council: any) => council.ticketCouncilId === ticketCouncilId);
-    if (conucil && conucil.ticketDepartmentDtoList) {
-      this.departmentsList = conucil.ticketDepartmentDtoList.filter((department: any) => department.status);
-    }
+    this.sharedService.getUserAssignedDepartment(ticketCouncilId)
+    .subscribe({
+      next: (response: any) => {
+        this.departmentsList = response.responseData;
+      },
+      error: (error: HttpErrorResponse) => {
+        const error_message = error.error.error_message ? error.error.error_message : error.error.error;
+        this.toastrService.showToastr(error_message, 'Error', 'error');
+      }
+    });
   }
 
   createForm() {
