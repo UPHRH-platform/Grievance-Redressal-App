@@ -488,6 +488,7 @@ export class GrievanceManagementComponent  {
     if(this.selectedTab.name === 'Junk') {
       this.getGrievancesRequest['sort']['updatedDateTS'] = this.direction
     }
+    const Roles = this.configService.rolesConfig.ROLES;
     switch(this.selectedTab.name) {
       case 'Pending': 
         this.getGrievancesRequest = {
@@ -510,16 +511,16 @@ export class GrievanceManagementComponent  {
       }
       break;
       // this is failing
-      case 'Priority': 
-      this.getGrievancesRequest = {
-        ...this.getGrievancesRequest,
-        filter:{
-          status:['OPEN'],
-          cc: this.grievanceType ? this.grievanceType: null,
-        },
-        priority: "HIGH",
-        isJunk: false
-      }
+      // case 'Priority': 
+      // this.getGrievancesRequest = {
+      //   ...this.getGrievancesRequest,
+      //   filter:{
+      //     status:['OPEN'],
+      //     cc: this.grievanceType ? this.grievanceType: null,
+      //   },
+      //   priority: "HIGH",
+      //   isJunk: false
+      // }
       break;
       case 'Escalated to me': 
       this.getGrievancesRequest = {
@@ -555,10 +556,19 @@ export class GrievanceManagementComponent  {
       }
       break;
       case 'Nudged': 
+      // this.getGrievancesRequest = {
+      //   ...this.getGrievancesRequest,
+      //   filter:{
+      //     status:['OPEN']
+      //   },
+      //   priority: "HIGH",
+      //   isJunk: false
+      // }
       this.getGrievancesRequest = {
         ...this.getGrievancesRequest,
         filter:{
-          status:['OPEN']
+          status:['OPEN'],
+          cc: this.grievanceType && Roles.NODALOFFICER === this.userRole ? this.grievanceType: null,
         },
         priority: "HIGH",
         isJunk: false

@@ -35,8 +35,8 @@ export const Tabs = {
             id: "resolved"
         },
         {
-            name: "Priority",
-            id: 'priority'
+            name: "Nudged",
+            id: 'nudged'
         },
         {
             name: "Junk",
