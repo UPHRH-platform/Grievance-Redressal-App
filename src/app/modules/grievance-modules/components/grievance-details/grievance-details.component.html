@@ -209,11 +209,11 @@
             <div class="first-row-container mt2">
               <div class="first-container">
                 <mat-label class="label-text">Creation Time</mat-label>
-                <h3 class="textData">{{ ticketDetails?.createdDate !== null ? ticketDetails?.createdDate : '-'}}</h3>
+                <h3 class="textData">{{ ticketDetails?.createdDate !== null ? (ticketDetails?.createdDate | date:'yyyy-MM-dd HH:mm:ss') : '-'}}</h3>
               </div>
               <div class="first-container">
                 <mat-label class="label-text">Escalation Time</mat-label>
-                <h3 class="textData">{{ ticketDetails?.escalatedDate !== null ? ticketDetails?.escalatedDate : '-'}}</h3>
+                <h3 class="textData">{{ ticketDetails?.escalatedDate !== null ? (ticketDetails?.escalatedDate | date:'yyyy-MM-dd HH:mm:ss') : '-'}}</h3>
               </div>
             </div>
 
