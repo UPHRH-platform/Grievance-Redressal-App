@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { AuthService } from 'src/app/core';
 import { ToastrServiceService } from 'src/app/shared/services/toastr/toastr.service';
 import { UserService } from '../../user-modules/services/user.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 
 @Component({
@@ -18,7 +19,7 @@ isEnableOtpLogin:boolean = false;
 isOtpForm:boolean = false;
   constructor(private router:Router, private authService: AuthService, private toastrService: ToastrServiceService, private userService: UserService){
     this.loginForm = new FormGroup({
-      emailId: new FormControl('', [Validators.email, Validators.required]),
+      emailId: new FormControl('', [Validators.required, Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")]),
       password: new FormControl('',Validators.required)
 
     })
@@ -78,10 +79,21 @@ isOtpForm:boolean = false;
   
   getOTP(){
     if(this.loginForm.value.emailId){
-     this.isOtpForm = true
      this.authService.generateOTP(this.loginForm.value.emailId).subscribe({
       next: (res) => {
-        //console.log(res);
+        if (res && res.responseData && res.responseData.error) {
+          this.toastrService.showToastr(res.responseData.error, 'Error', 'error', '');
+          this.isOtpForm = false;
+        } else {
+          this.isOtpForm = true;
+        }
+        // console.log(res);
+      },
+      error: (error: HttpErrorResponse) => {
+        if (error && error.error && error.error.text) {
+          this.isOtpForm = true;
+          this.toastrService.showToastr(error.error.text, 'Success', 'success', '');
+        }
       }
      })
     }

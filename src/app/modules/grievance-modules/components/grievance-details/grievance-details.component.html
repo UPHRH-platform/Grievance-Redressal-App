@@ -358,6 +358,9 @@
                                   <mat-option [value]="department.ticketDepartmentId">{{department.ticketDepartmentName}}</mat-option>
                               </ng-container>
                           </mat-select>
+                          <mat-error *ngIf="departmentsEmpty">
+                              No active department
+                          </mat-error>
                           <!-- <mat-error *ngIf="assignGrievanceTypeForm.get('department')?.invalid">
                             Department is required !!
                           </mat-error> -->
@@ -372,6 +375,9 @@
                                 <mat-option [value]="user.id">{{user.firstName}} {{user.lastName}}</mat-option>
                               </ng-container>
                           </mat-select>
+                          <mat-error *ngIf="usersEmpty">
+                            No active users
+                          </mat-error>
                           <!-- <mat-error *ngIf="assignGrievanceTypeForm.get('user')?.invalid">
                             Assignment to officer is required !!
                           </mat-error> -->

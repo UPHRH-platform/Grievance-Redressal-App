@@ -54,6 +54,8 @@ export class GrievanceDetailsComponent {
   councilsList = [];
   departmentsList = [];
   usersList: any[] = [];
+  departmentsEmpty = false;
+  usersEmpty = false;
 
   constructor(private router: Router, private formBuilder: FormBuilder, private authService: AuthService,
     private grievanceServiceService: GrievanceServiceService, private route: ActivatedRoute,
@@ -111,6 +113,10 @@ export class GrievanceDetailsComponent {
     const conucil: any = this.councilsList.find((council: any) => council.ticketCouncilId === ticketCouncilId);
     if (conucil && conucil.ticketDepartmentDtoList) {
       this.departmentsList = conucil.ticketDepartmentDtoList.filter((department: any) => department.status);
+      if (this.departmentsList.length === 0) {
+        this.departmentsEmpty = true;
+        this.assignGrievanceTypeForm.get('department')?.markAsTouched()
+      }
     }
   }
 
@@ -121,8 +127,11 @@ export class GrievanceDetailsComponent {
       this.sharedService.getUsersByCouncilDetapartmen(this.assignGrievanceTypeForm.get('council')?.value, this.assignGrievanceTypeForm.get('department')?.value)
       .subscribe({
         next: (response: any) => {
-          if (response && response.responseData) {
+          if (response && response.responseData && response.responseData.length > 0) {
             this.usersList = response.responseData;
+          } else {
+            this.usersEmpty = true;
+            this.assignGrievanceTypeForm.get('user')?.markAsTouched()
           }
         },
         error: (error: HttpErrorResponse) => {

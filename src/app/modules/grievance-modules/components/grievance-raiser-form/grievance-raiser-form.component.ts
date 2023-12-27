@@ -33,6 +33,7 @@ export class GrievanceRaiserFormComponent {
   userTypesArray = [];
   councilsList = [];
   departmentsList = [];
+  departmentsEmpty = false;
   dialogSettings = {
     maxHeight: '100vh',
     height: 'auto',
@@ -95,10 +96,15 @@ export class GrievanceRaiserFormComponent {
   getDeparmentsList(ticketCouncilId: any) {
     this.departmentsList = [];
     this.grievanceRaiserformGroup.get('department')?.reset();
+    this.departmentsEmpty = false;
     this.sharedService.getUserAssignedDepartment(ticketCouncilId)
     .subscribe({
       next: (response: any) => {
         this.departmentsList = response.responseData;
+        if (this.departmentsList.length === 0) {
+          this.departmentsEmpty = true;
+          this.grievanceRaiserformGroup.get('department')?.markAsTouched()
+        }
       },
       error: (error: HttpErrorResponse) => {
         const error_message = error.error.error_message ? error.error.error_message : error.error.error;
