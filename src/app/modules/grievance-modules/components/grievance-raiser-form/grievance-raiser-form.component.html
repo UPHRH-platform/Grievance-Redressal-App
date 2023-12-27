@@ -106,8 +106,11 @@
                                             <mat-option [value]="department.ticketDepartmentId">{{department.ticketDepartmentName}}</mat-option>
                                         </ng-container>
                                     </mat-select>
-                                    <mat-error *ngIf="grievanceRaiserformGroup.controls['department'].invalid">
+                                    <mat-error *ngIf="grievanceRaiserformGroup.controls['department'].invalid && !departmentsEmpty">
                                         {{getError('department')}}
+                                    </mat-error>
+                                    <mat-error *ngIf="departmentsEmpty">
+                                        No active department
                                     </mat-error>
                                 </mat-form-field>
                             </div>
