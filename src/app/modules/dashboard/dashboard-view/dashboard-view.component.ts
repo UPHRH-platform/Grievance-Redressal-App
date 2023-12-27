@@ -275,7 +275,8 @@ export class DashboardViewComponent {
 
   getUsers() {
     if (this.filterForm.get('council')?.value && this.filterForm.get('department')?.value) {
-      this.sharedService.getUsersByCouncilDetapartmen(this.filterForm.get('council')?.value, this.filterForm.get('department')?.value)
+      const allUsers = true;
+      this.sharedService.getUsersByCouncilDetapartmen(this.filterForm.get('council')?.value, this.filterForm.get('department')?.value, allUsers)
       .subscribe({
         next: (response: any) => {
           if (response && response.responseData) {

@@ -42,9 +42,9 @@ export class SharedService extends HttpService {
     return this.get(reqParam);
   }
 
-  getUsersByCouncilDetapartmen(councilId: string, departmentId: string) {
+  getUsersByCouncilDetapartmen(councilId: string, departmentId: string, allUser: boolean = false) {
     const reqParam: RequestParam = {
-      url: this.baseUrl + `${this.configService.urlConFig.URLS.SHARED_URLS.GET_USERS_BY_COUNCIL_DEPARTMENT}departmentId=${departmentId}&councilId=${councilId}`,
+      url: this.baseUrl + `${this.configService.urlConFig.URLS.SHARED_URLS.GET_USERS_BY_COUNCIL_DEPARTMENT}departmentId=${departmentId}&councilId=${councilId}&allUser=${allUser}`,
       data: {}
     }
     return this.get(reqParam);
