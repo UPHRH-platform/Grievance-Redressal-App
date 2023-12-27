@@ -160,7 +160,7 @@
           <button mat-raised-button class="MR15" *ngIf="!(currentTabName == 'Resolved' || currentTabName == 'Junk')"
             (click)="handleClick('markjunk')">Mark As Junk</button>
 
-            <button type="submit" mat-raised-button color="primary" *ngIf="userRole === 'Grievance Nodal' && currentTabName == 'Not Assigned'"
+            <button type="submit" mat-raised-button color="primary" *ngIf="userRole === 'Grievance Nodal' && (currentTabName == 'Not Assigned' || currentTabName === 'Pending')"
             (click)="handleClick('assign', assignGrievanceTypeForm.value)" [disabled]="!assignGrievanceTypeForm.valid">Assign</button>
 
           <!-- <button mat-raised-button color="primary" style="margin-right: 15px;">Resolved</button> -->
@@ -331,7 +331,7 @@
               </div>
             </div>
 
-            <div class="mt2" *ngIf="userRole === 'Grievance Nodal' && currentTabName === 'Not Assigned'">
+            <div class="mt2" *ngIf="userRole === 'Grievance Nodal' && (currentTabName === 'Not Assigned' || currentTabName === 'Pending')">
               <h4>Assign To</h4>
               <form [formGroup]="assignGrievanceTypeForm">
                 <div class="clearfix mxn2 mt1">
