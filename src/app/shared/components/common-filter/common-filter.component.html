@@ -45,7 +45,7 @@
                             <div class="first-container council-control">
                                 <mat-form-field appearance="outline">
                                     <mat-label>UserType</mat-label>
-                                    <mat-select formControlName="userType" (selectionChange)="removeCouncilValidation()">
+                                    <mat-select formControlName="userType" (selectionChange)="removeValidation('council')">
                                         <ng-container *ngFor='let userType of userTypesList'>
                                             <mat-option [value]="userType.userTypeId">{{userType.userTypeName}}</mat-option>
                                         </ng-container>

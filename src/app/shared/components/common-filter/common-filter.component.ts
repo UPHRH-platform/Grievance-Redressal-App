@@ -12,16 +12,16 @@ export class CommonFilterComponent implements OnInit {
   isFilter:boolean = false;
   filterForm:FormGroup;
   filterSubscription: Subscription;
-  councilId: string | undefined = undefined;
-  departmentId: string | undefined = undefined;
-  userTypeId: string | undefined = undefined;
   @Input() showUserType: Boolean = true;
   @Input() councilsList: any[] = [];
   @Input() departmentsList: any[] = [];
   @Input() userTypesList: any[] = [];
   @Input() isDepartmentSelect: Boolean = true;
-  // @Input() startDate: any = '';
-  // @Input() endDate: any = '';
+  @Input() councilId: string = '';
+  @Input() departmentId: string = '';
+  @Input() userTypeId: string = '';
+  @Input() startTime: string = '';
+  @Input() endTime: string = '';
   @Output() getDepearmentsOfCouncil: EventEmitter<string> = new EventEmitter<string>();
   @Output() filteredvalue: EventEmitter<any> = new EventEmitter<any>();
   @Output() resetFilterValue: EventEmitter<any> = new EventEmitter<any>();
@@ -56,8 +56,7 @@ export class CommonFilterComponent implements OnInit {
   }
 
   getDeparmentsList(ticketCouncilId: any) {
-    this.filterForm.get('userType')?.clearValidators();
-    this.filterForm.get('userType')?.updateValueAndValidity();
+    this.removeValidation('userType');
     this.filterForm.get('department')?.reset();
     if (!this.isDepartmentSelect) {
       this.filterForm.get('department')?.setValidators(Validators.required);
@@ -66,21 +65,29 @@ export class CommonFilterComponent implements OnInit {
     this.getDepearmentsOfCouncil.emit(ticketCouncilId);
   }
 
-  removeCouncilValidation() {
-    this.filterForm.get('council')?.clearValidators();
-    this.filterForm.get('council')?.updateValueAndValidity();
+  removeValidation(control: string) {
+    this.filterForm.get(control)?.clearValidators();
+    this.filterForm.get(control)?.updateValueAndValidity();
   }
 
   toggleFilter(){
     this.isFilter = !this.isFilter;
+    const startDate = this.startTime ? new Date(this.startTime).toString() : '';
+    const endDate = this.endTime ? new Date(this.endTime).toString() : '';
     if(this.isFilter === true) {
       this.filterForm.setValue({
-        council: this.councilId,
-        department: this.departmentId,
-        userType: this.userTypeId,
-        // startDate: this.startDate,
-        // endDate: this.endDate
+        council: this.councilId ? this.councilId : null,
+        department: this.departmentId ? this.departmentId : null,
+        userType: this.userTypeId ? this.userTypeId : null,
+        startDate: new Date(startDate),
+        endDate: new Date(endDate)
       })
+
+      if(this.councilId !== '' && this.councilId) {
+        this.removeValidation('userType');
+      } else if(this.userTypeId !== '' && this.userTypeId) {
+        this.removeValidation('council');
+      }
     }
   }
 
