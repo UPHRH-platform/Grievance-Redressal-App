@@ -52,11 +52,12 @@ export class UserProfileComponent {
   }
 
   getUserDetails() {
+    const Roles = this.configService.rolesConfig.ROLES;
     this.userService.getUserDetails(this.userId).subscribe({
       next: (res) => {
         this.userDetails = res.responseData;
         if(this.userDetails) {
-          this.userRole = this.userDetails?.attributes.role[0];
+          this.userRole = Roles[this.userDetails?.attributes.role[0]];
           this.setUserFormData();
           localStorage.setItem('userDetails', JSON.stringify(res.responseData));
         }
