@@ -47,6 +47,7 @@ export class GrievanceManagementComponent  {
   departmentsList: any[] = [];
   userTypesList: any[] = [];
   showUserType: Boolean = true;
+  noDepartments = false;
   constructor( 
     private router: Router,
     private route: ActivatedRoute,
@@ -112,8 +113,11 @@ export class GrievanceManagementComponent  {
   getDeparmentsList(ticketCouncilId: any) {
     this.departmentsList = [];
     const conucil: any = this.councilsList.find((council: any) => council.ticketCouncilId === ticketCouncilId);
-    if (conucil && conucil.ticketDepartmentDtoList) {
-      this.departmentsList = conucil.ticketDepartmentDtoList.filter((department: any) => department.status);
+    if (conucil && conucil.ticketDepartmentDtoList.length > 0) {
+      this.noDepartments = false;
+      this.departmentsList = conucil.ticketDepartmentDtoList
+    } else {
+      this.noDepartments = true;
     }
   }
 

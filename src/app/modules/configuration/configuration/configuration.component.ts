@@ -39,6 +39,8 @@ export class ConfigurationComponent implements OnInit {
   councilsListForFilter: any = [];
   departmentsListForFilter: any = [];
   apiSubscribe: any;
+  departmentToFilter = '';
+  councilIdToFilter = '';
 
   constructor(
     private router: Router,
@@ -63,6 +65,10 @@ export class ConfigurationComponent implements OnInit {
     this.isDataLoading = true;
     this.selectedTab = this.tabs[event.index];
     this.configControl.reset();
+    this.searchControl.reset();
+    this.councilControl.reset();
+    this.councilIdToFilter = '';
+    this.departmentToFilter = '';
     this.getTableColumns();
   }
 
@@ -142,6 +148,8 @@ export class ConfigurationComponent implements OnInit {
             "searchKeyword": searchterms.department ? searchterms.department : '',
             "councilId": searchterms.council
           }
+          this.councilIdToFilter = formBody.councilId;
+          this.departmentToFilter = formBody.searchKeyword;
           clearTimeout(this.timeoutId) 
           this.getDepartmentsBySearch(formBody)
         } else {
@@ -155,6 +163,8 @@ export class ConfigurationComponent implements OnInit {
 
   resetFilterValueData(event:any){
     this.tableData = [];
+    this.councilIdToFilter = '';
+    this.departmentToFilter = '';
     clearTimeout(this.timeoutId) 
     this.getDepartments();
   }

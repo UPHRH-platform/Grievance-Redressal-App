@@ -31,6 +31,11 @@
                                                 <mat-option [value]="department.ticketDepartmentId">{{department.ticketDepartmentName}}</mat-option>
                                             </ng-container>
                                         </mat-select>
+                                        <ng-container *ngIf="noDepartments">
+                                            <span class="errorMessage">
+                                                There are no departments
+                                            </span>
+                                        </ng-container>
                                     </mat-form-field>
                                 </ng-container>
                                 <ng-template #departmentText>
