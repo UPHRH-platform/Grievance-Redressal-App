@@ -113,7 +113,7 @@ export class GrievanceManagementComponent  {
   getDeparmentsList(ticketCouncilId: any) {
     this.departmentsList = [];
     const conucil: any = this.councilsList.find((council: any) => council.ticketCouncilId === ticketCouncilId);
-    if (conucil && conucil.ticketDepartmentDtoList.length > 0) {
+    if (conucil && conucil.ticketDepartmentDtoList && conucil.ticketDepartmentDtoList.length > 0) {
       this.noDepartments = false;
       this.departmentsList = conucil.ticketDepartmentDtoList
     } else {
