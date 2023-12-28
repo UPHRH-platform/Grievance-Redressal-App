@@ -20,6 +20,7 @@ export class UserProfileComponent {
   isEditData:boolean = false;
   userId: string;
   userDetails: any = {};
+  userRole: string = '';
   grievanceTypes: any = [];
   breadcrumbItems: BreadcrumbItem[] = [
     { label: 'Home', url: '/home' },
@@ -55,6 +56,7 @@ export class UserProfileComponent {
       next: (res) => {
         this.userDetails = res.responseData;
         if(this.userDetails) {
+          this.userRole = this.userDetails?.attributes.role[0];
           this.setUserFormData();
           localStorage.setItem('userDetails', JSON.stringify(res.responseData));
         }

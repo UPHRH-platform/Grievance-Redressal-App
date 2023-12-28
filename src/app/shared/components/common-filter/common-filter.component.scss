@@ -58,3 +58,13 @@
 .council-control {
     width: 225px;
 }
+
+.errorMessage {
+    color: var(--mdc-theme-error, #f44336);
+    font-size: var(--mdc-typography-caption-font-size, 12px);
+    letter-spacing: var(--mdc-typography-caption-letter-spacing, 0.0333333333em);
+    position: absolute;
+    bottom: -23.5px;
+    right: 0;
+    padding: 0 16px;
+}

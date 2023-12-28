@@ -22,6 +22,7 @@ export class CommonFilterComponent implements OnInit {
   @Input() userTypeId: string = '';
   @Input() startTime: string = '';
   @Input() endTime: string = '';
+  @Input() noDepartments = false;
   @Output() getDepearmentsOfCouncil: EventEmitter<string> = new EventEmitter<string>();
   @Output() filteredvalue: EventEmitter<any> = new EventEmitter<any>();
   @Output() resetFilterValue: EventEmitter<any> = new EventEmitter<any>();

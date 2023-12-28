@@ -22,6 +22,8 @@
                                 [councilsList]="councilsListForFilter"
                                 [departmentsList]="departmentsListForFilter"
                                 [isDepartmentSelect]="false"
+                                [councilId]="councilIdToFilter"
+                                [departmentId]="departmentToFilter"
                                 (getDepearmentsOfCouncil)="getDeparmentsList($event)"
                                 (filteredvalue)="applyFilter($event)" 
                                 (resetFilterValue)="resetFilterValueData()"
