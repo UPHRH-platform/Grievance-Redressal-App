@@ -180,9 +180,9 @@ export class DashboardViewComponent {
         },
         filter: {
           // ccList: this.ccList
-          councilId: this.filterForm.get('council')?.value,
-          departmentId: this.filterForm.get('department')?.value,
-          userId: this.filterForm.get('user')?.value
+          ticket_council_id: this.filterForm.get('council')?.value,
+          ticket_department_id: this.filterForm.get('department')?.value,
+          assigned_to_id: this.filterForm.get('user')?.value
         }
       }
       setTimeout(() => {
