@@ -1,27 +1,13 @@
 import { Component } from '@angular/core';
-import { BreadcrumbItem } from 'src/app/shared';
+import { BreadcrumbItem, exportToExcel } from 'src/app/shared';
 import { DashboardService } from '../services/dashboard.service';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { ToastrServiceService } from 'src/app/shared/services/toastr/toastr.service';
 import { Router } from '@angular/router';
-
-import { utils, writeFile } from 'xlsx';
 import { SharedService } from 'src/app/shared/services/shared.service';
 import { mergeMap, of } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
-export const exportToExcel = async (downloadObjects: any) => {
-  if (downloadObjects && downloadObjects.objectsList) {
-    const workbook = utils.book_new();
-    downloadObjects.objectsList.forEach((element: any) => {
-      const sheetName = element.sheetName ? element.sheetName : `Sheet ${workbook.SheetNames.length + 1}`
-      const worksheet = utils.json_to_sheet([]);
-      utils.sheet_add_aoa(worksheet, [element.headers])
-      utils.book_append_sheet(workbook, worksheet, sheetName);
-      utils.sheet_add_json(worksheet, element.downloadObject, { origin: 'A2', skipHeader: true });
-    });
-    writeFile(workbook, downloadObjects.fileName ? downloadObjects.fileName : 'data.xlsx');
-  }
-}
+
 
 @Component({
   selector: 'app-dashboard-view',
@@ -112,6 +98,13 @@ export class DashboardViewComponent {
         cell: (element: Record<string, any>) => `${element['id']}`
 },
       {
+        columnDef: 'councilName',
+        header: 'Council',
+        isSortable: true,
+        isLink: false,
+        cell: (element: Record<string, any>) => `${element['councilName']}`
+      },
+      {
         columnDef: 'departmentName',
         header: 'Department',
         isSortable: true,
@@ -119,56 +112,56 @@ export class DashboardViewComponent {
         cell: (element: Record<string, any>) => `${element['departmentName']}`
 },
 {
-  columnDef: 'total',
+  columnDef: 'Total',
   header: 'Total Ticket',
   isSortable: true,
   isLink: false,
-  cell: (element: Record<string, any>) => `${element['total']}`
+  cell: (element: Record<string, any>) => `${element['Total']}`
 },
 {
-  columnDef: 'isJunk',
+  columnDef: 'Is Junk',
   header: 'Junk Ticket',
   isSortable: true,
   isLink: false,
-  cell: (element: Record<string, any>) => `${element['isJunk']}`
+  cell: (element: Record<string, any>) => `${element['Is Junk']}`
 },
 {
-  columnDef: 'isClosed',
+  columnDef: 'Is Closed',
   header: 'Resolved Ticket',
   isSortable: true,
   isLink: false,
-  cell: (element: Record<string, any>) => `${element['isClosed']}`
+  cell: (element: Record<string, any>) => `${element['Is Closed']}`
 },
 
 {
-  columnDef: 'isEscalated',
+  columnDef: 'Is Escalated',
   header: 'Escalated',
   isSortable: true,
   isLink: false,
-  cell: (element: Record<string, any>) => `${element['isEscalated']}`
+  cell: (element: Record<string, any>) => `${element['Is Escalated']}`
 },
 
 {
-  columnDef: 'isOpen',
+  columnDef: 'Is Open',
   header: 'Pending Ticket',
   isSortable: true,
   isLink: false,
-  cell: (element: Record<string, any>) => `${element['isOpen']}`
+  cell: (element: Record<string, any>) => `${element['Is Open']}`
 },
-{
-  columnDef: 'openTicketGte15',
-  header: 'Open Ticket',
-  isSortable: true,
-  isLink: false,
-  cell: (element: Record<string, any>) => `${element['openTicketGte15']}`
-},
-{
-  columnDef: 'unassigned',
-  header: 'Unassigned',
-  isSortable: true,
-  isLink: false,
-  cell: (element: Record<string, any>) => `${element['unassigned']}`
-},
+// {
+//   columnDef: 'openTicketGte15',
+//   header: 'Open Ticket',
+//   isSortable: true,
+//   isLink: false,
+//   cell: (element: Record<string, any>) => `${element['openTicketGte15']}`
+// },
+// {
+//   columnDef: 'Unassigned',
+//   header: 'Unassigned',
+//   isSortable: true,
+//   isLink: false,
+//   cell: (element: Record<string, any>) => `${element['Unassigned']}`
+// },
     ]
   }
 
@@ -220,9 +213,14 @@ export class DashboardViewComponent {
             //console.log(this.dashboardData.resolutionMatrixArray);
         this.dashboardData.resolutionMatrixArray.map((obj: any, index: number) => {
         let i = index;
-        for(const key in obj) {
-          i = i + 1;
-          this.resolutionMatrixData.push({id: i, departmentName: this.camelCaseToWords(key), ...obj[key]});
+        for(const council in obj) {
+          if (council.toString().toLocaleLowerCase().indexOf('other') < 0) {
+            const departments = obj[council];
+            for (const key in departments) {
+              i = i + 1;
+              this.resolutionMatrixData.push({id: i, councilName: this.camelCaseToWords(council) , departmentName: this.camelCaseToWords(key), ...obj[council][key]});
+            }
+          }
         }
       })
           }
@@ -338,7 +336,7 @@ export class DashboardViewComponent {
     const resolutionMatrix = {
       sheetName: 'Ticket resolution matrix',
       downloadObject: {},
-      headers: ['Department', 'Total Ticket', 'Junk Ticket', 'Resolved Ticket', 'Escalated', 'Pending Ticket', 'Open Ticket', 'Unassigned'],
+      headers: ['Council', 'Department', 'Total Ticket', 'Junk Ticket', 'Resolved Ticket', 'Escalated', 'Pending Ticket'],
     }
 
     if(this.dashboardData) {
@@ -347,27 +345,27 @@ export class DashboardViewComponent {
         assignmentMatrix.downloadObject = [
           {
             tag: 'Total',
-            ticketCount: assignmentDetails.total,
+            ticketCount: assignmentDetails['Total'],
           },
           {
             tag: 'Is Open',
-            ticketCount: assignmentDetails.isOpen,
+            ticketCount: assignmentDetails['Is Open'],
           },
           {
             tag: 'Is Closed',
-            ticketCount: assignmentDetails.isClosed,
+            ticketCount: assignmentDetails['Is Closed'],
           },
           {
             tag: 'Is Junk',
-            ticketCount: assignmentDetails.isJunk,
+            ticketCount: assignmentDetails['Is Junk'],
           },
           {
             tag: 'Is Escalated',
-            ticketCount: assignmentDetails.isEscalated,
+            ticketCount: assignmentDetails['Is Escalated'],
           },
           {
             tag: 'Unassigned',
-            ticketCount: assignmentDetails.unassigned,
+            ticketCount: assignmentDetails['Unassigned'],
           },
         ]
       }
@@ -376,38 +374,48 @@ export class DashboardViewComponent {
         performanceIndicators.downloadObject = [
           {
             item: 'Escalation Percentage',
-            value: performanceperformance.escalationPercentage,
+            value: performanceperformance['Escalation Percentage'],
           },
           {
             item: 'Nudge Ticket Percentage',
-            value: performanceperformance.nudgeTicketPercentage,
+            value: performanceperformance['Nudge Ticket Percentage'],
           },
           {
             item: 'Open Ticket Gte21',
-            value: performanceperformance.openTicketGte21,
+            value: performanceperformance['Open Ticket Gte21'],
+          },
+          {
+            item: 'Total',
+            value: performanceperformance['Total'],
           },
           {
             item: 'Turn Around Time',
-            value: performanceperformance.turnAroundTime,
+            value: performanceperformance['Turn Around Time'],
           },
         ]
       }
       if(this.dashboardData.resolutionMatrix) {
         const resolutionDetails = this.dashboardData.resolutionMatrix;
-        const keys = Object.keys(resolutionDetails);
+        const counciles = Object.keys(resolutionDetails);
         const downloadObject: any = [];
-        keys.forEach((key) => {
-          const resolution = {
-            department: key,
-            totalticket: resolutionDetails[key].total,
-            junkticket: resolutionDetails[key].isJunk,
-            resolvedticket: resolutionDetails[key].isClosed,
-            escalated: resolutionDetails[key].isEscalated,
-            pendingticket: resolutionDetails[key].isOpen,
-            openticket: resolutionDetails[key].openTicketGte15,
-            unassigned: resolutionDetails[key].unassigned
+        counciles.forEach((council) => {
+          if (council.toString().toLocaleLowerCase().indexOf('other') < 0) {
+            const keys = Object.keys(resolutionDetails[council]);
+            keys.forEach((key) => {
+              const resolution = {
+                Council: council,
+                department: key,
+                totalticket: resolutionDetails[council][key]['Total'],
+                junkticket: resolutionDetails[council][key]['Is Junk'],
+                resolvedticket: resolutionDetails[council][key]['Is Closed'],
+                escalated: resolutionDetails[council][key]['Is Escalated'],
+                pendingticket: resolutionDetails[council][key]['Is Open'],
+                // openticket: resolutionDetails[key].openTicketGte15,
+                // unassigned: resolutionDetails[council][key]['Unassigned']
+              }
+              downloadObject.push(resolution);
+            })
           }
-          downloadObject.push(resolution);
         })
         resolutionMatrix.downloadObject = downloadObject;
       }

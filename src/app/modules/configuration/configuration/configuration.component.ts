@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ConfigurationService } from '../services/configuration.service';
-import { BreadcrumbItem, ConfigurationTabs } from 'src/app/shared';
+import { BreadcrumbItem, ConfigurationTabs, exportToExcel } from 'src/app/shared';
 import { TableColumn } from 'src/app/interfaces/interfaces';
 import { ToastrServiceService } from 'src/app/shared/services/toastr/toastr.service';
 import { MatTabChangeEvent } from '@angular/material/tabs';
@@ -9,7 +9,6 @@ import { FormControl } from '@angular/forms';
 import { HttpErrorResponse } from '@angular/common/http';
 import { mergeMap, of } from 'rxjs';
 import { SharedService } from 'src/app/shared/services/shared.service';
-import { exportToExcel } from '../../dashboard/dashboard-view/dashboard-view.component';
 
 @Component({
   selector: 'app-configuration',
