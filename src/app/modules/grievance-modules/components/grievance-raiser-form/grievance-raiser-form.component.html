@@ -57,8 +57,11 @@
                                     <mat-label>Phone number</mat-label>
                                     <input type="text" maxlength="10" matInput placeholder="Type here"
                                         formControlName="phone" required>
-                                    <mat-error *ngIf="grievanceRaiserformGroup.controls['phone'].hasError('pattern') && (grievanceRaiserformGroup.controls['phone'].dirty || grievanceRaiserformGroup.controls['phone'].touched)">
-                                        Phone number should contain 10 digits only
+                                    <mat-error *ngIf="
+                                    grievanceRaiserformGroup.controls['phone'].invalid && 
+                                    !grievanceRaiserformGroup.controls['phone'].hasError('required') &&
+                                    (grievanceRaiserformGroup.controls['phone'].dirty || grievanceRaiserformGroup.controls['phone'].touched)">
+                                        Phone number must contain 10 digits only
                                     </mat-error>
                                     <mat-error *ngIf="grievanceRaiserformGroup.controls['phone'].hasError('required')">
                                         Phone number is required
