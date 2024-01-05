@@ -33,7 +33,12 @@ export class UserProfileComponent {
       firstName: new FormControl('', Validators.required),
       lastName: new FormControl('', Validators.required),
       emailId: new FormControl('', [Validators.required, Validators.email]),
-      phoneNumber: new FormControl('', Validators.required),
+      phoneNumber: new FormControl('', [
+        Validators.required,
+        Validators.pattern(`^[0-9]*$`),
+        Validators.minLength(10),
+        Validators.maxLength(10)
+      ]),
       // role: new FormControl('', Validators.required),
       // activeStatus: new FormControl('', Validators.required)
     })

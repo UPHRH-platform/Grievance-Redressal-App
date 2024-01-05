@@ -97,9 +97,9 @@ export class CommonFilterComponent implements OnInit {
     this.isFilter = !this.isFilter;
    }
 
-  resetFilter(){
+  resetFilter(event? : any){
     this.filterForm.reset();
-    this.resetFilterValue.emit()
+    this.resetFilterValue.emit(event)
   }
 
   ngOnDestroy() {
