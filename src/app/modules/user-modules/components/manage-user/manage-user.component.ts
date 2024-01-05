@@ -84,38 +84,41 @@ export class ManageUserComponent implements OnInit {
     disableClose: true
    });
    let updatedUserData = {...event};
-   const userIndex = this.users.findIndex(user => user.id === updatedUserData.id);
+  //  const userIndex = this.users.findIndex(user => user.id === updatedUserData.id);
    dialogRef.afterClosed().subscribe(isConfirmed=>{
      if(isConfirmed) {
       updatedUserData.isActive = !event.isActive;
       const request = {
           id: event.id
       }
+      this.isDataLoading = true;
       if(status == 'activate') {
         this.userService.activateUser(request).subscribe({
           next: (res) => {
             this.getAllUsers();
           },
           error: (err) => {
-            console.log(err);
+            this.toastrService.showToastr(err, 'Error', 'error', '');
+            this.getAllUsers();
           }
         })
       }
       else {
         this.userService.deactivateUser(request).subscribe({
           next: (res) => {
-            this.users.splice(userIndex,1,updatedUserData);
+            // this.users.splice(userIndex,1,updatedUserData);
             this.getAllUsers();
          },
-         error: (err) => {  
-          console.log(err);
-            this.users.splice(userIndex,1,event);
+         error: (err) => { 
+          this.toastrService.showToastr(err, 'Error', 'error', '');
+          this.getAllUsers();
+            // this.users.splice(userIndex,1,event);
            // Handle the error here in case of login failure
          }});
         }
-        this.users.splice(userIndex,1,event);
-        this.initializeColumns();
-        this.getAllUsers();
+        // this.users.splice(userIndex,1,event);
+        // this.initializeColumns();
+        // this.getAllUsers();
     
      }
      
