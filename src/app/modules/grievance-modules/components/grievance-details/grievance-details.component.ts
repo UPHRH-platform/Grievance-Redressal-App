@@ -114,10 +114,10 @@ export class GrievanceDetailsComponent {
     const conucil: any = this.councilsList.find((council: any) => council.ticketCouncilId === ticketCouncilId);
     if (conucil && conucil.ticketDepartmentDtoList) {
       this.departmentsList = conucil.ticketDepartmentDtoList.filter((department: any) => department.status);
-      if (this.departmentsList.length === 0) {
-        this.departmentsEmpty = true;
-        this.assignGrievanceTypeForm.get('department')?.markAsTouched()
-      }
+    }
+    if (this.departmentsList.length === 0) {
+      this.departmentsEmpty = true;
+      this.assignGrievanceTypeForm.get('department')?.markAsTouched()
     }
   }
 
