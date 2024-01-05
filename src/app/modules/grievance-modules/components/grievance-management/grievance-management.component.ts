@@ -10,6 +10,7 @@ import { ToastrServiceService } from 'src/app/shared/services/toastr/toastr.serv
 import { PageEvent } from '@angular/material/paginator';
 import { FormControl, FormGroup } from '@angular/forms';
 import { SharedService } from 'src/app/shared/services/shared.service';
+import { Subscription } from 'rxjs';
 
 
 @Component({
@@ -25,7 +26,6 @@ export class GrievanceManagementComponent  {
   tabs: any[] = [];
   selectedTab:any=null;
   length: number;
-  responseLength: number;
   startDate = new Date("2020/03/03").getTime();
   endDate = new Date().getTime();
   grievanceType:any;
@@ -48,6 +48,7 @@ export class GrievanceManagementComponent  {
   userTypesList: any[] = [];
   showUserType: Boolean = true;
   noDepartments = false;
+  apiSubscription: Subscription;
   constructor( 
     private router: Router,
     private route: ActivatedRoute,
@@ -441,7 +442,9 @@ export class GrievanceManagementComponent  {
     this.departmentId = undefined;
     this.userTypeId = undefined;
     this.searchForm.reset();
-    this.getTicketsRequestObject();
+    if (event !== undefined) {
+      this.getTicketsRequestObject();
+    }
   }
 
   onClickApplyFilter(event:any){
@@ -604,7 +607,11 @@ export class GrievanceManagementComponent  {
   getAllTickets() {
     this.isDataLoading = true;
     this.length = 0;
-    this.grievanceService.getAllTickets(this.getGrievancesRequest).subscribe({
+    if (this.apiSubscription) {
+      this.apiSubscription.unsubscribe();
+      this.apiSubscription.remove;
+    }
+    this.apiSubscription = this.grievanceService.getAllTickets(this.getGrievancesRequest).subscribe({
       next: (res) => {
         this.isDataLoading = false;
         this.length = res.responseData.count;
