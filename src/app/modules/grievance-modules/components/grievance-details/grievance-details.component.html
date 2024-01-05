@@ -147,10 +147,11 @@
    
 </div> -->
 <app-breadcrumb [breadcrumbItems]="breadcrumbItems"></app-breadcrumb>
-<div class="content">
+<app-shared-skeleton-loading [isLoading]="isDataLoading"></app-shared-skeleton-loading>
+<div class="content" >
   <img src="assets/images/back-button.png" title="back"  class="back-btn" (click)="navigateToHome()"  width="30" height="30">
 
-  <div class="second-main-wrapper">
+  <div class="second-main-wrapper" *ngIf="!isDataLoading">
     <div class="user-form-container">
       <div class="user-container">
         <h2 class="user-text-heading">{{currentTabName}}</h2>
@@ -309,7 +310,7 @@
                 <span class="error">{{ fileUploadError }}</span>
               </div>
             </form>
-            <div *ngIf="((userRole === 'Grievance Nodal' || userRole == 'Nodal Officer') && currentTabName === 'Resolved')" class="resolution-class">
+            <div *ngIf="(currentTabName === 'Resolved')" class="resolution-class">
               <mat-label class="label-text">Resolution Comment (s)</mat-label>
               <div class="mt1 mb1" *ngFor="let comment of ticketDetails?.comments; let i = index"> 
                 <span class="textData">{{comment.comment}}</span>

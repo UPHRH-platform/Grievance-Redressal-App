@@ -56,6 +56,7 @@ export class GrievanceDetailsComponent {
   usersList: any[] = [];
   departmentsEmpty = false;
   usersEmpty = false;
+  isDataLoading = false
 
   constructor(private router: Router, private formBuilder: FormBuilder, private authService: AuthService,
     private grievanceServiceService: GrievanceServiceService, private route: ActivatedRoute,
@@ -268,8 +269,10 @@ export class GrievanceDetailsComponent {
 
   getTicketById() {
     this.ticketDetails = {};
+    this.isDataLoading = true;
     this.grievanceServiceService.getTicketsById(this.id).subscribe({
       next: (res) => {
+        this.isDataLoading = false;
         //console.log(res.responseData);
         this.ticketDetails = res.responseData;
           this.configService.dropDownConfig.GRIEVANCE_TYPES.map((grievance: any) => {
@@ -279,6 +282,7 @@ export class GrievanceDetailsComponent {
           })
       },
       error: (err) => {
+        this.isDataLoading = false;
         // Handle the error here in case of Api failure
         this.toastrService.showToastr(err, 'Error', 'error', '');
       }
@@ -449,12 +453,15 @@ export class GrievanceDetailsComponent {
 
   updateTicketDetails() {
     //console.log('this.ticketUpdateRequest',this.ticketUpdateRequest)
+    this.isDataLoading = true;
     this.grievanceServiceService.updateTicket(this.ticketUpdateRequest).subscribe({
       next: (res) =>{
+        this.isDataLoading = false;
         this.getTicketById();
         this.toastrService.showToastr("Ticket updated successfully!", 'Success', 'success', '');
         this.router.navigate(['/grievance/manage-tickets/'],{ queryParams: {tabName: this.currentTabName}});
       },error: (err) =>{
+        this.isDataLoading = false;
         this.toastrService.showToastr(err, 'Error', 'error', '');
       }
     });
