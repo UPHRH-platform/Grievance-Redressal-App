@@ -116,7 +116,7 @@ export class GrievanceRaiserFormComponent {
   createForm() {
     this.grievanceRaiserformGroup = this.formBuilder.group({
       name: new FormControl('', [
-        Validators.required, Validators.pattern("^[a-zA-Z_ ]*$")]),
+        Validators.required, Validators.pattern("^[a-zA-Z ]*$")]),
       email: new FormControl('', [
         Validators.required,
         Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")]),
@@ -269,8 +269,10 @@ export class GrievanceRaiserFormComponent {
   onSubmit(value: any) {
     //console.log(value)
     const {name, email, phone, userType, council, department, description } =  value;
-    const firstName= name.split(" ")[0];
-    const lastName= name.split(" ")[1];
+    const lastIndex = name.lastIndexOf(" ");
+
+    const firstName = name.substring(0, lastIndex);
+    const lastName = name.substring(lastIndex + 1);
     this.ticketDetails = {
       name,
       firstName,
