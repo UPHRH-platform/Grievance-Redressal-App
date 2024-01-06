@@ -1,24 +1,31 @@
 <div class="header-container bg-white">
     <div class="flex flex-row justify-content-between header-class">
         <div class="flex flex-column">
-            <img style="width: 17rem;" src="../../assets/images/sunbird_logo.png" alt="UPSMF logo">
+            <a routerLink="/home">
+                <img style="width: 17rem;" src="../../assets/images/sunbird_logo.png" alt="UPSMF logo">
+            </a>
         </div>
-        <div class="flex flex-column" *ngIf="showProfileNavBar">
-            <button class="action-btn" [matMenuTriggerFor]="menu">{{userName}}</button>
-             <mat-menu #menu="matMenu">
-            <button mat-menu-item claas="profile-cls" (click)="navigateToProfilePage()">
-                <mat-icon>person</mat-icon>
-                <span>Profile</span>
-            </button>
-             <button mat-menu-item claas="profile-cls" (click)="navigateToResetPasswordPage()">
-                <mat-icon>lock</mat-icon>
-                <span>Change Password</span>
-            </button>
-            <button mat-menu-item (click)="logout()">
-                <mat-icon>logout</mat-icon>
-                <span>Logout</span>
-            </button>
-</mat-menu>
+        <div class="flex">
+            <!-- <div>
+                <span>Welcome: </span>
+            </div> -->
+            <div class="flex flex-column" *ngIf="showProfileNavBar">
+                <button class="action-btn" [matMenuTriggerFor]="menu">{{userName}}</button>
+                <mat-menu #menu="matMenu">
+                <button mat-menu-item claas="profile-cls" (click)="navigateToProfilePage()">
+                    <mat-icon>person</mat-icon>
+                    <span>Profile</span>
+                </button>
+                <button mat-menu-item claas="profile-cls" (click)="navigateToResetPasswordPage()">
+                    <mat-icon>lock</mat-icon>
+                    <span>Change Password</span>
+                </button>
+                <button mat-menu-item (click)="logout()">
+                    <mat-icon>logout</mat-icon>
+                    <span>Logout</span>
+                </button>
+            </mat-menu>
+            </div>
         </div>
     </div>
 </div>
