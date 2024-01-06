@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
 import { SharedService } from 'src/app/shared/services/shared.service';
 import { mergeMap, of } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
+import { DatePipe } from '@angular/common';
 
 
 @Component({
@@ -33,11 +34,12 @@ export class DashboardViewComponent {
   councilsList: any[] = [];
   departmentsList: any[] = [];
   usersList: any[] = [];
+  councilName = 'All Councils';
   // filterDateRange = {startDate: '', endDate: ''};
   public assignGrievanceTypeForm:FormGroup;
   grievanceTypeNames: any = [];
   constructor(private dashboardService: DashboardService, private formBuilder: FormBuilder, private toastrService: ToastrServiceService,
-    private router: Router, private sharedService: SharedService
+    private router: Router, private sharedService: SharedService, private datePipe: DatePipe
     // private papa: Papa
     ) {
   }
@@ -265,9 +267,10 @@ export class DashboardViewComponent {
   getDeparmentsList(ticketCouncilId: any) {
     this.departmentsList = [];
     this.filterForm.get('department')?.reset();
-    const conucil: any = this.councilsList.find((council: any) => council.ticketCouncilId === ticketCouncilId);
-    if (conucil && conucil.ticketDepartmentDtoList) {
-      this.departmentsList = conucil.ticketDepartmentDtoList.filter((department: any) => department.status);
+    const council: any = this.councilsList.find((council: any) => council.ticketCouncilId === ticketCouncilId);
+    this.councilName = council?.ticketCouncilName;
+    if (council && council.ticketDepartmentDtoList) {
+      this.departmentsList = council.ticketDepartmentDtoList.filter((department: any) => department.status);
     }
   }
 
@@ -318,11 +321,17 @@ export class DashboardViewComponent {
       });
       this.departmentsList = [];
       this.usersList = [];
-      this.ccList = []
+      this.ccList = [];
+      this.councilName = 'All Councils'
       this.getDashboardObjectData(this.filterForm.value.startDate, this.filterForm.value.endDate);
     }
 
   downloadDetails() {
+    const filterDetails = {
+      sheetName: 'Summary',
+      downloadObject: {},
+      header: ['Type', 'Value'],
+    }
     const assignmentMatrix = {
       sheetName: 'Ticket assignment matrix',
       downloadObject: {},
@@ -338,6 +347,37 @@ export class DashboardViewComponent {
       downloadObject: {},
       headers: ['Council', 'Department', 'Total Ticket', 'Junk Ticket', 'Resolved Ticket', 'Escalated', 'Pending Ticket'],
     }
+
+    let departmentName = 'All Departments';
+    let userName = 'All users'
+    if (this.filterForm.get('department')?.value) {
+      const selectedDepartment = this.departmentsList.find((department) => department.ticketDepartmentId === this.filterForm.get('department')?.value)
+      departmentName = selectedDepartment ? selectedDepartment.ticketDepartmentName : departmentName;
+    }
+    if (this.filterForm.get('user')?.value) {
+      const selecteduser = this.usersList.find((user) => user.id === this.filterForm.get('user')?.value)
+      userName = selecteduser ? `${selecteduser.firstName} ${selecteduser.lastName}` : userName;
+    }
+    const startDate = this.datePipe.transform(this.filterForm.value.startDate, 'MM/dd/yyyy');
+    const endDate = this.datePipe.transform(this.filterForm.value.endDate, 'MM/dd/yyyy')
+    filterDetails.downloadObject = [
+      {
+        type: 'Council',
+        value: this.councilName,
+      },
+      {
+        type: 'Department',
+        value: departmentName,
+      },
+      {
+        type: 'officer name',
+        value: userName,
+      },
+      {
+        type: 'Date range',
+        value: `${startDate} - ${endDate}`,
+      }
+    ];
 
     if(this.dashboardData) {
       if(this.dashboardData.assignmentMatrix) {
@@ -423,7 +463,7 @@ export class DashboardViewComponent {
 
     const downloadObjects = {
       fileName: 'dashboard.xlsx',
-      objectsList: [assignmentMatrix, performanceIndicators, resolutionMatrix]
+      objectsList: [filterDetails, assignmentMatrix, performanceIndicators, resolutionMatrix]
     }
     exportToExcel(downloadObjects);
   }

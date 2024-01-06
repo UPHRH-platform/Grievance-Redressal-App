@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { DashboardRoutingModule } from './dashboard-routing.module';
 import { DashboardViewComponent } from './dashboard-view/dashboard-view.component';
 import { SharedModule } from '../../shared/shared.module';
@@ -18,5 +18,8 @@ import { ReactiveFormsModule } from '@angular/forms';
     MaterialModule,
     ReactiveFormsModule
   ],
+  providers: [
+    DatePipe
+  ]
 })
 export class DashboardModule { }
