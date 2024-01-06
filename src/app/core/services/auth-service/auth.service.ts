@@ -34,6 +34,14 @@ export class AuthService extends HttpService{
     return this.post(reqParam);
   }
 
+  isUserActive(username: string): Observable<ServerResponse> {
+    const reqParam: RequestParam = {
+      url: `${this.baseUrl}${this.configService.urlConFig.URLS.IS_USER_ACTIVE}${username}/status`,
+      data: {}
+    }
+    return this.get(reqParam);
+  }
+
   generateOTP(username: string): Observable<ServerResponse> {
     const reqParam: RequestParam = {
       url: this.userManagementbaseURL + this.configService.urlConFig.URLS.LOGIN_GENERATE_OTP,

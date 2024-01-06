@@ -76,6 +76,27 @@ isOtpForm:boolean = false;
       }
     });
   }
+
+  isUserActive() {
+    if(this.loginForm.value.emailId){
+      this.authService.isUserActive(this.loginForm.value.emailId).subscribe({
+        next: (res) => {
+          if (res.responseData) {
+            this.getOTP();
+          } else {
+            this.isOtpForm = false;
+            this.toastrService.showToastr('user details not found', 'Error', 'error');
+          }
+        },
+        error: (error: HttpErrorResponse) => {
+          if (error && error.error && error.error.text) {
+            this.isOtpForm = false;
+            this.toastrService.showToastr(error.error.text, 'Success', 'success', '');
+          }
+        }
+      })
+    }
+  }
   
   getOTP(){
     if(this.loginForm.value.emailId){
@@ -87,7 +108,6 @@ isOtpForm:boolean = false;
         } else {
           this.isOtpForm = true;
         }
-        // console.log(res);
       },
       error: (error: HttpErrorResponse) => {
         if (error && error.error && error.error.text) {
