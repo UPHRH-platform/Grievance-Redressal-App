@@ -46,7 +46,7 @@
                 <!-- get otp with email -->
                 <div class="login-inputs" *ngIf="isEnableOtpLogin && !isOtpForm">
                    
-                    <form class="form-section" [formGroup]="loginForm" (ngSubmit)="getOTP()">
+                    <form class="form-section" [formGroup]="loginForm" (ngSubmit)="isUserActive()">
                         <div class="first-container">
                             <h4>Email id</h4>
                             <mat-form-field appearance="outline" class="text-class">
