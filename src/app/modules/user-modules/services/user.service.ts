@@ -1,4 +1,4 @@
-import { Injectable, } from "@angular/core";
+import { EventEmitter, Injectable, } from "@angular/core";
 import { HttpClient } from '@angular/common/http';
 import { HttpService } from "src/app/core";
 import { ConfigService, ServerResponse, RequestParam } from "src/app/shared";
@@ -10,6 +10,7 @@ import { environment } from "src/environments/environment";
 export class UserService extends HttpService{
   override baseUrl: string;
   private userManagementbaseURL: string;
+  public isUserDetailsUpdated = new EventEmitter<Boolean>()
   constructor(private configService: ConfigService, http: HttpClient) {
     super(http);
     this.userManagementbaseURL = environment.usermanagementApiURL;
@@ -84,6 +85,10 @@ export class UserService extends HttpService{
       data: request
     }
     return this.post(reqParam);
+  }
+
+  userDetailsUpdated() {
+    this.isUserDetailsUpdated.emit(true);
   }
 
   // Implement methods for other roles (e.g., isGrievanceNodal(), isNodalOfficer(), isSecretary())

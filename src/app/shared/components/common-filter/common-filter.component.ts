@@ -36,7 +36,7 @@ export class CommonFilterComponent implements OnInit {
     this.filterForm = new FormGroup({
       // grievanceType: new FormControl('', Validators.required),
       council: new FormControl(this.councilId, Validators.required),
-      department: new FormControl(this.departmentId, this.isDepartmentSelect ? [] : [Validators.required]),
+      department: new FormControl(this.departmentId, [Validators.required]),
       userType: new FormControl(this.userTypeId, Validators.required),
       startDate: new FormControl(''),
       endDate:new FormControl('')
@@ -59,11 +59,16 @@ export class CommonFilterComponent implements OnInit {
   getDeparmentsList(ticketCouncilId: any) {
     this.removeValidation('userType');
     this.filterForm.get('department')?.reset();
-    if (!this.isDepartmentSelect) {
-      this.filterForm.get('department')?.setValidators(Validators.required);
-      this.filterForm.get('department')?.updateValueAndValidity();
-    }
+    // if (!this.isDepartmentSelect) {
+    //   this.filterForm.get('department')?.setValidators(Validators.required);
+    //   this.filterForm.get('department')?.updateValueAndValidity();
+    // }
     this.getDepearmentsOfCouncil.emit(ticketCouncilId);
+  }
+
+  removeDepartmentValidation() {
+    this.removeValidation('council');
+    this.removeValidation('department');
   }
 
   removeValidation(control: string) {
