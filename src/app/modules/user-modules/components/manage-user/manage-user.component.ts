@@ -160,6 +160,18 @@ export class ManageUserComponent implements OnInit {
         }
       },
       {
+        columnDef: 'councilName',
+        header: 'Council',
+        isSortable: true,
+        cell: (element: Record<string, any>) => `${element['councilName']}`
+      },
+      {
+        columnDef: 'departmentName',
+        header: 'Department',
+        isSortable: true,
+        cell: (element: Record<string, any>) => `${element['departmentName']}`
+      },
+      {
         columnDef: 'isActive',
         header: 'Account Status',
         isSortable: true,
@@ -197,6 +209,8 @@ export class ManageUserComponent implements OnInit {
           let isActive = '';
           let role = '';
           let phone = '';
+          let councilName = '-';
+          let departmentName = '-';
           if(firstName && lastName !== undefined) {
             name = `${firstName} ${' '} ${lastName}`;
           }
@@ -212,6 +226,12 @@ export class ManageUserComponent implements OnInit {
             if(attributes.hasOwnProperty('phoneNumber') && attributes.phoneNumber) {
               phone = attributes.phoneNumber
             }
+            if(attributes.councilName) {
+              councilName = attributes.councilName;
+            }
+            if (attributes.departmentName) {
+              departmentName = attributes.departmentName;
+            }
           }
           return {
             id,
@@ -220,7 +240,9 @@ export class ManageUserComponent implements OnInit {
             username,
             phone,
             isActive,
-            role
+            role,
+            councilName: councilName,
+            departmentName: departmentName
           }
         })
         this.listLength = this.users.length;
