@@ -271,8 +271,8 @@ export class GrievanceRaiserFormComponent {
     const {name, email, phone, userType, council, department, description } =  value;
     const lastIndex = name.lastIndexOf(" ");
 
-    const firstName = name.substring(0, lastIndex);
-    const lastName = name.substring(lastIndex + 1);
+    const firstName = lastIndex > 0 ? name.substring(0, lastIndex) : name;
+    const lastName = lastIndex > 0 ? name.substring(lastIndex + 1) : '';
     this.ticketDetails = {
       name,
       firstName,

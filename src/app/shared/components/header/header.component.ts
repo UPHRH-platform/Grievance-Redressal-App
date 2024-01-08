@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/core';
+import { ConfigService } from '../../services/config/config.service';
 
 @Component({
   selector: 'app-header',
@@ -12,7 +13,8 @@ export class HeaderComponent {
   showProfileNavBar = false;
   private userData: any;
   private userName: any;
- constructor(private router: Router, private authService: AuthService){
+  welcomeText: any = '';
+ constructor(private router: Router, private authService: AuthService, private configService: ConfigService){
 
  }
 
@@ -27,8 +29,11 @@ export class HeaderComponent {
  }
 
  generateUserName() {
+  const Roles = this.configService.rolesConfig.ROLES;
     const firstName = this.userData?.userRepresentation?.firstName;
     const lastName = this.userData?.userRepresentation?.lastName;
+    const role = Roles[this.userData?.userRepresentation?.attributes.Role[0]];
+    this.welcomeText = `${firstName} ${lastName} (${role})`;
     this.userName = firstName?.charAt(0).toUpperCase() + lastName.charAt(0).toUpperCase();
  }
  getToken(): string | null {

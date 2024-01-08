@@ -6,9 +6,11 @@
             </a>
         </div>
         <div class="flex">
-            <!-- <div>
-                <span>Welcome: </span>
-            </div> -->
+            <ng-container *ngIf="welcomeText">
+                <div class="flex welcomeText mr2">
+                    <span>Welcome <span class="userName">{{welcomeText}}</span> </span>
+                </div>
+            </ng-container>
             <div class="flex flex-column" *ngIf="showProfileNavBar">
                 <button class="action-btn" [matMenuTriggerFor]="menu">{{userName}}</button>
                 <mat-menu #menu="matMenu">

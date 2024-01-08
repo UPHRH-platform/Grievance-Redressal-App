@@ -257,7 +257,7 @@
               <div class="desc-content">
                 <mat-label class="label-text">Attached Document (s)</mat-label>
                 <div class="attach-docs" *ngFor="let attachment of ticketDetails?.raiserTicketAttachmentURLs">
-                  <span style="width: 23rem">{{ attachment.attachment_url }}</span>
+                  <span style="width: 23rem">{{ attachment.attachmentName }}</span>
                   <a target="_blank" class="action-buttons" href={{attachment.attachment_url}}><span>{{ "view" }}</span></a>
                 </div>
                 <div *ngIf="ticketDetails?.raiserTicketAttachmentURLs?.length === 0">-</div>
@@ -321,7 +321,7 @@
                 <div *ngFor="let attachment of ticketDetails?.assigneeTicketAttachment; let i = index" class="preview" style="width:36rem">
                   <div class="layout" style="width: 36rem;
                   overflow-wrap: anywhere;">
-                    <span style="width:30rem">{{ attachment.attachment_url }}</span>
+                    <span style="width:30rem">{{ attachment.attachmentName }}</span>
                     <div>
                       <a target="_blank" class="action-buttons" href={{attachment.attachment_url}}><span>view</span></a>
                     </div>

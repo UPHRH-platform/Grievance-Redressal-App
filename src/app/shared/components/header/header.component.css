@@ -8,6 +8,15 @@
     box-shadow: 0px 0px 0px 2px #dedede;
 }
 
+.welcomeText {
+    align-items: center;
+    font-size: 15px;
+}
+
+.userName {
+    color: #0074B6;
+}
+
 @media all and (max-width: 678px) {
     .header-class {
     margin-left: 3rem;
