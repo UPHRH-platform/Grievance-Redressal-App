@@ -10,7 +10,7 @@ import { ToastrServiceService } from 'src/app/shared/services/toastr/toastr.serv
 import { PageEvent } from '@angular/material/paginator';
 import { FormControl, FormGroup } from '@angular/forms';
 import { SharedService } from 'src/app/shared/services/shared.service';
-import { Subscription } from 'rxjs';
+import { Subscription, mergeMap, of } from 'rxjs';
 
 
 @Component({
@@ -99,10 +99,14 @@ export class GrievanceManagementComponent  {
 
   getCouncils() {
     this.sharedService.getCouncils()
+      .pipe((mergeMap((response) => {
+        const counciles = response.responseData.filter((council: any) => council.ticketDepartmentDtoList);
+        return of(counciles)
+      })))
       .subscribe({
         next: (response) => {
           if (response) {
-            this.councilsList = response.responseData;
+            this.councilsList = response;
           }
         },
         error: (error) => {
