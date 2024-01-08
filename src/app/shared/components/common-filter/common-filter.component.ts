@@ -36,7 +36,8 @@ export class CommonFilterComponent implements OnInit {
     this.filterForm = new FormGroup({
       // grievanceType: new FormControl('', Validators.required),
       council: new FormControl(this.councilId, Validators.required),
-      department: new FormControl(this.departmentId, [Validators.required]),
+      // department: new FormControl(this.departmentId, this.isDepartmentSelect ? [] : [Validators.required]),
+      department : new FormControl(this.departmentId),
       userType: new FormControl(this.userTypeId, Validators.required),
       startDate: new FormControl(''),
       endDate:new FormControl('')
