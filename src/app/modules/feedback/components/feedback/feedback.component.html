@@ -16,11 +16,11 @@
             <form [formGroup]="feedbackForm"
                 (ngSubmit)="onSubmit()">
                 <div class="rating-form-container">
-                    <star-rating [starType]="'svg'" (ratingChange)="updateRating($event)" size="large"></star-rating>
+                    <star-rating [disabled]="disableSubmitButton" [starType]="'svg'" (ratingChange)="updateRating($event)" size="large"></star-rating>
                 </div>
-                <mat-form-field class="mt2 w-100">
+                <mat-form-field class="mt2 w-100" [ngClass]="disableSubmitButton ? 'disable' : ''">
                     <mat-label>Comments</mat-label>
-                    <textarea formControlName="comment" matInput cdkTextareaAutosize
+                    <textarea formControlName="comment" matInput cdkTextareaAutosize 
                       #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="4" cdkAutosizeMaxRows="4"></textarea>
                   </mat-form-field>
                   <div class="w-100">
