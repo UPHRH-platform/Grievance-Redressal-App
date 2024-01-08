@@ -330,7 +330,7 @@ export class DashboardViewComponent {
     const filterDetails = {
       sheetName: 'Summary',
       downloadObject: {},
-      header: ['Type', 'Value'],
+      headers: ['Type', 'Value'],
     }
     const assignmentMatrix = {
       sheetName: 'Ticket assignment matrix',

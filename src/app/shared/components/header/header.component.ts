@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/core';
 import { ConfigService } from '../../services/config/config.service';
+import { UserService } from 'src/app/modules/user-modules/services/user.service';
 
 @Component({
   selector: 'app-header',
@@ -14,7 +15,12 @@ export class HeaderComponent {
   private userData: any;
   private userName: any;
   welcomeText: any = '';
- constructor(private router: Router, private authService: AuthService, private configService: ConfigService){
+ constructor(
+  private router: Router, 
+  private authService: AuthService, 
+  private configService: ConfigService,
+  private userService: UserService,
+  ){
 
  }
 
@@ -25,13 +31,24 @@ export class HeaderComponent {
     this.userData = this.authService.getUserData();
     //console.log(this.userData);
     this.generateUserName();
+    this.subscribeUserUpdate();
   }
  }
 
+ subscribeUserUpdate() {
+  this.userService.isUserDetailsUpdated.subscribe((event) => {
+    if(event) {
+      this.generateUserName();
+    }
+  })
+ }
+
  generateUserName() {
+  const userData = localStorage.getItem('userDetails');
+  const userDetails = userData ? JSON.parse(userData) : this.userData?.userRepresentation;
   const Roles = this.configService.rolesConfig.ROLES;
-    const firstName = this.userData?.userRepresentation?.firstName;
-    const lastName = this.userData?.userRepresentation?.lastName;
+    const firstName =  userDetails?.firstName;
+    const lastName = userDetails?.lastName;
     const role = Roles[this.userData?.userRepresentation?.attributes.Role[0]];
     this.welcomeText = `${firstName} ${lastName} (${role})`;
     this.userName = firstName?.charAt(0).toUpperCase() + lastName.charAt(0).toUpperCase();

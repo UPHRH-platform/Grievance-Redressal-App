@@ -56,7 +56,7 @@ export class UserProfileComponent {
     //Implement logic to fecth user deatils and bind them in UI
   }
 
-  getUserDetails() {
+  getUserDetails(isUpdated = false) {
     const Roles = this.configService.rolesConfig.ROLES;
     this.userService.getUserDetails(this.userId).subscribe({
       next: (res) => {
@@ -65,6 +65,9 @@ export class UserProfileComponent {
           this.userRole = Roles[this.userDetails?.attributes.role[0]];
           this.setUserFormData();
           localStorage.setItem('userDetails', JSON.stringify(res.responseData));
+          if (isUpdated) {
+            this.userService.userDetailsUpdated()
+          }
         }
       },
       error: (err)=> {
@@ -159,7 +162,7 @@ export class UserProfileComponent {
         if(err.status === 200) {
           this.toastrService.showToastr("User updated successfully!", 'Success', 'success', '');
           this.isEditData = false;
-          this.getUserDetails();
+          this.getUserDetails(true);
         }
         else {
           this.toastrService.showToastr('Something went wrong. Please try again', 'Error', 'error', '');
