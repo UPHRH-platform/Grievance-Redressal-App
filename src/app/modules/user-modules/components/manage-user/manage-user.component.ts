@@ -10,6 +10,7 @@ import { getRole } from 'src/app/shared';
 import { ToastrServiceService } from 'src/app/shared/services/toastr/toastr.service';
 import { PageEvent } from '@angular/material/paginator';
 import { FormControl, FormGroup } from '@angular/forms';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-manage-user',
@@ -36,7 +37,8 @@ export class ManageUserComponent implements OnInit {
     private router: Router,
     private dialog: MatDialog,
     private userService: UserService,
-    private toastrService: ToastrServiceService 
+    private toastrService: ToastrServiceService,
+    private datePipe: DatePipe
   ){
     this.searchForm =  new FormGroup({
       searchData:  new FormControl('')
@@ -134,6 +136,16 @@ export class ManageUserComponent implements OnInit {
       //   cell: (element: Record<string, any>) => `${element['Id']}`
       // },
       {
+        columnDef: 'id',
+        header: 'S.No',
+        isSortable: true,
+        colType: 'SerNo',
+        cell: (element: Record<string, any>) => ``,
+        cellStyle: {
+          'width': '50px'
+        }
+      },
+      {
         columnDef: 'name',
         header: 'Full name',
         isSortable: true,
@@ -172,6 +184,12 @@ export class ManageUserComponent implements OnInit {
         cell: (element: Record<string, any>) => `${element['departmentName']}`
       },
       {
+        columnDef: 'createdDate',
+        header: 'Created Date',
+        isSortable: true,
+        cell: (element: Record<string, any>) => `${element['createdDate']}`
+      },
+      {
         columnDef: 'isActive',
         header: 'Account Status',
         isSortable: true,
@@ -204,18 +222,22 @@ export class ManageUserComponent implements OnInit {
         this.users = res.responseData.result.map((user:any) => {
           //console.log("Response =>", res.responseData.result);
           this.length = res.responseData.count;
-          const { username, firstName, lastName, enabled, email, attributes, id, keycloakId} = user;
+          const { username, firstName, lastName, enabled, email, attributes, id, keycloakId, createdDate} = user;
           let name = '';
           let isActive = '';
           let role = '';
           let phone = '';
-          let councilName = '-';
-          let departmentName = '-';
+          let councilName = 'NA';
+          let departmentName = 'NA';
+          let formatedDate = '';
           if(firstName && lastName !== undefined) {
             name = `${firstName} ${' '} ${lastName}`;
           }
           if(enabled) {
             isActive = enabled == true? 'Active': 'Inactive';
+          }
+          if (createdDate) {
+            formatedDate = this.datePipe.transform(createdDate, 'MM/dd/yyyy')?.toString() + '';
           }
           if(attributes !== undefined) {
             if(attributes.hasOwnProperty('Role') && attributes.Role[0]) {
@@ -242,7 +264,8 @@ export class ManageUserComponent implements OnInit {
             isActive,
             role,
             councilName: councilName,
-            departmentName: departmentName
+            departmentName: departmentName,
+            createdDate: formatedDate
           }
         })
         this.listLength = this.users.length;
