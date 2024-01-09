@@ -104,7 +104,8 @@
     position: relative;
 }
 .desc-content{
-    width: 41%;
+    /* width: 41%; */
+    width: 37rem;
     word-break: break-all;
 }
 
@@ -142,7 +143,7 @@
 .attach-docs {
     display: flex;
     justify-content: space-between;
-    padding: 2%;
+    padding: 10px;
     background-color: #d3d3d361;
     margin-top: 1%;
     border-radius: 4%;
@@ -154,9 +155,11 @@
   }
 
 .preview {
-    background-color: rgba(0,0,0,0.04);
-    padding: 8px;
+    /* background-color: rgba(0,0,0,0.04); */
+    background-color: #d3d3d361;
+    padding: 10px;
     margin-bottom: 5px;
+    border-radius: 4%;
 }
 .action-buttons {
     color: rgb(4, 93, 173);
