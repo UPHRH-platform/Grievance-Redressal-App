@@ -38,8 +38,14 @@ export class ConfigurationComponent implements OnInit {
   councilsListForFilter: any = [];
   departmentsListForFilter: any = [];
   apiSubscribe: any;
-  departmentToFilter = '';
-  councilIdToFilter = '';
+  departmentToFilter = {
+    ticketDepartmentId: '',
+    ticketDepartmentName: ''
+  };
+  councilIdToFilter = {
+    ticketCouncilId: '',
+    ticketCouncilName: ''
+  };
 
   constructor(
     private router: Router,
@@ -66,8 +72,14 @@ export class ConfigurationComponent implements OnInit {
     this.configControl.reset();
     this.searchControl.reset();
     this.councilControl.reset();
-    this.councilIdToFilter = '';
-    this.departmentToFilter = '';
+    this.councilIdToFilter = {
+      ticketCouncilId: '',
+      ticketCouncilName: ''
+    };
+    this.departmentToFilter = {
+      ticketDepartmentId: '',
+      ticketDepartmentName: ''
+    };
     this.getTableColumns();
   }
 
@@ -142,15 +154,30 @@ export class ConfigurationComponent implements OnInit {
         break;
       }
       case 'department': {
-        if (searchterms) {
-          const formBody = {
-            "searchKeyword": searchterms.department ? searchterms.department : '',
-            "councilId": searchterms.council
+        if (searchterms || this.councilIdToFilter.ticketCouncilId || this.departmentToFilter.ticketDepartmentId) {
+          if (searchterms.department && searchterms.department.ticketDepartmentId) {
+            this.searchControl.reset();
+          } else if (typeof(searchterms) === 'string') {
+            this.departmentToFilter = {
+              ticketDepartmentId: '',
+              ticketDepartmentName: ''
+            };
           }
-          this.councilIdToFilter = formBody.councilId;
-          this.departmentToFilter = formBody.searchKeyword;
-          clearTimeout(this.timeoutId) 
-          this.getDepartmentsBySearch(formBody)
+          const formBody = {
+            "searchKeyword": typeof(searchterms) === 'string' ? searchterms : this.searchControl.value,
+            "councilId": searchterms.council ? searchterms.council.ticketCouncilId : this.councilIdToFilter.ticketCouncilId,
+            "departmentId": searchterms.department ? searchterms.department.ticketDepartmentId : this.departmentToFilter.ticketDepartmentId
+          }
+          this.councilIdToFilter = searchterms.council ? searchterms.council : this.councilIdToFilter;
+          this.departmentToFilter = searchterms.department ? searchterms.department : this.departmentToFilter;
+          if (typeof(searchterms) === 'string') {
+            this.timeoutId= setTimeout(() => {
+              this.getDepartmentsBySearch(formBody);
+            },1000); 
+          } else {
+            clearTimeout(this.timeoutId) ;
+            this.getDepartmentsBySearch(formBody);
+          }
         } else {
           clearTimeout(this.timeoutId) 
           this.getDepartments();
@@ -162,10 +189,16 @@ export class ConfigurationComponent implements OnInit {
 
   resetFilterValueData(event:any){
     this.tableData = [];
-    this.councilIdToFilter = '';
-    this.departmentToFilter = '';
+    this.councilIdToFilter = {
+      ticketCouncilId: '',
+      ticketCouncilName: ''
+    };
+    this.departmentToFilter = {
+      ticketDepartmentId: '',
+      ticketDepartmentName: ''
+    };
     clearTimeout(this.timeoutId) 
-    this.getDepartments();
+    this.applyFilter(this.searchControl.value);
   }
 
   submit() {
@@ -188,6 +221,16 @@ export class ConfigurationComponent implements OnInit {
   downloadDetails() {
   let fileName = '.xlsx';
   const report: any = {};
+  const filterDetails = {
+    sheetName: 'Summary',
+    downloadObject: [
+      {
+        type: 'Search Key',
+        value: this.searchControl.value ? this.searchControl.value : ''
+      }
+    ],
+    headers: ['Type', 'Value'],
+  }
     switch(this.selectedTab.id) {
       case 'council': {
         fileName = 'councilReport' + fileName;
@@ -220,6 +263,14 @@ export class ConfigurationComponent implements OnInit {
         break;
       }
       case 'department': {
+        filterDetails.downloadObject.push({
+          type: 'Council',
+          value: this.councilIdToFilter.ticketCouncilName
+        })
+        filterDetails.downloadObject.push({
+          type: 'Department',
+          value: this.departmentToFilter.ticketDepartmentName
+        })
         fileName = 'deparmentsReport' + fileName;
         report['sheetName'] = 'Departments Report';
         report['headers'] = ['S.No', 'Council', 'Department', 'Status'];
@@ -256,7 +307,10 @@ export class ConfigurationComponent implements OnInit {
 
     const downloadObjects = {
       fileName: fileName,
-      objectsList: [report]
+      objectsList: [filterDetails, report]
+    };
+    if (this.selectedTab.id === 'escalation_time') {
+      downloadObjects.objectsList = [report];
     }
     exportToExcel(downloadObjects);
   }
