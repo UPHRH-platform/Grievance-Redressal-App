@@ -7,8 +7,13 @@
         </div>
         <div class="flex">
             <ng-container *ngIf="welcomeText">
-                <div class="flex welcomeText mr2">
-                    <span>Welcome <span class="userName">{{welcomeText}}</span> </span>
+                <div class="welcomeText mr2">
+                    <div>
+                        <span>Welcome! <span class="userName">{{welcomeText}}</span> </span>
+                    </div>
+                    <div class="flex justify-end">
+                        <span>Role:<span class="userName"> {{role}}</span></span>
+                    </div>
                 </div>
             </ng-container>
             <div class="flex flex-column" *ngIf="showProfileNavBar">

@@ -64,7 +64,7 @@ export class UserProfileComponent {
         if(this.userDetails) {
           this.userRole = Roles[this.userDetails?.attributes.role[0]];
           this.setUserFormData();
-          localStorage.setItem('userDetails', JSON.stringify(res.responseData));
+          localStorage.setItem(this.authService.USER_DETAILS, JSON.stringify(res.responseData));
           if (isUpdated) {
             this.userService.userDetailsUpdated()
           }

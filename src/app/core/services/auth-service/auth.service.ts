@@ -13,6 +13,7 @@ export class AuthService extends HttpService{
   private readonly TOKEN_KEY = 'access_token';
   private readonly USER_DATA = "user_data";
   private readonly ALL_ROLES = "all_roles";
+  public readonly USER_DETAILS = "userDetails"
 
   constructor(http: HttpClient, private configService: ConfigService,) {
     super(http);
@@ -163,6 +164,7 @@ export class AuthService extends HttpService{
     localStorage.removeItem(this.TOKEN_KEY);
     localStorage.removeItem(this.USER_DATA);
     localStorage.removeItem(this.ALL_ROLES);
+    localStorage.removeItem(this.USER_DETAILS);
   }
 
   isLoggedIn(): boolean{
