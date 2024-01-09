@@ -8,29 +8,7 @@
             <mat-tab-group (selectedTabChange)="onTabChange($event)" mat-align-tabs="start">
                 <mat-tab *ngFor="let tab of tabs">
                     <ng-template mat-tab-label>{{ tab.name }}</ng-template>
-                    <div class="flex justify-between items-center mt2 mb3">
-                        <div class="flex items-center ">
-                            <ng-container *ngIf="selectedTab.id === 'council' || selectedTab.id === 'user_type'">
-                                <mat-form-field class="search">
-                                    <input matInput appearance="standard" [formControl]="searchControl"
-                                        (keyup)="applyFilter($event.target.value)" placeholder="Search" />
-                                </mat-form-field>
-                            </ng-container>
-                            <ng-container *ngIf="selectedTab.id === 'department'">
-                                <app-common-filter *ngIf="!isDataLoading" 
-                                [showUserType]="false"
-                                [councilsList]="councilsListForFilter"
-                                [departmentsList]="departmentsListForFilter"
-                                [isDepartmentSelect]="false"
-                                [councilId]="councilIdToFilter"
-                                [departmentId]="departmentToFilter"
-                                (getDepearmentsOfCouncil)="getDeparmentsList($event)"
-                                (filteredvalue)="applyFilter($event)" 
-                                (resetFilterValue)="resetFilterValueData()"
-                                ></app-common-filter>
-                            </ng-container>
-                        </div>
-
+                    <div class="flex justify-end items-center mt2 mb3">
                         <div class="flex justify-end items-center">
                             <ng-container *ngIf="selectedTab.id !== 'escalation_time'">
                                 <div class="flex items-center mr2">
@@ -57,11 +35,34 @@
                                         Add
                                     </button>
                                 </ng-container>
-                                <button mat-raised-button color="primary" class="ml1" (click)="downloadDetails()">
-                                    Download
-                                </button>
                             </div>
                         </div>
+                    </div>
+                    <div class="flex mt2 mb3 justify-between items-baseline">
+                        <div class="flex items-center ">
+                            <ng-container *ngIf="selectedTab.id !== 'escalation_time'">
+                                <mat-form-field class="search mr3">
+                                    <input matInput appearance="standard" [formControl]="searchControl"
+                                        (keyup)="applyFilter($event.target.value)" placeholder="Search" />
+                                </mat-form-field>
+                            </ng-container>
+                            <ng-container *ngIf="selectedTab.id === 'department'">
+                                <app-common-filter *ngIf="!isDataLoading" 
+                                [showUserType]="false"
+                                [councilsList]="councilsListForFilter"
+                                [departmentsList]="departmentsListForFilter"
+                                [isManagement]="true"
+                                [councilId]="councilIdToFilter.ticketCouncilId"
+                                [departmentId]="departmentToFilter.ticketDepartmentId"
+                                (getDepearmentsOfCouncil)="getDeparmentsList($event)"
+                                (filteredvalue)="applyFilter($event)" 
+                                (resetFilterValue)="resetFilterValueData()"
+                                ></app-common-filter>
+                            </ng-container>
+                        </div>
+                        <button mat-raised-button color="primary" class="ml1" (click)="downloadDetails()">
+                            Download
+                        </button>
                     </div>
                     <app-shared-skeleton-loading [isLoading]="isDataLoading">
                     </app-shared-skeleton-loading>

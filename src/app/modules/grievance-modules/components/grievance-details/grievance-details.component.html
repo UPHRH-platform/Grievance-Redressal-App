@@ -313,7 +313,7 @@
               </div>
               <div class="mt2">
               <mat-label class="label-text">Resolution Attachments (s)</mat-label>
-              <mat-card-content *ngIf="ticketDetails?.assigneeTicketAttachment?.length > 0">
+              <mat-card-content style = "padding-left: 0px;" *ngIf="ticketDetails?.assigneeTicketAttachment?.length > 0">
                 <div *ngFor="let attachment of ticketDetails?.assigneeTicketAttachment; let i = index" class="preview" style="width:36rem">
                   <div class="layout" style="width: 36rem;
                   overflow-wrap: anywhere;">

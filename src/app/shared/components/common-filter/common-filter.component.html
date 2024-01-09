@@ -23,7 +23,7 @@
                                 </mat-form-field>
                             </div>
                             <div class="first-container council-control">
-                                <ng-container *ngIf="isDepartmentSelect; else departmentText">
+                                <!-- <ng-container *ngIf="!isManagement; else departmentText"> -->
                                     <mat-form-field appearance="outline">
                                         <mat-label>Department</mat-label>
                                         <mat-select formControlName="department">
@@ -37,13 +37,13 @@
                                             </span>
                                         </ng-container>
                                     </mat-form-field>
-                                </ng-container>
+                                <!-- </ng-container>
                                 <ng-template #departmentText>
                                     <mat-form-field class="search">
                                         <mat-label>Department</mat-label>
                                         <input matInput appearance="standard" formControlName="department" placeholder="Department" />
                                     </mat-form-field>
-                                </ng-template>
+                                </ng-template> -->
                             </div>
                         </ng-container>
                         <ng-template #userType>
@@ -59,7 +59,7 @@
                             </div>
                         </ng-template>
 
-                        <ng-container *ngIf="isDepartmentSelect">
+                        <ng-container *ngIf="!isManagement">
                             <div class="first-container date-class">
                                 <mat-form-field>
                                     <mat-label>Enter a date range</mat-label>

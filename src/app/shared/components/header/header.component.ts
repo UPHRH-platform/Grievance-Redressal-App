@@ -13,8 +13,9 @@ export class HeaderComponent {
   private readonly TOKEN_KEY = 'access_token';
   showProfileNavBar = false;
   private userData: any;
-  private userName: any;
+  public userName: any;
   welcomeText: any = '';
+  role: string = '';
  constructor(
   private router: Router, 
   private authService: AuthService, 
@@ -44,13 +45,14 @@ export class HeaderComponent {
  }
 
  generateUserName() {
-  const userData = localStorage.getItem('userDetails');
+  const userData = localStorage.getItem(this.authService.USER_DETAILS);
   const userDetails = userData ? JSON.parse(userData) : this.userData?.userRepresentation;
   const Roles = this.configService.rolesConfig.ROLES;
     const firstName =  userDetails?.firstName;
     const lastName = userDetails?.lastName;
     const role = Roles[this.userData?.userRepresentation?.attributes.Role[0]];
-    this.welcomeText = `${firstName} ${lastName} (${role})`;
+    this.welcomeText = `${firstName} ${lastName}`;
+    this.role = role;
     this.userName = firstName?.charAt(0).toUpperCase() + lastName.charAt(0).toUpperCase();
  }
  getToken(): string | null {

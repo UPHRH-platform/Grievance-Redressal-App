@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 
 import { UserModulesRoutingModule } from './user-modules-routing.module';
 import { ManageUserComponent } from './components/manage-user/manage-user.component';
@@ -24,6 +24,9 @@ import { UserService } from './services/user.service';
     CoreModule,
     ReactiveFormsModule,
   ],
-  providers: [UserService]
+  providers: [
+    UserService,
+    DatePipe
+  ]
 })
 export class UserModulesModule { }

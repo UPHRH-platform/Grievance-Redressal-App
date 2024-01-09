@@ -16,7 +16,7 @@ export class CommonFilterComponent implements OnInit {
   @Input() councilsList: any[] = [];
   @Input() departmentsList: any[] = [];
   @Input() userTypesList: any[] = [];
-  @Input() isDepartmentSelect: Boolean = true;
+  @Input() isManagement: Boolean = false;
   @Input() councilId: string = '';
   @Input() departmentId: string = '';
   @Input() userTypeId: string = '';
@@ -36,7 +36,7 @@ export class CommonFilterComponent implements OnInit {
     this.filterForm = new FormGroup({
       // grievanceType: new FormControl('', Validators.required),
       council: new FormControl(this.councilId, Validators.required),
-      // department: new FormControl(this.departmentId, this.isDepartmentSelect ? [] : [Validators.required]),
+      // department: new FormControl(this.departmentId, this.isManagement ? [] : [Validators.required]),
       department : new FormControl(this.departmentId),
       userType: new FormControl(this.userTypeId, Validators.required),
       startDate: new FormControl(''),
@@ -60,7 +60,7 @@ export class CommonFilterComponent implements OnInit {
   getDeparmentsList(ticketCouncilId: any) {
     this.removeValidation('userType');
     this.filterForm.get('department')?.reset();
-    // if (!this.isDepartmentSelect) {
+    // if (!this.isManagement) {
     //   this.filterForm.get('department')?.setValidators(Validators.required);
     //   this.filterForm.get('department')?.updateValueAndValidity();
     // }
@@ -99,7 +99,15 @@ export class CommonFilterComponent implements OnInit {
   }
 
   ApplyFilter(value:any){
-    this.filteredvalue.emit(value)
+    if (this.isManagement) {
+      const filterForm = {
+        council: this.councilsList.find((council) => council.ticketCouncilId === value.council),
+        department: this.departmentsList.find((department) => department.ticketDepartmentId === value.department)
+      }
+      this.filteredvalue.emit(filterForm);
+    } else {
+      this.filteredvalue.emit(value);
+    }
     this.isFilter = !this.isFilter;
    }
 
