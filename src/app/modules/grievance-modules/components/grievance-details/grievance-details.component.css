@@ -136,6 +136,13 @@
     margin-top: 2%;
     word-wrap: break-word;
 }
+.resolutionComments {
+    font-size: 16px;
+    font-weight: 400;
+}
+.FeedbackRating {
+    margin-top: 16px;
+}
 .resolution-class {
     margin-top: 20px;
 }

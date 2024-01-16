@@ -9,7 +9,8 @@
             "GET_ALL_TICKETS": "/search/searchTickets",
             "CREATE_TICKET":"/ticket/save",
             "UPDATE_TICKET":"/ticket/update",
-            "GET_TICKET_BY_ID":"/ticket/info?id="
+            "GET_TICKET_BY_ID":"/ticket/info?id=",
+            "GET_FEED_BACK_BY_TICKET_ID": "/feedback/id?id="
         },
         "USER": {
             "CREATE_USER": "/user/create-user",

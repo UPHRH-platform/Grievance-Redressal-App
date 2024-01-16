@@ -61,6 +61,14 @@ export class GrievanceServiceService extends HttpService {
     return this.get(reqParam);
   }
 
+  getFeedbackDetailsById(id: string): Observable<ServerResponse> {
+    const reqParam: RequestParam = {
+      url: this.baseUrl + `${this.configService.urlConFig.URLS.GRIEVANCE_TICKETS.GET_FEED_BACK_BY_TICKET_ID}${id}`,
+      data: {}
+    }
+    return this.post(reqParam);
+  }
+
   updateTicket(request:object): Observable<ServerResponse> {
     //console.log(request);
       const reqParam: RequestParam = {
