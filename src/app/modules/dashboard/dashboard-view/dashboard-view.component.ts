@@ -266,7 +266,9 @@ export class DashboardViewComponent {
 
   getDeparmentsList(ticketCouncilId: any) {
     this.departmentsList = [];
+    this.usersList = [];
     this.filterForm.get('department')?.reset();
+    this.filterForm.get('user')?.reset();
     const council: any = this.councilsList.find((council: any) => council.ticketCouncilId === ticketCouncilId);
     this.councilName = council?.ticketCouncilName;
     if (council && council.ticketDepartmentDtoList) {
@@ -277,6 +279,8 @@ export class DashboardViewComponent {
   getUsers() {
     if (this.filterForm.get('council')?.value && this.filterForm.get('department')?.value) {
       const allUsers = true;
+      this.usersList = [];
+      this.filterForm.get('user')?.reset();
       this.sharedService.getUsersByCouncilDetapartmen(this.filterForm.get('council')?.value, this.filterForm.get('department')?.value, allUsers)
       .subscribe({
         next: (response: any) => {

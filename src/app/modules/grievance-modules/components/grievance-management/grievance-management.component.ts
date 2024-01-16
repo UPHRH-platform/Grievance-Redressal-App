@@ -96,7 +96,6 @@ export class GrievanceManagementComponent  {
     }
   }
 
-
   getCouncils() {
     this.sharedService.getCouncils()
       .pipe((mergeMap((response) => {
@@ -155,6 +154,13 @@ export class GrievanceManagementComponent  {
         this.tabs = Tabs['Grievance Nodal'];
         break;
     }
+    //To get count on tab header
+    this.tabs.forEach((tab: any) => {
+      const getCount = true;
+      tab['count'] = '-';
+      this.getTicketsRequestObject(getCount, tab.name);
+    })
+    // end
     if(!!this.selectedTabName) {
       this.selectedTab = this.tabs.find(tab => tab.name === this.selectedTabName);
       //console.log("inside initializeTabs", this.selectedTab);
@@ -470,7 +476,7 @@ export class GrievanceManagementComponent  {
     this.router.navigate(['/grievance/manage-tickets/'+ id],{ queryParams: {tabName:this.selectedTab.name}});
   }
 
-  getTicketsRequestObject() {
+  getTicketsRequestObject(getCount = false, tabName: string = '') {
     let userData: any;
     userData = localStorage.getItem('userDetails');
     if(userData !== undefined) {
@@ -490,17 +496,18 @@ export class GrievanceManagementComponent  {
        filter: {
        },
        date:{to: this.endDate, from:this.startDate},
-      "page": this.pageIndex, // does not work currently
-      "size": this.pageSize, // does not work currently
+      "page": this.pageIndex,
+      "size": getCount ? 0 : this.pageSize,
       "sort":{
            [this.sortHeader]: this.direction
       },
     }
-    if(this.selectedTab.name === 'Junk') {
+    const selectedTabName = tabName === '' ? this.selectedTab.name : tabName
+    if(selectedTabName === 'Junk') {
       this.getGrievancesRequest['sort']['updatedDateTS'] = this.direction
     }
     const Roles = this.configService.rolesConfig.ROLES;
-    switch(this.selectedTab.name) {
+    switch(selectedTabName) {
       case 'Pending': 
         this.getGrievancesRequest = {
           ...this.getGrievancesRequest,
@@ -604,36 +611,54 @@ export class GrievanceManagementComponent  {
     this.getGrievancesRequest.filter['ticketCouncilId'] = this.councilId ? this.councilId : undefined;
     this.getGrievancesRequest.filter['ticketDepartmentId'] = this.departmentId ? this.departmentId : undefined;
     this.getGrievancesRequest.filter['ticketUserTypeId'] = this.userTypeId ? this.userTypeId : undefined;
-    this.getAllTickets();
+    this.getAllTickets(getCount, tabName);
   }
 
   /** integration */
-  getAllTickets() {
+  getAllTickets(getCount = false, tabName = '') {
     this.isDataLoading = true;
     this.length = 0;
-    if (this.apiSubscription) {
+    if (this.apiSubscription && !getCount) {
       this.apiSubscription.unsubscribe();
       this.apiSubscription.remove;
     }
     this.apiSubscription = this.grievanceService.getAllTickets(this.getGrievancesRequest).subscribe({
       next: (res) => {
-        this.isDataLoading = false;
-        this.length = res.responseData.count;
-        this.grievances = res.responseData.results;
-        // if(this.grievances.length > 0) {
-        //   this.grievances.map((obj: any) => {
-        //     this.grievancesTypes.map((grievanceType, index) => {
-        //       if(obj.assignedToId == grievanceType.id) {
-        //         obj.assignedTo = grievanceType.name;
-        //       }
-        //     })
-        //   })
-        // }
+        if (getCount) {
+          this.tabs.filter(tab => {
+            if (tab.name === tabName) {
+              tab['count'] = res.responseData.count;
+            }
+          });
+        } else {
+          this.isDataLoading = false;
+          this.length = res.responseData.count;
+          this.grievances = res.responseData.results;
+          this.tabs.filter(tab => {
+            if (tab.name === this.selectedTab.name) {
+              tab['count'] = res.responseData.count;
+            }
+          });
+          // if(this.grievances.length > 0) {
+          //   this.grievances.map((obj: any) => {
+          //     this.grievancesTypes.map((grievanceType, index) => {
+          //       if(obj.assignedToId == grievanceType.id) {
+          //         obj.assignedTo = grievanceType.name;
+          //       }
+          //     })
+          //   })
+          // }
+        }
       },
       error: (err) => {
         // Handle the error here in case of Api failure
         this.toastrService.showToastr('Something went wrong. Please try again', 'Error', 'error', '');
         this.isDataLoading = false;
+        this.tabs.filter(tab => {
+          if (tab.name === tabName) {
+            tab['count'] = 0;
+          }
+        });
       }
     })
     
