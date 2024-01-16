@@ -31,7 +31,7 @@
                                                 <mat-option [value]="department.ticketDepartmentId">{{department.ticketDepartmentName}}</mat-option>
                                             </ng-container>
                                         </mat-select>
-                                        <ng-container *ngIf="noDepartments">
+                                        <ng-container *ngIf="departmentsList.length === 0 && filterForm.get('council').value">
                                             <span class="errorMessage">
                                                 There are no departments
                                             </span>

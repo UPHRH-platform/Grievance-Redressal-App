@@ -5,7 +5,7 @@
     <h3>Ticket Management</h3>
     <mat-tab-group (selectedTabChange)="onTabChange($event)" mat-align-tabs="start" [selectedIndex]="activeTabIndex">
         <mat-tab *ngFor="let tab of tabs">
-            <ng-template mat-tab-label>{{ tab.name }} ({{tab.name === this.selectedTabName ? length : '-'}})</ng-template>
+            <ng-template mat-tab-label>{{ tab.name }} ({{tab.count}})</ng-template>
             <app-shared-skeleton-loading [isLoading]="isDataLoading">
             </app-shared-skeleton-loading>
             <div style="display: flex; flex-direction: row;" *ngIf="!isDataLoading">

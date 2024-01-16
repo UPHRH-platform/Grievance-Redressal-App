@@ -171,6 +171,7 @@ export class ConfigurationComponent implements OnInit {
           this.councilIdToFilter = searchterms.council ? searchterms.council : this.councilIdToFilter;
           this.departmentToFilter = searchterms.department ? searchterms.department : this.departmentToFilter;
           if (typeof(searchterms) === 'string') {
+            clearTimeout(this.timeoutId) 
             this.timeoutId= setTimeout(() => {
               this.getDepartmentsBySearch(formBody);
             },1000); 
@@ -202,6 +203,15 @@ export class ConfigurationComponent implements OnInit {
   }
 
   submit() {
+    this.searchControl.reset();
+    this.councilIdToFilter = {
+      ticketCouncilId: '',
+      ticketCouncilName: ''
+    };
+    this.departmentToFilter = {
+      ticketDepartmentId: '',
+      ticketDepartmentName: ''
+    };
     switch(this.selectedTab.id) {
       case 'council': {
         this.addNewCouncils();
@@ -219,18 +229,18 @@ export class ConfigurationComponent implements OnInit {
   }
 
   downloadDetails() {
-  let fileName = '.xlsx';
-  const report: any = {};
-  const filterDetails = {
-    sheetName: 'Summary',
-    downloadObject: [
-      {
-        type: 'Search Key',
-        value: this.searchControl.value ? this.searchControl.value : ''
-      }
-    ],
-    headers: ['Type', 'Value'],
-  }
+    let fileName = '.xlsx';
+    const report: any = {};
+    const filterDetails = {
+      sheetName: 'Summary',
+      downloadObject: [
+        {
+          type: 'Search Key',
+          value: this.searchControl.value ? this.searchControl.value : ''
+        }
+      ],
+      headers: ['Type', 'Value'],
+    }
     switch(this.selectedTab.id) {
       case 'council': {
         fileName = 'councilReport' + fileName;
@@ -436,13 +446,27 @@ export class ConfigurationComponent implements OnInit {
       this.configurationSvc.updateCouncilsStatus(formBody).subscribe({
         next: (response: any) => {
           if (response) {
-            this.getCouncils();
+            if (this.searchControl.value) {
+              const formBody = {
+                "searchKeyword": this.searchControl.value
+              }
+              this.getCouncilsBySearch(formBody)
+            } else {
+              this.getCouncils();
+            }
           }
         },
         error: (error: HttpErrorResponse) => {
           const errorMessage = error.error.error_message ? error.error.error_message : error.error.error;
           this.toastrService.showToastr(errorMessage, 'Error', 'error');
-          this.getCouncils();
+          if (this.searchControl.value) {
+            const formBody = {
+              "searchKeyword": this.searchControl.value
+            }
+            this.getCouncilsBySearch(formBody)
+          } else {
+            this.getCouncils();
+          }
         }
       });
     } else {
@@ -453,13 +477,27 @@ export class ConfigurationComponent implements OnInit {
       this.configurationSvc.updateCouncils(formBody).subscribe({
         next: (response: any) => {
           if (response) {
-            this.getCouncils();
+            if (this.searchControl.value) {
+              const formBody = {
+                "searchKeyword": this.searchControl.value
+              }
+              this.getCouncilsBySearch(formBody)
+            } else {
+              this.getCouncils();
+            }
           }
         },
         error: (error: HttpErrorResponse) => {
           const errorMessage = error.error.error_message ? error.error.error_message : error.error.error;
           this.toastrService.showToastr(errorMessage, 'Error', 'error');
-          this.getCouncils();
+          if (this.searchControl.value) {
+            const formBody = {
+              "searchKeyword": this.searchControl.value
+            }
+            this.getCouncilsBySearch(formBody)
+          } else {
+            this.getCouncils();
+          }
         }
       });
     }
@@ -585,13 +623,27 @@ export class ConfigurationComponent implements OnInit {
       this.configurationSvc.updateUserTypesStatus(formBody).subscribe({
         next: (response: any) => {
           if (response) {
-            this.getUserTypes();
+            if (this.searchControl.value) {
+              const formBody = {
+                "searchKeyword": this.searchControl.value
+              }
+              this.getUserTypesBySearch(formBody)
+            } else {
+              this.getUserTypes();
+            }
           }
         },
         error: (error: HttpErrorResponse) => {
           const errorMessage = error.error.error_message ? error.error.error_message : error.error.error;
           this.toastrService.showToastr(errorMessage, 'Error', 'error');
-          this.getUserTypes();
+          if (this.searchControl.value) {
+            const formBody = {
+              "searchKeyword": this.searchControl.value
+            }
+            this.getUserTypesBySearch(formBody)
+          } else {
+            this.getUserTypes();
+          }
         }
       });
     } else {
@@ -602,13 +654,27 @@ export class ConfigurationComponent implements OnInit {
       this.configurationSvc.updateUserTypes(formBody).subscribe({
         next: (response: any) => {
           if (response) {
-            this.getUserTypes();
+            if (this.searchControl.value) {
+              const formBody = {
+                "searchKeyword": this.searchControl.value
+              }
+              this.getUserTypesBySearch(formBody)
+            } else {
+              this.getUserTypes();
+            }
           }
         },
         error: (error: HttpErrorResponse) => {
           const errorMessage = error.error.error_message ? error.error.error_message : error.error.error;
           this.toastrService.showToastr(errorMessage, 'Error', 'error');
-          this.getUserTypes();
+          if (this.searchControl.value) {
+            const formBody = {
+              "searchKeyword": this.searchControl.value
+            }
+            this.getUserTypesBySearch(formBody)
+          } else {
+            this.getUserTypes();
+          }
         }
       });
     }
@@ -789,13 +855,31 @@ export class ConfigurationComponent implements OnInit {
       this.configurationSvc.udpateDepartmentStatus(formBody).subscribe({
         next: (response: any) => {
           if (response) {
-            this.getDepartments();
+            if (this.searchControl.value || this.councilIdToFilter.ticketCouncilId || this.departmentToFilter.ticketDepartmentId) {
+              const formBody = {
+                "searchKeyword": this.searchControl.value,
+                "councilId": this.councilIdToFilter.ticketCouncilId,
+                "departmentId": this.departmentToFilter.ticketDepartmentId
+              }
+              this.getDepartmentsBySearch(formBody);
+            } else {
+              this.getDepartments();
+            }
           }
         },
         error: (error: HttpErrorResponse) => {
           const errorMessage = error.error.error_message ? error.error.error_message : error.error.error;
           this.toastrService.showToastr(errorMessage, 'Error', 'error');
-          this.getDepartments();
+          if (this.searchControl.value || this.councilIdToFilter.ticketCouncilId || this.departmentToFilter.ticketDepartmentId) {
+            const formBody = {
+              "searchKeyword": this.searchControl.value,
+              "councilId": this.councilIdToFilter.ticketCouncilId,
+              "departmentId": this.departmentToFilter.ticketDepartmentId
+            }
+            this.getDepartmentsBySearch(formBody);
+          } else {
+            this.getDepartments();
+          }
         }
       });
     } else {
@@ -807,13 +891,31 @@ export class ConfigurationComponent implements OnInit {
       this.configurationSvc.udpateDepartment(formBody).subscribe({
         next: (response: any) => {
           if (response) {
-            this.getDepartments();
+            if (this.searchControl.value || this.councilIdToFilter.ticketCouncilId || this.departmentToFilter.ticketDepartmentId) {
+              const formBody = {
+                "searchKeyword": this.searchControl.value,
+                "councilId": this.councilIdToFilter.ticketCouncilId,
+                "departmentId": this.departmentToFilter.ticketDepartmentId
+              }
+              this.getDepartmentsBySearch(formBody);
+            } else {
+              this.getDepartments();
+            }
           }
         },
         error: (error: HttpErrorResponse) => {
           const errorMessage = error.error.error_message ? error.error.error_message : error.error.error;
           this.toastrService.showToastr(errorMessage, 'Error', 'error');
-          this.getDepartments();
+          if (this.searchControl.value || this.councilIdToFilter.ticketCouncilId || this.departmentToFilter.ticketDepartmentId) {
+            const formBody = {
+              "searchKeyword": this.searchControl.value,
+              "councilId": this.councilIdToFilter.ticketCouncilId,
+              "departmentId": this.departmentToFilter.ticketDepartmentId
+            }
+            this.getDepartmentsBySearch(formBody);
+          } else {
+            this.getDepartments();
+          }
         }
       });
     }
