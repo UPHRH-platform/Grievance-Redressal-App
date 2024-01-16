@@ -56,7 +56,8 @@ export class GrievanceDetailsComponent {
   usersList: any[] = [];
   departmentsEmpty = false;
   usersEmpty = false;
-  isDataLoading = false
+  isDataLoading = false;
+  feedBackDetails: any = {};
 
   constructor(private router: Router, private formBuilder: FormBuilder, private authService: AuthService,
     private grievanceServiceService: GrievanceServiceService, private route: ActivatedRoute,
@@ -69,6 +70,7 @@ export class GrievanceDetailsComponent {
 
   ngOnInit() {
     this.getTicketById();
+    this.getFeedbackDetailsById();
     this.grievanceAssignerformGroup = this.formBuilder.group({
       grievanceOfficer: new FormControl('arun@awe.com', [Validators.required]),
     });
@@ -284,6 +286,20 @@ export class GrievanceDetailsComponent {
       error: (err) => {
         this.isDataLoading = false;
         // Handle the error here in case of Api failure
+        this.toastrService.showToastr(err, 'Error', 'error', '');
+      }
+    })
+  }
+
+  getFeedbackDetailsById() {
+    this.isDataLoading = true;
+    this.grievanceServiceService.getFeedbackDetailsById(this.id).subscribe({
+      next: (res) => {
+        this.isDataLoading = false;
+        this.feedBackDetails = res.responseData;
+      },
+      error: (err) => {
+        this.isDataLoading = false;
         this.toastrService.showToastr(err, 'Error', 'error', '');
       }
     })
