@@ -355,7 +355,7 @@ export class ConfigurationComponent implements OnInit {
       {
         columnDef: 'ticketCouncilId',
         header: 'S.No',
-        isSortable: true,
+        isSortable: false,
         colType: 'SerNo',
         cell: (element: Record<string, any>) => ``,
         cellStyle: {
@@ -533,7 +533,7 @@ export class ConfigurationComponent implements OnInit {
       {
         columnDef: 'userTypeId',
         header: 'S.No',
-        isSortable: true,
+        isSortable: false,
         colType: 'SerNo',
         cell: (element: Record<string, any>) => ``,
         cellStyle: {
@@ -711,7 +711,7 @@ export class ConfigurationComponent implements OnInit {
       {
         columnDef: 'ticketDepartmentId',
         header: 'S.No',
-        isSortable: true,
+        isSortable: false,
         colType: 'SerNo',
         cell: (element: Record<string, any>) => ``,
         cellStyle: {
@@ -953,7 +953,7 @@ export class ConfigurationComponent implements OnInit {
       {
         columnDef: 'id',
         header: 'S.No',
-        isSortable: true,
+        isSortable: false,
         colType: 'SerNo',
         cell: (element: Record<string, any>) => ``,
         cellStyle: {

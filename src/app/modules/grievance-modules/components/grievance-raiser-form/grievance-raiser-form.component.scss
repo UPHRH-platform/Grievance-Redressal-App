@@ -9,6 +9,12 @@
 // min-height: 200px;
 // }
 
+.raiser-container {
+  min-height: calc(100vh - 60px);
+  max-height: fit-content;
+  background-color: #F0F3F4;
+}
+
 .user-container {
   padding: 3% 0 1% 0;
   }

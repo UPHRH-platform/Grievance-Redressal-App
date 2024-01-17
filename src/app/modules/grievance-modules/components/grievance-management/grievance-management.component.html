@@ -2,7 +2,9 @@
 <div class="content">
   <img src="assets/images/back-button.png" title="back"  class="back-btn" (click)="navigateToHome()"  width="30" height="30">
 
-    <h3>Ticket Management</h3>
+  <div class="user-container">
+    <h2 class="user-text-heading">Ticket Management</h2>
+  </div>
     <mat-tab-group (selectedTabChange)="onTabChange($event)" mat-align-tabs="start" [selectedIndex]="activeTabIndex">
         <mat-tab *ngFor="let tab of tabs">
             <ng-template mat-tab-label>{{ tab.name }} ({{tab.count}})</ng-template>
