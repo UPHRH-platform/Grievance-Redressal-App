@@ -39,7 +39,7 @@ export class GrievanceRaiserFormComponent {
     height: 'auto',
     disableClose: true
   }
-  public grievanceRaiserformGroup: FormGroup;
+  public grievanceRaiserformGroup: FormGroup | undefined = undefined;
   constructor(
     private formBuilder: FormBuilder,
     public dialog: MatDialog,
@@ -52,7 +52,7 @@ export class GrievanceRaiserFormComponent {
     
 
   ngOnInit() {
-    this.createForm();
+    this.grievanceRaiserformGroup = this.createForm();
     this.getDropDownsList();
   }
 
@@ -95,7 +95,7 @@ export class GrievanceRaiserFormComponent {
 
   getDeparmentsList(ticketCouncilId: any) {
     this.departmentsList = [];
-    this.grievanceRaiserformGroup.get('department')?.reset();
+    this.grievanceRaiserformGroup!.get('department')?.reset();
     this.departmentsEmpty = false;
     this.sharedService.getUserAssignedDepartment(ticketCouncilId)
     .subscribe({
@@ -103,7 +103,7 @@ export class GrievanceRaiserFormComponent {
         this.departmentsList = response.responseData;
         if (this.departmentsList.length === 0) {
           this.departmentsEmpty = true;
-          this.grievanceRaiserformGroup.get('department')?.markAsTouched()
+          this.grievanceRaiserformGroup!.get('department')?.markAsTouched()
         }
       },
       error: (error: HttpErrorResponse) => {
@@ -113,8 +113,8 @@ export class GrievanceRaiserFormComponent {
     });
   }
 
-  createForm() {
-    this.grievanceRaiserformGroup = this.formBuilder.group({
+  createForm(): FormGroup {
+    const formGroup = this.formBuilder.group({
       name: new FormControl('', [
         Validators.required, Validators.pattern("^[a-zA-Z ]*$")]),
       email: new FormControl('', [
@@ -134,46 +134,47 @@ export class GrievanceRaiserFormComponent {
       description: new FormControl('', [Validators.required]),
 
     });
+    return formGroup
   }
 
   getError(el: any) {
     switch (el) {
       case 'name':
-        if (this.grievanceRaiserformGroup.get('name')?.hasError('required')) {
+        if (this.grievanceRaiserformGroup?.get('name')?.hasError('required')) {
           return 'Name is required !!';
         }
-        if (this.grievanceRaiserformGroup.get('name')?.hasError('pattern')) {
+        if (this.grievanceRaiserformGroup?.get('name')?.hasError('pattern')) {
           return 'Should contain characters between a-z/A-z only';
         }
         break;
       case 'email':
-        if (this.grievanceRaiserformGroup.get('email')?.hasError('required')) {
+        if (this.grievanceRaiserformGroup?.get('email')?.hasError('required')) {
           return 'Email is required !!';
         }
-        if(this.grievanceRaiserformGroup.get('email')?.hasError('pattern')) {
+        if(this.grievanceRaiserformGroup?.get('email')?.hasError('pattern')) {
           return 'Enter a valid Email ID';
         }
         break;
       case 'phone':
-        if (this.grievanceRaiserformGroup.get('phone')?.hasError('required')) {
+        if (this.grievanceRaiserformGroup?.get('phone')?.hasError('required')) {
           return 'Mobile number is required !!';
         }
-        if (this.grievanceRaiserformGroup.get('phone')?.hasError('pattern')) {
+        if (this.grievanceRaiserformGroup?.get('phone')?.hasError('pattern')) {
           return 'Mobile number should contain 10 digits only !!';
         }
         break;
       case 'userType':
-        if (this.grievanceRaiserformGroup.get('userType')?.hasError('required')) {
+        if (this.grievanceRaiserformGroup?.get('userType')?.hasError('required')) {
           return 'User type is required !!';
         }
         break;
       case 'council':
-        if (this.grievanceRaiserformGroup.get('council')?.hasError('required')) {
+        if (this.grievanceRaiserformGroup?.get('council')?.hasError('required')) {
           return 'Council is required !!';
         }
         break;
       case 'department':
-        if (this.grievanceRaiserformGroup.get('department')?.hasError('required')) {
+        if (this.grievanceRaiserformGroup?.get('department')?.hasError('required')) {
           return 'Department is required !!';
         }
         break;
@@ -185,7 +186,17 @@ export class GrievanceRaiserFormComponent {
 
   onReset() {
     this.submitted = false;
-    this.grievanceRaiserformGroup.reset();
+    // To hide red validation msgs on submition successfull
+    this.grievanceRaiserformGroup = undefined
+    setTimeout(() => {
+      this.grievanceRaiserformGroup = this.createForm();
+    },);
+    // this.grievanceRaiserformGroup?.reset();
+    // Object.keys(this.grievanceRaiserformGroup).forEach((key: string) => {
+    //   const control = this.grievanceRaiserformGroup.get(key);
+    //   control!.markAsPristine();
+    //   control!.markAsUntouched();
+    // });
     this.listOfFiles = [];
     this.files= [];
     this.ticketDetails= {};

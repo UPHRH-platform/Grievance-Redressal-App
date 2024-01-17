@@ -50,7 +50,7 @@ export class GrievanceManagementComponent  {
   noDepartments = false;
   apiSubscription: Subscription;
   showRating = true;
-  rating: number | null = 0;
+  rating: number | null = null;
   constructor( 
     private router: Router,
     private route: ActivatedRoute,
@@ -627,7 +627,16 @@ export class GrievanceManagementComponent  {
       this.apiSubscription.unsubscribe();
       this.apiSubscription.remove;
     }
-    this.apiSubscription = this.grievanceService.getAllTickets(this.getGrievancesRequest).subscribe({
+    this.apiSubscription = this.grievanceService.getAllTickets(this.getGrievancesRequest)
+    .pipe(mergeMap((res: any) => {
+      res.responseData.results.forEach((ticket: any) => {
+        if (ticket.rating === 0) {
+          ticket.rating = 'NA';
+        }
+      })
+      return of(res)
+    }))
+    .subscribe({
       next: (res) => {
         if (getCount) {
           this.tabs.filter(tab => {
