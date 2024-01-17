@@ -240,6 +240,7 @@ export class GrievanceDetailsComponent {
 
   submitResolution() {
     const fileUploadUrlResponses: any = [];
+    this.isDataLoading = true;
     this.uploadFiles().pipe(
       switchMap((uploadResponses) => {
         console.log("uploadResponses", uploadResponses);
@@ -258,11 +259,13 @@ export class GrievanceDetailsComponent {
       })
     ).subscribe({
       next: (res) => {
+        this.isDataLoading = false;
         this.toastrService.showToastr("Ticket marked as resolved", 'Success', 'success', '');
         this.getTicketById();
         this.router.navigate(['/grievance/manage-tickets/'],{ queryParams: {tabName: this.currentTabName}});
       },
       error: (err) => {
+        this.isDataLoading = false;
         this.toastrService.showToastr(err, 'Error', 'error', '');
         // Handle the error here in case of file upload or ticket creation failure
       }

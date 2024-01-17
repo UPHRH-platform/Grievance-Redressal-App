@@ -121,34 +121,34 @@ export class DashboardViewComponent {
   cell: (element: Record<string, any>) => `${element['Total']}`
 },
 {
-  columnDef: 'Is Junk',
+  columnDef: 'Junk',
   header: 'Junk Ticket',
   isSortable: true,
   isLink: false,
-  cell: (element: Record<string, any>) => `${element['Is Junk']}`
+  cell: (element: Record<string, any>) => `${element['Junk']}`
 },
 {
-  columnDef: 'Is Closed',
+  columnDef: 'Closed',
   header: 'Resolved Ticket',
   isSortable: true,
   isLink: false,
-  cell: (element: Record<string, any>) => `${element['Is Closed']}`
+  cell: (element: Record<string, any>) => `${element['Closed']}`
 },
 
 {
-  columnDef: 'Is Escalated',
+  columnDef: 'Escalated',
   header: 'Escalated',
   isSortable: true,
   isLink: false,
-  cell: (element: Record<string, any>) => `${element['Is Escalated']}`
+  cell: (element: Record<string, any>) => `${element['Escalated']}`
 },
 
 {
-  columnDef: 'Is Open',
+  columnDef: 'Pending',
   header: 'Pending Ticket',
   isSortable: true,
   isLink: false,
-  cell: (element: Record<string, any>) => `${element['Is Open']}`
+  cell: (element: Record<string, any>) => `${element['Pending']}`
 },
 // {
 //   columnDef: 'openTicketGte15',
@@ -215,15 +215,32 @@ export class DashboardViewComponent {
             //console.log(this.dashboardData.resolutionMatrixArray);
         this.dashboardData.resolutionMatrixArray.map((obj: any, index: number) => {
         let i = index;
+        // to add total count colum wise
+        // const totalCountRow = {
+        //   id : '',
+        //   councilName: '',
+        //   departmentName: '',
+        //   Total: 0,
+        //   Junk: 0,
+        //   Closed: 0,
+        //   Escalated: 0,
+        //   Pending: 0
+        // }
         for(const council in obj) {
           if (council.toString().toLocaleLowerCase().indexOf('other') < 0) {
             const departments = obj[council];
             for (const key in departments) {
               i = i + 1;
+              // totalCountRow['Total'] = totalCountRow['Total'] + obj[council][key]['Total'];
+              // totalCountRow['Junk'] = totalCountRow['Junk'] + obj[council][key]['Junk'];
+              // totalCountRow['Closed'] = totalCountRow['Closed'] + obj[council][key]['Closed'];
+              // totalCountRow['Escalated'] = totalCountRow['Escalated'] + obj[council][key]['Escalated'];
+              // totalCountRow['Pending'] = totalCountRow['Pending'] + obj[council][key]['Pending'];
               this.resolutionMatrixData.push({id: i, councilName: this.camelCaseToWords(council) , departmentName: this.camelCaseToWords(key), ...obj[council][key]});
             }
           }
         }
+        // this.resolutionMatrixData.push(totalCountRow);
       })
           }
         },
@@ -392,20 +409,20 @@ export class DashboardViewComponent {
             ticketCount: assignmentDetails['Total'],
           },
           {
-            tag: 'Is Open',
-            ticketCount: assignmentDetails['Is Open'],
+            tag: 'Pending',
+            ticketCount: assignmentDetails['Pending'],
           },
           {
-            tag: 'Is Closed',
-            ticketCount: assignmentDetails['Is Closed'],
+            tag: 'Closed',
+            ticketCount: assignmentDetails['Closed'],
           },
           {
-            tag: 'Is Junk',
-            ticketCount: assignmentDetails['Is Junk'],
+            tag: 'Junk',
+            ticketCount: assignmentDetails['Junk'],
           },
           {
-            tag: 'Is Escalated',
-            ticketCount: assignmentDetails['Is Escalated'],
+            tag: 'Escalated',
+            ticketCount: assignmentDetails['Escalated'],
           },
           {
             tag: 'Unassigned',
@@ -424,10 +441,10 @@ export class DashboardViewComponent {
             item: 'Nudge Ticket Percentage',
             value: performanceperformance['Nudge Ticket Percentage'],
           },
-          {
-            item: 'Open Ticket Gte21',
-            value: performanceperformance['Open Ticket Gte21'],
-          },
+          // {
+          //   item: 'Open Ticket Gte21',
+          //   value: performanceperformance['Open Ticket Gte21'],
+          // },
           {
             item: 'Total',
             value: performanceperformance['Total'],
@@ -450,10 +467,10 @@ export class DashboardViewComponent {
                 Council: council,
                 department: key,
                 totalticket: resolutionDetails[council][key]['Total'],
-                junkticket: resolutionDetails[council][key]['Is Junk'],
-                resolvedticket: resolutionDetails[council][key]['Is Closed'],
-                escalated: resolutionDetails[council][key]['Is Escalated'],
-                pendingticket: resolutionDetails[council][key]['Is Open'],
+                junkticket: resolutionDetails[council][key]['Junk'],
+                resolvedticket: resolutionDetails[council][key]['Closed'],
+                escalated: resolutionDetails[council][key]['Escalated'],
+                pendingticket: resolutionDetails[council][key]['Pending'],
                 // openticket: resolutionDetails[key].openTicketGte15,
                 // unassigned: resolutionDetails[council][key]['Unassigned']
               }
