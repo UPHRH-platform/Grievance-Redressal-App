@@ -30,7 +30,7 @@
                         </mat-form-field>
                         <span class="resendphOTP-class" (click)="generateMobileOtp()">Re-send</span>
                         <p class="small-font">Enter the 6 digit OTP sent to your mobile number.</p>
-                        <mat-error *ngIf="grievanceRaiserOtpformGroup.controls['mobileOTP'].invalid &&(grievanceRaiserOtpformGroup.controls['mobileOTP'].dirty || grievanceRaiserOtpformGroup.controls['mobileOTP'].touched)">
+                        <mat-error *ngIf="grievanceRaiserOtpformGroup.controls['mobileOTP'].hasError('pattern') && (grievanceRaiserOtpformGroup.controls['mobileOTP'].dirty || grievanceRaiserOtpformGroup.controls['mobileOTP'].touched)">
                             OTP should contain digits only
                             </mat-error>
                         
