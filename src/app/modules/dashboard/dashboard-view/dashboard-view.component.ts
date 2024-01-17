@@ -173,6 +173,14 @@ export class DashboardViewComponent {
     const tag:any = [];
     const value:any = [];
     const resolutionMatrix: any = [];
+    let departmentName = ''
+    if (this.filterForm.get('council')?.value) {
+      if (this.filterForm.get('department')?.value) {
+        const selectedDepartment = this.departmentsList.find((department) => department.ticketDepartmentId === this.filterForm.get('department')?.value)
+        departmentName = selectedDepartment ? selectedDepartment.ticketDepartmentName : departmentName;
+      }
+    }
+    const isGrivance = this.councilName.toLowerCase().includes('other') && departmentName.toLowerCase().includes('other') ? true : false
     this.assignmentMatrixData = [];
     this.resolutionMatrixData = [];
       this.isDataLoading = true;
@@ -185,7 +193,7 @@ export class DashboardViewComponent {
           // ccList: this.ccList
           ticket_council_id: this.filterForm.get('council')?.value,
           ticket_department_id: this.filterForm.get('department')?.value,
-          assigned_to_id: this.filterForm.get('user')?.value
+          assigned_to_id: isGrivance ? -1 : this.filterForm.get('user')?.value
         }
       }
       setTimeout(() => {

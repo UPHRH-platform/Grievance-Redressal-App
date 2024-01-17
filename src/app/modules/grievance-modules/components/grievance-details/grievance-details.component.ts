@@ -86,8 +86,8 @@ export class GrievanceDetailsComponent {
       this.currentTabName = data['tabName']
       this.breadcrumbItems = [
         { label: 'Grievance Management', url: '/home' },
-        { label: 'Grievance List', url: ['/grievance/manage-tickets'], queryParams:  {tabName: this.currentTabName} },
-        { label: 'Grievance Details', url: '' },
+        { label: 'Ticket Management', url: ['/grievance/manage-tickets'], queryParams:  {tabName: this.currentTabName} },
+        { label: 'Ticket Details', url: '' },
       ];
     })
     this.getCouncils()
