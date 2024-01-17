@@ -22,7 +22,9 @@ export class CommonFilterComponent implements OnInit {
   @Input() userTypeId: string = '';
   @Input() startTime: string = '';
   @Input() endTime: string = '';
+  @Input() rating: number | null = null;
   @Input() noDepartments = false;
+  @Input() showRating = false;
   @Output() getDepearmentsOfCouncil: EventEmitter<string> = new EventEmitter<string>();
   @Output() filteredvalue: EventEmitter<any> = new EventEmitter<any>();
   @Output() resetFilterValue: EventEmitter<any> = new EventEmitter<any>();
@@ -40,7 +42,8 @@ export class CommonFilterComponent implements OnInit {
       department : new FormControl(this.departmentId),
       userType: new FormControl(this.userTypeId, Validators.required),
       startDate: new FormControl(''),
-      endDate:new FormControl('')
+      endDate:new FormControl(''),
+      rating: new FormControl('', Validators.required),
     });
 
   }
@@ -59,6 +62,8 @@ export class CommonFilterComponent implements OnInit {
 
   getDeparmentsList(ticketCouncilId: any) {
     this.removeValidation('userType');
+    this.removeValidation('rating');
+    this.addValidation('council');
     this.filterForm.get('department')?.reset();
     // if (!this.isManagement) {
     //   this.filterForm.get('department')?.setValidators(Validators.required);
@@ -70,10 +75,24 @@ export class CommonFilterComponent implements OnInit {
   removeDepartmentValidation() {
     this.removeValidation('council');
     this.removeValidation('department');
+    this.removeValidation('rating');
+    this.addValidation('userType');
+  }
+
+  addRatingValidation() {
+    this.removeValidation('council');
+    this.removeValidation('department');
+    this.removeValidation('userType');
+    this.addValidation('rating');
   }
 
   removeValidation(control: string) {
     this.filterForm.get(control)?.clearValidators();
+    this.filterForm.get(control)?.updateValueAndValidity();
+  }
+
+  addValidation(control: string) {
+    this.filterForm.get(control)?.addValidators(Validators.required);
     this.filterForm.get(control)?.updateValueAndValidity();
   }
 
@@ -87,13 +106,25 @@ export class CommonFilterComponent implements OnInit {
         department: this.departmentId ? this.departmentId : null,
         userType: this.userTypeId ? this.userTypeId : null,
         startDate: new Date(startDate),
-        endDate: new Date(endDate)
+        endDate: new Date(endDate),
+        rating: this.rating ? this.rating : '',
+
       })
 
       if(this.councilId !== '' && this.councilId) {
         this.removeValidation('userType');
-      } else if(this.userTypeId !== '' && this.userTypeId) {
+        this.removeValidation('rating');
+        this.addValidation('council');
+      } 
+      if(this.userTypeId !== '' && this.userTypeId) {
         this.removeValidation('council');
+        this.removeValidation('rating');
+        this.addValidation('userType');
+      }
+      if(this.rating) {
+        this.removeValidation('council');
+        this.removeValidation('userType');
+        this.addValidation('rating');
       }
     }
   }

@@ -49,6 +49,8 @@ export class GrievanceManagementComponent  {
   showUserType: Boolean = true;
   noDepartments = false;
   apiSubscription: Subscription;
+  showRating = true;
+  rating: number | null = 0;
   constructor( 
     private router: Router,
     private route: ActivatedRoute,
@@ -451,6 +453,7 @@ export class GrievanceManagementComponent  {
     this.councilId = undefined;
     this.departmentId = undefined;
     this.userTypeId = undefined;
+    this.rating = null;
     this.searchForm.reset();
     if (event !== undefined) {
       this.getTicketsRequestObject();
@@ -462,6 +465,7 @@ export class GrievanceManagementComponent  {
     this.councilId = event.council;
     this.departmentId = event.department;
     this.userTypeId = event.userType
+    this.rating = event.rating;
     if(event.startDate && event.endDate){
       this.startDate =  new Date(event.startDate).getTime();
       this.endDate = new Date(event.endDate).getTime() + ((23*60*60 + 59*60+59) * 1000);
@@ -611,6 +615,7 @@ export class GrievanceManagementComponent  {
     this.getGrievancesRequest.filter['ticketCouncilId'] = this.councilId ? this.councilId : undefined;
     this.getGrievancesRequest.filter['ticketDepartmentId'] = this.departmentId ? this.departmentId : undefined;
     this.getGrievancesRequest.filter['ticketUserTypeId'] = this.userTypeId ? this.userTypeId : undefined;
+    this.getGrievancesRequest['rating'] = this.rating;
     this.getAllTickets(getCount, tabName);
   }
 
