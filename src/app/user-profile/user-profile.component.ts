@@ -32,7 +32,7 @@ export class UserProfileComponent {
     this.userForm = new FormGroup({
       firstName: new FormControl('', Validators.required),
       lastName: new FormControl('', Validators.required),
-      emailId: new FormControl('', [Validators.required, Validators.email]),
+      emailId: new FormControl({value: '', disabled: true} , [Validators.required, Validators.email]),
       phoneNumber: new FormControl('', [
         Validators.required,
         Validators.pattern(`^[0-9]*$`),

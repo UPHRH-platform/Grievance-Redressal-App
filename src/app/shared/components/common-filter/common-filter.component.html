@@ -59,6 +59,20 @@
                             </div>
                         </ng-template>
 
+                        <ng-container *ngIf="showRating">
+                            <div class="first-container">
+                                <mat-form-field appearance="outline" class="ratingControl">
+                                    <mat-label>Rating</mat-label>
+                                    <mat-select (selectionChange)="addRatingValidation()"
+                                        formControlName="rating">
+                                        <ng-container *ngFor="let rating of [1, 2, 3, 4, 5]">
+                                            <mat-option [value]="rating">{{rating}}</mat-option>
+                                        </ng-container>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                        </ng-container>
+
                         <ng-container *ngIf="!isManagement">
                             <div class="first-container date-class">
                                 <mat-form-field>
