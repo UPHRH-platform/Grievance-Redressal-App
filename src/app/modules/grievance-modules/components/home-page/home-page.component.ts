@@ -15,12 +15,14 @@ export class HomePageComponent implements OnInit {
       description: '',
         // 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. ',
       type: 'dashboard',
+      icon: 'dashboard'
     },
     {
       title: 'Ticket Management',
       description: '',
         // 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. ',
       type: 'grievances',
+      icon: 'receipt_long'
     },
 
     {
@@ -28,11 +30,13 @@ export class HomePageComponent implements OnInit {
       description: '',
         // 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. ',
       type: 'users',
+      icon: 'group'
     },
     {
       title: 'Configuration Management',
       description: '',
       type: 'configuration',
+      icon: 'settings'
     },
   ];
 

@@ -14,7 +14,7 @@
 .filter-ui-container {
     width: fit-content;
     height: auto;
-    z-index: 9999;
+    z-index: 1000;
     left: 8%;
 }
 
@@ -61,11 +61,11 @@
 
 .errorMessage {
     color: var(--mdc-theme-error, #f44336);
-    font-size: var(--mdc-typography-caption-font-size, 12px);
+    font-size: var(--mdc-typography-caption-font-size, 13px);
     letter-spacing: var(--mdc-typography-caption-letter-spacing, 0.0333333333em);
     position: absolute;
     bottom: -23.5px;
-    right: 0;
+    left: -15px;
     padding: 0 16px;
 }
 

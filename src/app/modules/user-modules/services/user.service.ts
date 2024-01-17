@@ -29,6 +29,14 @@ export class UserService extends HttpService{
     return this.post(reqParam);
   } 
 
+  getUserByFilter(request: object): Observable<ServerResponse>  {
+    const reqParam: RequestParam = {
+      url: this.baseUrl + this.configService.urlConFig.URLS.USER.GET_USERS_BY_FILTER,
+      data: request
+    }
+    return this.post(reqParam);
+  }
+
   updateUser(userDetails: any): Observable<ServerResponse>  {
     const  reqParam: RequestParam = { 
       url: this.baseUrl + this.configService.urlConFig.URLS.USER.UPDATE_USER,

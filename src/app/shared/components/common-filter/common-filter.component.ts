@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChange
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { GrievanceServiceService } from 'src/app/modules/grievance-modules/services/grievance-service.service';
 import { Subscription } from 'rxjs';
+import { getRole } from '../../util';
 
 @Component({
   selector: 'app-common-filter',
@@ -16,6 +17,7 @@ export class CommonFilterComponent implements OnInit {
   @Input() councilsList: any[] = [];
   @Input() departmentsList: any[] = [];
   @Input() userTypesList: any[] = [];
+  @Input() rolesList: any[] = [];
   @Input() isManagement: Boolean = false;
   @Input() councilId: string = '';
   @Input() departmentId: string = '';
@@ -25,6 +27,8 @@ export class CommonFilterComponent implements OnInit {
   @Input() rating: number | null = null;
   @Input() noDepartments = false;
   @Input() showRating = false;
+  @Input() showRoles = false;
+  @Input() roleID = '';
   @Output() getDepearmentsOfCouncil: EventEmitter<string> = new EventEmitter<string>();
   @Output() filteredvalue: EventEmitter<any> = new EventEmitter<any>();
   @Output() resetFilterValue: EventEmitter<any> = new EventEmitter<any>();
@@ -44,6 +48,7 @@ export class CommonFilterComponent implements OnInit {
       startDate: new FormControl(''),
       endDate:new FormControl(''),
       rating: new FormControl('', Validators.required),
+      role: new FormControl('', Validators.required),
     });
 
   }
@@ -63,6 +68,7 @@ export class CommonFilterComponent implements OnInit {
   getDeparmentsList(ticketCouncilId: any) {
     this.removeValidation('userType');
     this.removeValidation('rating');
+    this.removeValidation('role');
     this.addValidation('council');
     this.filterForm.get('department')?.reset();
     // if (!this.isManagement) {
@@ -76,6 +82,7 @@ export class CommonFilterComponent implements OnInit {
     this.removeValidation('council');
     this.removeValidation('department');
     this.removeValidation('rating');
+    this.removeValidation('role');
     this.addValidation('userType');
   }
 
@@ -83,13 +90,37 @@ export class CommonFilterComponent implements OnInit {
     this.removeValidation('council');
     this.removeValidation('department');
     this.removeValidation('userType');
+    this.removeValidation('role');
     this.addValidation('rating');
+  }
+
+  getUserRole(roleName: string) {
+    return getRole(roleName);
+   }
+
+  roleSelected(value: string) {
+    this.removeValidation('council');
+    this.removeValidation('department');
+    this.removeValidation('userType');
+    this.removeValidation('rating');
+    this.addValidation('role');
+    if(value !== 'NODALOFFICER') {
+      this.filterForm.reset()
+      this.departmentsList = [];
+      this.filterForm.get('role')?.patchValue(value);
+      this.filterForm.get('council')?.disable();
+      this.filterForm.get('department')?.disable();
+    } else {
+      this.filterForm.get('council')?.enable();
+      this.filterForm.get('department')?.enable();
+    }
   }
 
   removeValidation(control: string) {
     this.filterForm.get(control)?.clearValidators();
     this.filterForm.get(control)?.updateValueAndValidity();
   }
+  
 
   addValidation(control: string) {
     this.filterForm.get(control)?.addValidators(Validators.required);
@@ -108,23 +139,37 @@ export class CommonFilterComponent implements OnInit {
         startDate: new Date(startDate),
         endDate: new Date(endDate),
         rating: this.rating ? this.rating : '',
+        role: this.roleID ? this.roleID : ''
 
       })
 
       if(this.councilId !== '' && this.councilId) {
         this.removeValidation('userType');
         this.removeValidation('rating');
+        this.removeValidation('role');
         this.addValidation('council');
       } 
       if(this.userTypeId !== '' && this.userTypeId) {
         this.removeValidation('council');
         this.removeValidation('rating');
+        this.removeValidation('role');
         this.addValidation('userType');
       }
       if(this.rating) {
         this.removeValidation('council');
         this.removeValidation('userType');
+        this.removeValidation('role');
         this.addValidation('rating');
+      }
+      if(this.roleID) {
+        this.removeValidation('council');
+        this.removeValidation('userType');
+        this.removeValidation('rating');
+        this.addValidation('role');
+        if(this.roleID !== 'NODALOFFICER') {
+          this.filterForm.get('council')?.disable();
+          this.filterForm.get('department')?.disable();
+        }
       }
     }
   }

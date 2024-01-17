@@ -792,7 +792,8 @@ export class ConfigurationComponent implements OnInit {
     this.departmentsListForFilter = [];
     const conucil: any = this.councilsListForFilter.find((council: any) => council.ticketCouncilId === ticketCouncilId);
     if (conucil && conucil.ticketDepartmentDtoList) {
-      this.departmentsListForFilter = conucil.ticketDepartmentDtoList.filter((department: any) => department.status);
+      this.departmentsListForFilter = conucil.ticketDepartmentDtoList
+      // .filter((department: any) => department.status);
     }
   }
 

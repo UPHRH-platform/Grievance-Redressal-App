@@ -4,7 +4,9 @@
         <div class="main-wrapper-usertable">
             <img src="assets/images/back-button.png" title="back" class="back-btn" (click)="navigateToHome()" width="30"
                 height="30">
-            <h3>Grievance Management - Configuration - {{selectedTab?.pageHeader}}</h3>
+            <div class="user-container">
+                <h2 class="user-text-heading">Configuration Management</h2>
+            </div>
             <mat-tab-group (selectedTabChange)="onTabChange($event)" mat-align-tabs="start">
                 <mat-tab *ngFor="let tab of tabs">
                     <ng-template mat-tab-label>{{ tab.name }}</ng-template>
