@@ -46,6 +46,7 @@ export class ConfigurationComponent implements OnInit {
     ticketCouncilId: '',
     ticketCouncilName: ''
   };
+  searchPlaceHolder = 'Search';
 
   constructor(
     private router: Router,
@@ -80,6 +81,7 @@ export class ConfigurationComponent implements OnInit {
       ticketDepartmentId: '',
       ticketDepartmentName: ''
     };
+    this.searchPlaceHolder = this.selectedTab.id === 'department' ? 'Search Department' : 'Search'
     this.getTableColumns();
   }
 
@@ -198,7 +200,8 @@ export class ConfigurationComponent implements OnInit {
       ticketDepartmentId: '',
       ticketDepartmentName: ''
     };
-    clearTimeout(this.timeoutId) 
+    this.departmentsListForFilter = [];
+    clearTimeout(this.timeoutId) ;
     this.applyFilter(this.searchControl.value);
   }
 
@@ -830,6 +833,7 @@ export class ConfigurationComponent implements OnInit {
         next: (response: any) => {
           if (response) {
             this.getDepartments();
+            this.getCouncilsList();
             this.configControl.reset();
             this.councilControl.reset();
           } else {

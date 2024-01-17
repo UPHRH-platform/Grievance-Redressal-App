@@ -43,7 +43,7 @@
                             <ng-container *ngIf="selectedTab.id !== 'escalation_time'">
                                 <mat-form-field class="search mr3">
                                     <input matInput appearance="standard" [formControl]="searchControl"
-                                        (keyup)="applyFilter($event.target.value)" placeholder="Search" />
+                                        (keyup)="applyFilter($event.target.value)" [placeholder]="searchPlaceHolder" />
                                 </mat-form-field>
                             </ng-container>
                             <ng-container *ngIf="selectedTab.id === 'department'">
