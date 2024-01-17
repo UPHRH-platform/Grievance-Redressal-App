@@ -453,6 +453,8 @@ export class GrievanceManagementComponent  {
     this.councilId = undefined;
     this.departmentId = undefined;
     this.userTypeId = undefined;
+    this.departmentsList = [];
+    this.userTypesList = [];
     this.rating = null;
     this.searchForm.reset();
     if (event !== undefined) {

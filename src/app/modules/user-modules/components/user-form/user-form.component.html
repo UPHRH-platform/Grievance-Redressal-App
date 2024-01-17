@@ -109,7 +109,7 @@
                 </ng-container>
 
 
-                <div>
+                <div *ngIf="userDetails?.attributes?.role[0] !== 'ADMIN'">
                     <mat-label class="label-text">Active Status</mat-label>
                     <div class="first-container" style="margin-top: 2%;">
                         <mat-radio-group aria-label="Select an option" formControlName="status">
