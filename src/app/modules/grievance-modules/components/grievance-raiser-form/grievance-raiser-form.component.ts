@@ -80,7 +80,20 @@ export class GrievanceRaiserFormComponent {
   getCouncils() {
     this.sharedService.getCouncils()
     .pipe((mergeMap((response) => {
-      const counciles = response.responseData.filter((council: any) => council.status && council.ticketDepartmentDtoList);
+      const counciles = response.responseData.filter((council: any) => { 
+        if (council.status && council.ticketDepartmentDtoList) {
+          let hasDepartments = false;
+          council.ticketDepartmentDtoList.forEach((department: any) =>{
+            if (department.userCount > 0) {
+              hasDepartments = true;
+              return council;
+            }
+          })
+          if(hasDepartments) {
+            return council;
+          }
+        }
+      });
       return of(counciles)
     })))
     .subscribe({

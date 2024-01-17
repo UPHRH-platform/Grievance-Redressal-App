@@ -96,8 +96,20 @@ export class GrievanceDetailsComponent {
   getCouncils() {
     this.sharedService.getCouncils()
     .pipe((mergeMap((response) => {
-      const counciles = response.responseData
-      .filter((council: any) => council.status && !council.ticketCouncilName.toLowerCase().includes('other'));
+      const counciles = response.responseData.filter((council: any) => { 
+        if (council.status && council.ticketDepartmentDtoList && !council.ticketCouncilName.toLowerCase().includes('other')) {
+          let hasDepartments = false;
+          council.ticketDepartmentDtoList.forEach((department: any) =>{
+            if (department.userCount > 0) {
+              hasDepartments = true;
+              return council;
+            }
+          })
+          if(hasDepartments) {
+            return council;
+          }
+        }
+      });
       return of(counciles)
     })))
     .subscribe({
@@ -115,7 +127,7 @@ export class GrievanceDetailsComponent {
     this.assignGrievanceTypeForm.get('department')?.reset();
     const conucil: any = this.councilsList.find((council: any) => council.ticketCouncilId === ticketCouncilId);
     if (conucil && conucil.ticketDepartmentDtoList) {
-      this.departmentsList = conucil.ticketDepartmentDtoList.filter((department: any) => department.status);
+      this.departmentsList = conucil.ticketDepartmentDtoList.filter((department: any) => department.status && department.userCount > 0);
     }
     if (this.departmentsList.length === 0) {
       this.departmentsEmpty = true;
