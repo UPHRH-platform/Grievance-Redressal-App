@@ -141,7 +141,7 @@ export class GrievanceRaiserFormComponent {
     switch (el) {
       case 'name':
         if (this.grievanceRaiserformGroup?.get('name')?.hasError('required')) {
-          return 'Name is required !!';
+          return 'Name is required';
         }
         if (this.grievanceRaiserformGroup?.get('name')?.hasError('pattern')) {
           return 'Should contain characters between a-z/A-z only';
@@ -149,7 +149,7 @@ export class GrievanceRaiserFormComponent {
         break;
       case 'email':
         if (this.grievanceRaiserformGroup?.get('email')?.hasError('required')) {
-          return 'Email is required !!';
+          return 'Email is required';
         }
         if(this.grievanceRaiserformGroup?.get('email')?.hasError('pattern')) {
           return 'Enter a valid Email ID';
@@ -157,25 +157,25 @@ export class GrievanceRaiserFormComponent {
         break;
       case 'phone':
         if (this.grievanceRaiserformGroup?.get('phone')?.hasError('required')) {
-          return 'Mobile number is required !!';
+          return 'Mobile number is required';
         }
         if (this.grievanceRaiserformGroup?.get('phone')?.hasError('pattern')) {
-          return 'Mobile number should contain 10 digits only !!';
+          return 'Mobile number should contain 10 digits only';
         }
         break;
       case 'userType':
         if (this.grievanceRaiserformGroup?.get('userType')?.hasError('required')) {
-          return 'User type is required !!';
+          return 'User type is required';
         }
         break;
       case 'council':
         if (this.grievanceRaiserformGroup?.get('council')?.hasError('required')) {
-          return 'Council is required !!';
+          return 'Council is required';
         }
         break;
       case 'department':
         if (this.grievanceRaiserformGroup?.get('department')?.hasError('required')) {
-          return 'Department is required !!';
+          return 'Department is required';
         }
         break;
       default:

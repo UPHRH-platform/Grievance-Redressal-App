@@ -5,6 +5,9 @@
         </app-shared-skeleton-loading>
         <div class="pt1 pb2">
           <img src="assets/images/back-button.png" title="back"  class="back-btn" (click)="navigateToHome()"  width="30" height="30">
+          <div class="user-container">
+            <h2 class="user-text-heading">Dashboard</h2>
+        </div>
         <div *ngIf="!isDataLoading" class="clearfix custom-margin mxn1">
           <form [formGroup]="filterForm">
 
@@ -22,6 +25,11 @@
                     <mat-option [value]="department.ticketDepartmentId">{{department.ticketDepartmentName}}</mat-option>
                   </ng-container>
                 </mat-select>
+                <ng-container *ngIf="departmentsList.length === 0 && filterForm.get('council').value">
+                  <span class="errorMessage">
+                      There are no departments
+                  </span>
+                </ng-container>
               </mat-form-field>
               <mat-form-field class="w-100" appearance="outline">
                 <mat-select formControlName="user" placeholder="Users">
@@ -29,6 +37,11 @@
                     <mat-option [value]="user.id">{{user.firstName}} {{user.lastName}}</mat-option>
                   </span>
                 </mat-select>
+                <ng-container *ngIf="usersList.length === 0 && filterForm.get('department').value && !usersLoading">
+                  <span class="errorMessage">
+                      There are no users
+                  </span>
+                </ng-container>
               </mat-form-field>
               <mat-form-field class="w-100" appearance="outline">
                 <mat-date-range-input [rangePicker]="picker">
@@ -63,7 +76,7 @@
             <div class="col col-6 px1">
                 <div class="p2" style="background-color: white">
                     <div>
-                    <label class="title">Ticket assignment matrix</label>
+                    <label class="title">Ticket Assignment Matrix</label>
                     <p class="desc">Percentage of approved work allocation order by MDO</p>
                     <app-shared-table [hasFilterOptions]="false" [tableColumns]="assignmentMatrixColumns" [tableData]="assignmentMatrixData" [isPageable]="false"></app-shared-table>
                   </div>
@@ -72,7 +85,7 @@
             <div class="col col-6 px1">
                 <div class="p2" style="background-color: white">
                     <div>
-                    <label class="title">Key performance indicators</label>
+                    <label class="title">Key Performance Indicators</label>
                     <p class="desc">Percentage of approved work allocation orders by MDO</p>
                     <div style="display: flex; justify-content: space-between; text-transform: capitalize; padding-top:10px; padding-bottom:10px; padding-left: 10px; padding-right: 10px; background-color: #f6f6f6;" class="mt1" *ngFor="let item of dashboardData.performanceIndicators | keyvalue">
                         <span>{{camelCaseToWords(item.key)}}</span>
@@ -84,7 +97,7 @@
             </div>
             <div class="col col-12 px1 mt2">
                 <div class="p2" style="background-color: white;height: 100%">
-                    <label class="title">Ticket resolution matrix</label>
+                    <label class="title">Ticket Resolution Matrix</label>
                     <p class="desc">Comprehensiveness of tagged roles in this MDO</p>
                     <app-shared-table [hasFilterOptions]="false" [tableColumns]="resolutionMatrixColumns" [tableData]="resolutionMatrixData" [isPageable]="false"></app-shared-table>
                   </div>

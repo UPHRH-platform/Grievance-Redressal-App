@@ -35,6 +35,7 @@ export class DashboardViewComponent {
   departmentsList: any[] = [];
   usersList: any[] = [];
   councilName = 'All Councils';
+  usersLoading = false;
   // filterDateRange = {startDate: '', endDate: ''};
   public assignGrievanceTypeForm:FormGroup;
   grievanceTypeNames: any = [];
@@ -177,7 +178,7 @@ export class DashboardViewComponent {
       this.isDataLoading = true;
       const request = {
         date: {
-          to: endDate.getTime(),
+          to: endDate.getTime() + ((23*60*60 + 59*60+59) * 1000),
           from: startDate.getTime()
         },
         filter: {
@@ -265,14 +266,14 @@ export class DashboardViewComponent {
 
   getCouncils() {
     this.sharedService.getCouncils()
-      .pipe((mergeMap((response) => {
-        const counciles = response.responseData.filter((council: any) => council.status);
-        return of(counciles);
-      })))
+      // .pipe((mergeMap((response) => {
+      //   const counciles = response.responseData.filter((council: any) => council.status);
+      //   return of(counciles);
+      // })))
       .subscribe({
         next: (response) => {
           if (response) {
-            this.councilsList = response;
+            this.councilsList = response.responseData;
           }
         },
         error: (error) => {
@@ -289,23 +290,27 @@ export class DashboardViewComponent {
     const council: any = this.councilsList.find((council: any) => council.ticketCouncilId === ticketCouncilId);
     this.councilName = council?.ticketCouncilName;
     if (council && council.ticketDepartmentDtoList) {
-      this.departmentsList = council.ticketDepartmentDtoList.filter((department: any) => department.status);
+      this.departmentsList = council.ticketDepartmentDtoList
+      // .filter((department: any) => department.status);
     }
   }
 
   getUsers() {
     if (this.filterForm.get('council')?.value && this.filterForm.get('department')?.value) {
       const allUsers = true;
+      this.usersLoading = true;
       this.usersList = [];
       this.filterForm.get('user')?.reset();
       this.sharedService.getUsersByCouncilDetapartmen(this.filterForm.get('council')?.value, this.filterForm.get('department')?.value, allUsers)
       .subscribe({
         next: (response: any) => {
+          this.usersLoading = false;
           if (response && response.responseData) {
             this.usersList = response.responseData;
           }
         },
         error: (error: HttpErrorResponse) => {
+          this.usersLoading = false;
           const errMessage = error.error.errMessage ? error.error.errMessage : error.error.error;
           this.toastrService.showToastr(errMessage, 'Error', 'error');
         }

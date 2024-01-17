@@ -49,7 +49,7 @@
                         <ng-template #userType>
                             <div class="first-container council-control">
                                 <mat-form-field appearance="outline">
-                                    <mat-label>UserType</mat-label>
+                                    <mat-label>User Type</mat-label>
                                     <mat-select formControlName="userType" (selectionChange)="removeDepartmentValidation()">
                                         <ng-container *ngFor='let userType of userTypesList'>
                                             <mat-option [value]="userType.userTypeId">{{userType.userTypeName}}</mat-option>
@@ -73,7 +73,19 @@
                             </div>
                         </ng-container>
 
-                        <ng-container *ngIf="!isManagement">
+                        <ng-container *ngIf="showRoles">
+                            <div class="first-container " style="width: 235px;">
+                                <mat-form-field appearance="outline" >
+                                    <mat-label>Role</mat-label>
+                                    <mat-select (selectionChange)="roleSelected($event.value)"
+                                        formControlName="role">
+                                        <mat-option *ngFor="let item of rolesList" [value]="item.name" >{{getUserRole(item.name)}}</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                        </ng-container>
+
+                        <ng-container *ngIf="!isManagement && !showRoles">
                             <div class="first-container date-class">
                                 <mat-form-field>
                                     <mat-label>Enter a date range</mat-label>

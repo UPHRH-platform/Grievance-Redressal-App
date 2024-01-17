@@ -12,19 +12,37 @@
      <div class="user-table-wrapper">
         <app-shared-skeleton-loading [isLoading]="isDataLoading">
         </app-shared-skeleton-loading>
-        <div *ngIf="!isDataLoading">
-          <form [formGroup]="searchForm">
-          <mat-form-field>
-            <input
-              matInput
-              formControlName="searchData"
-              appearance="standard"
-              (keyup)="applyFilter($event.target.value)"
-              placeholder="Search"
-            />
-          </mat-form-field>
-          
-        </form>
+        <div *ngIf="!isDataLoading"style="display: flex; flex-direction: row;">
+          <div style="display: flex; flex-direction: row;" *ngIf="!isDataLoading">
+            <div>
+              <form [formGroup]="searchForm" >
+              <mat-form-field>
+                <input
+                  matInput
+                  formControlName="searchData"
+                  appearance="standard"
+                  (keyup)="applyFilter($event.target.value)"
+                  placeholder="Search"
+                />
+              </mat-form-field>
+              </form>
+            </div>
+
+            <app-common-filter *ngIf="!isDataLoading"
+            [councilsList]="councilsList"
+            [departmentsList]="departmentsList"
+            [rolesList]="rolesList"
+            [councilId]="councilId"
+            [departmentId]="departmentId"
+            [roleID]="roleID"
+            [showRoles]="true"
+            [showUserType]="false"
+            [noDepartments]="noDepartments"
+            (getDepearmentsOfCouncil)="getDeparmentsList($event)"
+            (filteredvalue)="onClickApplyFilter($event)" 
+            (resetFilterValue)="resetFilterValueData($event)"
+          ></app-common-filter>
+          </div>
         
       </div>
         <!-- <app-shared-table *ngIf="!isDataLoading" [tableColumns]="usersTableColumns" [tableData]="users" [isPageable]="true"

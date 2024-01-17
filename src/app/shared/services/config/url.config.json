@@ -19,7 +19,8 @@
             "GET_USERDETAILS_BY_ID": "/user/info/",
             "GET_ALL_USERS": "/user/users",
             "ACTIVATE_USER": "/user/activate",
-            "DEACTIVATE_USER": "/user/deactivate"
+            "DEACTIVATE_USER": "/user/deactivate",
+            "GET_USERS_BY_FILTER": "/user/filter"
         },
         "OTP":{
             "GENERATE_OTP": "/otp/generate-otp",

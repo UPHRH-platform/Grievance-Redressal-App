@@ -100,14 +100,14 @@ export class GrievanceManagementComponent  {
 
   getCouncils() {
     this.sharedService.getCouncils()
-      .pipe((mergeMap((response) => {
-        const counciles = response.responseData.filter((council: any) => council.ticketDepartmentDtoList);
-        return of(counciles)
-      })))
+      // .pipe((mergeMap((response) => {
+      //   const counciles = response.responseData.filter((council: any) => council.ticketDepartmentDtoList);
+      //   return of(counciles)
+      // })))
       .subscribe({
         next: (response) => {
           if (response) {
-            this.councilsList = response;
+            this.councilsList = response.responseData;
           }
         },
         error: (error) => {

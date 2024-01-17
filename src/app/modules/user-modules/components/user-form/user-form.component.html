@@ -24,7 +24,7 @@
                         <mat-form-field appearance="outline" class="text-class">
                             <mat-label>First name</mat-label>
                             <input matInput placeholder="Enter first name" formControlName="firstName" required>
-                            <mat-error *ngIf="firstName && firstName.hasError('required') && firstName.touched">please enter first name</mat-error>
+                            <mat-error *ngIf="firstName && firstName.hasError('required') && firstName.touched">First name is required</mat-error>
                             <mat-error *ngIf="firstName && firstName.hasError('pattern')" >Name should contain characters within a-z/A-Z only</mat-error>
                           </mat-form-field>
                     </div>
@@ -33,7 +33,7 @@
                         <mat-form-field appearance="outline" class="text-class">
                             <mat-label>Last name</mat-label>
                             <input matInput placeholder="Enter last name" formControlName="lastName">
-                            <mat-error *ngIf="lastName && lastName.hasError('required') && lastName.touched">please enter last name</mat-error>
+                            <mat-error *ngIf="lastName && lastName.hasError('required') && lastName.touched">Last name is required</mat-error>
                             <mat-error *ngIf="lastName && lastName.hasError('pattern')" >Name should contain characters within a-z/A-Z only</mat-error>
 
                           </mat-form-field>
@@ -46,7 +46,7 @@
                         <mat-form-field appearance="outline" class="text-class">
                             <mat-label>Email id</mat-label>
                             <input matInput placeholder="pat@example.com" [readonly]="isEditUser? true: false" formControlName="username" required>
-                            <mat-error *ngIf="username && username.invalid && username.touched">please Enter email Id</mat-error>
+                            <mat-error *ngIf="username && username.invalid && username.touched">Email ID is required</mat-error>
                           </mat-form-field>
                     </div>
                     <div class="first-container">
@@ -73,7 +73,7 @@
                             <mat-select formControlName="role" (selectionChange)="getRoleChange($event)">
                               <mat-option *ngFor="let item of roleList" [value]="item.name" >{{getUserRole(item.name)}}</mat-option>
                             </mat-select>
-                            <mat-error *ngIf="role && role.invalid && role.touched">please select role</mat-error>
+                            <mat-error *ngIf="role && role.invalid && role.touched">Role is required</mat-error>
 
                           </mat-form-field>
                     </div>
@@ -90,7 +90,7 @@
                                         <mat-option [value]="council.ticketCouncilId">{{council.ticketCouncilName}}</mat-option>
                                     </ng-container>
                                 </mat-select>
-                                <mat-error *ngIf="council && council.invalid && council.touched">please select council</mat-error>
+                                <mat-error *ngIf="council && council.invalid && council.touched">Council is required</mat-error>
                             </mat-form-field>
                         </div>
                         <div class="first-container">
@@ -102,7 +102,7 @@
                                         <mat-option [value]="department.ticketDepartmentId">{{department.ticketDepartmentName}}</mat-option>
                                     </ng-container>
                                 </mat-select>
-                                <mat-error *ngIf="department && department.invalid && department.touched">please select Department Name</mat-error>
+                                <mat-error *ngIf="department && department.invalid && department.touched">Department is required</mat-error>
                             </mat-form-field> 
                         </div> 
                     </div>
