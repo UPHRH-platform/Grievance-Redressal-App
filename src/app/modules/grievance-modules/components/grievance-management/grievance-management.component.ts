@@ -48,7 +48,7 @@ export class GrievanceManagementComponent  {
   userTypesList: any[] = [];
   showUserType: Boolean = true;
   noDepartments = false;
-  apiSubscription: Subscription;
+  apiSubscription: Subscription | undefined;
   showRating = true;
   rating: number | null = null;
   constructor( 
@@ -675,7 +675,9 @@ export class GrievanceManagementComponent  {
         });
       }
     })
-    
+    if(getCount) {
+      this.apiSubscription = undefined;
+    }
   }
 
   handlePageChange(event: PageEvent) {
