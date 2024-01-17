@@ -44,7 +44,7 @@ export class UserFormComponent implements OnInit {
     private sharedService: SharedService
     ){
     this.userForm = new FormGroup({
-      firstName: new FormControl('', [Validators.required, Validators.pattern("^[a-zA-Z]+$")]),
+      firstName: new FormControl('', [Validators.required, Validators.pattern("^[a-zA-Z ]+$")]),
       lastName: new FormControl('', [Validators.required, Validators.pattern("^[a-zA-Z]+$")]),
       username: new FormControl('',[Validators.required, Validators.email]),
       phone:  new FormControl('', [
