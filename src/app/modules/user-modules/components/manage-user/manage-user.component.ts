@@ -138,7 +138,7 @@ export class ManageUserComponent implements OnInit {
       {
         columnDef: 'id',
         header: 'S.No',
-        isSortable: true,
+        isSortable: false,
         colType: 'SerNo',
         cell: (element: Record<string, any>) => ``,
         cellStyle: {
@@ -230,6 +230,7 @@ export class ManageUserComponent implements OnInit {
           let councilName = 'NA';
           let departmentName = 'NA';
           let formatedDate = '';
+          let showToggle = true;
           if(firstName && lastName !== undefined) {
             name = `${firstName} ${' '} ${lastName}`;
           }
@@ -244,6 +245,9 @@ export class ManageUserComponent implements OnInit {
               role = attributes.Role[0];
             } else if (attributes.role && attributes.role[0]) {
               role = attributes.role[0];
+            }
+            if (role === 'ADMIN') {
+              showToggle = false;
             }
             if(attributes.hasOwnProperty('phoneNumber') && attributes.phoneNumber) {
               phone = attributes.phoneNumber
@@ -265,7 +269,8 @@ export class ManageUserComponent implements OnInit {
             role,
             councilName: councilName,
             departmentName: departmentName,
-            createdDate: formatedDate
+            createdDate: formatedDate,
+            showToggle: showToggle
           }
         })
         this.listLength = this.users.length;

@@ -2,6 +2,7 @@
 .breadcrumb-container {
     .home-icon {
         margin-right: 0.5rem;
+        cursor: pointer;
     }
     padding: 0 8rem;
     display: inline-flex;
@@ -20,4 +21,11 @@
     font-weight: bold;
     color: #0074B6;
     cursor: default;
+  }
+
+  .arraw {
+    font-size: 17px;
+    position: absolute;
+    bottom: 0px;
+    right: -17px;
   }
