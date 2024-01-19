@@ -1,6 +1,7 @@
 .form-container {
     background-color: white;
-    height: 90vh;
+    min-height: 90vh;
+    height: fit-content;
 }
 
 .rating-form-container {
