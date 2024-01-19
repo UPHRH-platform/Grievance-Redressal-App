@@ -144,7 +144,7 @@ export class GrievanceRaiserFormComponent {
       council: new FormControl('', [Validators.required]),
       department: new FormControl('', [Validators.required]),
       attachmentUrls: new FormControl('', ),
-      description: new FormControl('', [Validators.required]),
+      description: new FormControl('', [Validators.required, Validators.maxLength(2500)]),
 
     });
     return formGroup

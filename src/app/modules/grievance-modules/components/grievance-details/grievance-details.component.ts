@@ -338,7 +338,7 @@ export class GrievanceDetailsComponent {
           status:'INVALID',
         }
         const junkDialogData = {
-          header: 'Describe reason to mark Junk',
+          header: `Enter reason to mark as 'Junk'`,
           params: params,
           controls: [{
               controlLable: 'Enter reason',
@@ -388,7 +388,7 @@ export class GrievanceDetailsComponent {
         isJunk: this.ticketDetails.junk,
       }
       const otherDialogData = {
-        header: 'Describe reason to mark Other',
+        header: `Enter reason to mark as 'Other'`,
         params: params,
         controls: [{
             controlLable: 'Enter reason',
@@ -397,6 +397,12 @@ export class GrievanceDetailsComponent {
             placeholder: 'Type here',
             value: '',
             validators: ['required']
+            // validators: [
+            //   {
+            //     key: 'required',
+            //     value: '',
+            //   }
+            // ]
           },
         ],
         buttons: [

@@ -330,7 +330,7 @@ export class GrievanceManagementComponent  {
           },
           {
             columnDef: 'reminderCounter',
-            header: 'Reminder',
+            header: 'Times Nudged',
             isSortable: true,
             isLink: false,
             cell: (element: Record<string, any>) => `${element['reminderCounter']}`
