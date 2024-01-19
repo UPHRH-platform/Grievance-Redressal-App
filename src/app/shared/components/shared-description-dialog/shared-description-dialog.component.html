@@ -40,6 +40,14 @@
                                 </textarea>
                             </mat-form-field>
                         </div>
+                        <div class="flex justify-between" style="margin-top: -15px;">
+                            <span [ngClass]="dynamicFormGroup.get(control.controlName).hasError('maxlength') ? 'mat-mdc-form-field-error' : ''">
+                                {{control.note}}
+                            </span>
+                            <span *ngIf="control.showCount && dynamicFormGroup.get(control.controlName).value">
+                                count: {{dynamicFormGroup.get(control.controlName).value.length}}
+                            </span>
+                        </div>
                     </ng-container>
                 </ng-container>
             </ng-container>

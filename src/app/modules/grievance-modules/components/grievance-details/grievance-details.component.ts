@@ -163,7 +163,7 @@ export class GrievanceDetailsComponent {
 
   createForm() {
     this.grievanceResolutionForm = this.formBuilder.group({
-      description: new FormControl('', [Validators.required]),
+      description: new FormControl('', [Validators.required, Validators.maxLength(2500)]),
       attachments: new FormControl([])
     })
   }
@@ -346,7 +346,18 @@ export class GrievanceDetailsComponent {
               controlType: 'textArea',
               placeholder: 'Type here',
               value: '',
-              validators: ['required']
+              validators: [
+                {
+                  key: 'required',
+                  value: '',
+                },
+                {
+                  key: 'maxLength',
+                  value: 2500,
+                }
+              ],
+              note: 'Max characters limit: 2500',
+              showCount: true,
             },
           ],
           buttons: [
@@ -396,13 +407,18 @@ export class GrievanceDetailsComponent {
             controlType: 'textArea',
             placeholder: 'Type here',
             value: '',
-            validators: ['required']
-            // validators: [
-            //   {
-            //     key: 'required',
-            //     value: '',
-            //   }
-            // ]
+            validators: [
+              {
+                key: 'required',
+                value: '',
+              },
+              {
+                key: 'maxLength',
+                value: 2500,
+              }
+            ],
+            note: 'Max characters limit: 2500',
+            showCount: true,
           },
         ],
         buttons: [

@@ -28,9 +28,13 @@ export class SharedDescriptionDialogComponent {
       controls.forEach((control: any) => {
         let validators: any[] = []
         if (control.validators) {
-          control.validators.forEach((validator: string) => {
-            if (validator === 'required') {
-              validators.push(Validators.required)
+          control.validators.forEach((validator: any) => {
+            switch(validator.key) {
+              case 'required':
+                validators.push(Validators.required);
+                break;
+              case 'maxLength':
+                validators.push(Validators.maxLength(validator.value));
             }
           })
         }
