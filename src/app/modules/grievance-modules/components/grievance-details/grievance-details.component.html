@@ -148,10 +148,10 @@
 </div> -->
 <app-breadcrumb [breadcrumbItems]="breadcrumbItems"></app-breadcrumb>
 <app-shared-skeleton-loading [isLoading]="isDataLoading"></app-shared-skeleton-loading>
-<div class="content" >
+<div class="content"  *ngIf="!isDataLoading">
   <img src="assets/images/back-button.png" title="back"  class="back-btn" (click)="navigateToHome()"  width="30" height="30">
 
-  <div class="second-main-wrapper" *ngIf="!isDataLoading">
+  <div class="second-main-wrapper">
     <div class="user-form-container">
       <div class="user-container">
         <h2 class="user-text-heading">{{currentTabName}}</h2>
@@ -249,6 +249,24 @@
               </div>
             </div>
 
+            <ng-container *ngIf="ticketDetails?.otherByReason && currentTabName === 'Not Assigned'">
+              <div class="first-row-container mt2">
+                <div class="desc-content">
+                  <mat-label class="label-text">Reason for marking as others</mat-label>
+                  <h3 class="textData">{{ ticketDetails?.otherByReason}}</h3>
+                </div>
+              </div>
+            </ng-container>
+
+            <ng-container *ngIf="ticketDetails?.junkByReason && currentTabName === 'Junk'">
+              <div class="first-row-container mt2">
+                <div class="desc-content">
+                  <mat-label class="label-text">Reason for marking as junk</mat-label>
+                  <h3 class="textData">{{ ticketDetails?.junkByReason}}</h3>
+                </div>
+              </div>
+            </ng-container>
+
             <div class="first-row-container mt2">
               <div class="desc-content">
                 <mat-label class="label-text">Attached Document (s)</mat-label>
@@ -343,7 +361,7 @@
             </div>
 
             <div class="mt2" *ngIf="userRole === 'Grievance Nodal' && (currentTabName === 'Not Assigned' || currentTabName === 'Pending')">
-              <h4>Assign To</h4>
+              <h4>{{currentTabName === 'Not Assigned' ? 'Assign To' : 'Reassign To'}}</h4>
               <form [formGroup]="assignGrievanceTypeForm">
                 <div class="clearfix mxn2 mt1">
                   <div class="sm col sm-col-12 md-col-4 lg-col-4 px2">
