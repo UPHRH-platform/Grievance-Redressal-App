@@ -194,3 +194,14 @@
 .MR15{
   margin-right: 12px;
 }
+
+.description-note {
+    position: absolute;
+    bottom: 35px;
+}
+
+.description-count {
+    position: absolute;
+    bottom: 35px;
+    right: 5px;
+}

@@ -285,12 +285,18 @@
                 class="resolution-class">
                 <!-- <mat-form-field> -->
                 <mat-grid-list cols="6" rowHeight="10rem" [gutterSize]="'100px'">
-                  <mat-grid-tile colspan="3" rowspan="1">
+                  <mat-grid-tile colspan="3" rowspan="1" style="position: relative;">
                     <mat-form-field class="resolution-form">
                       <mat-label>Enter resolution description</mat-label>
                       <textarea formControlName="description" matInput cdkTextareaAutosize
                         #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="4" cdkAutosizeMaxRows="4"></textarea>
                     </mat-form-field>
+                    <span class="description-note" [ngClass]="grievanceResolutionForm.get('description')?.hasError('maxlength') ? 'mat-mdc-form-field-error' : ''">
+                      Max characters limit: 2500
+                    </span>
+                    <span class="description-count" *ngIf="grievanceResolutionForm.get('description')?.value">
+                      count: {{grievanceResolutionForm.get('description')?.value.length}}
+                    </span>
                   </mat-grid-tile>
                 </mat-grid-list>
                 <mat-grid-list cols="6" rowHeight="26px" [gutterSize]="'100px'">
