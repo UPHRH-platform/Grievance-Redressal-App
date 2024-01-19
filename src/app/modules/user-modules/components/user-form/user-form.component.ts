@@ -140,6 +140,7 @@ export class UserFormComponent implements OnInit {
       council: this.userDetails?.attributes?.councilId,
       department: this.userDetails?.attributes?.departmentId ? this.userDetails?.attributes.departmentId : null
     })
+    this.userForm.get('role')?.disable()
   }
 
   // getDepartmentId() {
@@ -212,6 +213,7 @@ export class UserFormComponent implements OnInit {
   
   updateUser() {
     const {firstName, lastName, phone, role, status, username, department, council} = this.userForm.value;
+    debugger
     const requestObj = {
       id: this.userDetails.id,
       keycloakId: this.userDetails.keycloakId,
@@ -231,7 +233,7 @@ export class UserFormComponent implements OnInit {
     attributes: {
       module: "grievance",
       phoneNumber: phone,
-      Role: role,
+      Role: this.isEditUser ? this.userDetails?.attributes.role[0] : role,
       councilId: council,
       departmentId: department
     }

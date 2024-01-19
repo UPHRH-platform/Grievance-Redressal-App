@@ -16,13 +16,13 @@
           <div style="display: flex; flex-direction: row;" *ngIf="!isDataLoading">
             <div>
               <form [formGroup]="searchForm" >
-              <mat-form-field>
+              <mat-form-field style="width: 305px;">
                 <input
                   matInput
                   formControlName="searchData"
                   appearance="standard"
                   (keyup)="applyFilter($event.target.value)"
-                  placeholder="Search"
+                  placeholder="Search Name, Email, Phone number"
                 />
               </mat-form-field>
               </form>
