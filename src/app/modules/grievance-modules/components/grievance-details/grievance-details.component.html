@@ -197,11 +197,11 @@
             </div>
             <div class="first-row-container mt3">
               <div class="first-container">
-                <mat-label class="label-text">Raiser Email</mat-label>
+                <mat-label class="label-text">Email</mat-label>
                 <h3 class="textData">{{ ticketDetails?.email }}</h3>
               </div>
               <div class="first-container">
-                <mat-label class="label-text">Raiser Phone Number</mat-label>
+                <mat-label class="label-text">Phone Number</mat-label>
                 <h3 class="textData">{{ ticketDetails?.phone}}</h3>
               </div>
             </div>
@@ -285,7 +285,7 @@
                 class="resolution-class">
                 <!-- <mat-form-field> -->
                 <mat-grid-list cols="6" rowHeight="10rem" [gutterSize]="'100px'">
-                  <mat-grid-tile colspan="3" rowspan="1" style="position: relative;">
+                  <mat-grid-tile colspan="3" rowspan="1" style="position: relative; min-width: 100%;">
                     <mat-form-field class="resolution-form">
                       <mat-label>Enter resolution description</mat-label>
                       <textarea formControlName="description" matInput cdkTextareaAutosize
@@ -300,7 +300,7 @@
                   </mat-grid-tile>
                 </mat-grid-list>
                 <mat-grid-list cols="6" rowHeight="26px" [gutterSize]="'100px'">
-                  <mat-grid-tile colspan="3" rowspan="1">
+                  <mat-grid-tile colspan="3" rowspan="1" style="min-width: 100%;">
                     <mat-label class="attachment-label left">Attach file (s)</mat-label>
                     <mat-label class="attachment-label right" (click)="fileupload.click()">+ Add attachments</mat-label>
                     <input hidden id="fileUpload" #fileupload formControlName="attachments" type="file"
@@ -308,7 +308,7 @@
                   </mat-grid-tile>
                 </mat-grid-list>
                 <mat-grid-list cols="6" rowHeight="8rem" [gutterSize]="'100px'">
-                  <mat-grid-tile colspan="3" rowspan="1">
+                  <mat-grid-tile colspan="3" rowspan="1" style="min-width: 100%;">
                     <mat-card class="attachment-view">
                       <!-- if no files are available -->
                       <mat-card-content class="empty-content-class" *ngIf="files.length == 0">Supports only PDF, JPEG,
@@ -338,9 +338,8 @@
               <div class="mt2">
               <mat-label class="label-text">Resolution Attachments (s)</mat-label>
               <mat-card-content style = "padding-left: 0px;" *ngIf="ticketDetails?.assigneeTicketAttachment?.length > 0">
-                <div *ngFor="let attachment of ticketDetails?.assigneeTicketAttachment; let i = index" class="preview" style="width:36rem">
-                  <div class="layout" style="width: 36rem;
-                  overflow-wrap: anywhere;">
+                <div *ngFor="let attachment of ticketDetails?.assigneeTicketAttachment; let i = index" class="preview" >
+                  <div class="layout" style="overflow-wrap: anywhere;">
                     <span style="width:30rem">{{ attachment.attachmentName }}</span>
                     <div>
                       <a target="_blank" class="action-buttons" href={{attachment.attachment_url}}><span>view</span></a>
