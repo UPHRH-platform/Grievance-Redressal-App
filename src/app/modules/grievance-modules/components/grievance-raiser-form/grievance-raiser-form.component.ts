@@ -117,6 +117,8 @@ export class GrievanceRaiserFormComponent {
         if (this.departmentsList.length === 0) {
           this.departmentsEmpty = true;
           this.grievanceRaiserformGroup!.get('department')?.markAsTouched()
+        } else if (this.departmentsList.length === 1) {
+          this.grievanceRaiserformGroup!.get('department')?.patchValue(this.departmentsList[0]!['ticketDepartmentId'])
         }
       },
       error: (error: HttpErrorResponse) => {
