@@ -156,7 +156,7 @@
       <div class="user-container">
         <h2 class="user-text-heading">{{currentTabName}}</h2>
         <div class="action-btns">
-          <button mat-raised-button class="MR15" *ngIf="userRole === 'Nodal Officer' && currentTabName !== 'Resolved'"
+          <button mat-raised-button class="MR15" *ngIf="(userRole === 'Nodal Officer' && currentTabName !== 'Resolved' && currentTabName !== 'Junk') || userRole === 'Grievance Nodal' && currentTabName === 'Junk'"
             (click)="handleClick('markothers')">Mark As Others</button>
           <button mat-raised-button class="MR15" *ngIf="!(currentTabName == 'Resolved' || currentTabName == 'Junk')"
             (click)="handleClick('markjunk')">Mark As Junk</button>
@@ -174,7 +174,7 @@
               *ngIf="(currentTabName == 'Escalated to me' || currentTabName == 'Not Assigned' || currentTabName == 'Pending' || currentTabName === 'Nudged')"
               (click)="handleClick('nudge')">Send Reminder</button>
           </span>
-          <button type="submit" *ngIf="userRole === 'Nodal Officer' && currentTabName !== 'Resolved'"
+          <button type="submit" *ngIf="userRole === 'Nodal Officer' && currentTabName !== 'Resolved' && currentTabName !== 'Junk'"
             [disabled]="!grievanceResolutionForm.valid" (click)="handleClick('resolved',grievanceResolutionForm.value)"
             mat-raised-button color="primary">
             Mark as resolved
@@ -281,7 +281,7 @@
             <mat-divider *ngIf="userRole === 'Nodal Officer' || 'Grievance Nodal' && currentTabName !== 'Resolved'"
               style="margin-top:1rem !important"></mat-divider>
             <form [formGroup]="grievanceResolutionForm">
-              <div *ngIf="userRole === 'Nodal Officer' && currentTabName !== 'Resolved'" id="nodal"
+              <div *ngIf="userRole === 'Nodal Officer' && currentTabName !== 'Resolved' && currentTabName !== 'Junk'" id="nodal"
                 class="resolution-class">
                 <!-- <mat-form-field> -->
                 <mat-grid-list cols="6" rowHeight="10rem" [gutterSize]="'100px'">
