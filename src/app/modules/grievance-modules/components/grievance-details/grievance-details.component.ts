@@ -397,6 +397,11 @@ export class GrievanceDetailsComponent {
         ...this.ticketUpdateRequest,
         "cc":-1,
         isJunk: this.ticketDetails.junk,
+
+      }
+      if (this.userRole === 'Grievance Nodal') {
+        this.ticketUpdateRequest['status'] = 'OPEN';
+        this.ticketUpdateRequest['isJunk'] = false;
       }
       const otherDialogData = {
         header: `Enter reason to mark as 'Other'`,
@@ -513,9 +518,10 @@ export class GrievanceDetailsComponent {
         this.getTicketById();
         this.toastrService.showToastr("Ticket updated successfully!", 'Success', 'success', '');
         this.router.navigate(['/grievance/manage-tickets/'],{ queryParams: {tabName: this.currentTabName}});
-      },error: (err) =>{
+      },error: (error) =>{
         this.isDataLoading = false;
-        this.toastrService.showToastr(err, 'Error', 'error', '');
+        const errorMessage = error.error.error_message ? error.error.error_message : error.error.error;
+        this.toastrService.showToastr(errorMessage, 'Error', 'error', '');
       }
     });
   }
