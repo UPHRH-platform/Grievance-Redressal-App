@@ -230,7 +230,7 @@ export class GrievanceManagementComponent  {
           },
           {
             columnDef: 'escalatedDateTS',
-            header: 'Escalation Time',
+            header: 'Escalated',
             isSortable: true,
             isLink: false,
             cell: (element: Record<string, any>) => 
@@ -315,7 +315,7 @@ export class GrievanceManagementComponent  {
           },
           {
             columnDef: 'escalatedDateTS',
-            header: 'Escalation Time',
+            header: 'Escalated',
             isSortable: true,
             isLink: false,
             cell: (element: Record<string, any>) => 
@@ -391,7 +391,7 @@ export class GrievanceManagementComponent  {
           },
           {
             columnDef: 'escalatedDateTS',
-            header: 'Escalation Time',
+            header: 'Escalated',
             isSortable: true,
             isLink: false,
             cell: (element: Record<string, any>) => 
