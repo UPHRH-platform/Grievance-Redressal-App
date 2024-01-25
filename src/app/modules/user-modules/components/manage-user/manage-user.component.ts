@@ -114,7 +114,8 @@ export class ManageUserComponent implements OnInit {
             }
           },
           error: (err) => {
-            this.toastrService.showToastr(err, 'Error', 'error', '');
+            const errorMessage = err.error.error_message ? err.error.error_message : err.error.error;
+            this.toastrService.showToastr(errorMessage, 'Error', 'error', '');
             if (this.councilId) {
               this.getAllUsers();
             } else {
@@ -134,7 +135,8 @@ export class ManageUserComponent implements OnInit {
             }
          },
          error: (err) => { 
-          this.toastrService.showToastr(err, 'Error', 'error', '');
+          const errorMessage = err.error.error_message ? err.error.error_message : err.error.error;
+          this.toastrService.showToastr(errorMessage, 'Error', 'error', '');
             if (this.councilId) {
               this.getAllUsers();
             } else {
@@ -302,8 +304,9 @@ export class ManageUserComponent implements OnInit {
         this.listLength = this.users.length;
       },
       error: (err) => {
+        const errorMessage = err.error.error_message ? err.error.error_message : err.error.error;
         this.isDataLoading = false;
-        this.toastrService.showToastr(err, 'Error', 'error', '');
+        this.toastrService.showToastr(errorMessage, 'Error', 'error', '');
         // Handle the error here in case of login failure
       }
     });
@@ -329,7 +332,8 @@ export class ManageUserComponent implements OnInit {
           }
         },
         error: (error) => {
-          this.toastrService.showToastr(error.error.error, 'Error', 'error');
+          const errorMessage = error.error.error_message ? error.error.error_message : error.error.error;
+          this.toastrService.showToastr(errorMessage, 'Error', 'error');
         }
       });
   }
@@ -436,8 +440,9 @@ export class ManageUserComponent implements OnInit {
         this.listLength = this.users.length;
       },
       error: (err) => {
+        const errorMessage = err.error.error_message ? err.error.error_message : err.error.error;
         this.isDataLoading = false;
-        this.toastrService.showToastr(err, 'Error', 'error', '');
+        this.toastrService.showToastr(errorMessage, 'Error', 'error', '');
       }
     });
   }

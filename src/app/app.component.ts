@@ -25,8 +25,18 @@ export class AppComponent {
   }
 
   logout(){
-    this.authService.logout();
-    this.router.navigate(['/']);
-    this.toastrService.showToastr("Session got expired", 'Error', 'error', '')
+    this.authService.logout().subscribe({
+      next: (res) => {
+        this.authService.clearLocalStorage();
+        this.router.navigate(['/']);
+        this.toastrService.showToastr("Session got expired", 'Error', 'error', '')
+      },
+      error: (error) => {
+        this.toastrService.showToastr(error.error.error, 'Error', 'error', '');
+        this.authService.clearLocalStorage();
+        this.router.navigate(['/']);
+        this.toastrService.showToastr("Session got expired", 'Error', 'error', '')
+      }
+    })
    }
 }

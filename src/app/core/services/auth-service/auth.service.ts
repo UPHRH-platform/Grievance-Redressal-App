@@ -15,7 +15,9 @@ export class AuthService extends HttpService{
   private readonly ALL_ROLES = "all_roles";
   public readonly USER_DETAILS = "userDetails"
 
-  constructor(http: HttpClient, private configService: ConfigService,) {
+  constructor(
+    http: HttpClient, 
+    private configService: ConfigService,) {
     super(http);
     this.baseUrl = environment.apiUrl;
     this.userManagementbaseURL = environment.usermanagementApiURL;
@@ -160,7 +162,17 @@ export class AuthService extends HttpService{
     return localStorage.getItem(this.TOKEN_KEY);
   }
 
-  logout(): void {
+  logout(): Observable<ServerResponse> {
+    const reqParam: RequestParam = {
+      url: this.userManagementbaseURL + this.configService.urlConFig.URLS.LOGOUT,
+      data: {
+        userId: this.getUserData().userRepresentation.id
+      }
+    }
+    return this.post(reqParam);
+  }
+  
+  clearLocalStorage() {
     localStorage.removeItem(this.TOKEN_KEY);
     localStorage.removeItem(this.USER_DATA);
     localStorage.removeItem(this.ALL_ROLES);
