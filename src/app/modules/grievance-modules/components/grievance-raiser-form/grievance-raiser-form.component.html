@@ -119,15 +119,20 @@
                             </div>
                             <div class="clearfix mxn2">
                                 <div class="px2 mb2" style="position: relative;">
-                                    <h4>Description <span *ngIf="grievanceRaiserformGroup.get('description').value"> ({{grievanceRaiserformGroup.get('description').value.length}})</span></h4>
+                                    <h4>Description</h4>
                                     <mat-form-field class="resolution-form" style="width:100%">
                                         <mat-label>Grievance description</mat-label>
                                         <textarea formControlName="description" matInput cdkTextareaAutosize
                                             #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="4" cdkAutosizeMaxRows="4"></textarea>
                                     </mat-form-field>
-                                    <!-- <span class="description-note" [ngClass]="grievanceRaiserformGroup.get('description').hasError('maxlength') ? 'mat-mdc-form-field-error' : ''">
-                                        Max characters limit: 2500
-                                    </span> -->
+                                    <div class="flex justify-between" style="margin-top: -15px">
+                                        <span class="description-note" [ngClass]="grievanceRaiserformGroup.get('description').hasError('maxlength') ? 'mat-mdc-form-field-error' : ''">
+                                            Max characters limit: 2500
+                                        </span>
+                                        <span *ngIf="grievanceRaiserformGroup.get('description').value">
+                                            count: {{grievanceRaiserformGroup.get('description').value.length}}
+                                        </span>
+                                    </div>
                                 </div>
                             <!-- </div>
                             <div class="clearfix mxn2 mt3"> -->
