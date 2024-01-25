@@ -5,6 +5,8 @@ import { Router } from '@angular/router';
 import { UserService } from '../modules/user-modules/services/user.service';
 import { ToastrServiceService } from '../shared/services/toastr/toastr.service';
 import { ConfigService } from '../shared';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmationPopupComponent } from '../shared/components/confirmation-popup/confirmation-popup.component';
 
 @Component({
   selector: 'app-reset-password',
@@ -15,8 +17,17 @@ export class ResetPasswordComponent {
   resetPasswordForm: FormGroup;
   userDetails: any = [];
   isProcessing = false;
-  grievanceTypes: any = []
-  constructor(private authService: AuthService, private router:Router, private userService: UserService, private toastrService: ToastrServiceService, private formBuilder: FormBuilder, private configService: ConfigService) {
+  grievanceTypes: any = [];
+  updating = false;
+  constructor(
+    private authService: AuthService, 
+    private router:Router, 
+    private userService: UserService, 
+    private toastrService: ToastrServiceService, 
+    private formBuilder: FormBuilder, 
+    private configService: ConfigService,
+    private dialog: MatDialog
+    ) {
 
   }
 
@@ -70,19 +81,39 @@ export class ResetPasswordComponent {
 
   resetPassword() {
     if(this.resetPasswordForm.valid) {
-        this.updateUser();
+        this.openConformationPopup();
     }
   }
 
-  updateUser() {
-    let departmentId: any;
-    this.grievanceTypes.map((obj: any) => {
-      if(this.userDetails.attributes.role[0] !== 'SUPERADMIN') {
-      if(this.userDetails?.attributes.departmentName[0].toLowerCase() === obj.name.toLowerCase()) {
-        departmentId = obj.id;   
+  openConformationPopup() {
+    const dialogRef = this.dialog.open(ConfirmationPopupComponent, {
+      data: { 
+        title: 'Your current session will be terminated by this operation.',
+        processedBtnText: 'Proceed',
+        cancelBtnText: 'Cancel'
+      },
+      maxWidth: '400vw',
+      maxHeight: '100vh',
+      height: '290px',
+      width: '690px',
+      disableClose: true
+    });
+    dialogRef.afterClosed().subscribe(isConfirmed => {
+      if (isConfirmed) {
+        this.updateUser()
       }
-    }
     })
+  }
+
+  updateUser() {
+    // let departmentId: any;
+    // if (this.userDetails.attributes.role[0] !== 'SUPERADMIN' && this.userDetails.attributes.role[0] !== 'ADMIN') {
+    //   this.grievanceTypes.map((obj: any) => {
+    //     if (this.userDetails?.attributes?.departmentName[0].toLowerCase() === obj.name.toLowerCase()) {
+    //       departmentId = obj.id;
+    //     }
+    //   })
+    // }
     const requestObj = {
       id: this.userDetails?.id,
       keycloakId: this.userDetails?.keycloakId,
@@ -100,28 +131,32 @@ export class ResetPasswordComponent {
     ],
     attributes: {
       module: "grievance",
-      departmentName: departmentId,
+      // departmentName: this.userDetails?.attributes?.departmentId,
       phoneNumber: this.userDetails?.attributes.phoneNumber,
       Role: this.userDetails?.attributes.role[0]
   }
     }
     this.isProcessing = true;
+    this.updating = true;
     this.userService.updateUser(requestObj).subscribe({
       next: (res) => {
         this.userDetails = res.responseData;
         this.toastrService.showToastr("Password changed uccessfully!", 'Success', 'success', '');
         this.isProcessing = false;
-        this.navigateToHome();
+        this.logout();
+        // this.navigateToHome();
      },
      error: (err) => {
       // success response
       if(err.status === 200) {
         this.toastrService.showToastr("Password changed successfully!", 'Success', 'success', '');
         this.isProcessing = false;
-        this.getUserDetails();
-        this.navigateToHome();
+        this.logout();
+        // this.getUserDetails();
+        // this.navigateToHome();
       }
       else {
+        this.updating = false;
         this.isProcessing = false;
         this.toastrService.showToastr('Something went wrong. Please try again', 'Error', 'error', '');
       }
@@ -130,6 +165,20 @@ export class ResetPasswordComponent {
      }}
     );
   }
+
+  logout(){
+    this.authService.logout().subscribe({
+      next: (res) => {
+        this.authService.clearLocalStorage();
+        this.router.navigate(['/']);
+      },
+      error: (error) => {
+        this.toastrService.showToastr(error.error.error, 'Error', 'error', '');
+        this.authService.clearLocalStorage();
+        this.router.navigate(['/']);
+      }
+    })
+   }
 
   navigateToHome() {
     this.router.navigate(['/']);

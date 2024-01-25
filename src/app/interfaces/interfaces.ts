@@ -49,6 +49,8 @@ export interface GrievancesTableData {
     email?: string;
     phone?: string;
     ticketId?: number;
+    processedBtnText?: string;
+    cancelBtnText?: string;
   }
 
   export interface userTableData {
