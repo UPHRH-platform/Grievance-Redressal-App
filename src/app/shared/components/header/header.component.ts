@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { AuthService } from 'src/app/core';
 import { ConfigService } from '../../services/config/config.service';
 import { UserService } from 'src/app/modules/user-modules/services/user.service';
+import { ToastrServiceService } from '../../services/toastr/toastr.service';
 
 @Component({
   selector: 'app-header',
@@ -21,6 +22,7 @@ export class HeaderComponent {
   private authService: AuthService, 
   private configService: ConfigService,
   private userService: UserService,
+  private toastrService: ToastrServiceService,
   ){
 
  }
@@ -64,8 +66,17 @@ export class HeaderComponent {
  }
 
  logout(){
-  this.authService.logout();
-  this.router.navigate(['/']);
+  this.authService.logout().subscribe({
+    next: (res) => {
+      this.authService.clearLocalStorage();
+      this.router.navigate(['/']);
+    },
+    error: (error) => {
+      this.toastrService.showToastr(error.error.error, 'Error', 'error', '');
+      this.authService.clearLocalStorage();
+      this.router.navigate(['/']);
+    }
+  })
  }
 
  navigateToResetPasswordPage() {

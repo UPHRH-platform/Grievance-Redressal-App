@@ -1,6 +1,7 @@
 {
     "URLS": {
         "LOGIN": "/api/v1/user/keycloak/usrlogin",
+        "LOGOUT": "/api/v1/user/keycloak/logout",
         "IS_USER_ACTIVE": "/user/",
         "LOGIN_GENERATE_OTP": "/api/v1/user/keycloak/otp",
         "OTP_LOGIN": "/api/v1/user/keycloak/login",
