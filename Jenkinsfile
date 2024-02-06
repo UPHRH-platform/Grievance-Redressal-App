@@ -4,14 +4,14 @@ pipeline {
     environment {
         GCR_REGISTRY = "asia.gcr.io/upsmf-368011" 
         IMAGE_NAME = "grievance-fe-uat"
-        BRANCH_NAME = "main" 
+        BRANCH_NAME = "UAT" 
 		IMAGE_TAG = "1.0"
     }
 
     stages {
         stage('Clone Repository') {
             steps {
-                git branch: 'main', url: 'https://github.com/UPHRH-platform/Grievance-Redressal-App.git'
+                git branch: 'UAT', url: 'https://github.com/UPHRH-platform/Grievance-Redressal-App.git'
             }
         }
         stage('Build Docker Image') {
