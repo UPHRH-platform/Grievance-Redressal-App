@@ -21,7 +21,15 @@ pipeline {
 		            def dockerImage = docker.build("${GCR_REGISTRY}/${IMAGE_NAME}:${dockerTag}")	
                 }
             }
-        }		
+        }	
+        stage('Push to GCR') {
+            steps {
+                script {
+		            def dockerTag = "${IMAGE_TAG}-${env.BUILD_NUMBER}"	
+                sh "docker push ${GCR_REGISTRY}/${IMAGE_NAME}:${dockerTag}"
+                }
+            }
+        }      
 		
 	}
 }
