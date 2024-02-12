@@ -23,8 +23,9 @@ export class HttpService {
    * @param requestParam interface
    */
  get(requestParam: RequestParam): Observable<ServerResponse> {
+  const headers = this.getHeaderWithAuthorization(requestParam);
   const httpOptions: HttpOptions = {
-    headers: requestParam.header ? requestParam.header : this.getHeader(),
+    headers: headers,
     params: requestParam.param
   };
   return this.http.get<Response>(requestParam.url, httpOptions).pipe(
@@ -45,8 +46,9 @@ export class HttpService {
    * @param {RequestParam} requestParam interface
   */
  uploadFilepost(requestParam: RequestParam): Observable<any> {
+  const headers = this.getHeaderWithAuthorization(requestParam);
   const httpOptions: HttpOptions = {
-    headers: requestParam.header,
+    headers: headers,
     params: requestParam.param
   };
   return this.http.post<Response>(requestParam.url, requestParam.data, httpOptions).pipe(
@@ -69,8 +71,9 @@ export class HttpService {
    * @param {RequestParam} requestParam interface
   */
    post(requestParam: RequestParam): Observable<ServerResponse> {
+    const headers = this.getHeaderWithAuthorization(requestParam);
     const httpOptions: HttpOptions = {
-      headers: requestParam.header ? this.getHeader(requestParam.header) : this.getHeader(),
+      headers: headers,
       params: requestParam.param
     };
     return this.http.post<Response>(requestParam.url, requestParam.data, httpOptions).pipe(
@@ -93,8 +96,9 @@ export class HttpService {
    *
    */
   patch(requestParam: RequestParam): Observable<ServerResponse> {
+    const headers = this.getHeaderWithAuthorization(requestParam);
     const httpOptions: HttpOptions = {
-      headers: requestParam.header ? requestParam.header : this.getHeader(),
+      headers: headers,
       params: requestParam.param
     };
     return this.http.patch<Response>(requestParam.url, requestParam.data, httpOptions).pipe(
@@ -115,8 +119,9 @@ export class HttpService {
    * @param {RequestParam} requestParam interface
    */
   delete(requestParam: RequestParam): Observable<ServerResponse> {
+    const headers = this.getHeaderWithAuthorization(requestParam);
     const httpOptions: HttpOptions = {
-      headers: requestParam.header ? requestParam.header : this.getHeader(),
+      headers: headers,
       params: requestParam.param,
       body: requestParam.data
     };
@@ -138,8 +143,9 @@ export class HttpService {
  * @param {RequestParam} requestParam interface
  */
   put(requestParam: RequestParam): Observable<ServerResponse> {
+    const headers = this.getHeaderWithAuthorization(requestParam);
     const httpOptions: HttpOptions = {
-      headers: requestParam.header,
+      headers: headers,
       params: requestParam.param,
     };
     return this.http.put<Response>(requestParam.url, requestParam.data, httpOptions).pipe(
@@ -158,6 +164,21 @@ export class HttpService {
     /**
    * for preparing headers
    */
+    
+    private getHeaderWithAuthorization(requestParam: any) {
+      let headers: any = {}
+      if (requestParam.header) {
+        headers = requestParam.header;
+        if (headers.Authorization === undefined || headers.Authorization === '' || headers.Authorization === null) {
+          const access_token = localStorage.getItem('access_token');
+          headers['Authorization'] = `Bearer ${access_token}`
+        }
+      } else {
+        headers = this.getHeader();
+      }
+      return headers;
+    }
+    
     private getHeader(headers?: HttpOptions['headers']): HttpOptions['headers'] {
       const access_token = localStorage.getItem('access_token');
       const default_headers = {

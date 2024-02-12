@@ -487,7 +487,7 @@ export class GrievanceManagementComponent  {
     userData = localStorage.getItem('userDetails');
     if(userData !== undefined) {
       const userDetails = JSON.parse(userData);
-      this.grievanceTypeName = userDetails.attributes?.departmentName;
+      this.grievanceTypeName = userDetails?.attributes?.departmentName;
       this.grievanceType = this.grievanceTypeName ? userDetails.id : null;
     }
     // if(this.grievanceTypeName !== undefined && this.grievanceTypeName !== null) {
