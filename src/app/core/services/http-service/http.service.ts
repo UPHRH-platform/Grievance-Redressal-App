@@ -23,16 +23,7 @@ export class HttpService {
    * @param requestParam interface
    */
  get(requestParam: RequestParam): Observable<ServerResponse> {
-  let headers: any = {}
-  if (requestParam.header) {
-    headers = requestParam.header;
-    if (headers.Authorization === undefined || headers.Authorization === '' || headers.Authorization === null) {
-      const access_token = localStorage.getItem('access_token');
-      headers['Authorization'] = `Bearer ${access_token}`
-    }
-  } else {
-    headers = this.getHeader();
-  }
+  const headers = this.getHeaderWithAuthorization(requestParam);
   const httpOptions: HttpOptions = {
     headers: headers,
     params: requestParam.param
@@ -55,16 +46,7 @@ export class HttpService {
    * @param {RequestParam} requestParam interface
   */
  uploadFilepost(requestParam: RequestParam): Observable<any> {
-  let headers: any = {}
-  if (requestParam.header) {
-    headers = requestParam.header;
-    if (headers.Authorization === undefined || headers.Authorization === '' || headers.Authorization === null) {
-      const access_token = localStorage.getItem('access_token');
-      headers['Authorization'] = `Bearer ${access_token}`
-    }
-  } else {
-    headers = this.getHeader();
-  }
+  const headers = this.getHeaderWithAuthorization(requestParam);
   const httpOptions: HttpOptions = {
     headers: headers,
     params: requestParam.param
@@ -89,16 +71,7 @@ export class HttpService {
    * @param {RequestParam} requestParam interface
   */
    post(requestParam: RequestParam): Observable<ServerResponse> {
-    let headers: any = {}
-    if (requestParam.header) {
-      headers = requestParam.header;
-      if (headers.Authorization === undefined || headers.Authorization === '' || headers.Authorization === null) {
-        const access_token = localStorage.getItem('access_token');
-        headers['Authorization'] = `Bearer ${access_token}`
-      }
-    } else {
-      headers = this.getHeader();
-    }
+    const headers = this.getHeaderWithAuthorization(requestParam);
     const httpOptions: HttpOptions = {
       headers: headers,
       params: requestParam.param
@@ -123,16 +96,7 @@ export class HttpService {
    *
    */
   patch(requestParam: RequestParam): Observable<ServerResponse> {
-    let headers: any = {}
-    if (requestParam.header) {
-      headers = requestParam.header;
-      if (headers.Authorization === undefined || headers.Authorization === '' || headers.Authorization === null) {
-        const access_token = localStorage.getItem('access_token');
-        headers['Authorization'] = `Bearer ${access_token}`
-      }
-    } else {
-      headers = this.getHeader();
-    }
+    const headers = this.getHeaderWithAuthorization(requestParam);
     const httpOptions: HttpOptions = {
       headers: headers,
       params: requestParam.param
@@ -155,16 +119,7 @@ export class HttpService {
    * @param {RequestParam} requestParam interface
    */
   delete(requestParam: RequestParam): Observable<ServerResponse> {
-    let headers: any = {}
-    if (requestParam.header) {
-      headers = requestParam.header;
-      if (headers.Authorization === undefined || headers.Authorization === '' || headers.Authorization === null) {
-        const access_token = localStorage.getItem('access_token');
-        headers['Authorization'] = `Bearer ${access_token}`
-      }
-    } else {
-      headers = this.getHeader();
-    }
+    const headers = this.getHeaderWithAuthorization(requestParam);
     const httpOptions: HttpOptions = {
       headers: headers,
       params: requestParam.param,
@@ -188,16 +143,7 @@ export class HttpService {
  * @param {RequestParam} requestParam interface
  */
   put(requestParam: RequestParam): Observable<ServerResponse> {
-    let headers: any = {}
-    if (requestParam.header) {
-      headers = requestParam.header;
-      if (headers.Authorization === undefined || headers.Authorization === '' || headers.Authorization === null) {
-        const access_token = localStorage.getItem('access_token');
-        headers['Authorization'] = `Bearer ${access_token}`
-      }
-    } else {
-      headers = this.getHeader();
-    }
+    const headers = this.getHeaderWithAuthorization(requestParam);
     const httpOptions: HttpOptions = {
       headers: headers,
       params: requestParam.param,
@@ -218,6 +164,21 @@ export class HttpService {
     /**
    * for preparing headers
    */
+    
+    private getHeaderWithAuthorization(requestParam: any) {
+      let headers: any = {}
+      if (requestParam.header) {
+        headers = requestParam.header;
+        if (headers.Authorization === undefined || headers.Authorization === '' || headers.Authorization === null) {
+          const access_token = localStorage.getItem('access_token');
+          headers['Authorization'] = `Bearer ${access_token}`
+        }
+      } else {
+        headers = this.getHeader();
+      }
+      return headers;
+    }
+    
     private getHeader(headers?: HttpOptions['headers']): HttpOptions['headers'] {
       const access_token = localStorage.getItem('access_token');
       const default_headers = {
